@@ -53,7 +53,7 @@ Return loss table, threshold and assumptions, event-level probabilities/actions,
 
 ## Run it
 
-The [notebook](../../companion/notebooks/26-decision-readiness.ipynb) is the worked lesson; its editable [source](../../companion/lessons/26-decision-readiness.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
+The [notebook](../../companion/notebooks/26-decision-readiness.ipynb) is the worked lesson; its editable [source](../../companion/lessons/26-decision-readiness.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. [self-check.md](references/self-check.md) holds the three questions to answer before reporting. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
 Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 

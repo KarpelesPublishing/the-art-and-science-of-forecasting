@@ -149,3 +149,18 @@ workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'compani
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch09-workshop-results.csv', index=False)
 _ = (workshop_output/'ch09-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
+# %% [markdown]
+# ## Self-check
+#
+# The three questions a good forecaster asks in this situation. A bad answer to any one of them is a reason to stop and fix the work before reporting.
+#
+# 1. **Are the events, lead times and resolution rules the same for every forecaster being compared?**
+#    A bad answer looks like this: Comparing Brier scores across different event sets ranks the events, not the forecasters.
+#
+# 2. **Does the calibration table show counts per bin, and are the bins large enough to say anything?**
+#    A bad answer looks like this: A calibration curve drawn through bins of three events is a picture of sampling noise.
+#
+# 3. **Was the baseline declared before the outcomes, and does the forecaster beat it?**
+#    A bad answer looks like this: A retrospective baseline chosen after the fact can be made to lose.
+#
+# Shared rules for every chapter: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).

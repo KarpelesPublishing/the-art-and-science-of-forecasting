@@ -326,3 +326,18 @@ workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'compani
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch20-workshop-results.csv', index=False)
 _ = (workshop_output/'ch20-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
+# %% [markdown]
+# ## Self-check
+#
+# The three questions a good forecaster asks in this situation. A bad answer to any one of them is a reason to stop and fix the work before reporting.
+#
+# 1. **How were carryover and saturation chosen, and do the coefficients stay stable across refits?**
+#    A bad answer looks like this: Coefficients that swing when a window moves are not attribution; they are noise with signs.
+#
+# 2. **Is the response curve conditional on the observed spend schedule, and does the reallocation say so?**
+#    A bad answer looks like this: An optimal reallocation from an observational fit is a scenario until an experiment confirms the lift.
+#
+# 3. **What confounders move both spend and sales, and did I check them?**
+#    A bad answer looks like this: Seasonality and price run through media schedules; ignoring them credits media with the calendar.
+#
+# Shared rules for every chapter: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).

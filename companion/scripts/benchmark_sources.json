@@ -67,7 +67,18 @@
     "season": 12,
     "horizon": 24,
     "route": "engine",
-    "sha256": {},
+    "sha256": {
+      "zip": "0d21e4efae1090849171586e598c743edd2ceef967274351647faa21807c6d99"
+    },
     "note": "Tourism competition (Athanasopoulos et al. 2011): monthly, quarterly and yearly series in one zip"
+  },
+  "m3": {
+    "file": "M3C.xls",
+    "freq": "MS",
+    "season": 12,
+    "horizon": 18,
+    "route": "engine",
+    "sha256": {},
+    "unavailable": "forecasters.org returns 403 to scripted downloads; download M3C.xls by hand from https://forecasters.org/resources/time-series-data/m3-competition/ into data/benchmarks/ and the monthly sheet will be used"
   }
 }

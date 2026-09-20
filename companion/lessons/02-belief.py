@@ -163,3 +163,18 @@ workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'compani
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch02-workshop-results.csv', index=False)
 _ = (workshop_output/'ch02-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
+# %% [markdown]
+# ## Self-check
+#
+# The three questions a good forecaster asks in this situation. A bad answer to any one of them is a reason to stop and fix the work before reporting.
+#
+# 1. **What is my base rate, where did it come from, and how many cases stand behind it?**
+#    A bad answer looks like this: A base rate with no reference class and no count is a guess with a decimal point.
+#
+# 2. **Is the sample I am updating on complete, or am I looking only at the survivors?**
+#    A bad answer looks like this: Counting the returned aircraft and not the missing ones is the chapter's warning, and it recurs in every dataset of successes.
+#
+# 3. **Would a stronger or weaker prior change the decision?**
+#    A bad answer looks like this: If the answer flips with the prior's strength, the data are not yet decisive and the report must say so.
+#
+# Shared rules for every chapter: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).

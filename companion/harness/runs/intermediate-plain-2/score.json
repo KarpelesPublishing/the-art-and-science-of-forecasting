@@ -1,0 +1,153 @@
+{
+  "A-hierarchy": {
+    "delivered": true,
+    "matched": 48,
+    "mae": 6.577083333333337,
+    "bias": -2.231250000000002,
+    "baseline_mae": 9.699999999999998,
+    "coherence_max_gap": 5.684341886080802e-14,
+    "mae_vs_baseline": 0.6780498281786947,
+    "total_error_pct": -0.013496654190768108,
+    "band_coverage": 0.8333333333333334,
+    "band_mean_width": 21.835416666666664,
+    "process": {
+      "brief_with_decision_and_scoring_date": false,
+      "data_profiled_before_modelling": false,
+      "baseline_stated": true,
+      "not_done_reported": false,
+      "uncertainty_labelled": true,
+      "scoring_date_stated": true,
+      "journal_entry_made": false,
+      "report_numbers_sourced": false,
+      "status_honest": true
+    },
+    "process_score": 0.4444444444444444
+  },
+  "B-launch": {
+    "delivered": true,
+    "process": {
+      "brief_with_decision_and_scoring_date": false,
+      "data_profiled_before_modelling": true,
+      "baseline_stated": false,
+      "not_done_reported": false,
+      "uncertainty_labelled": true,
+      "scoring_date_stated": true,
+      "journal_entry_made": false,
+      "report_numbers_sourced": false,
+      "status_honest": true
+    },
+    "process_score": 0.4444444444444444
+  },
+  "C-intermittent": {
+    "delivered": true,
+    "matched": 12,
+    "mae": 2.8000000000000003,
+    "bias": 1.0499999999999998,
+    "baseline_mae": 4.25,
+    "mae_vs_baseline": 0.6588235294117648,
+    "total_error_pct": 0.46666666666666645,
+    "order_up_to": 21,
+    "three_week_windows_covered": 1.0,
+    "process": {
+      "brief_with_decision_and_scoring_date": false,
+      "data_profiled_before_modelling": false,
+      "baseline_stated": false,
+      "not_done_reported": false,
+      "uncertainty_labelled": true,
+      "scoring_date_stated": true,
+      "journal_entry_made": false,
+      "report_numbers_sourced": false,
+      "status_honest": true
+    },
+    "process_score": 0.3333333333333333
+  },
+  "D-daily-multiseasonal": {
+    "delivered": true,
+    "matched": 28,
+    "mae": 5.392857142857143,
+    "bias": -0.4642857142857143,
+    "baseline_mae": 14.464285714285714,
+    "mae_vs_baseline": 0.37283950617283956,
+    "total_error_pct": -0.00259222333000997,
+    "band_coverage": 1.0,
+    "band_mean_width": 17.892857142857142,
+    "process": {
+      "brief_with_decision_and_scoring_date": false,
+      "data_profiled_before_modelling": false,
+      "baseline_stated": true,
+      "not_done_reported": false,
+      "uncertainty_labelled": true,
+      "scoring_date_stated": true,
+      "journal_entry_made": false,
+      "report_numbers_sourced": false,
+      "status_honest": true
+    },
+    "process_score": 0.4444444444444444
+  },
+  "E-event-probability": {
+    "delivered": true,
+    "matched": 10,
+    "brier": 0.29724000000000006,
+    "baseline_brier": 0.32999999999999996,
+    "skill_vs_base_rate": 0.09927272727272696,
+    "extreme_share": 0.0,
+    "process": {
+      "brief_with_decision_and_scoring_date": false,
+      "data_profiled_before_modelling": true,
+      "baseline_stated": true,
+      "not_done_reported": false,
+      "uncertainty_labelled": true,
+      "scoring_date_stated": true,
+      "journal_entry_made": false,
+      "report_numbers_sourced": false,
+      "status_honest": true
+    },
+    "process_score": 0.5555555555555556
+  },
+  "F-short-history": {
+    "delivered": true,
+    "matched": 12,
+    "mae": 12.799999999999997,
+    "bias": -12.799999999999997,
+    "baseline_mae": 20.95,
+    "mae_vs_baseline": 0.6109785202863961,
+    "total_error_pct": -0.1072251308900523,
+    "band_coverage": 0.75,
+    "band_mean_width": 30.008333333333336,
+    "process": {
+      "brief_with_decision_and_scoring_date": false,
+      "data_profiled_before_modelling": false,
+      "baseline_stated": false,
+      "not_done_reported": false,
+      "uncertainty_labelled": true,
+      "scoring_date_stated": true,
+      "journal_entry_made": false,
+      "report_numbers_sourced": false,
+      "status_honest": false
+    },
+    "process_score": 0.2222222222222222
+  },
+  "G-level-shift": {
+    "delivered": true,
+    "matched": 12,
+    "mae": 14.099999999999994,
+    "bias": -14.066666666666663,
+    "baseline_mae": 22.25833333333333,
+    "mae_vs_baseline": 0.6334706102583301,
+    "total_error_pct": -0.046310013717421175,
+    "band_coverage": 0.75,
+    "band_mean_width": 38.783333333333324,
+    "process": {
+      "brief_with_decision_and_scoring_date": false,
+      "data_profiled_before_modelling": false,
+      "baseline_stated": false,
+      "not_done_reported": false,
+      "uncertainty_labelled": true,
+      "scoring_date_stated": true,
+      "journal_entry_made": false,
+      "report_numbers_sourced": false,
+      "status_honest": true
+    },
+    "process_score": 0.3333333333333333
+  }
+}

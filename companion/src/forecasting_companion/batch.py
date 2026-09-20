@@ -101,7 +101,7 @@ def _engine_one(series_id: str, frame: pd.DataFrame, y: np.ndarray, config: dict
 
 def _global(tasks, config: dict) -> list:
     """The global learner over every valid series; invalid series are reported like any other failure."""
-    from .global_model import run_global
+    from .global_model import run_global, run_neural
     start = time.perf_counter(); horizon, season = config['horizon'], _season(config['frequency'])
     series, results = {}, []
     for series_id, rows, _ in tasks:
@@ -119,7 +119,13 @@ def _global(tasks, config: dict) -> list:
             series[series_id] = (frame.timestamp.reset_index(drop=True), y)
         except ValueError as exc:
             results.append({'series_id': series_id, 'status': 'failed', 'forecasts': [], 'metrics': dict(series_id=series_id, status='failed', error=f'ValueError: {exc}', elapsed_seconds=0.0)})
-    fitted = run_global(series, horizon, season) if series else {}
+    learner = run_neural if config.get('engine') == 'neural' else run_global
+    try:
+        fitted = learner(series, horizon, season) if series else {}
+    except ValueError as exc:                                  # a missing optional package or too-short panel fails every series with the reason
+        for series_id in series:
+            results.append({'series_id': series_id, 'status': 'failed', 'forecasts': [], 'metrics': dict(series_id=series_id, status='failed', error=f'ValueError: {exc}', elapsed_seconds=0.0)})
+        return results
     for series_id, (ts, y) in series.items():
         if series_id not in fitted:
             results.append({'series_id': series_id, 'status': 'failed', 'forecasts': [], 'metrics': dict(series_id=series_id, status='failed', error='ValueError: too short for the global model', elapsed_seconds=0.0)})
@@ -128,13 +134,14 @@ def _global(tasks, config: dict) -> list:
         output = []
         for step, row in enumerate(table.itertuples(index=False), 1):
             for quantile, value in ((.1, row.empirical_q10), (.5, row.empirical_q50), (.9, row.empirical_q90)):
-                output.append(dict(series_id=series_id, origin=ts.iloc[-1].isoformat(), timestamp=pd.Timestamp(row.timestamp).isoformat(), horizon_step=step, model='Global LightGBM',
+                output.append(dict(series_id=series_id, origin=ts.iloc[-1].isoformat(), timestamp=pd.Timestamp(row.timestamp).isoformat(), horizon_step=step, model=summary['selected'],
                                    point=float(row.forecast), quantile=quantile, value=float(value), status='ok', band_method='empirical_signed_residual_by_horizon', residual_count=len(summary['origins'])))
+        label = summary['selected']
         results.append({'series_id': series_id, 'status': 'ok', 'forecasts': output,
-                        'metrics': dict(series_id=series_id, status='ok', observations=len(y), origin=ts.iloc[-1].isoformat(), selected_model='Global LightGBM',
+                        'metrics': dict(series_id=series_id, status='ok', observations=len(y), origin=ts.iloc[-1].isoformat(), selected_model=label,
                                         validation_mae=round(summary['validation_mae'], 6), validation_origins=len(summary['origins']), validation_pairs=len(summary['origins']) * horizon,
-                                        candidate_mae=json.dumps({'Global LightGBM': round(summary['validation_mae'], 6), 'Seasonal naive': round(summary['baseline_validation_mae'], 6)}, sort_keys=True),
-                                        transform='none', holdout_mae=summary['test_mae']['Global LightGBM'], interval_coverage=None,
+                                        candidate_mae=json.dumps({label: round(summary['validation_mae'], 6), 'Seasonal naive': round(summary['baseline_validation_mae'], 6)}, sort_keys=True),
+                                        transform='none', holdout_mae=summary['test_mae'][label], interval_coverage=None,
                                         skipped=json.dumps({'note': 'lost to seasonal naive at validation' if summary['lost_to_baseline'] else ''}), error='',
                                         elapsed_seconds=(time.perf_counter() - start) / max(len(series), 1))})
     return results
@@ -223,8 +230,8 @@ def run_batch(input_path: str | Path, output: str | Path, horizon: int = 12,
               frequency: str = 'MS', workers: int = 4, resume: bool = False,
               as_of: str | None = None, engine: str = 'baseline') -> dict:
     """Run all series; input/config errors raise, individual series failures do not."""
-    if engine not in ('baseline', 'full', 'smoothing', 'arima', 'intermittent', 'multiseasonal', 'foundation', 'global'):
-        raise ValueError("engine must be 'baseline', 'full', 'smoothing', 'arima', 'intermittent', 'multiseasonal', 'foundation' or 'global'")
+    if engine not in ('baseline', 'full', 'smoothing', 'arima', 'intermittent', 'multiseasonal', 'foundation', 'global', 'neural'):
+        raise ValueError("engine must be 'baseline', 'full', 'smoothing', 'arima', 'intermittent', 'multiseasonal', 'foundation', 'global' or 'neural'")
     if isinstance(horizon, bool) or not isinstance(horizon, int) or not 1 <= horizon <= 10000:
         raise ValueError('horizon must be an integer from 1 to 10000')
     if isinstance(workers, bool) or not isinstance(workers, int) or not 1 <= workers <= 64:
@@ -279,7 +286,7 @@ def run_batch(input_path: str | Path, output: str | Path, horizon: int = 12,
 
     # Executor limits active workers; batches also bound the queued task count.
     results, reused = [], 0
-    if engine == 'global':
+    if engine in ('global', 'neural'):
         results = _global(tasks, config)                      # one model for every series: no per-series checkpoints
     else:
       with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -312,8 +319,8 @@ def main() -> None:
     parser.add_argument('--workers', type=int, default=4)
     parser.add_argument('--resume', action='store_true')
     parser.add_argument('--as-of')
-    parser.add_argument('--engine', default='baseline', choices=['baseline', 'full', 'smoothing', 'arima', 'intermittent', 'multiseasonal', 'foundation', 'global'],
-                        help='baseline: transparent baselines for thousands of series; full: the real engine per series; global: one LightGBM across all series')
+    parser.add_argument('--engine', default='baseline', choices=['baseline', 'full', 'smoothing', 'arima', 'intermittent', 'multiseasonal', 'foundation', 'global', 'neural'],
+                        help='baseline: transparent baselines for thousands of series; full: the real engine per series; global: one LightGBM across all series (mlforecast when installed); neural: NHITS across all series (needs neuralforecast)')
     args = parser.parse_args()
     print(json.dumps(run_batch(args.input, args.output, args.horizon, args.frequency,
                                args.workers, args.resume, args.as_of, args.engine), indent=2))

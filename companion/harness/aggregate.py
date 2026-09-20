@@ -13,12 +13,15 @@ HERE = Path(__file__).resolve().parent
 
 
 def main(runs_dir=HERE / 'runs'):
+    current = set((Path(runs_dir) / 'CURRENT.txt').read_text().split()) if (Path(runs_dir) / 'CURRENT.txt').exists() else None
     runs = {}
     for p in sorted(Path(runs_dir).glob('*/score.json')):
         parts = p.parent.name.split('-')
         if len(parts) < 3:
             continue
         persona, arm = parts[0], parts[1]
+        if current is not None and p.parent.name not in current:
+            arm = arm + '-earlier'            # runs made before the current skill text; kept as history, reported apart
         scored = {k: v for k, v in json.load(open(p)).items() if v.get('attempted', True)}   # a partial run counts only the tasks it attempted
         runs.setdefault((persona, arm), []).append(scored)
     if not runs:
@@ -35,11 +38,15 @@ def main(runs_dir=HERE / 'runs'):
         stats[(persona, arm)] = dict(process=np.mean(proc), process_min=np.min(proc), mae=np.mean(mae) if mae else None, cov=np.mean(cov) if cov else None)
         lines.append(f'| {persona} | {arm} | {len(scored)} | {np.mean(proc):.0%} | {np.min(proc):.0%} | {("%.2f" % np.mean(mae)) if mae else ""} | {("%.0f%%" % (100 * np.mean(cov))) if cov else ""} | {np.mean(delivered):.0%} |')
     lines += ['', '## Spread', '']
+    for (persona, arm), scored in sorted(runs.items()):
+        if len(scored) >= 2:
+            proc = [np.mean([r['process_score'] for r in s.values() if 'process_score' in r]) for s in scored]
+            lines.append(f'- {persona} {arm}: process across {len(scored)} repeats ranges {min(proc):.0%} to {max(proc):.0%}.')
     for arm in ('skill', 'plain'):
         rows = [v for (p, a), v in stats.items() if a == arm]
         if len(rows) >= 2:
             lines.append(f'- {arm}: process scores range {min(r["process"] for r in rows):.0%} to {max(r["process"] for r in rows):.0%} across personas; MAE/baseline range ' + (f'{min(r["mae"] for r in rows if r["mae"] is not None):.2f} to {max(r["mae"] for r in rows if r["mae"] is not None):.2f}' if any(r['mae'] is not None for r in rows) else 'n/a') + '.')
-    lines += ['', 'Success means: with the skill every persona passes every process check, and the spread between personas is smaller than without the skill.']
+    lines += ['', 'Rows marked `-earlier` are runs made before the current skill text (the assumption ledger, the level-shift rule, the multi-run claim check) and are kept as history; `CURRENT.txt` names the runs of the current version. Success means: with the skill every persona passes every process check (minimum at or above 95 percent), the spread between personas is smaller than without the skill, and repeats agree.']
     out = HERE.parent / 'reports/harness'; out.mkdir(parents=True, exist_ok=True)
     (out / 'latest.md').write_text('\n'.join(lines) + '\n'); print('\n'.join(lines))
 

@@ -143,3 +143,18 @@ workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'compani
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch08-workshop-results.csv', index=False)
 _ = (workshop_output/'ch08-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
+# %% [markdown]
+# ## Self-check
+#
+# The three questions a good forecaster asks in this situation. A bad answer to any one of them is a reason to stop and fix the work before reporting.
+#
+# 1. **Did the experts estimate independently before seeing each other, and is the first round preserved?**
+#    A bad answer looks like this: Convergence after discussion is agreement, not accuracy, unless the initial spread is kept and compared.
+#
+# 2. **What did the panel know that the base rate did not, and is the change in the median explained by it?**
+#    A bad answer looks like this: A median that moved without new information moved for social reasons.
+#
+# 3. **Will the outcome be scored against the final round, and by whom?**
+#    A bad answer looks like this: A Delphi with no resolution date teaches nothing about the panel.
+#
+# Shared rules for every chapter: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).

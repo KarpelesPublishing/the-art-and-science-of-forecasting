@@ -27,6 +27,7 @@ Notebook: [01-markets](../notebooks/01-markets.ipynb). Execution: passed.
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `01-markets-cell-14` (execution 6).
+- Self-check
 
 ## Chapter 2: The Mathematics of Belief
 
@@ -54,6 +55,7 @@ Notebook: [02-belief](../notebooks/02-belief.ipynb). Execution: passed.
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `02-belief-cell-16` (execution 7).
+- Self-check
 
 ## Chapter 3: The Weather That Could Be Computed
 
@@ -80,6 +82,7 @@ Notebook: [03-weather](../notebooks/03-weather.ipynb). Execution: passed.
   - Executed cell `03-weather-cell-12` (execution 5).
 - The same workflow on observed data
   - Executed cell `03-weather-cell-14` (execution 6).
+- Self-check
 
 ## Chapter 4: The Smoother
 
@@ -107,6 +110,7 @@ Notebook: [04-smoothing](../notebooks/04-smoothing.ipynb). Execution: passed.
   - Executed cell `04-smoothing-cell-13` (execution 5).
 - The same workflow on observed data
   - Executed cell `04-smoothing-cell-15` (execution 6).
+- Self-check
 
 ## Chapter 5: The Filter
 
@@ -134,6 +138,7 @@ Notebook: [05-state-space](../notebooks/05-state-space.ipynb). Execution: passed
   - Executed cell `05-state-space-cell-13` (execution 6).
 - The same workflow on observed data
   - Executed cell `05-state-space-cell-15` (execution 7).
+- Self-check
 
 ## Chapter 6: The Unexpected Route
 
@@ -161,6 +166,7 @@ Notebook: [06-arima](../notebooks/06-arima.ipynb). Execution: passed.
   - Executed cell `06-arima-cell-13` (execution 6).
 - The same workflow on observed data
   - Executed cell `06-arima-cell-15` (execution 7).
+- Self-check
 
 ## Chapter 7: The Casino at Los Alamos
 
@@ -187,6 +193,7 @@ Notebook: [07-monte-carlo](../notebooks/07-monte-carlo.ipynb). Execution: passed
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `07-monte-carlo-cell-14` (execution 6).
+- Self-check
 
 ## Chapter 8: The Delphi Room
 
@@ -210,6 +217,7 @@ Notebook: [08-delphi](../notebooks/08-delphi.ipynb). Execution: passed.
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `08-delphi-cell-11` (execution 5).
+- Self-check
 
 ## Chapter 9: The Oracle Problem
 
@@ -232,6 +240,7 @@ Notebook: [09-expert-scoring](../notebooks/09-expert-scoring.ipynb). Execution: 
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `09-expert-scoring-cell-10` (execution 5).
+- Self-check
 
 ## Chapter 10: The Superforecaster
 
@@ -260,6 +269,7 @@ Notebook: [10-superforecasting](../notebooks/10-superforecasting.ipynb). Executi
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `10-superforecasting-cell-16` (execution 7).
+- Self-check
 
 ## Chapter 11: The Crowd and the Ox
 
@@ -284,6 +294,7 @@ Notebook: [11-crowds](../notebooks/11-crowds.ipynb). Execution: passed.
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `11-crowds-cell-12` (execution 6).
+- Self-check
 
 ## Chapter 12: The Competition
 
@@ -311,6 +322,7 @@ Notebook: [12-benchmarking](../notebooks/12-benchmarking.ipynb). Execution: pass
   - Executed cell `12-benchmarking-cell-13` (execution 6).
 - The same workflow on observed data
   - Executed cell `12-benchmarking-cell-15` (execution 7).
+- Self-check
 
 ## Chapter 13: The Walmart War Room
 
@@ -336,6 +348,7 @@ Notebook: [13-retail-ml](../notebooks/13-retail-ml.ipynb). Execution: passed.
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `13-retail-ml-cell-13` (execution 5).
+- Self-check
 
 ## Chapter 14: The Globalizer
 
@@ -362,6 +375,7 @@ Notebook: [14-global-neural](../notebooks/14-global-neural.ipynb). Execution: pa
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `14-global-neural-cell-14` (execution 6).
+- Self-check
 
 ## Chapter 15: The Foundation
 
@@ -390,6 +404,7 @@ Notebook: [15-foundation-models](../notebooks/15-foundation-models.ipynb). Execu
   - Executed cell `15-foundation-models-cell-14` (execution 6).
 - The same workflow on observed data
   - Executed cell `15-foundation-models-cell-16` (execution 7).
+- Self-check
 
 ## Chapter 16: The Prophet
 
@@ -419,6 +434,7 @@ Notebook: [16-prophet](../notebooks/16-prophet.ipynb). Execution: passed.
   - Executed cell `16-prophet-cell-15` (execution 6).
 - The same workflow on observed data
   - Executed cell `16-prophet-cell-17` (execution 7).
+- Self-check
 
 ## Chapter 17: Living with Probability
 
@@ -444,6 +460,7 @@ Notebook: [17-probabilistic](../notebooks/17-probabilistic.ipynb). Execution: pa
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `17-probabilistic-cell-13` (execution 6).
+- Self-check
 
 ## Chapter 18: The Hierarchy
 
@@ -469,6 +486,7 @@ Notebook: [18-hierarchy](../notebooks/18-hierarchy.ipynb). Execution: passed.
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `18-hierarchy-cell-13` (execution 5).
+- Self-check
 
 ## Chapter 19: Frank Bass and the Television
 
@@ -496,6 +514,7 @@ Notebook: [19-diffusion](../notebooks/19-diffusion.ipynb). Execution: passed.
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `19-diffusion-cell-15` (execution 6).
+- Self-check
 
 ## Chapter 20: The Marketing Mix
 
@@ -530,6 +549,7 @@ Notebook: [20-marketing-mix](../notebooks/20-marketing-mix.ipynb). Execution: pa
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `20-marketing-mix-cell-22` (execution 10).
+- Self-check
 
 ## Chapter 21: The Bullwhip
 
@@ -557,6 +577,7 @@ Notebook: [21-supply-chain](../notebooks/21-supply-chain.ipynb). Execution: pass
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `21-supply-chain-cell-15` (execution 7).
+- Self-check
 
 ## Chapter 22: The Causal Forecaster
 
@@ -583,6 +604,7 @@ Notebook: [22-causal](../notebooks/22-causal.ipynb). Execution: passed.
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `22-causal-cell-14` (execution 6).
+- Self-check
 
 ## Chapter 23: The Epidemiologist's Dilemma
 
@@ -610,6 +632,7 @@ Notebook: [23-epidemics](../notebooks/23-epidemics.ipynb). Execution: passed.
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `23-epidemics-cell-15` (execution 7).
+- Self-check
 
 ## Chapter 24: The Anomaly
 
@@ -634,6 +657,7 @@ Notebook: [24-structural-breaks](../notebooks/24-structural-breaks.ipynb). Execu
   - Executed cell `24-structural-breaks-cell-10` (execution 5).
 - The same workflow on observed data
   - Executed cell `24-structural-breaks-cell-12` (execution 6).
+- Self-check
 
 ## Chapter 25: Forecasting Your Own Life
 
@@ -656,6 +680,7 @@ Notebook: [25-reference-classes](../notebooks/25-reference-classes.ipynb). Execu
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `25-reference-classes-cell-10` (execution 5).
+- Self-check
 
 ## Chapter 26: How to Be Ready Without Being Certain
 
@@ -678,6 +703,7 @@ Notebook: [26-decision-readiness](../notebooks/26-decision-readiness.ipynb). Exe
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `26-decision-readiness-cell-10` (execution 5).
+- Self-check
 
 ## Chapter 27: Giving the Oracle Direction
 
@@ -716,4 +742,5 @@ Notebook: [27-directed-forecasting](../notebooks/27-directed-forecasting.ipynb).
 - Real-data boundary
 - Apply this chapter to your own data
   - Executed cell `27-directed-forecasting-cell-25` (execution 11).
+- Self-check
 

@@ -179,3 +179,18 @@ workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'compani
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch22-workshop-results.csv', index=False)
 _ = (workshop_output/'ch22-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
+# %% [markdown]
+# ## Self-check
+#
+# The three questions a good forecaster asks in this situation. A bad answer to any one of them is a reason to stop and fix the work before reporting.
+#
+# 1. **What is the comparison, and why should the controls have moved like the treated unit without the intervention?**
+#    A bad answer looks like this: A predictive counterfactual with no argument for the controls is a forecast, not an effect.
+#
+# 2. **Do the placebo tests, in space and in time, leave the estimate standing?**
+#    A bad answer looks like this: An effect no larger than the placebo effects is indistinguishable from noise.
+#
+# 3. **Is there a pre-trend, and if so, what does the estimate mean?**
+#    A bad answer looks like this: A trend that started before the intervention belongs to something else.
+#
+# Shared rules for every chapter: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).

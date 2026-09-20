@@ -1,6 +1,6 @@
 {
   "method": "Chronos-T5 tiny zero-shot forecast",
-  "interpretation": "Chronos tiny: mean median-MAE over 3 selection origins 2.481 vs engine baselines Seasonal naive 2.908, Equal ensemble 4.916, Naive 6.567, Drift 6.604; final holdout MAE 2.763, coverage of the 0.1-0.9 band 67%. Mean latency 0.13 s per call on CPU. Pretraining overlap with this series is not certified; one holdout cannot establish calibration.",
+  "interpretation": "Chronos tiny: mean median-MAE over 3 selection origins 2.248 vs engine baselines Seasonal naive 2.908, Equal ensemble 4.916, Naive 6.567, Drift 6.604; final holdout MAE 2.593, coverage of the 0.1-0.9 band 58%. Mean latency 0.11 s per call on CPU. Pretraining overlap with this series is not certified; one holdout cannot establish calibration.",
   "assumptions": [
     "Series treated as univariate without covariates",
     "Sampled quantiles from the pretrained model at the given seed"
@@ -25,30 +25,30 @@
     {
       "origin": "2017-12-01 00:00:00+00:00",
       "holdout": false,
-      "median_mae": 2.5161913186134934,
+      "median_mae": 2.269832765044971,
       "coverage": 0.75,
-      "latency_s": 0.13161041704006493
+      "latency_s": 0.11314145801588893
     },
     {
       "origin": "2018-12-01 00:00:00+00:00",
       "holdout": false,
-      "median_mae": 3.498368439377734,
+      "median_mae": 3.3761959993734485,
       "coverage": 0.6666666666666666,
-      "latency_s": 0.13041395787149668
+      "latency_s": 0.1078216671012342
     },
     {
       "origin": "2019-12-01 00:00:00+00:00",
       "holdout": false,
-      "median_mae": 1.4282437712108322,
+      "median_mae": 1.0992302773263543,
       "coverage": 1.0,
-      "latency_s": 0.13256375002674758
+      "latency_s": 0.11069662519730628
     },
     {
       "origin": "2020-12-01 00:00:00+00:00",
       "holdout": true,
-      "median_mae": 2.7634547482869394,
-      "coverage": 0.6666666666666666,
-      "latency_s": 0.1354327911976725
+      "median_mae": 2.592898679866529,
+      "coverage": 0.5833333333333334,
+      "latency_s": 0.10627812496386468
     }
   ],
   "engine_baselines": {
@@ -57,9 +57,9 @@
     "Naive": 6.56738485518992,
     "Drift": 6.6042951820490075
   },
-  "test_mae": 2.7634547482869394,
-  "test_coverage": 0.6666666666666666,
-  "mean_latency_s": 0.13392956643365322,
+  "test_mae": 2.592898679866529,
+  "test_coverage": 0.5833333333333334,
+  "mean_latency_s": 0.1091741666663438,
   "quantiles": [
     0.1,
     0.5,

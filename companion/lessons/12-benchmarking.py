@@ -103,8 +103,8 @@ assert all(row['RMSE'] >= row['MAE']-1e-12 for row in metrics.values())
 #
 # The current applied adapter adds a separately inspectable numerical result:
 #
-# - `results.csv`: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90,conformal_lower,conformal_upper`.
-# - `summary.json`: `profile,gaps_filled,pool,selected,criterion,baseline,forced_baseline,robustness,unavailable,conformal,conformal_test_coverage,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus method, interpretation, assumptions, not_done and status.
+# - `results.csv`: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90,conformal_lower,conformal_upper,band_lower,band_upper`.
+# - `summary.json`: `profile,gaps_filled,pool,selected,criterion,baseline,forced_baseline,robustness,unavailable,conformal,conformal_test_coverage,selected_by_bucket,band_method,band_note,conformal_m,conformal_level_effective,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus method, interpretation, assumptions, not_done and status.
 #
 # Each series independently runs the companion engine with the `full` pool: the chapter 4 smoothing family with an AICc-selected ETS form, Theta, STL+ETS, the chapter 6 ARIMA family with diagnostic differencing, LightGBM on lags when history allows, a median of the top three, an equal ensemble, and the naive, seasonal-naive and drift benchmarks. Validation includes MAE, RMSE and training-scaled MASE at up to five origins plus a final untouched holdout; interval coverage is measured for every model that produces intervals. No pooled business-weight ranking or formal significance test is produced. Short valid histories return a provisional naive baseline and optional seasonal-naive scenario; these are not validated model comparisons.
 #
@@ -114,7 +114,7 @@ assert all(row['RMSE'] >= row['MAE']-1e-12 for row in metrics.values())
 #
 # If histories differ, report the common eligible evaluation subset and separately report deployment coverage. If MASE scale is zero, flag it and use an unscaled metric rather than adding an arbitrary epsilon. With few origins, report descriptive results without broad superiority claims.
 #
-# The applied deliverable must make these items inspectable: `results.csv` columns: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90,conformal_lower,conformal_upper`; `summary.json` keys: `profile,gaps_filled,pool,selected,criterion,baseline,forced_baseline,robustness,unavailable,conformal,conformal_test_coverage,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus method, interpretation, assumptions, not_done and status. Return prediction-level records, per-series/per-origin/per-horizon losses, weighting rules, coverage and failed-fit counts, baseline comparisons and final-selection separation.
+# The applied deliverable must make these items inspectable: `results.csv` columns: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90,conformal_lower,conformal_upper,band_lower,band_upper`; `summary.json` keys: `profile,gaps_filled,pool,selected,criterion,baseline,forced_baseline,robustness,unavailable,conformal,conformal_test_coverage,selected_by_bucket,band_method,band_note,conformal_m,conformal_level_effective,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus method, interpretation, assumptions, not_done and status. Return prediction-level records, per-series/per-origin/per-horizon losses, weighting rules, coverage and failed-fit counts, baseline comparisons and final-selection separation.
 #
 # ## Three exercises with worked solutions
 #
@@ -202,3 +202,18 @@ print()
 print(preview(observed_table))
 observed_table.to_csv(workshop_output/'ch12-observed-results.csv', index=False)
 _ = (workshop_output/'ch12-observed-summary.json').write_text(json.dumps(clean_json(observed_summary), indent=2)+'\n')
+# %% [markdown]
+# ## Self-check
+#
+# The three questions a good forecaster asks in this situation. A bad answer to any one of them is a reason to stop and fix the work before reporting.
+#
+# 1. **Does every method face the same origins, horizons and actuals, including the baseline?**
+#    A bad answer looks like this: A comparison where one method saw more data is not a comparison.
+#
+# 2. **Did the selected method beat seasonal naive at most origins, or only on average?**
+#    A bad answer looks like this: A method that wins on average because of one origin loses in production.
+#
+# 3. **Was the final holdout used once, after selection, and never before?**
+#    A bad answer looks like this: A holdout consulted during selection is training data with another name.
+#
+# Shared rules for every chapter: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).

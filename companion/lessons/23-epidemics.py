@@ -200,3 +200,18 @@ workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'compani
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch23-workshop-results.csv', index=False)
 _ = (workshop_output/'ch23-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
+# %% [markdown]
+# ## Self-check
+#
+# The three questions a good forecaster asks in this situation. A bad answer to any one of them is a reason to stop and fix the work before reporting.
+#
+# 1. **Which recent cohorts are still incomplete, and did the nowcast fill them from mature cohorts only?**
+#    A bad answer looks like this: Treating last week's count as final under-reads every surge.
+#
+# 2. **Is the delay law from cohorts that are complete, and is reporting behaviour stable?**
+#    A bad answer looks like this: A delay distribution estimated from cohorts still filling in is biased short.
+#
+# 3. **Are the compartment-model scenarios labelled as scenarios with their transmission assumption stated?**
+#    A bad answer looks like this: A SEIR curve presented as a forecast without its assumed transmission rate is a drawing.
+#
+# Shared rules for every chapter: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).

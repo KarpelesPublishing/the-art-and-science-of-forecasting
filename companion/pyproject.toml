@@ -6,6 +6,6 @@ dependencies = ["numpy", "pandas", "scipy", "matplotlib", "statsmodels", "nbform
 
 [project.optional-dependencies]
 models = ["lightgbm", "prophet", "torch", "transformers", "chronos-forecasting"]
-best = ["statsforecast", "mlforecast", "hierarchicalforecast", "neuralforecast"]   # optional: used when present, named when absent
+best = ["statsforecast", "mlforecast", "hierarchicalforecast", "neuralforecast", "timesfm"]   # optional: used when present, named when absent; needs pandas<3 (see requirements-best.lock)
 test = ["pytest"]
 

@@ -8,7 +8,7 @@
     "Historical values coherent within tolerance"
   ],
   "not_done": [
-    "ERM and trace-minimisation variants from hierarchicalforecast not tried: pip install hierarchicalforecast   (or: pip install -e \"companion[best]\")",
+    "hierarchicalforecast cross-check (MinTrace shrink, ERM) not tried: pip install hierarchicalforecast   (or: pip install -e \"companion[best]\")",
     "Coherent quantiles not requested (set coherent_quantiles: true)"
   ],
   "status": "passed",
@@ -97,5 +97,6 @@
   ],
   "coherence_max_abs_residual": 2.842170943040401e-14,
   "pool": "smoothing",
-  "horizon": 12
+  "horizon": 12,
+  "hierarchicalforecast_agrees": null
 }

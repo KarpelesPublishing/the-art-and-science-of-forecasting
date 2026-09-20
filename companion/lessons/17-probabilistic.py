@@ -183,3 +183,18 @@ workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'compani
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch17-workshop-results.csv', index=False)
 _ = (workshop_output/'ch17-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
+# %% [markdown]
+# ## Self-check
+#
+# The three questions a good forecaster asks in this situation. A bad answer to any one of them is a reason to stop and fix the work before reporting.
+#
+# 1. **What was the measured coverage of the band at the origins, against its nominal level?**
+#    A bad answer looks like this: A nominal 80 percent quoted alone is a claim about the model's arithmetic, not about the world.
+#
+# 2. **How many residuals stand behind the conformal radius, and are they from before the evaluated period?**
+#    A bad answer looks like this: A conformal band built from a handful of residuals is the largest error seen, dressed as a quantile.
+#
+# 3. **Is the interval a measured one, a model's own, or a scenario range, and does the label say which?**
+#    A bad answer looks like this: Mixing the three kinds under one word misleads the decision-maker who has to size a buffer.
+#
+# Shared rules for every chapter: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).

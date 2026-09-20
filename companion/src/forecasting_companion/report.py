@@ -58,13 +58,8 @@ def _forecast_block(table, summary, claims, units):
         return lines
     if point is None or 'timestamp' not in cols and 'month' not in cols:
         return [f'`results.csv` has {len(table)} rows with columns {list(table.columns)}; see the chapter skill for their meaning.']
-    lo, hi = next(((a, b) for a, b in (('conformal_lower', 'conformal_upper'), ('lower', 'upper'), ('scenario_low', 'scenario_high'), ('empirical_q10', 'empirical_q90'), ('q10', 'q90')) if a in cols and b in cols), (None, None))
+    lo, hi = next(((a, b) for a, b in (('band_lower', 'band_upper'), ('conformal_lower', 'conformal_upper'), ('lower', 'upper'), ('scenario_low', 'scenario_high'), ('empirical_q10', 'empirical_q90'), ('q10', 'q90')) if a in cols and b in cols), (None, None))
     nominal = float(summary.get('nominal', 0.8))
-    if lo == 'conformal_lower' and 'lower' in cols:
-        mc = summary.get('test_interval_coverage') or {}; mc = mc.get(summary.get('selected')) if isinstance(mc, dict) else mc
-        cc = summary.get('conformal_test_coverage')
-        if mc is not None and cc is not None and abs(mc - nominal) < abs(cc - nominal):
-            lo, hi = 'lower', 'upper'                       # the model's own band held better on the holdout
     when = 'timestamp' if 'timestamp' in cols else 'month'
     rows = table if 'peak' not in cols else table[table.peak == table.peak.iloc[len(table) // 2]]
     lines = [f'| Period | Forecast ({units}) |' + (f' Range ({lo} to {hi}) |' if lo else ''), '|---|---|' + ('---|' if lo else '')]
@@ -84,7 +79,10 @@ def _forecast_block(table, summary, claims, units):
         cov = summary.get('test_interval_coverage') or summary.get('coverage')
         if isinstance(cov, dict):
             sel = summary.get('selected'); cov = cov.get(sel) if sel in cov else None
-        if lo.startswith('conformal'):
+        if lo == 'band_lower':
+            cc = summary.get('conformal_test_coverage'); method = summary.get('band_method')
+            lines.append(f'The range is the band the tool delivers (`band_lower/upper`, method: {method}). ' + (summary.get('band_note') or '') + '.' + (f' On the holdout the conformal band covered {claims.num("conformal holdout coverage", float(cc), "summary.json", "conformal_test_coverage")}' if cc is not None else '') + (f' and the model\'s own band {claims.num("measured coverage", float(cov), "summary.json", "test_interval_coverage")}' if cov is not None else '') + f', against a nominal {claims.num("nominal level", nominal, "summary.json", "nominal", fmt="{:.0%}")}.')
+        elif lo.startswith('conformal'):
             cc = summary.get('conformal_test_coverage')
             lines.append(f'The band is a split-conformal band at nominal {claims.num("nominal level", nominal, "summary.json", "nominal", fmt="{:.0%}")}, built from the selected model\'s residuals at the selection origins' + (f'; it covered {claims.num("conformal holdout coverage", float(cc), "summary.json", "conformal_test_coverage")} of the holdout' if cc is not None else '') + '.' + (f' The model\'s own band covered {claims.num("measured coverage", float(cov), "summary.json", "test_interval_coverage")} of the holdout.' if cov is not None else ''))
         elif lo.startswith('scenario'):
@@ -195,24 +193,59 @@ def load_claims(*run_dirs):
     return out
 
 
-def check_claims(text, claims, tolerance=0.02):
+def declared_assumptions(text):
+    """Judgment numbers the author declares: every number on a line beginning `Assumption:` (or inside a
+    section headed `## Assumptions`) becomes a claim with source `assumption` and the line as its key.
+    A judgment written down with its reason is legitimate; one hidden in a sentence as if it were a result is not."""
+    import re
+    out = []; in_block = False; continuing = False
+    for line in text.splitlines():
+        stripped = line.strip()
+        if re.match(r'^#+\s*assumptions?\b', stripped, re.I):
+            in_block = True; continuing = False; continue
+        if stripped.startswith('#'):
+            in_block = False; continuing = False
+        starts = stripped.lower().startswith('assumption:') or (in_block and stripped.startswith(('-', '*')))
+        if not starts and continuing and stripped and not stripped.startswith(('-', '*', '#')):
+            body = stripped                                  # a wrapped assumption paragraph continues until a blank line
+        elif starts:
+            body = re.sub(r'^(assumption:|[-*])\s*', '', stripped, flags=re.I); continuing = True
+        else:
+            continuing = False; continue
+        for m in re.finditer(r'(?<![\w.])-?\d[\d,]*\.?\d*(?![\w.])', re.sub(r'\d{4}-\d{2}-\d{2}', ' ', body)):
+            try:
+                out.append(dict(label='declared assumption', value=float(m.group(0).replace(',', '')), source='assumption', key=body[:120]))
+            except ValueError:
+                pass
+    return out
+
+
+def check_claims(text, claims, tolerance=0.02, assumptions=True):
     """Numbers in `text` (an assistant's interpretation, say) that no claim supports.
 
     Dates, hashes, years, chapter references and integers up to 31 are ignored; a percentage
-    matches a claim stored as a fraction. Anything else must be within `tolerance` of a claim."""
+    matches a claim stored as a fraction. Numbers on lines beginning `Assumption:` (or under a
+    `## Assumptions` heading) count as declared judgment when `assumptions` is true. Anything
+    else must be within `tolerance` of a claim."""
     import re
+    claims = list(claims) + (declared_assumptions(text) if assumptions else [])
     values = [float(c['value']) for c in claims if isinstance(c['value'], (int, float))]
     clean = re.sub(r'\d{4}-\d{2}-\d{2}(T[\d:.+]+)?', ' ', text)
     clean = re.sub(r'\b[0-9a-f]{8,}\b', ' ', clean)
     clean = re.sub(r'\bchapters? \d+(?:, ?\d+)*(?: (?:or|and) \d+)?', ' ', clean, flags=re.I)
     found = []
+    quantity_before = re.compile(r'\b(order|ordering|commit|committing|forecast|forecasts|total|totals|sum|sums|stock|buy)\s*$', re.I)
+    quantity_after = re.compile(r'^\s*(units?|cases|visits|items|parts|dollars|usd|percent|%|per\b)', re.I)
     for m in re.finditer(r'(?<![\w.])-?\d[\d,]*\.?\d*(?![\w.])', clean):
+        token = m.group(0).rstrip('.,')
         try:
-            v = float(m.group(0).replace(',', ''))
+            v = float(token.replace(',', ''))
         except ValueError:
             continue
-        if v.is_integer() and (abs(v) <= 31 or 1900 <= v <= 2100):
+        if v.is_integer() and abs(v) <= 31:
             continue
+        if v.is_integer() and 1900 <= v <= 2100 and ',' not in token and not (quantity_after.match(clean[m.end():m.end() + 12]) or (quantity_before.search(clean[max(0, m.start() - 14):m.start()]) and not re.search(r'\b(in|since|until|before|after|by|from|through|of|for)\s*$', clean[max(0, m.start() - 8):m.start()], re.I))):
+            continue                                                # a year, not a quantity
         if not any(abs(v - c) <= tolerance * max(1.0, abs(c)) or (abs(c) <= 1 and abs(v - c * 100) <= 1) for c in values):
             found.append(m.group(0))
     return found

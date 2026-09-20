@@ -91,7 +91,9 @@ whether the selected method beat the baseline at the selection origins and on th
 tool did not do that the chapter discusses; and what `status` means for them (`passed`: validated as
 the chapter describes; `provisional`: something was skipped, the list says what; `needs_evidence`: no
 number, and what would unlock one). A method that lost to seasonal naive at most origins is not a
-forecast; say so and use the baseline.
+forecast; say so and use the baseline. Then answer the chapter's three self-check questions
+(`forecasting-chNN-*/references/self-check.md`); a bad answer to any of them is a reason to go back,
+not to report.
 
 Two cases the tools flag and the assistant must act on:
 
@@ -136,8 +138,12 @@ run.py report --run work/run --check work/interpretation.md
 
 The command lists any number in the interpretation that no claim supports (dates, years and small
 counts are ignored). When the interpretation draws on two runs (a series run and a chapter 21 policy
-run, say), add `--also other/run` so both sets of claims count. Fix the text or point to the claim;
-never publish an unsupported number.
+run, say), add `--also other/run` so both sets of claims count. A judgment number (a prior strength, a
+likelihood ratio, an order quantity chosen for the cost asymmetry, a holiday adjustment) goes on a
+line beginning `Assumption:` with its reason (the line may wrap until a blank line), or under a `## Assumptions` heading; the check accepts
+it as declared judgment, prints it back, and records it in `claims.json` with source `assumption`.
+Never disguise a judgment as a result. Fix the text or point to the claim; never publish an
+unsupported number.
 
 The journal entry records the forecast rows, the brief and the scoring date. When actuals arrive:
 

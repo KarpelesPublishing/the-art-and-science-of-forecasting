@@ -102,10 +102,17 @@ if __name__=='__main__':
             parser.exit(2,f'Report stopped: {exc}\n')
         print(f'wrote {_P(args.run)/"report.md"} and claims.json ({len(claims)} sourced numbers)')
         if args.check:
-            from forecasting_companion.report import load_claims
+            from forecasting_companion.report import load_claims,declared_assumptions
             if args.also:claims=claims+load_claims(*args.also)
-            bad=check_claims(_P(args.check).read_text(),claims)
-            print('every number in the interpretation is supported by the run' if not bad else 'numbers with no source in this run: '+', '.join(bad))
+            interpretation=_P(args.check).read_text()
+            declared=declared_assumptions(interpretation)
+            if declared:
+                print(f'{len(declared)} number(s) accepted as declared assumptions: '+'; '.join(f'{d["value"]:g} ({d["key"][:50]})' for d in declared))
+                ledger=_P(args.run)/'claims.json'; existing=json.loads(ledger.read_text())
+                existing=[c for c in existing if c.get('source')!='assumption']+declared
+                ledger.write_text(json.dumps(existing,indent=2,default=float)+'\n')
+            bad=check_claims(interpretation,claims)
+            print('every number in the interpretation is supported by the run or declared as an assumption' if not bad else 'numbers with no source in this run and not declared as assumptions: '+', '.join(bad))
             raise SystemExit(0 if not bad else 4)
         raise SystemExit(0)
     if args.command=='journal':

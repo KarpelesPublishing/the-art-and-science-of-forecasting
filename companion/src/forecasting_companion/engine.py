@@ -59,7 +59,7 @@ POOLS = {
     'regressors': ['Naive', 'Seasonal naive', 'Drift', 'ETS(auto)', 'ARIMA(auto)', 'ARIMAX', 'LightGBM+X', 'Prophet+X',
                    'Combination(top3)'],
     # Pretrained models beside the baselines, at identical origins.
-    'foundation': ['Naive', 'Seasonal naive', 'Drift', 'Chronos', 'Chronos-Bolt'],
+    'foundation': ['Naive', 'Seasonal naive', 'Drift', 'Chronos', 'Chronos-Bolt', 'TimesFM'],
 }
 NOMINAL = 0.8  # the interval level scored during validation
 CRITERIA = ('mae', 'mase', 'rmsse', 'pinball')
@@ -384,8 +384,8 @@ register('MSTL+ETS', fit_mstl_ets); register('MSTL+ARIMA', fit_mstl_arima); regi
 register('Prophet', fit_prophet, requires='prophet'); register('TBATS', fit_tbats, requires='statsforecast')
 from .engine_regressors import fit_arimax, fit_lightgbm_x, fit_prophet_x  # noqa: E402
 register('ARIMAX', fit_arimax); register('LightGBM+X', fit_lightgbm_x, requires='lightgbm'); register('Prophet+X', fit_prophet_x, requires='prophet')
-from .engine_foundation import fit_chronos, fit_chronos_bolt  # noqa: E402
-register('Chronos', fit_chronos, requires='chronos'); register('Chronos-Bolt', fit_chronos_bolt, requires='chronos')
+from .engine_foundation import fit_chronos, fit_chronos_bolt, fit_timesfm  # noqa: E402
+register('Chronos', fit_chronos, requires='chronos'); register('Chronos-Bolt', fit_chronos_bolt, requires='chronos'); register('TimesFM', fit_timesfm, requires='timesfm')
 COMBINATIONS = {'Combination(top3)', 'Equal ensemble', 'Weighted ensemble'}
 
 
@@ -438,11 +438,21 @@ def score_origins(scores, criterion):
     return scores.groupby('model')[col].mean().dropna().sort_values()
 
 
-def conformal_band(residuals, level=NOMINAL):
-    """Split-conformal radius per horizon step. Residuals are pooled across every step (k origins times h
-    steps rather than k alone) after scaling each step's residuals by that step's mean absolute error, so the
-    quantile rests on tens of residuals instead of a handful; the step's scale is then restored. With m pooled
-    residuals the radius is the ceil((m+1)(1-alpha))-th smallest scaled |r|."""
+def conformal_band(residuals, level=NOMINAL, extra=None, finite_sample=True, info=False):
+    """Split-conformal radius per horizon step.
+
+    Residuals are pooled across every step (k origins times h steps rather than k alone) after scaling
+    each step's residuals by its mean absolute error, so the quantile rests on tens of residuals; the
+    step's scale is then restored. `extra` adds residuals the selection never saw (the final holdout of
+    the selected model), which is what defeats the winner's curse: the chosen model's origin residuals
+    are optimistically small because it was chosen for them. With m pooled residuals and finite_sample
+    the level is raised by one standard error of the Beta coverage distribution,
+    level_m = min(0.95, level + sqrt(level (1 - level) / m)), and the radius is the
+    ceil((m+1) level_m)-th smallest scaled |r|. With info=True returns (radius, details)."""
+    merged = {s: list(residuals[s]) for s in residuals}
+    for s, extra_res in (extra or {}).items():
+        merged.setdefault(s, []); merged[s] = list(merged[s]) + list(extra_res)
+    residuals = merged
     steps = sorted(residuals)
     scale = {}
     for step in steps:
@@ -457,26 +467,32 @@ def conformal_band(residuals, level=NOMINAL):
     for i, step in enumerate(steps):
         window = [scale[s] for s in steps[max(0, i - 1):i + 2]]
         smooth[step] = float(np.mean(window))
-    pooled = np.sort(np.concatenate([np.abs(np.asarray(residuals[s], float)) / smooth[s] for s in steps if len(residuals[s])]))
+    pooled = np.sort(np.concatenate([np.abs(np.asarray(residuals[s], float)) / smooth[s] for s in steps if len(residuals[s])])) if steps else np.array([])
     m = len(pooled)
     if m == 0:
-        return {s: float('nan') for s in steps}
-    k = int(np.ceil((m + 1) * level)) - 1
+        radius = {s: float('nan') for s in steps}
+        return (radius, dict(m=0, level_effective=level)) if info else radius
+    level_m = min(0.95, level + np.sqrt(level * (1 - level) / m)) if finite_sample else level
+    k = int(np.ceil((m + 1) * level_m)) - 1
     q = float(pooled[min(max(k, 0), m - 1)])
-    return {s: q * smooth[s] for s in steps}
+    radius = {s: q * smooth[s] for s in steps}
+    return (radius, dict(m=int(m), level_effective=float(level_m), largest_error_used=bool(k >= m - 1))) if info else radius
 
 
 def forecast_series(y: np.ndarray, timestamps: pd.Series, horizon: int, season: int, *,
                     pool: str = 'full', freq: str = 'MS', transform: str = 'auto',
                     max_origins: int = 5, quantiles=(0.1, 0.5, 0.9), criterion: str | None = None,
-                    periods=None, regressors=None, country=None, observed=None, conformal: bool = True) -> tuple[pd.DataFrame, dict]:
+                    periods=None, regressors=None, country=None, observed=None, conformal: bool = True,
+                    per_horizon_buckets: bool = False) -> tuple[pd.DataFrame, dict]:
     """Forecast one regular series. Returns the future table and a full evidence summary.
 
     criterion: mae (default), mase, rmsse (default for the intermittent pool) or pinball (on the model's
     own 10/50/90 quantiles). periods: seasonal periods for the multiseasonal pool. regressors:
     {'X': history matrix, 'future': next-h matrix, 'columns': names} for the regressors pool.
     observed: boolean mask; False marks filled gaps, which are used for fitting but never scored.
-    conformal: add split-conformal bands from the selected model's origin residuals."""
+    conformal: add split-conformal bands from the selected model's origin residuals.
+    per_horizon_buckets: select one model for the near steps (1..ceil(h/2)) and another for the far
+    steps; the future table splices them and names the model per row."""
     from .optional import have, hint
     y = np.asarray(y, float)
     n, h, s = len(y), int(horizon), int(season)
@@ -568,7 +584,9 @@ def forecast_series(y: np.ndarray, timestamps: pd.Series, horizon: int, season: 
             if f.lower is not None:
                 lo, hi = f.lower[seen_mask], f.upper[seen_mask]; a = actual[seen_mask]; q = (1 - NOMINAL) / 2
                 pin = float(np.mean(np.maximum(q * (a - lo), (q - 1) * (a - lo))) + np.mean(np.maximum((1 - q) * (a - hi), -q * (a - hi))) + 0.5 * np.mean(np.abs(err)))
+            near = seen_mask.copy(); near[int(np.ceil(h / 2)):] = False; far = seen_mask & ~near
             rows.append(dict(origin=int(origin), model=name, mae=float(np.abs(err).mean()),
+                             mae_near=float(np.abs(actual - f.mean)[near].mean()) if near.any() else None, mae_far=float(np.abs(actual - f.mean)[far].mean()) if far.any() else None,
                              rmse=float(np.sqrt(np.mean(err ** 2))),
                              mase=float(np.abs(err).mean() / scale) if scale > 0 else None,
                              rmsse=float(np.sqrt(np.mean(err ** 2)) / rms_scale) if rms_scale > 0 else None,
@@ -606,7 +624,7 @@ def forecast_series(y: np.ndarray, timestamps: pd.Series, horizon: int, season: 
     chosen = str(ranked.index[0])
     forced_baseline = chosen == baseline_name and str(ranked_all.index[0]) != baseline_name
     leaderboard = scores[scores.model.isin(eligible)].groupby('model').agg(
-        mae=('mae', 'mean'), rmse=('rmse', 'mean'), mase=('mase', 'mean'), rmsse=('rmsse', 'mean'), cumulative_error=('cumulative_error', 'mean'), pinball=('pinball', 'mean')).reset_index()
+        mae=('mae', 'mean'), rmse=('rmse', 'mean'), mase=('mase', 'mean'), rmsse=('rmsse', 'mean'), cumulative_error=('cumulative_error', 'mean'), pinball=('pinball', 'mean'), mae_near=('mae_near', 'mean'), mae_far=('mae_far', 'mean')).reset_index()
     leaderboard = leaderboard.set_index('model').loc[list(ranked_all.index)].reset_index()
     leaderboard['interval_coverage'] = [float(np.mean(covered[m])) if m in covered else None for m in leaderboard.model]
     leaderboard['lost_to_baseline_at'] = [robustness.get(m, {}).get('lost_to_baseline_at') for m in leaderboard.model]
@@ -619,11 +637,12 @@ def forecast_series(y: np.ndarray, timestamps: pd.Series, horizon: int, season: 
     test_fits = _combine(test_fits, names, list(ranked_all.index), ranked_all.to_dict())
     test_mae = {k: float(np.abs(actual - f.mean)[test_mask].mean()) for k, f in test_fits.items() if test_mask.any()}
     test_coverage = {k: float(np.mean(((actual >= f.lower) & (actual <= f.upper))[test_mask])) for k, f in test_fits.items() if f.lower is not None and test_mask.any()}
-    conformal_test_coverage = None
+    conformal_test_coverage = None; holdout_res = {}
     if conformal and chosen in residuals and chosen in test_fits and test_mask.any():
         radius_test = conformal_band(residuals[chosen], NOMINAL); ft = test_fits[chosen].mean
         inside = [(actual[j] >= ft[j] - radius_test[j + 1]) and (actual[j] <= ft[j] + radius_test[j + 1]) for j in range(h) if test_mask[j] and (j + 1) in radius_test]
-        conformal_test_coverage = float(np.mean(inside)) if inside else None
+        conformal_test_coverage = float(np.mean(inside)) if inside else None      # the origin-only band, measured once on the holdout
+        holdout_res = {j + 1: [float(actual[j] - ft[j])] for j in range(h) if test_mask[j]}   # never used for selection: fair evidence for the band
 
     # refit on everything and forecast
     work_all = np.log(y) if log else y
@@ -634,6 +653,19 @@ def forecast_series(y: np.ndarray, timestamps: pd.Series, horizon: int, season: 
     f = final_fits[chosen]
     step_index = pd.date_range(pd.Timestamp(timestamps.iloc[-1]), periods=h + 1, freq=freq)[1:]
     table = pd.DataFrame({'timestamp': step_index, 'forecast': f.mean, 'model': chosen})
+    buckets = None
+    if per_horizon_buckets and h >= 2:
+        cut_step = int(np.ceil(h / 2)); sel = scores[scores.model.isin(selectable if selectable else eligible)]
+        near_rank = sel.groupby('model').mae_near.mean().dropna().sort_values(); far_rank = sel.groupby('model').mae_far.mean().dropna().sort_values()
+        near_model = str(near_rank.index[0]) if len(near_rank) else chosen; far_model = str(far_rank.index[0]) if len(far_rank) else chosen
+        if near_model in final_fits and far_model in final_fits:
+            spliced = np.r_[final_fits[near_model].mean[:cut_step], final_fits[far_model].mean[cut_step:]]
+            f = Fit(spliced,
+                    np.r_[final_fits[near_model].lower[:cut_step], final_fits[far_model].lower[cut_step:]] if final_fits[near_model].lower is not None and final_fits[far_model].lower is not None else None,
+                    np.r_[final_fits[near_model].upper[:cut_step], final_fits[far_model].upper[cut_step:]] if final_fits[near_model].upper is not None and final_fits[far_model].upper is not None else None)
+            table['forecast'] = f.mean; table['model'] = [near_model] * cut_step + [far_model] * (h - cut_step)
+            buckets = dict(near=near_model, far=far_model, cut_step=cut_step, near_mae=float(near_rank.iloc[0]), far_mae=float(far_rank.iloc[0]))
+            residuals[chosen] = {j: (residuals.get(near_model, {}) if j <= cut_step else residuals.get(far_model, {})).get(j, residuals[chosen].get(j, [])) for j in range(1, h + 1)}
     band = {}
     for j in range(1, h + 1):
         res = np.asarray(residuals[chosen][j])
@@ -651,20 +683,41 @@ def forecast_series(y: np.ndarray, timestamps: pd.Series, horizon: int, season: 
     else:
         interval_note = (f'{chosen} produces no model intervals; empirical_q* columns are signed residual quantiles by '
                          f'horizon step from the {len(origins)} selection origins ({len(origins)} residuals per step) and are descriptive.')
-    conformal_note = None
+    conformal_note = None; conformal_info = None
     if conformal and chosen in residuals:
-        radius = conformal_band(residuals[chosen], NOMINAL)
+        radius, conformal_info = conformal_band(residuals[chosen], NOMINAL, extra=holdout_res, info=True)
         table['conformal_lower'] = [f.mean[j - 1] - radius[j] for j in range(1, h + 1)]
         table['conformal_upper'] = [f.mean[j - 1] + radius[j] for j in range(1, h + 1)]
-        m_res = sum(len(v) for v in residuals[chosen].values())
-        conformal_note = (f'conformal_lower/upper are split-conformal bands at {int(NOMINAL * 100)}% from {chosen}\'s absolute residuals at the selection '
-                          f'origins, pooled across horizon steps ({m_res} residuals, scaled per step); the guarantee assumes future errors resemble those at the origins, which a level shift breaks.')
+        conformal_note = (f'conformal_lower/upper are split-conformal bands at nominal {int(NOMINAL * 100)}% from {chosen}\'s absolute residuals at the {len(origins)} selection '
+                          f'origins plus its {sum(len(v) for v in holdout_res.values())} final-holdout residuals (the holdout was never used for selection), {conformal_info["m"]} residuals pooled and scaled per step, '
+                          f'rank level raised to {conformal_info["level_effective"]:.3f} for the finite sample'
+                          + (f'; the origin-only band covered {conformal_test_coverage:.0%} of the holdout' if conformal_test_coverage is not None else '')
+                          + '. If future absolute errors are exchangeable with these residuals the band covers at least 80% on average across steps; the guarantee is marginal, not per step, and a level shift or a change in error size voids it.')
+    # the band to deliver: the report, the journal and the benchmark all read band_lower/upper and band_method
+    band_method = None
+    mc = test_coverage.get(chosen); cc = conformal_test_coverage
+    if 'conformal_lower' in table and 'lower' in table and mc is not None and cc is not None:
+        if (mc - NOMINAL) * (cc - NOMINAL) < 0:
+            band_method = 'blend'                            # one band too narrow and the other too wide on the holdout: the midpoint
+            table['band_lower'] = (table['lower'] + table['conformal_lower']) / 2; table['band_upper'] = (table['upper'] + table['conformal_upper']) / 2
+        elif abs(mc - NOMINAL) < abs(cc - NOMINAL):
+            band_method = 'model'; table['band_lower'] = table['lower']; table['band_upper'] = table['upper']
+        else:
+            band_method = 'conformal'; table['band_lower'] = table['conformal_lower']; table['band_upper'] = table['conformal_upper']
+    elif 'conformal_lower' in table:
+        band_method = 'conformal'; table['band_lower'] = table['conformal_lower']; table['band_upper'] = table['conformal_upper']
+    elif 'lower' in table:
+        band_method = 'model'; table['band_lower'] = table['lower']; table['band_upper'] = table['upper']
     if pool == 'intermittent':
         table['forecast'] = np.maximum(table['forecast'], 0)
+        for col in ('band_lower', 'conformal_lower', 'lower', 'empirical_q10'):
+            if col in table:
+                table[col] = np.maximum(table[col], 0)
     summary = dict(
         method='Rolling-origin model comparison with final holdout',
         pool=pool, selected=chosen, criterion=criterion, baseline=baseline_name, forced_baseline=forced_baseline, robustness=robustness,
-        unavailable=unavailable, conformal=conformal_note, conformal_test_coverage=conformal_test_coverage,
+        unavailable=unavailable, conformal=conformal_note, conformal_test_coverage=conformal_test_coverage, selected_by_bucket=buckets, band_method=band_method,
+        band_note=({'blend': 'band_lower/upper is the midpoint of the model band and the conformal band: on the holdout one was too narrow and the other too wide', 'model': 'band_lower/upper is the model\'s own band, whose holdout coverage was nearer nominal than the conformal band\'s', 'conformal': 'band_lower/upper is the split-conformal band'}.get(band_method)), conformal_m=conformal_info['m'] if conformal_info else None, conformal_level_effective=conformal_info['level_effective'] if conformal_info else None,
         transform='log' if log else 'none', specification=dict(
             ets=spec.ets, arima=[list(spec.arima[0]), list(spec.arima[1])] if spec.arima else None, periods=spec.periods,
             regressors=spec.regressors['columns'] if spec.regressors else None, notes=spec.notes),

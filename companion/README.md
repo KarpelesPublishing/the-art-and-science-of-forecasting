@@ -188,7 +188,11 @@ in advance (`regressors` and `future_regressors`), pretrained candidates, gap fi
 profile's rule (fitted on, never scored), a robustness rule (a candidate that loses to the
 baseline at more than half the origins is never selected) and conformal bands by default;
 `pip install -e "companion[best]"` adds statsforecast, mlforecast, hierarchicalforecast and
-neuralforecast, used when present and named under `unavailable` when absent.
+neuralforecast (plus timesfm), used when present and named under `unavailable` when absent;
+`requirements-best.lock` is the tested version of that environment (`uv venv companion/.venv-best`,
+`uv pip sync companion/requirements-best.lock`). It runs pandas 2.3 because statsforecast and
+mlforecast do not yet support pandas 3; the notebooks and the book are built with the main lock.
+statsforecast compiles its numba kernels on first call (twenty to sixty seconds, once per process).
 `scripts/benchmark.py` proves each route on checksummed public data (`reports/benchmarks/`), and
 `harness/` measures whether the workflow makes assistants of any experience forecast the same
 honest way (`harness/protocol.md`, `reports/harness/latest.md`).

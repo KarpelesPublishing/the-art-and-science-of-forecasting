@@ -53,13 +53,13 @@ Without past errors, use bottom-up or clearly labeled OLS, not fabricated MinT c
 
 ## Applied report contract
 
-`results.csv` columns: `node,timestamp,base,bottom_up,OLS,MinT`. `summary.json` keys: `nodes,leaves,S,selected,shrinkage,error_rows,holdout,leaderboard,coherence_max_abs_residual,pool,horizon` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
+`results.csv` columns: `node,timestamp,base,bottom_up,OLS,MinT`. `summary.json` keys: `nodes,leaves,S,selected,shrinkage,error_rows,holdout,leaderboard,coherence_max_abs_residual,pool,horizon,hierarchicalforecast_agrees` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
 Quote the holdout leaderboard beside the reconciled forecasts; a coherent forecast that lost accuracy on the holdout is a finding, not a success.
 
 ## Run it
 
-The [notebook](../../companion/notebooks/18-hierarchy.ipynb) is the worked lesson; its editable [source](../../companion/lessons/18-hierarchy.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
+The [notebook](../../companion/notebooks/18-hierarchy.ipynb) is the worked lesson; its editable [source](../../companion/lessons/18-hierarchy.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. [self-check.md](references/self-check.md) holds the three questions to answer before reporting. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
 Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 

@@ -62,3 +62,13 @@ def test_journal_add_score_and_calibration(tmp_path):
     J.score(tmp_path / 'a.csv', journal)
     out_stats, text = J.calibration(journal)
     assert out_stats['scored'] == 5 and out_stats['band_coverage'] == 1.0 and 'too wide' in text and out_stats['mae_by_step'][1] > 0
+
+
+def test_declared_assumptions_pass_the_check_and_enter_the_ledger(tmp_path):
+    from forecasting_companion.report import declared_assumptions
+    out = _run(tmp_path); text, claims = render(out)
+    assert check_claims('I would order 1,700 units with a prior strength of 999.', claims) == ["1,700", "999."]
+    declared = 'Assumption: order 1,700 units because being short costs seven times more.\nAssumption: prior strength 999, chosen by judgment.\nThe rest follows the run.'
+    assert check_claims(declared, claims) == []
+    assert [(d['value'], d['source']) for d in declared_assumptions(declared)] == [(1700.0, 'assumption'), (999.0, 'assumption')]
+    assert check_claims('In 2025 the total was ' + f'{claims[0]["value"]:.4g}' + '; since 2019 it grew.', claims) == []

@@ -107,7 +107,7 @@ def process_checks(run, task):
         from forecasting_companion.report import check_claims
         allc = [c for p in claims for c in json.load(open(p))]
         if task == 'E-event-probability' and (run / 'probabilities.csv').exists():
-            # a judgment task: the delivered probabilities and the base rate are the evidence the interpretation may cite
+            # the delivered probabilities and the task's own base rate are evidence; judgment inputs must be declared as assumptions
             probs = pd.read_csv(run / 'probabilities.csv')
             allc += [dict(label=f'p {r.event_id}', value=float(r.probability), source='probabilities.csv', key=str(r.event_id)) for r in probs.itertuples()]
             base = json.load(open(TASKS / 'E-event-probability/base_rate.json'))

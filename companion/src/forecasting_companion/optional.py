@@ -16,6 +16,7 @@ EXTRAS = {
     'prophet': 'pip install prophet',
     'lightgbm': 'pip install lightgbm',
     'chronos': 'pip install chronos-forecasting torch',
+    'timesfm': 'pip install timesfm',
 }
 
 

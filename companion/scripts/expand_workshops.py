@@ -64,6 +64,11 @@ print(preview(observed_table))
 observed_table.to_csv(workshop_output/'ch{n:02d}-observed-results.csv', index=False)
 _ = (workshop_output/'ch{n:02d}-observed-summary.json').write_text(json.dumps(clean_json(observed_summary), indent=2)+'\\n')
 '''
+        selfcheck=ref.parent/'self-check.md'
+        if selfcheck.exists():
+            body=selfcheck.read_text().split('\n',1)[1].strip()
+            body=re.sub(r'\[([^]]+)\]\(([^)]+)\)',link,body)
+            text+=markdown('## Self-check\n\n'+body)
         lesson.write_text(text)
     print('Expanded available chapter workshops into editable lesson sources.')
 if __name__=='__main__':main()

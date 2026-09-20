@@ -76,6 +76,12 @@ def test_selection_rules_and_conformal_bands():
     assert 0 < band[2] <= band[1] <= 5.0                          # pooled across steps, scaled by each step's (smoothed) error
     wide = conformal_band({s: list(RNG.normal(0, s, 20)) for s in range(1, 7)}, 0.8)
     assert wide[6] > wide[1] * 2                                  # later steps get wider bands
+    small, info_small = conformal_band({1: list(RNG.normal(0, 1, 40))}, 0.8, info=True)
+    large, info_large = conformal_band({1: list(RNG.normal(0, 1, 500))}, 0.8, info=True)
+    assert info_small['m'] == 40 and info_large['m'] == 500 and info_small['level_effective'] > info_large['level_effective']
+    assert 1.20 <= large[1] <= 1.55                                # the 80th percentile of |N(0,1)| is 1.28, raised a little for the finite sample
+    with_extra, info_extra = conformal_band({1: [1.0] * 40}, 0.8, extra={1: [2.0] * 12}, info=True)
+    assert info_extra['m'] == 52
     t = np.arange(120); y = 40 + 8 * np.sin(2 * np.pi * t / 12) + RNG.normal(0, 2, 120)
     table, s = forecast_series(y, pd.Series(pd.date_range('2014-01-01', periods=120, freq='MS')), 12, 12, pool='smoothing', freq='MS')
     assert {'conformal_lower', 'conformal_upper'} <= set(table.columns) and (table.conformal_upper >= table.forecast).all()
@@ -87,5 +93,29 @@ def test_batch_global_engine_runs_and_reports_the_baseline(tmp_path):
     summary = run_batch(ROOT / 'data/examples/sales.csv', tmp_path / 'out', horizon=12, frequency='MS', workers=2, engine='global')
     assert summary['successful'] == 6
     metrics = pd.read_csv(tmp_path / 'out/metrics.csv')
-    assert (metrics.selected_model == 'Global LightGBM').all() and metrics.holdout_mae.notna().all()
+    assert metrics.selected_model.str.startswith('Global LightGBM').all() and metrics.holdout_mae.notna().all()
     assert all('Seasonal naive' in c for c in metrics.candidate_mae)
+
+
+def test_conformal_band_reaches_nominal_on_a_long_tail():
+    t = np.arange(264); y = 50 + 10 * np.sin(2 * np.pi * t / 12) + RNG.normal(0, 3, 264)
+    ts = pd.Series(pd.date_range('2000-01-01', periods=264, freq='MS'))
+    inside = []
+    for cut in range(120, 253, 12):
+        table, s = forecast_series(y[:cut], ts[:cut], 12, 12, pool='smoothing', freq='MS', max_origins=3)
+        future = y[cut:cut + 12]
+        inside += list((future >= table.conformal_lower) & (future <= table.conformal_upper))
+        assert s['conformal_m'] >= 36 and 0.8 < s['conformal_level_effective'] <= 0.95
+    assert 0.75 <= np.mean(inside) <= 0.90, np.mean(inside)
+
+
+def test_break_scenario_band_covers_the_post_shift_future():
+    t = np.arange(132); y = 100 + 10 * np.sin(2 * np.pi * t / 12) + RNG.normal(0, 2, 132); y[112:] += 60
+    frame = pd.DataFrame({'timestamp': pd.date_range('2015-01-01', periods=120, freq='MS'), 'target': y[:120]})
+    table, s = analyze(12, frame, {'horizon': 12, 'season': 12})
+    assert s['break_scenario'] and s['break_scenario']['band']['guaranteed'] is False and s['break_scenario']['s_post'] is not None
+    future = y[120:]
+    covered = np.mean((future >= table.break_scenario_low) & (future <= table.break_scenario_high))
+    assert covered >= 0.70, covered
+    assert (table.break_scenario_high - table.break_scenario_low).mean() > (table.conformal_upper - table.conformal_lower).mean()
+    assert np.abs(table.break_scenario - future).mean() < np.abs(table.forecast - future).mean()

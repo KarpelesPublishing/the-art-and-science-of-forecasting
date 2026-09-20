@@ -23,7 +23,7 @@ def chronos_predict(contexts, *, model, revision, horizon, samples, quantiles, s
     """Run the worker process once for all contexts; returns per-context quantile dicts and latencies."""
     import subprocess, sys, json
     job = dict(model=model, revision=revision, horizon=horizon, samples=samples, quantiles=quantiles, seed=seed, contexts=[list(map(float, c)) for c in contexts])
-    proc = subprocess.run([sys.executable, '-m', 'forecasting_companion.applied._chronos_worker'], input=json.dumps(job), capture_output=True, text=True,
+    proc = subprocess.run([sys.executable, '-m', 'forecasting_companion.applied._foundation_worker'], input=json.dumps(job), capture_output=True, text=True,
                           env={**os.environ, 'TQDM_DISABLE': '1', 'TRANSFORMERS_VERBOSITY': 'error', 'HF_HUB_DISABLE_PROGRESS_BARS': '1', 'PYTHONPATH': os.pathsep.join([str(Path(__file__).resolve().parents[2])] + [p for p in [os.environ.get('PYTHONPATH')] if p]), 'TOKENIZERS_PARALLELISM': 'false'})
     if proc.returncode != 0:
         raise RuntimeError('Chronos worker failed: ' + proc.stderr.strip().splitlines()[-1] if proc.stderr.strip() else 'Chronos worker failed')

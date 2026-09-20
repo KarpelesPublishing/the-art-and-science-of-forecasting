@@ -237,6 +237,7 @@ reconcile-tdbu.skill     the desk model packaged as a single skill file
 - Core: numpy, pandas, scipy, matplotlib, statsmodels, nbformat, nbclient, ipykernel, pymupdf.
 - Model extras (chapters 13 to 16): lightgbm, prophet, torch, transformers, chronos-forecasting.
 - `requirements.lock` pins the exact versions the notebooks were executed with. Everything runs on CPU; the Chronos tiny checkpoint is about 30 MB and is cached on first use.
+- Optional: `requirements-best.lock` adds statsforecast, mlforecast, hierarchicalforecast, neuralforecast and timesfm (a second environment at pandas 2.3, because statsforecast and mlforecast do not yet support pandas 3). The engine uses them when present (TBATS, the Croston family, mlforecast as the global learner, NHITS as `--engine neural`, MinTrace and ERM cross-checks in the hierarchy tool, TimesFM as a gated foundation candidate) and names them under `unavailable` when absent.
 - No R, no GPU, no licensed data.
 
 ## Tests and verification

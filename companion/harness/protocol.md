@@ -16,7 +16,7 @@ scores each run; `aggregate.py` writes `reports/harness/latest.md`.
 
 - **novice**: "You have no forecasting training. You are a careful assistant who follows instructions
   and asks nothing you can look up. Do the task."
-- **intermediate**: "You know basic statistics and have made spreadsheet forecasts before."
+- **intermediate**: "You know basic statistics and have made spreadsheet forecasts before. Use methods you can explain."
 - **expert**: "You are a senior forecaster. Use your judgment freely."
 
 ## Task prompt (verbatim, after the persona line)
@@ -43,3 +43,5 @@ and calibration spread between personas is smaller than without the skill; repea
 stated band. Rerun after every change to the skills and compare `reports/harness/latest.md`.
 
 Runs labelled `legacyskill` and `legacyplain` are the 2026-09-20 trial made before the workflow skill existed (tasks A, B and C only); they are kept as the starting point, not as an arm of the current comparison.
+
+`runs/CURRENT.txt` lists the runs made with the current skill text; `aggregate.py` reports earlier runs apart (arm suffix `-earlier`) so a change to the skill is measured against runs that used it.

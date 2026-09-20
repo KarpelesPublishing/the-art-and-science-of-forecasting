@@ -21,7 +21,7 @@ def _rows(table, column=None):
     point = column if column in cols else next((c for c in ('forecast', 'prediction', 'median', 'nowcast', 'MinT', 'OLS', 'bottom_up') if c in cols), None)
     if point is None or 'timestamp' not in cols:
         return None, None
-    pairs = [('break_scenario_low', 'break_scenario_high')] if point == 'break_scenario' else [('conformal_lower', 'conformal_upper'), ('lower', 'upper'), ('scenario_low', 'scenario_high'), ('empirical_q10', 'empirical_q90'), ('q10', 'q90'), ('MinT_q10', 'MinT_q90')]
+    pairs = [('break_scenario_low', 'break_scenario_high')] if point == 'break_scenario' else [('band_lower', 'band_upper'), ('conformal_lower', 'conformal_upper'), ('lower', 'upper'), ('scenario_low', 'scenario_high'), ('empirical_q10', 'empirical_q90'), ('q10', 'q90'), ('MinT_q10', 'MinT_q90')]
     lo, hi = next(((a, b) for a, b in pairs if a in cols and b in cols), (None, None))
     level = float(table['interval_level'].iloc[0]) if 'interval_level' in cols else (0.8 if lo else None)
     rows = []

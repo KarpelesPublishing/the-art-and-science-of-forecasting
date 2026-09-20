@@ -45,9 +45,9 @@ def compare(frame,c,chapter):
     minimum=minimum_history(h,season)
     if len(y)<minimum:
         return provisional(y,f,h,season,freq,minimum,profile)
-    table,summary=forecast_series(y,f.timestamp,h,season,pool=pool,freq=freq,transform=transform,max_origins=origins,criterion=criterion,periods=periods,regressors=regressors,country=c.get('country'),observed=observed,conformal=conformal)
+    table,summary=forecast_series(y,f.timestamp,h,season,pool=pool,freq=freq,transform=transform,max_origins=origins,criterion=criterion,periods=periods,regressors=regressors,country=c.get('country'),observed=observed,conformal=conformal,per_horizon_buckets=bool(c.get('per_horizon_buckets',False)))
     skipped=summary.get('skipped') or {}
-    not_done=([] if pool=='regressors' else ['No regressors, promotions or calendar effects (pool regressors, chapter 13 or 16 add them)'])+['No hierarchy or coherence constraints (chapter 18)',('Conformal bands come from few origin residuals; chapter 17 gives a calibrated split with more' if conformal else 'No conformal bands (set conformal: true)')]
+    not_done=([] if pool=='regressors' else ['No regressors, promotions or calendar effects (pool regressors, chapter 13 or 16 add them)'])+['No hierarchy or coherence constraints (chapter 18)',('Conformal bands pool the origin and holdout residuals of the selected model; chapter 17 calibrates on a longer window' if conformal else 'No conformal bands (set conformal: true)')]
     if skipped:not_done.append('Skipped candidates: '+'; '.join(f'{k} ({v})' for k,v in skipped.items()))
     method=summary.pop('method','Rolling-origin model comparison with final holdout');interpretation=summary.pop('interpretation')
     summary.pop('status',None)
@@ -55,9 +55,13 @@ def compare(frame,c,chapter):
     if scenario:
         table['break_scenario']=scenario['forecast'];summary['break_scenario']=scenario
         if 'conformal_lower' in table:
-            radius=(table['conformal_upper']-table['conformal_lower'])/2
-            table['break_scenario_low']=table['break_scenario']-radius;table['break_scenario_high']=table['break_scenario']+radius
-            scenario['band_note']='break_scenario_low/high re-centre the conformal radius on the re-levelled scenario; the radius comes from before the shift'
+            radius=((table['conformal_upper']-table['conformal_lower'])/2).to_numpy()
+            z=1.2816;k_post=scenario['band']['k']
+            s_post=scenario['s_post'] if scenario['s_post'] is not None else float(radius[0])/z
+            widen=np.array([np.sqrt(radius[j]**2+z**2*s_post**2*(1+(1/k_post if scenario['shifted_steps'][j] else 0))) for j in range(len(radius))])
+            table['break_scenario_low']=table['break_scenario']-widen;table['break_scenario_high']=table['break_scenario']+widen
+            scenario['band_note']=(f'break_scenario_low/high: a scenario band, not a measured interval. The pre-shift conformal radius is combined in quadrature with the post-shift noise (s_post {s_post:.4g} from {k_post} points) and, on re-levelled steps, the shift estimate\'s standard error; no coverage guarantee.')
+            scenario['band'].update(s_post=s_post,mean_radius=float(widen.mean()))
         interpretation+=' Profile warning: '+scenario['note']
         not_done.append('The validated selection does not act on the recent level shift; break_scenario is a judgment re-levelling, not a validated forecast')
     return finish(table,method=method,interpretation=interpretation,status='passed',
@@ -112,12 +116,17 @@ def break_scenario(y,f,h,season,freq,profile):
     k=int(b['periods_since']);pos=len(y)-k
     if season>1:
         post=y[pos:];same=y[pos-season:pos-season+k] if pos-season>=0 else None
-        shift=float(post.mean()-same.mean()) if same is not None and len(same)==len(post) else float(b['level_after']-b['level_before'])
+        d=(post-same) if same is not None and len(same)==len(post) else None
+        shift=float(d.mean()) if d is not None else float(b['level_after']-b['level_before'])
         base=np.resize(y[-season:],h)
-        forecast=np.array([base[j]+shift if (len(y)-season+j)<pos else base[j] for j in range(h)])
+        shifted=[(len(y)-season+j)<pos for j in range(h)]
+        forecast=np.array([base[j]+shift if shifted[j] else base[j] for j in range(h)])
     else:
-        forecast=np.repeat(float(y[pos:].mean()),h);shift=float(b['level_after']-b['level_before'])
-    return dict(position=int(pos),periods_since=k,shift=shift,forecast=[float(v) for v in forecast],
+        post=y[pos:];d=post-post.mean();shift=float(b['level_after']-b['level_before'])
+        forecast=np.repeat(float(post.mean()),h);shifted=[True]*h
+    s_post=float(np.std(d,ddof=1)) if d is not None and len(d)>=3 else None
+    return dict(position=int(pos),periods_since=k,shift=shift,forecast=[float(v) for v in forecast],shifted_steps=shifted,
+                s_post=s_post,se_shift=(s_post/np.sqrt(k) if s_post is not None else None),band=dict(level=0.8,guaranteed=False,k=k),
                 note=f'a level shift {k} periods before the end ({shift:+.4g}); the validated selection was chosen at origins that mostly predate it. The break_scenario column re-levels last season\'s pattern by the shift; use it, or chapter 24\'s adaptive policy, when the shift is believed to persist.')
 
 

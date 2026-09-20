@@ -26,7 +26,7 @@ timestamp,target
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,target`. Supported method controls: `as_of, conformal, country, criterion, frequency, future_regressors, horizon, origins, periods, pool, regressors, season, seed, transform`. `season` may be `"auto"` or omitted: the data profile then supplies it, and the profile (frequency, gaps, demand class, seasonal periods, outliers, break hint, route) is returned under `profile` in every summary.
+Exact CLI columns: `timestamp,target`. Supported method controls: `as_of, conformal, country, criterion, frequency, future_regressors, horizon, origins, per_horizon_buckets, periods, pool, regressors, season, seed, transform`. `season` may be `"auto"` or omitted: the data profile then supplies it, and the profile (frequency, gaps, demand class, seasonal periods, outliers, break hint, route) is returned under `profile` in every summary.
 
 The adapter runs the companion engine with the `smoothing` pool: naive, seasonal naive, drift, SES, Holt, damped Holt, an AICc-selected ETS form (additive or multiplicative error and seasonality, damped or not), Theta and STL+ETS. A log transform is chosen on training data when positive values and a Box-Cox lambda near zero call for it (`transform: auto|none|log`). Up to five expanding origins (`origins`) select the model on MAE; a final untouched holdout scores it once; the selection is refitted on all history. Output carries the model's nominal 80% interval with its measured validation coverage, plus empirical residual quantiles by horizon step. Optional `pool` overrides the method set. A short but valid regular series returns status=provisional with naive and, when available, seasonal-naive scenario values rather than pretending a model was validated.
 
@@ -48,13 +48,13 @@ With one seasonal cycle, use naive or a defensible seasonal-naive comparison and
 
 ## Applied report contract
 
-`results.csv` columns: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90,lower,upper,interval_level,conformal_lower,conformal_upper`. `summary.json` keys: `profile,gaps_filled,pool,selected,criterion,baseline,forced_baseline,robustness,unavailable,conformal,conformal_test_coverage,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
+`results.csv` columns: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90,lower,upper,interval_level,conformal_lower,conformal_upper,band_lower,band_upper`. `summary.json` keys: `profile,gaps_filled,pool,selected,criterion,baseline,forced_baseline,robustness,unavailable,conformal,conformal_test_coverage,selected_by_bucket,band_method,band_note,conformal_m,conformal_level_effective,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
 Report the measured coverage of lower/upper at the selection origins beside the nominal level; never quote the nominal level alone. Also return a per-origin MAE table, skipped-method reasons, seasonal assumptions and whether uncertainty was calibrated or only scenarized.
 
 ## Run it
 
-The [notebook](../../companion/notebooks/04-smoothing.ipynb) is the worked lesson; its editable [source](../../companion/lessons/04-smoothing.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
+The [notebook](../../companion/notebooks/04-smoothing.ipynb) is the worked lesson; its editable [source](../../companion/lessons/04-smoothing.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. [self-check.md](references/self-check.md) holds the three questions to answer before reporting. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
 Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 

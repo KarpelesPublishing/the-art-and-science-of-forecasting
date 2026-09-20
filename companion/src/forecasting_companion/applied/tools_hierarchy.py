@@ -150,7 +150,9 @@ def reconcile_hierarchy(d, c):
     error_rows = int(next(iter(lengths))) if len(lengths) == 1 else None
     E = E if (len(lengths) == 1 and next(iter(lengths)) >= n_nodes + 2) else None
     if not have('hierarchicalforecast'):
-        not_done.append('ERM and trace-minimisation variants from hierarchicalforecast not tried: ' + hint('hierarchicalforecast'))
+        not_done.append('hierarchicalforecast cross-check (MinTrace shrink, ERM) not tried: ' + hint('hierarchicalforecast'))
+    hf_tags = {'aggregates': np.arange(n_nodes - m), 'bottom': np.arange(n_nodes - m, n_nodes)}
+    hf_checked = {}
 
     def all_methods(base_matrix):
         # base_matrix: h x n_nodes
@@ -160,14 +162,19 @@ def reconcile_hierarchy(d, c):
         out['OLS'] = ols
         if W is not None:
             out['MinT'] = np.vstack([reconcile(S, row, W)[0] for row in base_matrix])
-            if have('hierarchicalforecast') and E is not None:
-                try:                                         # ERM (empirical risk minimisation) from the optional extra
-                    from hierarchicalforecast.methods import ERM
-                    erm = ERM(method='closed', lambda_reg=1e-2)
-                    fit = erm.fit(S=S, y_hat=base_matrix.T, y_insample=None, y_hat_insample=None, idx_bottom=list(range(S.shape[0] - m, S.shape[0])))
-                    out['ERM'] = np.asarray(fit['mean']).T
-                except Exception as exc:
-                    not_done.append(f'ERM (hierarchicalforecast) failed: {str(exc)[:80]}')
+        if have('hierarchicalforecast'):
+            # the optional extra: its OLS and bottom-up must agree with the in-house algebra (checked), its
+            # shrinkage MinTrace estimates lambda itself and is reported as a separate row
+            try:
+                from hierarchicalforecast.methods import MinTrace, BottomUp
+                hf_ols = MinTrace(method='ols').fit_predict(S=S, y_hat=base_matrix.T, tags=hf_tags)['mean'].T
+                hf_bu = BottomUp().fit_predict(S=S, y_hat=base_matrix.T, tags=hf_tags)['mean'].T
+                hf_checked['OLS'] = bool(np.allclose(hf_ols, out['OLS'], atol=1e-6)); hf_checked['bottom_up'] = bool(np.allclose(hf_bu, out['bottom_up'], atol=1e-6))
+                if E is not None:
+                    y_hat_in = np.zeros_like(E.T); y_in = E.T          # residuals are what the covariance needs; the level cancels
+                    out['MinT_shrink_hf'] = MinTrace(method='mint_shrink').fit_predict(S=S, y_hat=base_matrix.T, tags=hf_tags, y_insample=y_in, y_hat_insample=y_hat_in)['mean'].T
+            except Exception as exc:
+                not_done.append(f'hierarchicalforecast cross-check failed: {str(exc)[:80]}')
         for k, v in out.items():
             if k != 'base' and not np.allclose(v, (S @ v[:, -m:].T).T, atol=1e-8):
                 raise AssertionError(f'{k} lost coherence')
@@ -190,6 +197,8 @@ def reconcile_hierarchy(d, c):
             row = dict(node=name, timestamp=future_dates[step], base=fut['base'][step, j], bottom_up=fut['bottom_up'][step, j], OLS=fut['OLS'][step, j])
             if 'MinT' in fut:
                 row['MinT'] = fut['MinT'][step, j]
+            if 'MinT_shrink_hf' in fut:
+                row['MinT_shrink_hf'] = fut['MinT_shrink_hf'][step, j]
             rows.append(row)
     table = pd.DataFrame(rows)
     coherent = bool(c.get('coherent_quantiles', False))
@@ -223,4 +232,4 @@ def reconcile_hierarchy(d, c):
                   assumptions=['Tree hierarchy with one parent per node', 'Base forecasts unbiased for MinT to dominate', f'Error covariance shrunk toward its diagonal with lambda {lam}', 'Historical values coherent within tolerance'],
                   not_done=not_done, status='passed' if holdout_ok else 'provisional',
                   nodes=nodes, leaves=leaves, S=S.tolist(), selected=selected, shrinkage=lam, error_rows=error_rows,
-                  holdout=holdout, leaderboard=leaderboard, coherence_max_abs_residual=float(resid), pool=pool, horizon=h)
+                  holdout=holdout, leaderboard=leaderboard, coherence_max_abs_residual=float(resid), pool=pool, horizon=h, hierarchicalforecast_agrees=hf_checked or None)

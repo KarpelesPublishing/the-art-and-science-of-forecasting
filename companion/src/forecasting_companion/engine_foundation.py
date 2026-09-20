@@ -1,17 +1,19 @@
 """Pretrained models as candidates at the same origins as everything else.
 
-Chronos-T5 tiny is cached and pinned; Chronos-Bolt small is about 190 MB and downloads only when
-the environment variable FORECAST_ALLOW_DOWNLOADS=1 is set, so a run never fetches weights without
-the reader agreeing. Both run in the worker subprocess (torch and LightGBM cannot share a process
-on macOS). Quantile output gives the model its own 80 percent band.
+Chronos-T5 tiny is cached and pinned; Chronos-Bolt small (about 190 MB) and TimesFM 2.5 (about
+800 MB) download only when the environment variable FORECAST_ALLOW_DOWNLOADS=1 is set, so a run
+never fetches weights without the reader agreeing. All run in the worker subprocess (torch and
+LightGBM cannot share a process on macOS). Quantile output gives each model its own 80 percent band.
 """
 import os
 import numpy as np
 
 MODELS = {
-    'Chronos': dict(model='amazon/chronos-t5-tiny', revision='29d808298f1a62493e7b9a5e08529d0d930fa189', download=None, samples=64),
-    'Chronos-Bolt': dict(model='amazon/chronos-bolt-small', revision=None, download='about 190 MB', samples=0),
+    'Chronos': dict(model='amazon/chronos-t5-tiny', revision='29d808298f1a62493e7b9a5e08529d0d930fa189', download=None, samples=64, requires='chronos'),
+    'Chronos-Bolt': dict(model='amazon/chronos-bolt-small', revision=None, download='about 190 MB', samples=0, requires='chronos'),
+    'TimesFM': dict(model='google/timesfm-2.5-200m-pytorch', revision=None, download='about 800 MB', samples=0, requires='timesfm'),
 }
+# Moirai 2 (Salesforce, uni2ts) is not offered: uni2ts pins torch below 2.5, which the installed transformers and chronos cannot run on.
 
 
 def _predict(name, y, h):
@@ -36,3 +38,4 @@ def _fit(name):
 
 fit_chronos = _fit('Chronos')
 fit_chronos_bolt = _fit('Chronos-Bolt')
+fit_timesfm = _fit('TimesFM')

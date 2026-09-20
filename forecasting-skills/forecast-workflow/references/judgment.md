@@ -22,7 +22,10 @@ replaced by a base rate and the method gate by chapter 10's decomposition.
 6. **Uncertainty.** A probability is its own uncertainty statement; do not attach a band to it. For a
    quantity, the chapter 7 distribution's quantiles are the range, labelled as a scenario range built
    from stated inputs, not a measured interval.
-7. **Report and journal.** Render the chapter 7 or 10 run's report as usual. The journal entry is the
+7. **Report and journal.** Render the chapter 7 or 10 run's report as usual. Every judgment number in
+   the interpretation (the prior's strength, each likelihood ratio, an override) goes on an `Assumption:`
+   line with its reason, so `run.py report --check` accepts it as declared judgment and the reader can
+   see exactly where the number came from. The journal entry is the
    chapter 10 event journal; score it on the resolution date, and read the calibration bins with counts.
 
 The chapter 26 tool turns the probability into an action under the brief's costs: act when the
