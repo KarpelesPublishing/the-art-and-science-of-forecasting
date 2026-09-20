@@ -56,7 +56,7 @@ combine.
 
 ## The skills
 
-The library is 27 chapter skills, one integrated skill and one desk model, all under
+The library is 27 chapter skills, one integrated skill and one top-down bottom-up triangulation model for new products, all under
 `forecasting-skills/`. Each chapter skill has a `SKILL.md` (the directions, the input
 contract and the exact executable interface) and `references/` (the workshop and the
 evaluation notes). The executable tools live in `companion/src/forecasting_companion/`
@@ -65,10 +65,10 @@ and run through `companion/scripts/run.py`; they run only when asked.
 | Skill | When to load it |
 |---|---|
 | **all-chapters-forecasting** | Always first. Frames the target and routes to the chapters. |
-| **reconcile-tdbu** | A launch with no sales history: the desk model from chapters 20 and 27 (interview, two engines, reconcile). |
+| **reconcile-tdbu** | A launch with no sales history: the top-down bottom-up triangulation model from chapters 20 and 27 (interview, two engines, reconcile). |
 | **forecasting-ch25-reference-classes** | Picking analogues and base rates (the outside view) before any number. |
 | **forecasting-ch19-diffusion** | S-curve adoption and its conversion to unit sales under two timing curves; Parfitt-Collins share. |
-| **forecasting-ch27-directed-forecasting** | The launch model: calibrate on current products, re-base for the new one, apply the build-up. |
+| **forecasting-ch27-directed-forecasting** | The top-down bottom-up triangulation model: calibrate on current products, re-base for the new one, apply the build-up. |
 | **forecasting-ch20-marketing-mix** | Which channel drives sales: adstock, saturation, ridge, refit stability, reallocation scenario. |
 | **forecasting-ch18-hierarchy** | Multi-level forecasts that must add up (bottom-up, OLS, MinT from child-parent edges). |
 | **forecasting-ch12-benchmarking** | The engine: smoothing, ARIMA, Theta, STL, LightGBM and combinations selected at rolling origins. |

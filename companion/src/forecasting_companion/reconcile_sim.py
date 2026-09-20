@@ -1,6 +1,6 @@
 """A pre-launch volume forecaster that needs no test market.
 
-This is the author's desk model, the same model that ships as the `reconcile-tdbu`
+This is the author's top-down bottom-up triangulation model, the same model that ships as the `reconcile-tdbu`
 skill in forecasting-skills/ (tests hold the two equal). Every consumer measurement a
 simulated test market would supply (awareness, trial, repeat, share of choice,
 build speed) has a model-derived default, and every default has an override so a

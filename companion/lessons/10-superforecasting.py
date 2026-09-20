@@ -117,7 +117,7 @@ for lower,upper in zip(np.linspace(0,1,6)[:-1],np.linspace(0,1,6)[1:]):
 plt.xlim(0,1); plt.ylim(0,1); plt.xlabel('Mean recorded probability'); plt.ylabel('Observed event frequency'); plt.legend(fontsize=6)
 save(10,4,'Keep the forecast before learning the outcome','One hundred resolved synthetic events, one pre-cutoff forecast per event; twenty unresolved events and a hindsight update are excluded. Bin counts reveal limited support; the plot does not certify real-world calibration.','## Practicing the Skill')
 # %% [markdown]
-# ## Link the launch model to a probability question
+# ## Link the chapter 27 launch forecast to a probability question
 # Chapter 27 supplies a conditional volume forecast and sensitivity scenarios.
 # A question such as 'Will 24-month sales exceed 50,000 units?' additionally needs
 # defensible uncertainty over inputs, dependence and model error. Three scenarios

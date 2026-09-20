@@ -12,8 +12,8 @@ All seven tasks run through the forecast-workflow gates (brief, profile or its s
 
 ### B-launch
 - `report.md` (headline numbers, method, every assumed input, sensitivity table, scenarios labelled, scoring date), `interpretation.md`, `inputs.md` (inventory with source and measured/judged/guessed status), `inputs.json`, `sensitivity.csv`.
-- Workflow files: `brief.json`, `run/` (hand-built from the reconcile-tdbu desk model by `build_run.py`: results.csv with a monthly phasing, summary.json, run.json, report.md, claims.json), `claims.json`, `journal.jsonl`. No profile: no series exists; `inputs.md` is the profile substitute per launch.md.
-- Desk model outputs: `model_single_pass.txt`, `model_reconciled*.txt/json` (both-move, lock-penetration, lock-frequency).
+- Workflow files: `brief.json`, `run/` (hand-built from the reconcile-tdbu top-down bottom-up triangulation model by `build_run.py`: results.csv with a monthly phasing, summary.json, run.json, report.md, claims.json), `claims.json`, `journal.jsonl`. No profile: no series exists; `inputs.md` is the profile substitute per launch.md.
+- Top-down bottom-up triangulation model outputs: `model_single_pass.txt`, `model_reconciled*.txt/json` (both-move, lock-penetration, lock-frequency).
 - Finding: the two routes disagreed by 43% (survey frequency inconsistent with category size). Penetration locked, frequency absorbed the gap: 3.861 MM units, $15.40 MM, 0.93% share; lock-frequency alternative 3.677 MM. Scenario range 2.934 to 4.767 MM units. Distribution is the most sensitive input. No test market, no comparables: chapter 27 launch mode not possible.
 
 ### C-intermittent
@@ -45,7 +45,7 @@ All seven tasks run through the forecast-workflow gates (brief, profile or its s
 - Finding: step down of about 59 units a month (17%) from May 2025, assumed to persist. Annual 3,513 (range 3,341 to 3,754) against 3,799 for repeating last year; the seasonal-naive commitment would be written off inside the scenario range. Pre-shift bands untrustworthy (holdout coverage 0.333), so the range is labelled a scenario.
 
 ## What I could not do
-- Task B: no chapter 27 launch mode (no comparable launched products); desk-model constants untuned (no launch history).
+- Task B: no chapter 27 launch mode (no comparable launched products); triangulation-model constants untuned (no launch history).
 - Task E: no `run.py journal add` entry (see below); no chapter 26 decision loss until outcomes exist.
 - Task A: chapter 18 could not score reconciliation on a holdout at 72 observations; ERM/trace-minimisation variants not installed.
 - Task D: TBATS unavailable (statsforecast not installed); MSTL and Prophet skipped by the tool (fewer than two yearly cycles).

@@ -286,7 +286,7 @@ def directed(d,c):
         if mode=='estimate' or len(d)<max(36,4*integer(c,'horizon',12)):
             return finish({'available_observations':[len(d)]},method='Chapter 27 routing check',status='needs_evidence',
                           interpretation=f'{len(d)} observations do not establish seasonal structure (the rolling comparison needs at least {max(36,4*integer(c,"horizon",12))}). Supply defensible reference products, population/reach/trial assumptions and a distinct cross-check; no numeric forecast is manufactured.',
-                          assumptions=[],not_done=['No forecast: history too short or mode=estimate; use launch mode with calibration products or the reconcile-tdbu desk model'],
+                          assumptions=[],not_done=['No forecast: history too short or mode=estimate; use launch mode with calibration products or the reconcile-tdbu top-down bottom-up triangulation model'],
                           required_evidence=['Target and decision','Comparable outcomes','Defended proxy inputs','Uncertainty and scoring plan'])
         return compare(d,c,27)
     if mode!='launch':raise ValueError('mode must be launch, history or estimate')

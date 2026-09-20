@@ -19,7 +19,7 @@ ANCHORS={
 15:{2:'**DLinear: A Cautionary Note**'},
 17:{1:'**Fan charts**',3:'**Winkler interval score**'},
 19:{1:'**The Bass diffusion model.**',3:'**Parameter estimation: practical considerations.**'},
-20:{1:'**Adstock.**',2:'**Saturation curves.**',6:'What A/B testing cannot reach'},  # 6 numbers after the desk-model figures
+20:{1:'**Adstock.**',2:'**Saturation curves.**',6:'What A/B testing cannot reach'},  # 6 numbers after the launch-model figures
 21:{3:'**Inventory optimization fundamentals**',4:'**Intermittent demand methods**'},
 22:{1:'**Difference-in-differences**',2:'**CausalImpact**',3:'**Synthetic control**'},
 23:{1:'**The SIR model and its parameters**',3:'**Nowcasting: the reporting delay triangle**',4:'**FluSight: the scoring framework**'},

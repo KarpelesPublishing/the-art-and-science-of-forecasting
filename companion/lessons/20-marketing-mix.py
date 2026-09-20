@@ -164,7 +164,7 @@ save(20,6,'Launch speed changes the first-year share','Illustrative 4,000-trier 
 launch_table.to_csv(folder/'ch20-launch-trial-and-volume.csv',index=False)
 # %% [markdown]
 # ## The test market you never run
-# The author's desk model replaces every panel measurement with a derived default:
+# The author's top-down bottom-up triangulation model replaces every panel measurement with a derived default:
 # trial from seven judged attributes, awareness from a media plan, repeat from the
 # category purchase cycle, build speed from a menu. Every weight and curve constant
 # in `reconcile_sim` is an illustrative starting value from no particular source;
@@ -205,8 +205,8 @@ ax[1].axhline(loop.typed_market_size.iloc[0],color='#163d59',ls='--',label='Type
 ax[1].set_xticks(loop.pass_number); ax[1].set_xlabel('Pass'); ax[1].set_ylabel('Category size (MM units)'); ax[1].set_ylim(0,720)
 ax[1].legend(fontsize=6,frameon=False,loc='upper right')
 save(20,8,'The inputs are made to agree with each other','Copying implied values back into the typed inputs. The claimed purchase frequency falls from 20 to 12 in two passes and the implied category size meets the typed 415 million units. This is a coherence check on judgments, not evidence about the launch.','## Section Three: Simulated Test Markets',fig=fig)
-loop.to_csv(folder/'ch20-desk-model-reconciliation.csv',index=False)
-pd.DataFrame(rs.chain_table(desk),columns=['step','value','source']).to_csv(folder/'ch20-desk-model-chain.csv',index=False)
+loop.to_csv(folder/'ch20-tdbu-triangulation-reconciliation.csv',index=False)
+pd.DataFrame(rs.chain_table(desk),columns=['step','value','source']).to_csv(folder/'ch20-tdbu-triangulation-chain.csv',index=False)
 # %% [markdown]
 # ## Decision checks
 # Compare prediction error AND attribution stability across refits, background

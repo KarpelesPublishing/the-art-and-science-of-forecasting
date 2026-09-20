@@ -256,7 +256,7 @@ Notebook: [10-superforecasting](../notebooks/10-superforecasting.ipynb). Executi
   - Executed cell `10-superforecasting-cell-09` (execution 5).
 - Calibration is a repeated-event diagnostic, not a verdict on one forecast
   - Executed cell `10-superforecasting-cell-11` (execution 6).
-- Link the launch model to a probability question
+- Link the chapter 27 launch forecast to a probability question
 - Guided application workshop
 - Input contract and format example
 - Explain the mechanism

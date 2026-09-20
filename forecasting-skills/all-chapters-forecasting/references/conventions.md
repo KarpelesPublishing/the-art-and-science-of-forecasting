@@ -107,7 +107,7 @@ Every applied report includes units, horizon, evidence cutoff, sources, assumpti
 - Several related series that must add up: chapter 18 with the node histories and the child-parent edges; set `pool` to choose the base-forecast family.
 - Promotions or prices known in advance: chapter 13 (four or more series) or chapter 16 (one series with an event table).
 - Probability forecasts feeding a decision: chapter 10 keeps the journal, chapter 9 scores it, chapter 26 turns the probabilities into a cost-weighted action rule.
-- A launch with no sales history: `reconcile-tdbu` interviews for the inputs and runs the desk model; chapter 27 launch mode applies when calibration products with observed 24-month units exist; chapter 19 turns an adoption curve into a sales curve with repeat.
+- A launch with no sales history: `reconcile-tdbu` interviews for the inputs and runs the top-down bottom-up triangulation model; chapter 27 launch mode applies when calibration products with observed 24-month units exist; chapter 19 turns an adoption curve into a sales curve with repeat.
 - An intervention whose effect must be measured: chapter 22, after chapter 12 has shown what the series would have done on its own.
 
 ## Learning mode

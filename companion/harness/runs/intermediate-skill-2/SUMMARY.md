@@ -24,7 +24,7 @@ the quantile columns do not.
 ## B-launch
 
 Delivered: `report.md` (headline numbers, method, every assumed input, sensitivity table),
-`inputs.md` (inventory with sources and measured/judged/guessed), `inputs.json`, desk-model outputs
+`inputs.md` (inventory with sources and measured/judged/guessed), `inputs.json`, triangulation-model outputs
 (single pass, reconciled with penetration locked, frequency locked and both free), `sensitivity.py`
 and `sensitivity.csv`, a constructed `run/` (summary.json, results.csv with an even monthly split for
 journaling, run.json, brief.json) so `run.py report` and `run.py journal add` could run, claims,
@@ -118,6 +118,6 @@ Assumption lines.
    nominal percentages such as "95%" and "365"); each was fixed by rephrasing or by moving the number to
    its own `Assumption:` line. Note: the checker reads only the first line of an `Assumption:`
    paragraph, so multi-line assumptions had to be split into one line each.
-3. B: the desk model's default reconciliation (both inputs free) did not converge in 25 passes; the
+3. B: the triangulation model's default reconciliation (both inputs free) did not converge in 25 passes; the
    penetration-locked run converged in 2 and was used.
 No `run.py brief`, `profile` or `apply` command failed.

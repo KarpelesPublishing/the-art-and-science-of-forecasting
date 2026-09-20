@@ -139,7 +139,7 @@ record=dict(forecast_date='2026-09-18',outcome_due='2028-09-18',horizon_months=2
 _ = (folder/'ch27-input-and-scoring-record.json').write_text(json.dumps(record,indent=2)+'\n')
 # %% [markdown]
 # ## The band and its hinge
-# Step five of the worked example: move one input at a time through the desk model
+# Step five of the worked example: move one input at a time through the top-down bottom-up triangulation model
 # from chapter 20 and see how far year-one volume moves. The sizes below are what
 # the illustrative weights imply, not measured elasticities. The result a brand team
 # does not expect: media spend is a weak lever once awareness nears its plateau;
@@ -178,7 +178,7 @@ plt.barh(y,tornado.high_pct*100,color='#163d59',label='Higher setting')
 plt.yticks(y,tornado.lever,fontsize=7); plt.axvline(0,color='black',lw=.6)
 plt.xlabel('Change in year-one volume vs. central forecast (%)'); plt.xlim(-20,20)
 plt.legend(fontsize=7,ncol=2,loc='upper center',bbox_to_anchor=(.5,1.15),frameon=False)
-save(27,4,'Where the launch forecast is fragile','One input moved at a time through the illustrative desk model; bars show the change from the 3.5 million unit central forecast. Distribution, penetration and the evoked-set judgment move the forecast most; media spend moves it least because awareness is near its plateau. Illustrative weights, not measured elasticities.','## Section Four: The Build-Up Problem')
+save(27,4,'Where the launch forecast is fragile','One input moved at a time through the illustrative top-down bottom-up triangulation model; bars show the change from the 3.5 million unit central forecast. Distribution, penetration and the evoked-set judgment move the forecast most; media spend moves it least because awareness is near its plateau. Illustrative weights, not measured elasticities.','## Section Four: The Build-Up Problem')
 tornado.to_csv(folder/'ch27-sensitivity-tornado.csv',index=False)
 # %% [markdown]
 # ## Checks and next steps

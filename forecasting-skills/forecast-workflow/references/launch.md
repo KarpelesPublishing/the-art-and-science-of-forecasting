@@ -1,7 +1,7 @@
 # A product with no sales history
 
 A launch has no series and no base rate of its own. The workflow keeps its gates; the profile gate
-becomes an inventory of what the reader does know, and the method is the author's desk model.
+becomes an inventory of what the reader does know, and the method is the author's top-down bottom-up triangulation model.
 
 1. **Brief.** The target is first-year (or 24-month) volume in units or currency; the decision is
    usually a production or budget commitment; the outcome date is the end of the period. Ask
@@ -25,7 +25,7 @@ becomes an inventory of what the reader does know, and the method is the author'
    in chapter 27; the reconciliation gap in `reconcile-tdbu` (two mechanisms disagreeing is the
    evidence); the sensitivity table (which input moves the number most). Say plainly that agreement
    between routes sharing inputs is not independent validation.
-6. **Uncertainty.** The launch models give scenarios (timing peaks, ceilings, input ranges), not
+6. **Uncertainty.** The top-down bottom-up triangulation models give scenarios (timing peaks, ceilings, input ranges), not
    intervals. Label them scenarios and show the tornado of input sensitivities; the brief's cost
    asymmetry says which scenario the commitment should protect against.
 7. **Report and journal.** Render the run's report; journal the monthly volume scenario the reader

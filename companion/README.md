@@ -119,7 +119,7 @@ there is no hard per-thread timeout.
 ## Use the skills
 
 Read [the Complete Forecasting Skill](../forecasting-skills/all-chapters-forecasting/SKILL.md).
-Its reference map links every chapter and the `reconcile-tdbu` desk model. Once your
+Its reference map links every chapter and the `reconcile-tdbu` top-down bottom-up triangulation model. Once your
 agent runtime discovers the skill, an example one-line request is:
 
 ```text

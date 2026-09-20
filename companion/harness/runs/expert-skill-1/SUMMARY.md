@@ -14,7 +14,7 @@ One workaround used throughout: `run.py apply` refuses any output directory insi
 
 - report.md with headline numbers (3.861 million units, 15.40 million dollars, 0.93 percent share, reconciled with penetration locked), method, every input with status and source (inputs.md), sensitivity table (sensitivity.csv), scenarios labelled as scenarios (scenarios.json), scoring date 2027-12-31.
 - brief.json, inputs.json, model_single_pass.txt, model_reconciled.txt/.json (both inputs free: did not converge), model_reconciled_lock_penetration.txt/.json (converged in two passes), interpretation.md, run/ (a hand-assembled run record: summary.json, results.csv with a flat monthly phasing, run.json, brief.json, report.md, claims.json), claims.json, journal.jsonl (one entry).
-- Could not do: no companion `apply` chapter exists for the desk model, so run/ was assembled by hand from reconcile_model.py outputs and is labelled as such; the report check flags the scenario and sensitivity numbers because claims.json only lists the results rows. The interview could not be held (non-interactive); the brief supplied all four required inputs and the assumptions are listed in inputs.md.
+- Could not do: no companion `apply` chapter exists for the top-down bottom-up triangulation model, so run/ was assembled by hand from reconcile_model.py outputs and is labelled as such; the report check flags the scenario and sensitivity numbers because claims.json only lists the results rows. The interview could not be held (non-interactive); the brief supplied all four required inputs and the assumptions are listed in inputs.md.
 
 ## Task C (intermittent): delivered
 

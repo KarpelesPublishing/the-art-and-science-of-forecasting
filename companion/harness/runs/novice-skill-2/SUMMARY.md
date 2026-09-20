@@ -27,8 +27,8 @@ modified. Every run was a fresh run; no earlier harness run was reused.
   every input with source and kind (`inputs.md`); ranked sensitivity table (`sensitivity-table.md`);
   scoring date 2027-09-30. Gap before reconciliation 45 percent; the survey frequency was the input
   the two engines argued about.
-- `brief.json`, `inputs.md` (inventory in place of a profile), `inputs.json`, the desk-model outputs
-  (`model-*.txt/json`), `sensitivity.py`, `run-desk-model/` (hand-assembled run folder from the desk
+- `brief.json`, `inputs.md` (inventory in place of a profile), `inputs.json`, the triangulation-model outputs
+  (`model-*.txt/json`), `sensitivity.py`, `run-desk-model/` (hand-assembled run folder from the top-down bottom-up triangulation
   model's `--json` output so `run.py report` and `journal add` could run; status `provisional`),
   `claims.json`, `interpretation.md` (check passed), `journal.jsonl` (one period: the year-one total).
 
@@ -90,7 +90,7 @@ modified. Every run was a fresh run; no earlier harness run was reused.
 
 - B-launch: no `run.py apply` chapter fits a launch with no comparable products (chapter 27 launch mode
   needs calibration products), so the run folder `run-desk-model/` was assembled by hand from the
-  desk model's JSON output (documented inside its `summary.json` and `run.json`). The desk model gives
+  triangulation model's JSON output (documented inside its `summary.json` and `run.json`). The top-down bottom-up triangulation model gives
   a year-one total only, so the journal entry has one period rather than a monthly phasing. The
   reconcile-tdbu default reconciliation (both inputs free) oscillated and did not converge in 25
   passes; the locked reconciliations were used instead.

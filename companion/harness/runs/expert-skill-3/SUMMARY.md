@@ -11,9 +11,9 @@ Run folder: `companion/harness/runs/expert-skill-3/<task>/`. Every task followed
 ## Task B (launch): delivered
 
 - `report.md` (headline numbers, method, every assumed input with source and firmness in `inputs.md`, sensitivity table in `sensitivity.md`), `brief.json`, `inputs.json`, `interpretation.md`, `claims.json`, `journal.jsonl` (id faea2a39668c, one year-one total, scoring date 2027-12-31).
-- Method: `reconcile-tdbu` desk model (`forecasting-skills/reconcile-tdbu/scripts/reconcile_model.py`), the launch reference's route when no comparable products exist. Bottom-up 5.689 MM units against top-down 3.677 MM, a 43% gap; reconciled with penetration locked (survey frequency moved from 20 to 12.22 claimed trips) to 3.861 MM units, 15.40 MM dollars, 0.93% share. Lock-frequency alternative 3.677 MM. Both-move reconciliation oscillated and did not converge.
+- Method: `reconcile-tdbu` top-down bottom-up triangulation model (`forecasting-skills/reconcile-tdbu/scripts/reconcile_model.py`), the launch reference's route when no comparable products exist. Bottom-up 5.689 MM units against top-down 3.677 MM, a 43% gap; reconciled with penetration locked (survey frequency moved from 20 to 12.22 claimed trips) to 3.861 MM units, 15.40 MM dollars, 0.93% share. Lock-frequency alternative 3.677 MM. Both-move reconciliation oscillated and did not converge.
 - Sensitivity: distribution, differentiation and evoked-set size move the number most; media least among the plan levers.
-- Could not do: no `run.py apply` chapter accepts a launch with no history and no reference products. Chapter 27 `mode: estimate` was tried twice and refused (see command failures). The `run/` folder was therefore hand-assembled from the desk model's JSON outputs (`run/run.json` says so) so that `run.py report`, `--check` and `journal add` could run on it. No profile.json (no series).
+- Could not do: no `run.py apply` chapter accepts a launch with no history and no reference products. Chapter 27 `mode: estimate` was tried twice and refused (see command failures). The `run/` folder was therefore hand-assembled from the triangulation model's JSON outputs (`run/run.json` says so) so that `run.py report`, `--check` and `journal add` could run on it. No profile.json (no series).
 
 ## Task C (intermittent): delivered
 
@@ -46,7 +46,7 @@ Run folder: `companion/harness/runs/expert-skill-3/<task>/`. Every task followed
 ## Command failures met
 
 1. Task B: `run.py apply --chapter 27` with `mode: estimate` and a header-only reference-product CSV: `Application stopped: Missing columns: target, timestamp` (exit 2).
-2. Task B: same with a header-only `timestamp,target` file: `Application stopped: Input has no rows` (exit 2). Resolved by assembling the run folder by hand from the desk model outputs.
+2. Task B: same with a header-only `timestamp,target` file: `Application stopped: Input has no rows` (exit 2). Resolved by assembling the run folder by hand from the top-down bottom-up triangulation model outputs.
 3. Task B: first `run.py report --run` / `journal add` on the hand-built run: `could not convert string to float` because results.csv carried a text `scenario` column (my own formatting; removed, then both ran).
 4. Task E: `run.py journal add --run run` and `--run run_ch02_1of4`: `Journal stopped: this run has no dated forecast column ... only series forecasts are journaled` (exit 2). Not resolvable with the tool; the chapter 10 JSON journal stands in.
 5. Task G: `run.py apply --chapter 24` with `"season": "auto"`: `Application stopped: season must be an integer >= 1` (exit 2). Resolved by declaring season 12 in `config_ch24.json` (the profile had found 12).

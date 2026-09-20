@@ -2,7 +2,7 @@
 
 **Free companion to *The Art and Science of Forecasting: Prediction Methods for Time Series, Predictive Analytics, Probability, AI, Machine Learning, and Making Better Decisions in the Age of AI* by Jason Karpeles.**
 
-Every chapter of the book has a runnable lesson and an AI skill behind it. This repository holds all of them: 27 executed Jupyter notebooks, a forecasting engine and 27 chapter tools with rolling-origin validation, 27 chapter skills plus one integrated skill for guiding an AI assistant, a batch forecaster for thousands of series, and the desk model from chapters 20 and 27 that forecasts a new product before it has sold a unit.
+Every chapter of the book has a runnable lesson and an AI skill behind it. This repository holds all of them: 27 executed Jupyter notebooks, a forecasting engine and 27 chapter tools with rolling-origin validation, 27 chapter skills plus one integrated skill for guiding an AI assistant, a batch forecaster for thousands of series, and the top-down bottom-up triangulation model from chapters 20 and 27 that forecasts a new product before it has sold a unit.
 
 - Book website (articles, additional material, and the audiobook, activated by contacting the author through the site): <https://karpeles.com/publishing/the-art-and-science-of-forecasting>
 - New reader: start with [companion/START-HERE.md](companion/START-HERE.md)
@@ -22,7 +22,7 @@ This repository does not contain the book text. It contains the code, data, figu
 5. [The forecasting engine](#the-forecasting-engine)
 6. [The chapter tools](#the-chapter-tools)
 7. [The skills](#the-skills)
-8. [The launch desk model: reconcile-tdbu](#the-launch-desk-model-reconcile-tdbu)
+8. [The top-down bottom-up triangulation model: reconcile-tdbu](#the-top-down-bottom-up-triangulation-model-reconcile-tdbu)
 9. [Forecasting many series at once](#forecasting-many-series-at-once)
 10. [Data and provenance](#data-and-provenance)
 11. [Repository layout](#repository-layout)
@@ -45,7 +45,7 @@ This repository does not contain the book text. It contains the code, data, figu
 | Batch forecaster | Forecasts a CSV of many series in parallel with resume, per-series metrics and quantile bands. | `companion/src/forecasting_companion/batch.py` |
 | 27 chapter skills | Instructions an AI assistant follows to apply one chapter's method properly: intake questions, method rules, the exact input contract of the chapter tool, and evaluation scenarios. | `forecasting-skills/forecasting-chNN-*/` |
 | Complete Forecasting Skill | The integrated entry point that frames a forecasting question and routes it to the chapters it needs. | `forecasting-skills/all-chapters-forecasting/` |
-| reconcile-tdbu | The launch desk model: interviews for six inputs, runs a trial-and-repeat engine and a market-share engine, reports the gap between them and reconciles it. Also packaged as `reconcile-tdbu.skill`. | `forecasting-skills/reconcile-tdbu/` |
+| reconcile-tdbu | The top-down bottom-up triangulation model: interviews for six inputs, runs a trial-and-repeat engine and a market-share engine, reports the gap between them and reconciles it. Also packaged as `reconcile-tdbu.skill`. | `forecasting-skills/reconcile-tdbu/` |
 | Example data and configs | A synthetic example and a JSON configuration for every chapter, plus seven public-domain observed series. | `companion/data/`, `companion/configs/` |
 | Tests | 137 tests covering the engine, every tool, the batch runner, the practitioner workflows and every chapter's example. | `companion/tests/` |
 
@@ -167,7 +167,7 @@ The rules shared by every chapter (evidence, provenance, output folders, data fl
 
 `SKILL-LIBRARY.md` explains the philosophy behind the library: model what has data, estimate what does not, never let an assistant judge a number the data can produce, and always build a second method.
 
-## The launch desk model: reconcile-tdbu
+## The top-down bottom-up triangulation model: reconcile-tdbu
 
 Chapters 20 and 27 describe a way to forecast a packaged-goods launch with no sales history: judged inputs instead of a test market. `forecasting-skills/reconcile-tdbu/` is that model as a skill, with `scripts/reconcile_model.py` as the engine. It:
 
@@ -212,7 +212,7 @@ companion/
     optional.py          optional heavy libraries: used when present, named when absent
     batch.py             many-series runner
     practitioner.py      launch workflows: calibrate_scale, launch_trials, cohort_units, adstock, ...
-    reconcile_sim.py     the desk model behind chapters 20 and 27
+    reconcile_sim.py     the top-down bottom-up triangulation model behind chapters 20 and 27
     applied/             core.py (schemas, contract), methods.py (dispatch), tools_*.py (27 chapter tools)
   scripts/               run.py (brief | profile | apply | report | journal | forecast | chapters), catalog.py,
                          build_workshop_data.py, expand_workshops.py, sync_contracts.py, install_skills.py,
@@ -226,9 +226,9 @@ companion/
 forecasting-skills/
   all-chapters-forecasting/    the Complete Forecasting Skill and the chapter map
   forecasting-ch01-markets/ ... forecasting-ch27-directed-forecasting/
-  reconcile-tdbu/              the launch desk model
+  reconcile-tdbu/              the top-down bottom-up triangulation model
 SKILL-LIBRARY.md         the philosophy and routing of the skill library
-reconcile-tdbu.skill     the desk model packaged as a single skill file
+reconcile-tdbu.skill     the top-down bottom-up triangulation model packaged as a single skill file
 ```
 
 ## Requirements
@@ -254,7 +254,7 @@ Two further checks live beside the tests. `scripts/benchmark.py` fetches public 
 
 ## Design principles
 
-1. **Model what has data; estimate what does not.** The launch model and the reference-class chapter are estimation; the engine and the panel tools are modelling. The Complete Forecasting Skill routes between them.
+1. **Model what has data; estimate what does not.** The top-down bottom-up triangulation model and the reference-class chapter are estimation; the engine and the panel tools are modelling. The Complete Forecasting Skill routes between them.
 2. **Baselines first.** Nothing is reported as an improvement without a seasonal naive or persistence comparison at the same origins.
 3. **Validation before selection.** Rolling origins, one untouched holdout, specifications frozen on the training slice.
 4. **Intervals that are measured, not asserted.** Coverage is reported beside every nominal band.

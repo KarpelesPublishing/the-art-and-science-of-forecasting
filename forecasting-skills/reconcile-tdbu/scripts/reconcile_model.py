@@ -1,7 +1,7 @@
 """
 Top-down / bottom-up new-product volume reconciliation model.
 
-This is the author's desk model for forecasting a new product's first year
+This is the author's top-down bottom-up triangulation model for forecasting a new product's first year
 without a test market. Two engines forecast the same volume from the same
 inputs:
 

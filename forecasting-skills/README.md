@@ -36,7 +36,7 @@ model from chapters 20 and 27 for a launch with no sales history.
 
 The launch implementation is the chapter 27 notebook,
 `companion/src/forecasting_companion/practitioner.py` and the `reconcile-tdbu`
-desk model. Every chapter tool under `companion/src/forecasting_companion/applied/`
+top-down bottom-up triangulation model. Every chapter tool under `companion/src/forecasting_companion/applied/`
 is covered by the companion's tests, validates its inputs, scores itself at
 rolling origins where a forecast is produced, and records under `not_done` what
 the chapter discusses that the run did not do. The tools run only when asked.

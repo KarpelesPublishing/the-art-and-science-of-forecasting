@@ -75,8 +75,8 @@ Reader-facing book skills: 29
   Complete Forecasting Skill: the map and router across the chapters
   Chapter skills 01 to 27: one per chapter
 
-Desk model: 1
-  reconcile-tdbu, the launch model from chapters 20 and 27,
+Top-down bottom-up forecasting model: 1
+  reconcile-tdbu, the top-down bottom-up triangulation model from chapters 20 and 27,
   usable on its own when there is no sales history yet
 ```
 
@@ -87,7 +87,7 @@ names differ from the reader-facing names.
 ## Keep the package together
 
 The 28th skill's folder alone is **not a standalone installation**. It links to
-the chapter skills, the desk model and the notebooks. Keep the supplied folders
+the chapter skills, the top-down bottom-up triangulation model and the notebooks. Keep the supplied folders
 in their relative layout:
 
 ```text

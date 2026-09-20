@@ -1,6 +1,6 @@
 ---
 name: reconcile-tdbu
-description: Interviews the user, then builds and runs a top-down/bottom-up new-product volume forecast that reconciles a trial-and-repeat model against a market-share model. Use this whenever someone wants to forecast first-year volume, units, or share for a new product or concept; mentions trial and repeat, repeat rate, share of choice, category penetration, MPCT (a monadic product concept test, the survey a concept is shown to one respondent group at a time), depth of repeat, or a volumetric concept test; asks to reconcile two forecasts or two modelling approaches that disagree; asks why a bottom-up estimate does not match a top-down one; or brings up the desk model from *The Art and Science of Forecasting* (chapters 20 and 27). Also use it for teaching or writing about reconciliation between estimation procedures, balancing variables, or survey overstatement correction. Trigger it even when the user has only partial data, the skill is built to interview for the missing inputs rather than require them upfront.
+description: Interviews the user, then builds and runs a top-down/bottom-up new-product volume forecast that reconciles a trial-and-repeat model against a market-share model. Use this whenever someone wants to forecast first-year volume, units, or share for a new product or concept; mentions trial and repeat, repeat rate, share of choice, category penetration, MPCT (a monadic product concept test, the survey a concept is shown to one respondent group at a time), depth of repeat, or a volumetric concept test; asks to reconcile two forecasts or two modelling approaches that disagree; asks why a bottom-up estimate does not match a top-down one; or brings up the top-down bottom-up triangulation model from *The Art and Science of Forecasting* (chapters 20 and 27). Also use it for teaching or writing about reconciliation between estimation procedures, balancing variables, or survey overstatement correction. Trigger it even when the user has only partial data, the skill is built to interview for the missing inputs rather than require them upfront.
 ---
 
 # Top-down / bottom-up volume reconciliation
@@ -19,7 +19,7 @@ wrong, and the disagreement tells you which one. This skill runs both engines,
 measures the gap, reports what each engine implies about the inputs, and drives
 the two into agreement.
 
-`scripts/reconcile_model.py` is the author's desk model, the one described in
+`scripts/reconcile_model.py` is the author's top-down bottom-up triangulation model, the one described in
 *The Art and Science of Forecasting*, chapters 20 and 27. It began life as a
 spreadsheet and now lives here. Its `--selftest` reproduces the reference case
 the book quotes (3.55 and 3.53 million units, a 0.6 percent gap, two passes to

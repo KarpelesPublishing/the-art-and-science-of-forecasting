@@ -61,7 +61,7 @@ def main(target):
 
 
 def package_skill(folder, archive):
-    """Zip the desk-model skill folder as a single .skill file (stored, deterministic order)."""
+    """Zip the top-down bottom-up triangulation model skill folder as a single .skill file (stored, deterministic order)."""
     import zipfile
     with zipfile.ZipFile(archive, 'w', compression=zipfile.ZIP_STORED) as z:
         for p in sorted(folder.rglob('*')):

@@ -11,9 +11,9 @@ Persona: knows basic statistics, has made spreadsheet forecasts. All seven tasks
 - Finding: chapter 18 is provisional (72 observations too few to hold out a slice for the reconciliation leaderboard). Per node the models beat seasonal naive at the origins; on the holdout Total and West won, North and South lost narrowly. Annual reconciled Total 3,948 units; no cost asymmetry, median reported.
 
 ### B-launch
-- `report.md` (headline numbers, method, every input with source and status, sensitivity table, scenarios labelled, scoring date), `interpretation.md`, `inputs.md` (inventory: measured/judged/guessed), `inputs.json` and `inputs_survey.json`, `sensitivity.csv`, `sensitivity_base.json`, the desk-model outputs (`model_*.txt/json`).
+- `report.md` (headline numbers, method, every input with source and status, sensitivity table, scenarios labelled, scoring date), `interpretation.md`, `inputs.md` (inventory: measured/judged/guessed), `inputs.json` and `inputs_survey.json`, `sensitivity.csv`, `sensitivity_base.json`, the triangulation-model outputs (`model_*.txt/json`).
 - Workflow files: `brief.json` (yearly, horizon 1, outcome 2027-10-01), `run/` (evidence run hand-built from reconcile_model.py outputs: summary.json of every model scalar and sensitivity, one-row results.csv, run.json, brief.json), `claims.json`, `journal.jsonl`. No profile: no series exists; `inputs.md` is the profile substitute per launch.md.
-- Finding: routes disagreed by 44.98% (survey frequency inconsistent with the category size); penetration locked, frequency absorbed the gap: 3.46 MM units, 13.8 MM dollars, 0.83% share; lock-frequency alternative 2.951 MM; input-scenario range 2.247 to 4.852 MM. Distribution and the concept-test differentiation move the number most. Everything labelled scenario; desk-model constants untuned; chapter 27 launch mode impossible (no comparable launches).
+- Finding: routes disagreed by 44.98% (survey frequency inconsistent with the category size); penetration locked, frequency absorbed the gap: 3.46 MM units, 13.8 MM dollars, 0.83% share; lock-frequency alternative 2.951 MM; input-scenario range 2.247 to 4.852 MM. Distribution and the concept-test differentiation move the number most. Everything labelled scenario; triangulation-model constants untuned; chapter 27 launch mode impossible (no comparable launches).
 
 ### C-intermittent
 - `forecast.csv` (13 rows, timestamp,forecast; flat Mean rate 2.528 units a week), `report.md` containing "order-up-to: 21", `interpretation.md`.
@@ -45,7 +45,7 @@ Persona: knows basic statistics, has made spreadsheet forecasts. All seven tasks
 
 ## What I could not do
 - Task E: no `journal.jsonl` via `run.py journal add` (the command refuses event runs); no chapter 26 decision loss until outcomes exist.
-- Task B: no chapter 27 launch mode (no comparable launched products); no monthly phasing (the desk model gives annual volume only, so the journal holds one yearly row); the evidence run folder was hand-built from the model's outputs so that the report and claims could be rendered.
+- Task B: no chapter 27 launch mode (no comparable launched products); no monthly phasing (the top-down bottom-up triangulation model gives annual volume only, so the journal holds one yearly row); the evidence run folder was hand-built from the model's outputs so that the report and claims could be rendered.
 - Task A: chapter 18 could not score reconciliation methods on a holdout at 72 observations; hierarchicalforecast cross-check not installed.
 - Task D: TBATS unavailable (statsforecast not installed); MSTL and Prophet skipped by the tool (fewer than two yearly cycles).
 - Task F: no validated forecast is possible; the deliverable is the tool's placeholder scenario.

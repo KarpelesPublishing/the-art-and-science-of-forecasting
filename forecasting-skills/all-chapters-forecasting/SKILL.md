@@ -19,7 +19,7 @@ problem, or go directly to one chapter skill for a specific lesson.
 
 This folder is **not standalone**: retain the 27 sibling chapter-skill folders,
 `reconcile-tdbu` and `companion/` in the supplied relative layout. The library is
-27 chapter skills, this integrated skill, and one desk-model skill
+27 chapter skills, this integrated skill, and one top-down bottom-up triangulation model skill
 (`reconcile-tdbu`); this is the book's integrated entry point.
 
 One-line entry: `Use $all-chapters-forecasting to forecast my dataset for the next 12 periods, compare applicable methods, and report uncertainty and validation.`
@@ -63,7 +63,7 @@ shift, the floor for the brief's horizon, and a `route`. Find the row that match
 | Related series that must add up | 18 (long form + child-parent edges) | per node, the chapter 12 floor | reconciles anyway, `status: provisional`, no holdout leaderboard |
 | Hidden states, sensors, gaps in the record | 5 | 30 observed values | error |
 | A pretrained model as one more candidate | 15 (Chronos, tiny checkpoint cached), or 12 with `pool: foundation` (Chronos-Bolt small, about 190 MB, and TimesFM 2.5, about 900 MB, download only with FORECAST_ALLOW_DOWNLOADS=1) | max(3 seasons, horizon + 30) | error; larger checkpoints download, ask first |
-| A new product with no sales history | `reconcile-tdbu` (interview, desk model, reconciliation) | the interview's four inputs | it runs on defaults and reports which inputs drive the gap |
+| A new product with no sales history | `reconcile-tdbu` (interview, top-down bottom-up triangulation model, reconciliation) | the interview's four inputs | it runs on defaults and reports which inputs drive the gap |
 | A new product with comparable launched products | 27 `mode: launch`; 19 to turn an adoption curve into sales with repeat | 27: 3 calibration + 2 validation products; 19: 6 adoption points | 27 refuses; fall back to `reconcile-tdbu` |
 | A yes/no event to forecast | the assistant estimates it with chapter 10's decomposition and journal; 2 updates a rate; 9 and 26 only score probabilities already made | 9/26: resolved outcomes | nothing to score yet: keep the journal, `status: needs_evidence` |
 | A marketing budget question | 20 (named channel columns) | 60 periods, nonnegative spend | error; attribution stays conditional, never causal |
@@ -110,7 +110,7 @@ The full floors and the meaning of each `status` are in
   sales history and no comparable launched products: `reconcile-tdbu`. Comparable
   products with observed 24-month units and defended reach inputs: chapter 27
   `mode: launch`. An established product: chapter 27 `mode: history` (the chapter 12
-  engine). Chapter 27's notebook shows the launch model worked through; chapter 19's tool turns Bass adoption
+  engine). Chapter 27's notebook shows the top-down bottom-up triangulation model worked through; chapter 19's tool turns Bass adoption
   into unit sales under two timing curves with a repeat kernel and a
   Parfitt-Collins share; chapter 20 supplies the marketing context and chapter 25
   the reference-class checks. Calibrate shared assumptions across current
@@ -161,7 +161,7 @@ in both the `passed` and the `provisional` case and says what to do with each.
 `results.csv` is the calculation, not permission to act.
 
 For a new-product launch with no sales history, use [reconcile-tdbu](../reconcile-tdbu/SKILL.md),
-the author's desk model from chapters 20 and 27: it interviews for the inputs, runs the
+the author's top-down bottom-up triangulation model from chapters 20 and 27: it interviews for the inputs, runs the
 trial-and-repeat and market-share engines, reports the gap and reconciles them.
 
 ## Executable engine

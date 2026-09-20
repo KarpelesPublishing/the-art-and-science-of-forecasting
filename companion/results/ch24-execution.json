@@ -1,7 +1,7 @@
 {
   "chapter": 24,
   "status": "passed",
-  "seconds": 1.47,
+  "seconds": 1.49,
   "inputs": {
     "files": {
       "companion/lessons/24-structural-breaks.py": "d561cdc9b5a4216273b6fb48e7e439dac415c100abae4f5564df0e5994a9c728",
@@ -10,7 +10,7 @@
       "companion/src/forecasting_companion/applied/_chronos_worker.py": "674a48266e6b48c3cf86b1aa9af80908550c1b242a4a8ccbe49f159607d387ef",
       "companion/src/forecasting_companion/applied/_foundation_worker.py": "1e1be494e49c9c1a902337a615ec9cbb03b604b73b177a5557b63f5b415f2a85",
       "companion/src/forecasting_companion/applied/core.py": "d39600bafd92f29cb46c283220c8a39f3877da6504ea6a4f750f02bae1f77911",
-      "companion/src/forecasting_companion/applied/methods.py": "17e60a0458903f49c70dc955072fd9a95c297e2334bdb965828e2c220d2498d0",
+      "companion/src/forecasting_companion/applied/methods.py": "56eabf9ca3e908d591174457094bff41a4a9be7f69e7f40b9bc18886d1fdc383",
       "companion/src/forecasting_companion/applied/panel.py": "3ebe0b2b1036026e800c45b6a13d1e6237bb0ae1fff0f96c4dda197c5b269e43",
       "companion/src/forecasting_companion/applied/series.py": "5b697fc1ccc7d8ddc82a9c1020d06c07dd382efe630ce034cb21c0ac1d83d1f6",
       "companion/src/forecasting_companion/applied/tools_breaks.py": "8e123fd5bba795a87c4c51fa036457dae39528a360a300153b7162d2b87e4d25",
@@ -38,7 +38,7 @@
       "companion/src/forecasting_companion/optional.py": "62a2711a787660bf824371eb140239dbe5693faa34fc8652f30414de6391bd04",
       "companion/src/forecasting_companion/practitioner.py": "a44f8b4027edc52e87f57b59f4f4b05a703e92f5d5601c3508c20a89b3738956",
       "companion/src/forecasting_companion/profile.py": "c162dd61cf6a19e855941fbe05da6bac604090ec8e7da6ae37768df121a05348",
-      "companion/src/forecasting_companion/reconcile_sim.py": "5655c7eeedcfdbef1181c726cb5663662f8ab6d45c715c617daf64cbb6c9c370",
+      "companion/src/forecasting_companion/reconcile_sim.py": "4ea1ce06fe6c68fcf68ec1d4c72269244f1f3aedeb1c0acbd6b8a9d10ec3f07a",
       "companion/src/forecasting_companion/report.py": "d82b8113ed90f88219862efbe7b81e49abf967bf39013efd52a70d2f0787884f",
       "companion/data/README.md": "e9e440b9a0801acb2663b905f1fe94c53b65a4d07c3961c8fb2aeffabc467a81",
       "companion/data/examples/ch01.csv": "0a0494d501b55e10a081eeea7f38082b66d4e68a2c13fc3bbe09fd488d7b8075",
@@ -129,17 +129,17 @@
       "transformers": "5.17.0"
     }
   },
-  "notebook_sha256": "cebb2f04ee256970bcdfc29c77c583b6da67e826f753ecd203d0897aa1bae7ad",
+  "notebook_sha256": "d3e3063afd9528d9888db38482ebe620869e8a479d3059b302f56ee046c6234b",
   "artifacts": {
     "figures/ch24/fig-24-01.png": "230018fcc16c428351779654183be284b0574cabfaf9cb90212fea3e29e429b0",
-    "figures/ch24/fig-24-01.pdf": "9cf9297d0901e60626fd7abcc92ca24c3830e5eb8dbd5402cd91218707ecfebe",
-    "figures/ch24/fig-24-01.svg": "f7066317e86a3495a16c06d1d431716205bc5e649ebb46b377c5ebe4fef21fe2",
+    "figures/ch24/fig-24-01.pdf": "cc0170cfa8745d77b47bd1d831a97856bed9ce54d72e3d35a3e76ac78b158a83",
+    "figures/ch24/fig-24-01.svg": "8461272313d45c28d62a002d20be8eb5aa09eb7f6b64a33b94c3d7a88bd7750f",
     "figures/ch24/fig-24-02.png": "539c9e73cfa102f4b957078e51a406dc15b026d172c9de7f5a613fc24cc05df0",
-    "figures/ch24/fig-24-02.pdf": "521af24468be9d3cfb66cc1aaaa5c4818fe2b8b5b34fb79df0823c461be82a0b",
-    "figures/ch24/fig-24-02.svg": "400677826e9516ed542c1d264272e00a1bf86103cf9b7ac05c01775d57216a14",
+    "figures/ch24/fig-24-02.pdf": "2f4344dbd795c33fa2ef9539c6345fe579f785ad3e9a38331002243eaa7fef6e",
+    "figures/ch24/fig-24-02.svg": "9a12877f717a3f8f2489e9966fccad6cf11286ffe542d1ee6ceebb48defbc755",
     "figures/ch24/fig-24-03.png": "a27cb25bb99604b29ca46ff4b36f6b7c3b460bf51524dedfd14ad693c3ef92b6",
-    "figures/ch24/fig-24-03.pdf": "9e4289e16bfd0c345d943429be2258bf7e7179e9728cf0086b132f98527c3e55",
-    "figures/ch24/fig-24-03.svg": "07500959cfb7f94141cd859dddbc375af523bb34273695d2f28d551b9b8e03cd",
+    "figures/ch24/fig-24-03.pdf": "ba093593633fe88c44894743337862edffc0765a7e17272585967e07437d2a4b",
+    "figures/ch24/fig-24-03.svg": "1516928b7063a373c96c2ab0de00b2e18e5945cfd5de7c0a95afd02b7780a941",
     "results/ch24-observed-summary.json": "e1c1c6b86330cab510fc6923d2143c28bad143aad3cd5b899308b4204478b7bf",
     "results/ch24-figures.json": "3c35d2792302de8954f28dd1cf379773e5afe67af6dcada97568e66c3351f13d",
     "results/ch24-observed-results.csv": "e942890fec09b1e05c778f8cef319dc3f6d0cd763e761a07ec2caf9ebe97eb95",

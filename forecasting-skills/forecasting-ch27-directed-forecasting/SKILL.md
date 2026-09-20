@@ -114,6 +114,6 @@ Learning prompt: “Teach me chapter 27 using the workshop’s numerical example
 
 Applied prompt: “Apply chapter 27 to our new product: first determine whether available history supports a model or only an estimate, defend proxy inputs, calibrate across comparable mature products, separate trials from repeat units, preserve 24-month trial totals, and save a forecast/scoring record.”
 
-## Desk model skill
+## Top-down bottom-up triangulation model skill
 
 For a launch forecast without a test market, use [reconcile-tdbu](../reconcile-tdbu/SKILL.md): it interviews for the inputs, runs the trial-and-repeat and market-share engines, reports the gap and the implied inputs, and reconciles them. Its constants are illustrative starting values; tune them to launches the user knows.

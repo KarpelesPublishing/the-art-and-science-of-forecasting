@@ -99,6 +99,6 @@ Learning prompt: “Teach me chapter 20 using the workshop’s numerical example
 
 Applied prompt: “Apply chapter 20 to weekly_media.csv, account for initial carryover, evaluate sales prediction and attribution stability, and label which spending claims remain conditional.”
 
-## Desk model skill
+## Top-down bottom-up triangulation model skill
 
 For a launch forecast without a test market, use [reconcile-tdbu](../reconcile-tdbu/SKILL.md): it interviews for the inputs, runs the trial-and-repeat and market-share engines, reports the gap and the implied inputs, and reconciles them. Its constants are illustrative starting values; tune them to launches the user knows.
