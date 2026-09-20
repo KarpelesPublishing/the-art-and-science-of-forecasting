@@ -1,7 +1,7 @@
 {
   "chapter": 4,
   "status": "passed",
-  "seconds": 4.09,
+  "seconds": 4.33,
   "inputs": {
     "files": {
       "companion/lessons/04-smoothing.py": "114336579c1963cbf4f2a03a7c76daf025173ee321b7a4e7833ad70010fa438f",
@@ -29,7 +29,7 @@
       "companion/src/forecasting_companion/brief.py": "ee3444f6e6231891a9b31a3ca19b6a3034bea8b02e4f8f0edcebfd13545f9d7f",
       "companion/src/forecasting_companion/common.py": "e3660534347bcc4ced2b3ecf120d9ddf21c3ddb537451ed045c5eafd3422a286",
       "companion/src/forecasting_companion/engine.py": "5c6929c157d12df0f6fe5d2ab6ae689ee1b24a19714cf97284259882580f83bb",
-      "companion/src/forecasting_companion/engine_foundation.py": "76ddb43b63d85d1e849ff5f940ba8f925c1922dbb883fd6ee0d13e9b936df2a1",
+      "companion/src/forecasting_companion/engine_foundation.py": "f3e8f48371c7dcc0ecb0c6a45fe7890dd203c7636802928e5a55125804d03c7a",
       "companion/src/forecasting_companion/engine_intermittent.py": "4e75da6e0f89521aafc91147999cf85b6aed4f37e92bbd884d5d56fec9123560",
       "companion/src/forecasting_companion/engine_multiseasonal.py": "1a34d06db169fa7f63b467d267529b165ebcd26db51f7a87aa7feda80ead437b",
       "companion/src/forecasting_companion/engine_regressors.py": "da074dfbac1e43734f45b44f1e998a0ccbe2c9d0b6e45e9f7d79ac4d1a482e4a",
@@ -129,17 +129,17 @@
       "transformers": "5.17.0"
     }
   },
-  "notebook_sha256": "76694dc8ceb095f8995fd17022c243fdbe2345c33af27a08dbb405b529dba6ed",
+  "notebook_sha256": "f1ccafb1a5dcc7f3ac6c66aeec5a5d3d19342eb5a02f4cbb3f9a6e550f29d701",
   "artifacts": {
     "figures/ch04/fig-04-01.png": "bc2136447b0b2e6ed5967736397ac08b168c17b4af7f6ba0323e5bc238c1be0b",
-    "figures/ch04/fig-04-01.pdf": "52cb130c27bc243815f3369a7818076d606ed5e12fa9270e8647f4bffcd87b46",
-    "figures/ch04/fig-04-01.svg": "54432d9a37b92d735d8c17a3afe1cb2aba1663a8e9b3767ab8620fc8bb31a3af",
+    "figures/ch04/fig-04-01.pdf": "b0bb8660eeb4e449369f82bf224ccb9b7aa77be43eb527859718c4d55485731b",
+    "figures/ch04/fig-04-01.svg": "9550d59aeb50eea2400f425c5902cafe31bec3b93af65c27806012e311d83f43",
     "figures/ch04/fig-04-02.png": "61827579f1117c24758519930e161a1990492214acc31f4842f485a5bc3309b4",
-    "figures/ch04/fig-04-02.pdf": "675b76d0f4d4e13f2dcd969b186f8eb32c4c2d290d7a8d23dfa032df7bcfdbb0",
-    "figures/ch04/fig-04-02.svg": "8118e097a59f6c94c852c33cf4a528258b5c9b686255575c5f3ccc0f82ab4725",
+    "figures/ch04/fig-04-02.pdf": "b9751f79476d7354ab2ac96b398c965e49e59c5c4b04bae2fe4b32318c142d27",
+    "figures/ch04/fig-04-02.svg": "ecebf65dd133f663279b87652b720b17728fa84c5c2cd28cdf8c1519fd0603c6",
     "figures/ch04/fig-04-03.png": "2941ef931c61849f24dca0932167a72475d1a1ad4ce7eb204c425194431123f4",
-    "figures/ch04/fig-04-03.pdf": "02c48c4d0ee3a8206d303cc86d78298c01327966059e99c18d2eba8f38da438a",
-    "figures/ch04/fig-04-03.svg": "db0da7ffdb7ee92fe2a00bf6c6d6e55ddc1172b0947dfa2c1c940d89d047aa7d",
+    "figures/ch04/fig-04-03.pdf": "de4d9ef842b1b6f5fdbdf529377f353dc42c84ce17092baf358a2299f4c2a036",
+    "figures/ch04/fig-04-03.svg": "948163690d61ff213694b6aff23b534115f294b051c047bfca2a1885c119f3db",
     "results/ch04-observed-summary.json": "167114fedcda721bf24d0a695cb2083c30f1adfc327334322bf79220eb8cf254",
     "results/ch04-figures.json": "20eaaa74ec2d1a5d81aae9e76527bb4d020bc7c45aac2eefa15c8cb60ab4e2bc",
     "results/ch04-workshop-results.csv": "385893b3b2ad699e434cc73b94635828bd4c92c813b679383f468316266d52ae",

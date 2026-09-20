@@ -1,7 +1,7 @@
 {
   "chapter": 15,
   "status": "passed",
-  "seconds": 11.8,
+  "seconds": 10.43,
   "inputs": {
     "files": {
       "companion/lessons/15-foundation-models.py": "b5a41363daed4de0ecd49d32d831b6881c41a9c6c7e637f4dbaeedb751095fc2",
@@ -29,7 +29,7 @@
       "companion/src/forecasting_companion/brief.py": "ee3444f6e6231891a9b31a3ca19b6a3034bea8b02e4f8f0edcebfd13545f9d7f",
       "companion/src/forecasting_companion/common.py": "e3660534347bcc4ced2b3ecf120d9ddf21c3ddb537451ed045c5eafd3422a286",
       "companion/src/forecasting_companion/engine.py": "5c6929c157d12df0f6fe5d2ab6ae689ee1b24a19714cf97284259882580f83bb",
-      "companion/src/forecasting_companion/engine_foundation.py": "76ddb43b63d85d1e849ff5f940ba8f925c1922dbb883fd6ee0d13e9b936df2a1",
+      "companion/src/forecasting_companion/engine_foundation.py": "f3e8f48371c7dcc0ecb0c6a45fe7890dd203c7636802928e5a55125804d03c7a",
       "companion/src/forecasting_companion/engine_intermittent.py": "4e75da6e0f89521aafc91147999cf85b6aed4f37e92bbd884d5d56fec9123560",
       "companion/src/forecasting_companion/engine_multiseasonal.py": "1a34d06db169fa7f63b467d267529b165ebcd26db51f7a87aa7feda80ead437b",
       "companion/src/forecasting_companion/engine_regressors.py": "da074dfbac1e43734f45b44f1e998a0ccbe2c9d0b6e45e9f7d79ac4d1a482e4a",
@@ -129,21 +129,21 @@
       "transformers": "5.17.0"
     }
   },
-  "notebook_sha256": "cfd7f8b8ab974734cefc7fedc1a415b131323178179cb4b3244e4c67bc09bd6e",
+  "notebook_sha256": "9704c77a633befe31ad0947f28d86c320b0baf358bd42542c49d19324a915263",
   "artifacts": {
     "figures/ch15/fig-15-01.png": "0073ca04e6c59bb98e24ff7221dfc62dbd16bf2df2900e74479365299d94bd84",
-    "figures/ch15/fig-15-01.pdf": "d7b06e91a6ebe3b61824c004a72e7ebc98149310f342f00eab833adcb285433b",
-    "figures/ch15/fig-15-01.svg": "8d025bf96ac828919cc43f0d2dd6fa7a2e1b6216c5d2e107e3e74e150cd59918",
+    "figures/ch15/fig-15-01.pdf": "98a85a4e28c81eea7e2d871ff68ee948a4d10aca38cb4cca52564fb33e730fe1",
+    "figures/ch15/fig-15-01.svg": "d5eaf29fc6fe345e2692acfc4c095e323dad7fdcf5a4be3155d1874e6684cf33",
     "figures/ch15/fig-15-02.png": "a30828eb141b1b26881a38dc93f41257c67fdaa3754afed88dfebecf686d3ddc",
-    "figures/ch15/fig-15-02.pdf": "e25049d98efff94f265ddd043ee2f5b574aacba6b898bde4082c8fada4abe3d7",
-    "figures/ch15/fig-15-02.svg": "3e08cd5756f00e31021b691ac100d66d324ff4660a26e65834c29e1f96197de0",
+    "figures/ch15/fig-15-02.pdf": "62b2b2e17d4c28bbfaec05b7200f56e154af782585cd9af907bb0da16aca737b",
+    "figures/ch15/fig-15-02.svg": "43887d62cbcc70390fdd21f8b14e840267ceb1d528d1a28f14ebe01574caa7f1",
     "figures/ch15/fig-15-03.png": "b3b4d1bcd51ecf50a41c45d2e231f5868c1d0cb92125798431b49ecee4e4d783",
-    "figures/ch15/fig-15-03.pdf": "4e7b1b69ac1b653be749bdb3d8e3783e649843f2808e2132e784a94e9ab2b291",
-    "figures/ch15/fig-15-03.svg": "c2877cabeefdf64be5b25d0531e71a76035066b2eefeaa11cd29ec147edc38c8",
-    "results/ch15-workshop-summary.json": "3f115b010adb28b72aae7887c7ecb64b3ba8eba8ed0986c58a642e7ce809aaa3",
+    "figures/ch15/fig-15-03.pdf": "4dd60cfebec39e1be5031fea38801ffae8d79b4df823f8375a15bc8a95710409",
+    "figures/ch15/fig-15-03.svg": "3923b071be22612ff7815deceb7711bf6ba3c5e98c0271fb1501ee2dc0d5629e",
+    "results/ch15-workshop-summary.json": "3db19057fd0576a66972e7b132ce88498d00d853c9ee64f40af591039c15f3cb",
     "results/ch15-figures.json": "883a5bb3c614b185e84047a5327b78edf0edb766a5abb4f8cde6f0ffc01ab093",
-    "results/ch15-workshop-results.csv": "f07bd75e2fac84d78bf7b64cbedf7b037d11eb4f24970340149ac2b0cf959550",
-    "results/ch15-observed-results.csv": "f23f159f4d6a879d91e1f0a307b60ab23848320bbdf8d1ab8315923930e7aa4e",
-    "results/ch15-observed-summary.json": "bb42707907bde4f86859e3e621b6912f5eb72e0449b15b6609f49fb123da8764"
+    "results/ch15-workshop-results.csv": "6ccdcac8ba7c0f4c3b811b913630ef9e3e9c9ef815e0f6882dc196dac472b7ca",
+    "results/ch15-observed-results.csv": "710e0fff7212b088d2c16af788d526688ea5a132ad40781c831e85bf32a9e309",
+    "results/ch15-observed-summary.json": "6b579d7e58f2163fda2c074b1b829178892a650eba22922f113caf86dbf99160"
   }
 }
