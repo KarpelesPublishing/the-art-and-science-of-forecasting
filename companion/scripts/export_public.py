@@ -18,7 +18,7 @@ SKIP_COMPANION = {'revision', 'reports/quality-loop', 'reports/triage-report.md'
                   'reports/chart-and-navigation-review.md', 'reports/current-quality-audit.md', 'reports/practitioner-revision.md', 'reports/validation.md', 'reports/package.json',
                   'reports/method-audit.md', 'reports/visual-audit.md', 'reports/original-pdf-audit.json', 'reports/current-quality-audit-evidence.json', 'reports/layout-inspection.json', 'reports/skill-review.md', 'reports/prophet-page.png', 'reports/build.json', 'reports/validation.json',
                   'scripts/author_revision.py', 'scripts/build_revision.py', 'scripts/revision_index.py', 'scripts/index_common.py', 'scripts/epub_index.py', 'scripts/strip_em_dashes.py', 'scripts/audit_pdf.py', 'scripts/package.py', 'scripts/validate.py',
-                  'public-README.md', 'public-LICENSE', 'scripts/review_grayscale.py', 'scripts/review_layout.py', 'tests/test_author_revision.py', 'tests/test_book_review.py', 'tests/test_epub_equations.py', 'tests/test_no_em_dashes.py', 'tests/test_package.py', 'tests/test_revision_index.py'}
+                  'public-README.md', 'public-LICENSE', 'scripts/review_grayscale.py', 'scripts/review_layout.py', 'tests/test_strip_em_dashes.py', 'tests/test_author_revision.py', 'tests/test_book_review.py', 'tests/test_epub_equations.py', 'tests/test_no_em_dashes.py', 'tests/test_package.py', 'tests/test_revision_index.py'}
 
 
 def wanted(rel):
