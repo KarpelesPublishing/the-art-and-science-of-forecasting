@@ -2,7 +2,8 @@
 
 Included: companion notebooks, lessons, source, scripts, data, configs, figures, results,
 assets, tests, START-HERE and README; the 29 skill folders; the root skill-library README;
-the packaged reconcile-tdbu skill. Excluded: the manuscript, the revision pipeline
+the packaged reconcile-tdbu skill; companion/public-README.md as the repo README and
+companion/public-LICENSE (MIT) as LICENSE. Excluded: the manuscript, the revision pipeline
 (patches, author sections, built editions), reports that quote the book, and the
 production scripts that carry book prose.
 Usage: python export_public.py <target-dir>
@@ -17,7 +18,7 @@ SKIP_COMPANION = {'revision', 'reports/quality-loop', 'reports/triage-report.md'
                   'reports/chart-and-navigation-review.md', 'reports/current-quality-audit.md', 'reports/practitioner-revision.md', 'reports/validation.md', 'reports/package.json',
                   'reports/method-audit.md', 'reports/visual-audit.md', 'reports/original-pdf-audit.json', 'reports/current-quality-audit-evidence.json', 'reports/layout-inspection.json', 'reports/skill-review.md', 'reports/prophet-page.png', 'reports/build.json', 'reports/validation.json',
                   'scripts/author_revision.py', 'scripts/build_revision.py', 'scripts/revision_index.py', 'scripts/strip_em_dashes.py', 'scripts/audit_pdf.py', 'scripts/package.py', 'scripts/validate.py',
-                  'tests/test_author_revision.py', 'tests/test_book_review.py', 'tests/test_epub_equations.py', 'tests/test_no_em_dashes.py', 'tests/test_package.py', 'tests/test_revision_index.py'}
+                  'public-README.md', 'public-LICENSE', 'scripts/review_grayscale.py', 'scripts/review_layout.py', 'tests/test_author_revision.py', 'tests/test_book_review.py', 'tests/test_epub_equations.py', 'tests/test_no_em_dashes.py', 'tests/test_package.py', 'tests/test_revision_index.py'}
 
 
 def wanted(rel):
@@ -34,19 +35,21 @@ def main(target):
     if target.exists():
         shutil.rmtree(target)
     sources = [PROJECT / 'companion', PROJECT / 'forecasting-skills']
+    skip_top = {'forecasting-skills/CHAPTERS-TO-ADD.md'}
     n = 0
     for folder in sources:
         for p in folder.rglob('*'):
             if not p.is_file():
                 continue
             rel = p.relative_to(PROJECT)
-            if not wanted(rel) or any((parent / 'run.json').is_file() for parent in p.parents if PROJECT in parent.parents):
+            if rel.as_posix() in skip_top or not wanted(rel) or any((parent / 'run.json').is_file() for parent in p.parents if PROJECT in parent.parents):
                 continue
             dest = target / rel; dest.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(p, dest); n += 1
     shutil.copy2(PROJECT / 'reconcile-tdbu.skill', target / 'reconcile-tdbu.skill')
     shutil.copy2(PROJECT / 'README.md', target / 'SKILL-LIBRARY.md')
     public_readme(target / 'companion/README.md')
-    (target / 'README.md').write_text(ROOT_README)
+    shutil.copy2(ROOT / 'public-README.md', target / 'README.md')
+    shutil.copy2(ROOT / 'public-LICENSE', target / 'LICENSE')
     (target / '.gitignore').write_text('.venv/\n__pycache__/\n.pytest_cache/\n.ipynb_checkpoints/\ncompanion/applied-runs/\n*.pyc\n.DS_Store\n')
     print(f'exported {n + 4} files to {target}')
 
@@ -63,37 +66,6 @@ def public_readme(path):
     s = s[:a] + s[b:]
     s = s.replace('## Reproduce the chapters and book', '## Reproduce the chapters')
     path.write_text(s)
-
-
-ROOT_README = '''# The Art and Science of Forecasting: companion
-
-Free companion to *The Art and Science of Forecasting* by Jason Karpeles: 27 runnable
-notebooks (one per chapter), 27 chapter skills for guiding an AI assistant, the Complete
-Forecasting Skill that coordinates them, and `reconcile-tdbu`, the desk model from
-chapters 20 and 27 that forecasts a product launch before there is any sales history.
-
-- Book website, errata and updates: <https://karpeles.com/publishing/the-art-and-science-of-forecasting>
-- New reader? Open [companion/START-HERE.md](companion/START-HERE.md).
-- Technical setup and reproduction: [companion/README.md](companion/README.md).
-- Skill library overview: [SKILL-LIBRARY.md](SKILL-LIBRARY.md); the integrated entry point is
-  [forecasting-skills/all-chapters-forecasting/SKILL.md](forecasting-skills/all-chapters-forecasting/SKILL.md).
-
-## Quick start
-
-```bash
-cd companion
-python3.12 -m venv .venv && .venv/bin/pip install -r requirements.lock
-.venv/bin/python scripts/run.py chapters --chapter 4
-.venv/bin/python -m pytest tests -q
-```
-
-Notebooks are in `companion/notebooks/`; their editable sources are `companion/lessons/`.
-Most examples use seeded synthetic data so they run without any licensed dataset. Running
-an example does not establish that its assumptions fit your business; validating that is
-part of the work the book describes.
-
-This repository does not contain the book text. Copyright 2026 Jason Karpeles.
-'''
 
 
 if __name__ == '__main__':
