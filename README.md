@@ -4,7 +4,7 @@
 
 Every chapter of the book has a runnable lesson and an AI skill behind it. This repository holds all of them: 27 executed Jupyter notebooks, a forecasting engine and 27 chapter tools with rolling-origin validation, 27 chapter skills plus one integrated skill for guiding an AI assistant, a batch forecaster for thousands of series, and the desk model from chapters 20 and 27 that forecasts a new product before it has sold a unit.
 
-- Book website (audiobook, articles and additional material): <https://karpeles.com/publishing/the-art-and-science-of-forecasting>
+- Book website (articles, additional material, and the audiobook, activated by contacting the author through the site): <https://karpeles.com/publishing/the-art-and-science-of-forecasting>
 - New reader: start with [companion/START-HERE.md](companion/START-HERE.md)
 - Technical setup and reproduction: [companion/README.md](companion/README.md)
 - Using the skills with an AI assistant: [forecasting-skills/all-chapters-forecasting/SKILL.md](forecasting-skills/all-chapters-forecasting/SKILL.md)

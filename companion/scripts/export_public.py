@@ -58,7 +58,7 @@ def public_readme(path):
     """The technical guide without the author's book-production section."""
     s = path.read_text()
     a = s.index('## Read the revised book'); b = s.index('## Data and method scope')
-    s = s[:a] + '## The book\n\n*The Art and Science of Forecasting* by Jason Karpeles. Book website, with the audiobook and additional material: <https://karpeles.com/publishing/the-art-and-science-of-forecasting>. This repository is the free companion; it does not contain the book text.\n\n' + s[b:]
+    s = s[:a] + '## The book\n\n*The Art and Science of Forecasting* by Jason Karpeles. Book website, with articles, additional material and the audiobook (activated by contacting the author through the site): <https://karpeles.com/publishing/the-art-and-science-of-forecasting>. This repository is the free companion; it does not contain the book text.\n\n' + s[b:]
     s = s.replace('This package connects the revised book\'s figures to 27 executed Jupyter notebooks,', 'This package connects the book\'s figures to 27 executed Jupyter notebooks,')
     for line in ('companion/.venv/bin/python companion/scripts/build_revision.py\n', 'companion/.venv/bin/python companion/scripts/validate.py\n'):
         s = s.replace(line, '')
