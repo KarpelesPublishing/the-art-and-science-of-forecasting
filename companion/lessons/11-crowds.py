@@ -86,7 +86,7 @@ print('Interpretation: this generator supplies persistent expert skill differenc
 # - `results.csv`: `question,actual,mean,median,trimmed`.
 # - `summary.json`: inspect `mae`.
 #
-# The adapter requires resolved question actuals and compares fixed mean, median and 20%-each-tail trimmed mean. It does not learn weights or turn disagreement into calibrated outcome intervals.
+# The adapter requires resolved question actuals and compares fixed mean, median and 20%-each-tail trimmed mean. When the estimates are event probabilities with binary actuals, `extremize_a` (a positive number, 2.5 is the usual starting value) adds a logit-extremized pool and scores every rule by Brier as well as MAE; extremization helps only when experts share information and the plain pool is too timid, and the tool refuses it on non-probability data. It does not learn weights or turn disagreement into calibrated outcome intervals.
 #
 # The [fixture](../data/examples/ch11.csv) and [config](../configs/ch11.json) match the current interface. Run the `apply` command in the [skill entrypoint](../../forecasting-skills/forecasting-ch11-crowds/SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 #

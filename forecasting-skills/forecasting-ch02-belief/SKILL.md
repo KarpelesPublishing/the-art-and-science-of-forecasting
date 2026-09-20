@@ -24,7 +24,7 @@ successes,trials
 
 ## Executable interface
 
-Exact CLI columns: `successes,trials`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `prior_alpha,prior_beta`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `successes,trials`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, frequency, horizon, prior_alpha, prior_beta, season, seed`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
 
 The three rows use .25×, 1× and 4× prior strength, with 95% posterior credible bounds. They hold the prior mean fixed. There is no future-count interval in this output.
 

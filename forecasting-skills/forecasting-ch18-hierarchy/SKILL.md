@@ -29,11 +29,11 @@ B,2010-02-01,42.8
 
 ## Executable interface
 
-Exact CLI columns: `node,timestamp,target | node,forecast`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `edges, pool, transform, origins, shrinkage, coherent_quantiles, history_tolerance, horizon, season, frequency, as_of, seed, nodes, S, past_errors`. Unknown config keys are rejected.
+Exact CLI columns: `node,timestamp,target | node,forecast`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `S, as_of, coherent_quantiles, edges, frequency, history_tolerance, horizon, nodes, origins, past_errors, pool, season, seed, shrinkage, transform`. Unknown config keys are rejected.
 
 The tool builds S from `edges`, forecasts every node with the companion engine (default `pool: smoothing`; `full` and `arima` are available), takes each node's base-forecast errors from the engine's own validation origins, shrinks their covariance toward the diagonal by `shrinkage` (default 0.2), and reconciles by bottom-up, OLS and MinT. Coherence is asserted for every reconciled column. Every method, including the unreconciled base, is scored per node on the untouched final holdout, so the leaderboard shows whether reconciliation helped this hierarchy rather than assuming it. `coherent_quantiles: true` reconciles 500 joint draws when every node's model has intervals and returns MinT q10/q50/q90. MinT is dropped, and reported under `not_done`, when fewer than n_nodes+2 matched errors exist or the covariance is not positive definite. Nonnegativity is not enforced.
 
-The tool runs only when asked; the assistant decides, with the reader, whether the method fits before running it.
+When the history is too short to hold the engine's rolling origins twice over (for monthly data with a 12-step horizon, fewer than 84 observations), the tool still reconciles the production forecasts but skips the holdout leaderboard, takes the error covariance from the engine's own rolling origins, returns `status: provisional` and says so under `not_done`. The tool runs only when asked; the assistant decides, with the reader, whether the method fits before running it.
 
 ## Applied procedure
 

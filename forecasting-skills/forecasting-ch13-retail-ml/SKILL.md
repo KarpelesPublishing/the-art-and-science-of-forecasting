@@ -26,7 +26,7 @@ item-1,2021-01-01,41.2,0,10
 
 ## Executable interface
 
-Exact CLI columns: `series_id,timestamp,target[,covariates...]`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `covariates, known_in_advance, strategy, lags, rolling, origins, ablation, shap_rows, horizon, season, frequency, as_of, seed`. Unknown config keys are rejected.
+Exact CLI columns: `series_id,timestamp,target[,covariates...]`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `ablation, as_of, covariates, frequency, horizon, known_in_advance, lags, origins, rolling, season, seed, shap_rows, strategy`. Unknown config keys are rejected.
 
 LightGBM on leakage-safe grouped features: lags (`lags`), shifted rolling means (`rolling`), a calendar term (day of week for daily data, month otherwise), an entity code, and the declared covariates. `strategy: direct` (default) fits one booster per horizon step, each mapping the origin's lag features plus the target date's known covariates and calendar to that step's target; `recursive` fits a one-step model and feeds its own predictions back as lags. Evaluation uses expanding origins (`origins`) against seasonal naive computed from pre-origin history, then scores the untouched final holdout once. `ablation: true` drops each feature group (calendar, lags, rolling, covariates) in turn at every origin and reports the change in MAE. Additive contributions are returned for `shap_rows` rows with an additivity check. No hyperparameter search, no quantile objective.
 

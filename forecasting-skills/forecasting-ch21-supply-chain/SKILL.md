@@ -27,7 +27,7 @@ timestamp,target
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,target`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `underage_cost, overage_cost, lead_time, review_period, service_level, bootstrap_window, samples, echelons, holding_cost, backorder_cost, horizon, season, frequency, as_of, seed`. Unknown config keys are rejected.
+Exact CLI columns: `timestamp,target`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, backorder_cost, bootstrap_window, echelons, frequency, holding_cost, horizon, lead_time, overage_cost, review_period, samples, season, seed, service_level, underage_cost`. Unknown config keys are rejected.
 
 The tool produces pre-update Croston, SBA and TSB one-step forecasts and their MAE over the test period, then simulates an order-up-to policy: at each review it bootstraps `samples` sums of `lead_time + review_period` draws from the trailing `bootstrap_window` demands, sets the order-up-to level at the `service_level` quantile (the cost-optimal quantile is reported beside it), receives pipeline arrivals, serves backlog then demand, and records on-hand, backlog and orders, yielding achieved cycle service, fill rate, mean on-hand, mean backlog and mean cost. It also runs an `echelons`-deep bullwhip simulation on the same demand, reporting variance amplification per echelon with local ordering and with a shared end-consumer signal. Lead time is fixed; demand is treated as uncensored.
 

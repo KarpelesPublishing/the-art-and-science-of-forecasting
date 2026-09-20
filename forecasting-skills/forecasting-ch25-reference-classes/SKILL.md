@@ -25,7 +25,7 @@ B,12,18,false
 
 ## Executable interface
 
-Exact CLI columns: `case_id,planned,actual,completed`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `No chapter-specific configuration keys`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `case_id,planned,actual,completed`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, frequency, horizon, season, seed`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
 
 Kaplan–Meier estimates the ratio survival curve under independent right-censoring. P50/P80/P90 are the first steps crossing their cumulative probabilities, not interpolated empirical quantiles. Unsupported upper quantiles remain null. Abandonment needs a separate outcome interpretation.
 

@@ -26,7 +26,7 @@ timestamp,target,temp
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,target[,regressors...]`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `events, regressors, mode, priors, origins, weekly, yearly, horizon, season, frequency, as_of, seed`. Unknown config keys are rejected.
+Exact CLI columns: `timestamp,target[,regressors...]`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, events, frequency, horizon, mode, origins, priors, regressors, season, seed, weekly, yearly`. Unknown config keys are rejected.
 
 Prophet with the event calendar as holidays and the declared regressors. `mode: auto` chooses multiplicative seasonality when a Box-Cox check on training data calls for a log scale, else additive. The changepoint prior is chosen from `priors` on `origins` earlier blocks; the calendar and the regressors are each ablated on the same blocks so their contribution is measured, not assumed. The untouched holdout is scored once with MAE and the coverage of the nominal 80 percent band. The forecast table is the future when no regressors are needed or exactly `horizon` future regressor rows were supplied, otherwise the holdout, and the summary says which under `table_scope`.
 

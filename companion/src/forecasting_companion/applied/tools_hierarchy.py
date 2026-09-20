@@ -105,22 +105,33 @@ def reconcile_hierarchy(d, c):
         raise ValueError('shrinkage must lie in [0, 1]')
     T = len(ref)
     selected, holdout_base, future_base, errors, intervals = {}, {}, {}, {}, {}
+    holdout_ok = True; short_reason = None
     for j, name in enumerate(nodes):
         y = Y[:, j]
-        # run A: everything before the final holdout; its forecast is the holdout base forecast
-        table_a, sum_a = forecast_series(y[:-h], ref.iloc[:-h], h, season, pool=pool, freq=freq, transform=transform, max_origins=origins)
-        holdout_base[name] = table_a.forecast.to_numpy()
-        preds = pd.DataFrame(sum_a['validation_predictions'])
-        preds = preds[preds.model == sum_a['selected']].sort_values(['origin', 'horizon'])
-        errors[name] = (preds.actual - preds.forecast).to_numpy()
         # run B: full history; its forecast is the production base forecast
         table_b, sum_b = forecast_series(y, ref, h, season, pool=pool, freq=freq, transform=transform, max_origins=origins)
         future_base[name] = table_b.forecast.to_numpy()
-        selected[name] = dict(holdout_model=sum_a['selected'], production_model=sum_b['selected'])
         if 'lower' in table_b:
             intervals[name] = (table_b.lower.to_numpy(), table_b.upper.to_numpy())
+        # run A: everything before a tool-level holdout; its forecast is the holdout base forecast.
+        # When the history cannot hold the engine's origins twice over, the holdout leaderboard is
+        # skipped and the error covariance comes from run B's own rolling origins instead.
+        try:
+            table_a, sum_a = forecast_series(y[:-h], ref.iloc[:-h], h, season, pool=pool, freq=freq, transform=transform, max_origins=origins) if holdout_ok else (None, None)
+        except ValueError as exc:
+            holdout_ok = False; short_reason = str(exc); table_a = sum_a = None
+        source = sum_a if holdout_ok else sum_b
+        preds = pd.DataFrame(source['validation_predictions'])
+        preds = preds[preds.model == source['selected']].sort_values(['origin', 'horizon'])
+        errors[name] = (preds.actual - preds.forecast).to_numpy()
+        if holdout_ok:
+            holdout_base[name] = table_a.forecast.to_numpy()
+        selected[name] = dict(holdout_model=sum_a['selected'] if holdout_ok else None, production_model=sum_b['selected'])
+    # every node shares one timeline, so a too-short history fails on the first node and all errors come from run B
     lengths = {len(e) for e in errors.values()}
     not_done = []
+    if not holdout_ok:
+        not_done.append(f'Holdout leaderboard skipped: the history is too short to run the engine on a pre-holdout slice ({short_reason}); the error covariance comes from the engine\'s own rolling origins on the full history')
     W = None
     if len(lengths) == 1 and next(iter(lengths)) >= n_nodes + 2:
         E = np.column_stack([errors[n] for n in nodes])
@@ -144,14 +155,15 @@ def reconcile_hierarchy(d, c):
                 raise AssertionError(f'{k} lost coherence')
         return out
 
-    hold = all_methods(np.column_stack([holdout_base[n] for n in nodes]))
-    actual = Y[-h:, :]
     holdout = {}
-    for k, v in hold.items():
-        per_node = {n: float(np.abs(actual[:, j] - v[:, j]).mean()) for j, n in enumerate(nodes)}
-        holdout[k] = dict(mae_by_node=per_node, mean_mae=float(np.mean(list(per_node.values()))),
-                          nodes_improved_vs_base=int(sum(per_node[n] < np.abs(actual[:, j] - hold['base'][:, j]).mean() - 1e-12 for j, n in enumerate(nodes))) if k != 'base' else 0)
-    leaderboard = sorted(holdout, key=lambda k: holdout[k]['mean_mae'])
+    if holdout_ok:
+        hold = all_methods(np.column_stack([holdout_base[n] for n in nodes]))
+        actual = Y[-h:, :]
+        for k, v in hold.items():
+            per_node = {n: float(np.abs(actual[:, j] - v[:, j]).mean()) for j, n in enumerate(nodes)}
+            holdout[k] = dict(mae_by_node=per_node, mean_mae=float(np.mean(list(per_node.values()))),
+                              nodes_improved_vs_base=int(sum(per_node[n] < np.abs(actual[:, j] - hold['base'][:, j]).mean() - 1e-12 for j, n in enumerate(nodes))) if k != 'base' else 0)
+    leaderboard = sorted(holdout, key=lambda k: holdout[k]['mean_mae']) if holdout else ['MinT' if W is not None else 'OLS', 'bottom_up']
     fut = all_methods(np.column_stack([future_base[n] for n in nodes]))
     future_dates = pd.date_range(ref.iloc[-1], periods=h + 1, freq=freq)[1:]
     rows = []
@@ -182,13 +194,15 @@ def reconcile_hierarchy(d, c):
     else:
         not_done.append('Coherent quantiles not requested (set coherent_quantiles: true)')
     best = leaderboard[0]
-    interpretation = (f'On the final {h}-step holdout, {best} had the lowest mean MAE across {n_nodes} nodes '
-                      f'({holdout[best]["mean_mae"]:.4g} vs base {holdout["base"]["mean_mae"]:.4g}). '
+    lead = ((f'On the final {h}-step holdout, {best} had the lowest mean MAE across {n_nodes} nodes '
+             f'({holdout[best]["mean_mae"]:.4g} vs base {holdout["base"]["mean_mae"]:.4g}). ') if holdout else
+            (f'No tool-level holdout was possible on {T} observations; {best} is reported first because it uses the most information, not because it was scored here. '))
+    interpretation = (lead
                       + ('MinT used a shrunk covariance from ' + str(error_rows) + ' validation errors per node. ' if W is not None else '')
                       + 'Coherence holds exactly for every reconciled column; accuracy gains must be judged on the holdout, not assumed.')
     return finish(table, method='Hierarchical reconciliation (bottom-up, OLS' + (', MinT' if W is not None else '') + ') over engine base forecasts',
                   interpretation=interpretation,
                   assumptions=['Tree hierarchy with one parent per node', 'Base forecasts unbiased for MinT to dominate', f'Error covariance shrunk toward its diagonal with lambda {lam}', 'Historical values coherent within tolerance'],
-                  not_done=not_done, status='passed',
+                  not_done=not_done, status='passed' if holdout_ok else 'provisional',
                   nodes=nodes, leaves=leaves, S=S.tolist(), selected=selected, shrinkage=lam, error_rows=error_rows,
                   holdout=holdout, leaderboard=leaderboard, coherence_max_abs_residual=float(resid), pool=pool, horizon=h)

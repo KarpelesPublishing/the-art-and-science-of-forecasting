@@ -25,7 +25,7 @@ timestamp,open,high,low,close
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,open,high,low,close`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `rules, k, train_fraction, benford_column, horizon, season, frequency, as_of, seed`. Unknown config keys are rejected.
+Exact CLI columns: `timestamp,open,high,low,close`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, benford_column, frequency, horizon, k, rules, season, seed, train_fraction`. Unknown config keys are rejected.
 
 The tool scores predeclared one-step rules on closing prices at every origin after the training share: persistence (last close), momentum (last close plus the average change over `k` periods) and mean reversion (mean of the last `k` closes). It reports MAE per rule, the directional hit rate of momentum and mean reversion with zero-change periods excluded and a binomial p-value against a coin, and a Benford first-digit chi-square test on `benford_column` as a data-integrity habit. It computes price error only: no returns, costs, position sizing, sessions or corporate-action checks.
 

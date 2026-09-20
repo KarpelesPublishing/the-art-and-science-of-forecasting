@@ -72,8 +72,12 @@ awareness figure directly, set `calculate_awareness` to false and pass
 | `branding` | Is this a line extension of a known brand, or a new brand? | "LX" or "NB" | "LX" |
 | `horizon_weeks` | How many weeks are we forecasting? | > 0 | 52 |
 
-`branding` matters: a line extension gets a 1.32 multiplier a new brand does not.
-Ask it plainly, "is this going out under an existing brand name?"
+`branding` matters: for a line extension the awareness curve carries a 1.32 factor
+that a new brand does not, and in this model the factor *lowers* media-driven
+awareness for the line extension (the same rating points build less awareness of
+the new item when the advertising is read as the parent brand's). Say which way
+it worked when you report. Ask it plainly, "is this going out under an existing
+brand name?"
 
 ## Tier 4: the trial detector
 

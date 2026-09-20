@@ -26,7 +26,7 @@ timestamp,target
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,target | timestamp,actual,lower,median,upper`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `alpha, gamma, pool, transform, origins, calibration_size, test_size, horizon, season, frequency, as_of, seed`. Unknown config keys are rejected.
+Exact CLI columns: `timestamp,target | timestamp,actual,lower,median,upper`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `alpha, as_of, calibration_size, frequency, gamma, horizon, origins, pool, season, seed, test_size, transform`. Unknown config keys are rejected.
 
 On a plain series the tool selects a model with the companion engine on history before the calibration block, freezes that specification, refits it at every calibration origin to collect residuals by horizon step, and builds split-conformal intervals at level 1-`alpha` using the finite-sample rank ceil((m+1)(1-alpha)). It then runs the adaptive conformal update (alpha_t moves by `gamma` after each miss or cover) through the test block. Both intervals are scored on the test block: empirical coverage, mean width, interval score and pinball loss, per horizon step and pooled, and compared with the model's own nominal 80 percent band when one exists. If the engine selected a combination, the best atomic model is used and the summary says so. The split guarantee is marginal under exchangeability; the adaptive guarantee is long-run; neither is conditional coverage at a given date.
 

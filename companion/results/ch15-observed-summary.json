@@ -1,6 +1,6 @@
 {
   "method": "Chronos-T5 tiny zero-shot forecast",
-  "interpretation": "Chronos tiny: mean median-MAE over 3 selection origins 0.8456 vs engine baselines Seasonal naive 1.147, Equal ensemble 1.826, Naive 2.3, Drift 2.308; final holdout MAE 1.277, coverage of the 0.1-0.9 band 50%. Mean latency 0.25 s per call on CPU. Pretraining overlap with this series is not certified; one holdout cannot establish calibration.",
+  "interpretation": "Chronos tiny: mean median-MAE over 3 selection origins 0.8456 vs engine baselines Seasonal naive 1.147, Equal ensemble 1.826, Naive 2.3, Drift 2.308; final holdout MAE 1.277, coverage of the 0.1-0.9 band 50%. Mean latency 0.23 s per call on CPU. Pretraining overlap with this series is not certified; one holdout cannot establish calibration.",
   "assumptions": [
     "Series treated as univariate without covariates",
     "Sampled quantiles from the pretrained model at the given seed"
@@ -27,28 +27,28 @@
       "holdout": false,
       "median_mae": 1.2822887674967447,
       "coverage": 0.4166666666666667,
-      "latency_s": 0.2602258750703186
+      "latency_s": 0.23950945888645947
     },
     {
       "origin": "2007-12-01 00:00:00+00:00",
       "holdout": false,
       "median_mae": 0.631011543273926,
       "coverage": 0.5833333333333334,
-      "latency_s": 0.24334137502592057
+      "latency_s": 0.2333071248140186
     },
     {
       "origin": "2008-12-01 00:00:00+00:00",
       "holdout": false,
       "median_mae": 0.6236067008972167,
       "coverage": 0.9166666666666666,
-      "latency_s": 0.25467987498268485
+      "latency_s": 0.2307646251283586
     },
     {
       "origin": "2009-12-01 00:00:00+00:00",
       "holdout": true,
       "median_mae": 1.2765113830566406,
       "coverage": 0.5,
-      "latency_s": 0.25550108298193663
+      "latency_s": 0.2266266669612378
     }
   ],
   "engine_baselines": {
@@ -59,7 +59,7 @@
   },
   "test_mae": 1.2765113830566406,
   "test_coverage": 0.5,
-  "mean_latency_s": 0.2533549082232639,
+  "mean_latency_s": 0.23146239197812973,
   "quantiles": [
     0.1,
     0.5,

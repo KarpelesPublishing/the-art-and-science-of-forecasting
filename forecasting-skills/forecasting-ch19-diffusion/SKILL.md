@@ -27,7 +27,7 @@ time,adopters
 
 ## Executable interface
 
-Exact CLI columns: `time,adopters`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `ceilings, future_times, units_at_trial, repeat_kernel, peak, sales_horizon, time_unit, fix_q, parfitt_collins, horizon, season, frequency, as_of, seed`. Unknown config keys are rejected.
+Exact CLI columns: `time,adopters`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, ceilings, fix_q, frequency, future_times, horizon, parfitt_collins, peak, repeat_kernel, sales_horizon, season, seed, time_unit, units_at_trial`. Unknown config keys are rejected.
 
 The tool fits the Bass model for each declared ceiling (with early-fit holdout, Jacobian condition and peak time), optionally refits with `fix_q` held, then converts adoption into sales over `sales_horizon` periods (24 or more) under two timing curves that share the same trial total: Bass incidence and the author's gamma-shaped launch curve with its `peak` month. Each timing is spread with the repeat kernel into unit sales, and the tool compares peak period, twelve-period units and total units between them. With `parfitt_collins` inputs it reports the steady-state share and a plus or minus 20 percent band on repeat. Price, distribution and advertising are not in the curve; the kernel is assumed, not estimated.
 

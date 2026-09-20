@@ -26,7 +26,7 @@ Q1,E3,1000,100
 
 ## Executable interface
 
-Exact CLI columns: `question,expert,estimate,actual`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `extremize_a`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `question,expert,estimate,actual`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, extremize_a, frequency, horizon, season, seed`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
 
 The adapter requires resolved question actuals and compares fixed mean, median and 20%-each-tail trimmed mean. When the estimates are event probabilities with binary actuals, `extremize_a` (a positive number, 2.5 is the usual starting value) adds a logit-extremized pool and scores every rule by Brier as well as MAE; extremization helps only when experts share information and the plain pool is too timid, and the tool refuses it on non-probability data. It does not learn weights or turn disagreement into calibrated outcome intervals.
 

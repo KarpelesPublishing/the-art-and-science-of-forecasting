@@ -25,7 +25,7 @@ E2,0.1,0
 
 ## Executable interface
 
-Exact CLI columns: `event_id,probability,outcome`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `false_alarm_cost,miss_cost`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `event_id,probability,outcome`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, false_alarm_cost, frequency, horizon, miss_cost, season, seed`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
 
 The adapter requires resolved events and strictly positive finite costs. It acts at p>=threshold. The reported best constant policy is a hindsight diagnostic, not a pre-recorded baseline. It reports Brier alongside decision loss; chapter 9 adds a fuller calibration diagnosis.
 

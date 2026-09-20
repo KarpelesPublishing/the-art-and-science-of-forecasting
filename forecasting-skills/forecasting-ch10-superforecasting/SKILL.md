@@ -48,7 +48,7 @@ Minimal **journal-format illustration**, unresolved and therefore not yet scorea
 
 ## Executable interface
 
-Exact CLI columns: `events,revisions (JSON)`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `events,revisions (JSON)`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, frequency, horizon, season, seed`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
 
 Input is JSON with events and revisions arrays. score_journal chooses the latest eligible revision for each resolved event; if none are scoreable it returns status=needs_evidence with event_id/scoring_status rows. The JSON file can retain unresolved events, but editable timestamps are not authenticated.
 

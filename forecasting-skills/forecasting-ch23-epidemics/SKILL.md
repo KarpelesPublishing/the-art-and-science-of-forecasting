@@ -26,7 +26,7 @@ event_date,report_date,count
 
 ## Executable interface
 
-Exact CLI columns: `event_date,report_date,count`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, mature_age, max_delay, delay_prob, origins, population, recovery_rate, sigma, horizon, season, frequency, seed`. Unknown config keys are rejected.
+Exact CLI columns: `event_date,report_date,count`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, delay_prob, frequency, horizon, mature_age, max_delay, origins, population, recovery_rate, season, seed, sigma`. Unknown config keys are rejected.
 
 The tool builds the triangle at `as_of`, estimates the reporting-delay distribution from mature cohorts (truncated at `max_delay`) or takes the supplied `delay_prob`, nowcasts each incomplete cohort as reported count over completeness with negative-binomial 90 percent bounds, and evaluates the nowcast on archived mature cohorts by recomputing what it would have said at each younger age and scoring against the final count (an in-sample check, labelled as such). With `population` it fits an SEIR model (transmission rate, and the latent rate unless `sigma` is fixed) to incidence up to each of `origins` rolling origins and reports RMSE over `horizon` against persistence, with the implied basic reproduction number per origin. It does not model changes in testing, reporting holidays or interventions.
 

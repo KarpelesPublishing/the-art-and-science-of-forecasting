@@ -25,7 +25,7 @@ Q1,E2,1,120,110
 
 ## Executable interface
 
-Exact CLI columns: `question,expert,round,estimate,actual`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `No chapter-specific configuration keys`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `question,expert,round,estimate,actual`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, frequency, horizon, season, seed`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
 
 The adapter requires complete resolved actuals and compares round medians. Keep unresolved elicitation records in a separate journal until resolution. It does not solicit experts, authenticate independence or estimate a full opinion distribution.
 

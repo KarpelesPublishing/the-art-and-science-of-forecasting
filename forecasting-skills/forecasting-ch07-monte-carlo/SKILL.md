@@ -25,7 +25,7 @@ Materials,50,15
 
 ## Executable interface
 
-Exact CLI columns: `component,mean,sd`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `samples,seed,correlation`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `component,mean,sd`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, correlation, frequency, horizon, samples, season, seed`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
 
 Positive arithmetic means and nonnegative SDs define lognormal components. correlation is shared latent-normal correlation in [0,1), not the resulting components’ Pearson correlation. The adapter simulates totals directly; it does not run MCMC or report budget exceedance unless added separately.
 

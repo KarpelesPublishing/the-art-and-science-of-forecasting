@@ -384,9 +384,12 @@ def forecast_series(y: np.ndarray, timestamps: pd.Series, horizon: int, season: 
     min_train = max(2 * s + h if s > 1 else h + 8, 24)
     final_start = n - h                      # the untouched final holdout
     room = final_start - min_train
-    k = int(min(max_origins, room // h + 1)) if room >= 0 else 0
+    # k origins at final_start - k*h, ..., final_start - h; the earliest must still leave min_train
+    # observations for the first training slice, or the seasonal candidates are skipped there and
+    # a baseline wins by default (found on a six-year monthly series, 2026-09-20)
+    k = int(min(max_origins, room // h)) if room >= 0 else 0
     if k < 2:
-        raise ValueError(f'at least {min_train + h + h} observations are needed for two selection origins plus a final holdout')
+        raise ValueError(f'at least {min_train + 3 * h} observations are needed for two selection origins plus a final holdout')
     origins = [final_start - j * h for j in range(k, 0, -1)]  # earliest first, all before the holdout
     first = y[:origins[0]]
 

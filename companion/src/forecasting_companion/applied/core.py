@@ -65,8 +65,8 @@ def result(table,**summary):
 def expanding_origins(n,h,min_train,max_origins=5):
     """Origins spaced h apart before an untouched final holdout of h; the engine's rule."""
     final_start=n-h; room=final_start-min_train
-    k=int(min(max_origins,room//h+1)) if room>=0 else 0
-    if k<2: raise ValueError(f'at least {min_train+2*h} observations are needed for two selection origins plus a final holdout')
+    k=int(min(max_origins,room//h)) if room>=0 else 0   # earliest origin keeps min_train observations in the first slice
+    if k<2: raise ValueError(f'at least {min_train+3*h} observations are needed for two selection origins plus a final holdout')
     return [final_start-j*h for j in range(k,0,-1)]
 
 STANDARD_STATUS={'passed','provisional','needs_evidence'}

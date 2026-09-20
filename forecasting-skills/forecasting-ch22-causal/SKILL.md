@@ -26,7 +26,7 @@ timestamp,control,control_2,control_3,treated
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,control,treated[,controls...]`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `intervention, identification, controls, placebos, event_window, horizon, season, frequency, as_of, seed`. Unknown config keys are rejected.
+Exact CLI columns: `timestamp,control,treated[,controls...]`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, controls, event_window, frequency, horizon, identification, intervention, placebos, season, seed`. Unknown config keys are rejected.
 
 The tool computes difference-in-differences, a pre-period OLS counterfactual on all declared controls, and, with two or more controls, a synthetic control with nonnegative weights summing to one fitted on the pre-period only. It then runs placebo-in-space (each control treated in turn against the remaining donors; the p-value is the treated unit's rank on post-effect over pre-RMSE), placebo-in-time (`placebos` pseudo interventions inside the pre period; p is the share at least as large as the estimate), and an event-study table of per-period effects over `event_window` pre periods and all post periods with a pre-trend slope test. Every estimate is conditional on the declared identification; the tool does not decide whether the comparison is defensible.
 

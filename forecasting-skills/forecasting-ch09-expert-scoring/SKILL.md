@@ -25,7 +25,7 @@ E2,0.2,0,0.5
 
 ## Executable interface
 
-Exact CLI columns: `event_id,probability,outcome,baseline`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `No chapter-specific configuration keys`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `event_id,probability,outcome,baseline`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, frequency, horizon, season, seed`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
 
 The scoring adapter requires one resolved outcome per event and uses fixed probability bins. Wilson frequency bounds assume independent events. Preserve unresolved/late forecasts outside this scoring input and report their exclusions in the accompanying analysis.
 

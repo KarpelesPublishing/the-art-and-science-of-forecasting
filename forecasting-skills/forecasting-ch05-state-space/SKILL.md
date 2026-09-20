@@ -26,7 +26,7 @@ timestamp,target
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,target (empty target allowed)`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `model, seasonal, cycle, stochastic_cycle, origins, Q, R, horizon, season, frequency, as_of, seed`. Unknown config keys are rejected.
+Exact CLI columns: `timestamp,target (empty target allowed)`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `Q, R, as_of, cycle, frequency, horizon, model, origins, season, seasonal, seed, stochastic_cycle`. Unknown config keys are rejected.
 
 The tool fits a statsmodels unobserved-components model with the chosen level dynamics, optional seasonal and cycle components, and missing observations handled by the Kalman filter; it returns the filtered level (past data only), the smoothed level (all data, retrospective) with 80 percent bands, and an `horizon`-step forecast with its interval, plus the estimated variances, log likelihood, the timestamps that were missing, a Ljung-Box test on second-half standardised innovations, and a rolling check at `origins` expanding origins against the last observed value. Regression effects and non-Gaussian filters are not attempted.
 
