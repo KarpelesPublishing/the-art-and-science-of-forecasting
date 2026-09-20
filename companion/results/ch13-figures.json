@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-13-01",
+    "chapter": 13,
+    "title": "Retail feature ablation",
+    "caption": "Synthetic retail panel: three chronological folds compare seasonal naive with actual LightGBM models, with and without planned promotion and price features. Lower one-day MAE is better.",
+    "anchor": "Section Three: The Feature Engineering Art",
+    "alt": "Retail feature ablation. Synthetic retail panel: three chronological folds compare seasonal naive with actual LightGBM models, with and without planned promotion and price features. Lower one-day MAE is better.",
+    "seed": 20260931,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch13/fig-13-01.png",
+      "pdf": "figures/ch13/fig-13-01.pdf",
+      "svg": "figures/ch13/fig-13-01.svg"
+    }
+  },
+  {
+    "id": "fig-13-02",
+    "chapter": 13,
+    "title": "Retail held-out demand",
+    "caption": "Synthetic item 3, last fold. Forecasts update their lag inputs after each observed day. Circled observations occur on promotions known in advance.",
+    "anchor": "Section Two: What the M5 Revealed",
+    "alt": "Retail held-out demand. Synthetic item 3, last fold. Forecasts update their lag inputs after each observed day. Circled observations occur on promotions known in advance.",
+    "seed": 20260931,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch13/fig-13-02.png",
+      "pdf": "figures/ch13/fig-13-02.pdf",
+      "svg": "figures/ch13/fig-13-02.svg"
+    }
+  },
+  {
+    "id": "fig-13-03",
+    "chapter": 13,
+    "title": "Explain a LightGBM forecast",
+    "caption": "Native TreeSHAP contributions for one synthetic promotion-day prediction. Contributions plus the base value equal the fitted prediction; attribution is not causation.",
+    "anchor": "Section Four: The Methods in Full",
+    "alt": "Explain a LightGBM forecast. Native TreeSHAP contributions for one synthetic promotion-day prediction. Contributions plus the base value equal the fitted prediction; attribution is not causation.",
+    "seed": 20260931,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch13/fig-13-03.png",
+      "pdf": "figures/ch13/fig-13-03.pdf",
+      "svg": "figures/ch13/fig-13-03.svg"
+    }
+  }
+]

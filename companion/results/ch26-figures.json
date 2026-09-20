@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-26-01",
+    "chapter": 26,
+    "title": "A probability becomes a decision through costs",
+    "caption": "Synthetic events with false-alarm cost two and miss cost eight. The Bayes threshold is 0.2 when probabilities are calibrated and costs fixed.",
+    "anchor": "## Section Three: The Practice",
+    "alt": "A probability becomes a decision through costs. Synthetic events with false-alarm cost two and miss cost eight. The Bayes threshold is 0.2 when probabilities are calibrated and costs fixed.",
+    "seed": 20260944,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch26/fig-26-01.png",
+      "pdf": "figures/ch26/fig-26-01.pdf",
+      "svg": "figures/ch26/fig-26-01.svg"
+    }
+  },
+  {
+    "id": "fig-26-02",
+    "chapter": 26,
+    "title": "A journal makes the comparison repeatable",
+    "caption": "Synthetic forecasts constructed from latent event propensities and independent noise, then scored against generated outcomes in successive batches. The ensemble uses fixed equal weights; this is not a historical timestamped journal.",
+    "anchor": "## Section Four: The Full Methodology",
+    "alt": "A journal makes the comparison repeatable. Synthetic forecasts constructed from latent event propensities and independent noise, then scored against generated outcomes in successive batches. The ensemble uses fixed equal weights; this is not a historical timestamped journal.",
+    "seed": 20260944,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch26/fig-26-02.png",
+      "pdf": "figures/ch26/fig-26-02.pdf",
+      "svg": "figures/ch26/fig-26-02.svg"
+    }
+  },
+  {
+    "id": "fig-26-03",
+    "chapter": 26,
+    "title": "Evaluate the decisions as well as the forecasts",
+    "caption": "The same synthetic ensemble and outcomes under different action thresholds. Costs accumulate even when forecast accuracy appears acceptable.",
+    "anchor": "## Section Five: The Return",
+    "alt": "Evaluate the decisions as well as the forecasts. The same synthetic ensemble and outcomes under different action thresholds. Costs accumulate even when forecast accuracy appears acceptable.",
+    "seed": 20260944,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch26/fig-26-03.png",
+      "pdf": "figures/ch26/fig-26-03.pdf",
+      "svg": "figures/ch26/fig-26-03.svg"
+    }
+  }
+]

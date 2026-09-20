@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-17-01",
+    "chapter": 17,
+    "title": "Uncertainty widens with the horizon",
+    "caption": "Synthetic random-walk predictive quantiles, conditional on independent normal increments with known standard deviation.",
+    "anchor": "## Section Three: What Probabilistic Forecasting Actually Is",
+    "alt": "Uncertainty widens with the horizon. Synthetic random-walk predictive quantiles, conditional on independent normal increments with known standard deviation.",
+    "seed": 20260935,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch17/fig-17-01.png",
+      "pdf": "figures/ch17/fig-17-01.pdf",
+      "svg": "figures/ch17/fig-17-01.svg"
+    }
+  },
+  {
+    "id": "fig-17-02",
+    "chapter": 17,
+    "title": "An interval must earn its stated coverage",
+    "caption": "Twenty thousand synthetic standard-normal outcomes. Narrow distributions under-cover; overly broad distributions over-cover.",
+    "anchor": "## Section Four: The Full Methodology",
+    "alt": "An interval must earn its stated coverage. Twenty thousand synthetic standard-normal outcomes. Narrow distributions under-cover; overly broad distributions over-cover.",
+    "seed": 20260935,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch17/fig-17-02.png",
+      "pdf": "figures/ch17/fig-17-02.pdf",
+      "svg": "figures/ch17/fig-17-02.svg"
+    }
+  },
+  {
+    "id": "fig-17-03",
+    "chapter": 17,
+    "title": "Reward useful width and penalize missed outcomes",
+    "caption": "Synthetic standard-normal outcomes scored at an 80% nominal level. Arbitrarily wide intervals pay a width penalty.",
+    "anchor": "## Section Five: Reader Connection",
+    "alt": "Reward useful width and penalize missed outcomes. Synthetic standard-normal outcomes scored at an 80% nominal level. Arbitrarily wide intervals pay a width penalty.",
+    "seed": 20260935,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch17/fig-17-03.png",
+      "pdf": "figures/ch17/fig-17-03.pdf",
+      "svg": "figures/ch17/fig-17-03.svg"
+    }
+  }
+]

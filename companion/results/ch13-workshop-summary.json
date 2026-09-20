@@ -1,0 +1,104 @@
+{
+  "method": "LightGBM panel model (direct multi-step) with declared covariates",
+  "interpretation": "direct LightGBM: final-holdout MAE 3.677 vs seasonal naive 6.034; validation origins 3. Ablation: dropping calendar changes MAE by +0.627, lags changes MAE by -0.0343, rolling changes MAE by +0.815, covariates changes MAE by +1.9. Contributions explain the model, not intervention effects.",
+  "assumptions": [
+    "Feature timing preserved: every feature is available at the forecast origin",
+    "Known-in-advance covariates are exactly known for the horizon",
+    "Seasonal period 12"
+  ],
+  "not_done": [
+    "Covariates not listed in known_in_advance were lagged one period; future values of known covariates must be supplied by the reader for a live forecast",
+    "No hyperparameter search: fixed LightGBM settings",
+    "Quantile or count objectives not fitted; use chapter 17 for intervals"
+  ],
+  "status": "passed",
+  "strategy": "direct",
+  "features": [
+    "entity",
+    "calendar",
+    "lag1",
+    "lag12",
+    "roll12",
+    "promo",
+    "price"
+  ],
+  "feature_groups": {
+    "calendar": [
+      "entity",
+      "calendar"
+    ],
+    "lags": [
+      "lag1",
+      "lag12"
+    ],
+    "rolling": [
+      "roll12"
+    ],
+    "covariates": [
+      "promo",
+      "price"
+    ]
+  },
+  "covariates": [
+    "promo",
+    "price"
+  ],
+  "known_in_advance": [
+    "promo",
+    "price"
+  ],
+  "validation": [
+    {
+      "origin": "2019-09-01 00:00:00+00:00",
+      "model_mae": 3.120669319953327,
+      "seasonal_naive_mae": 6.73489190670026
+    },
+    {
+      "origin": "2020-04-01 00:00:00+00:00",
+      "model_mae": 2.3306566338241907,
+      "seasonal_naive_mae": 6.499602360005932
+    },
+    {
+      "origin": "2020-11-01 00:00:00+00:00",
+      "model_mae": 1.9812701961010413,
+      "seasonal_naive_mae": 4.9090680678876515
+    }
+  ],
+  "ablation": {
+    "calendar": {
+      "mean_mae": 3.104730080249286,
+      "delta_vs_full": 0.6271980302897662
+    },
+    "lags": {
+      "mean_mae": 2.443222453853206,
+      "delta_vs_full": -0.03430959610631357
+    },
+    "rolling": {
+      "mean_mae": 3.292662421669219,
+      "delta_vs_full": 0.8151303717096994
+    },
+    "covariates": {
+      "mean_mae": 4.376206646800504,
+      "delta_vs_full": 1.898674596840984
+    }
+  },
+  "test_mae": 3.677398870345953,
+  "baseline_mae": 6.033571472131676,
+  "first_explanation": [
+    {
+      "entity": -2.101541159041052,
+      "calendar": 0.8351815831130422,
+      "lag1": -2.920739748121395,
+      "lag12": 1.4753198560613372,
+      "roll12": -2.384090833441262,
+      "promo": -2.265917195633194,
+      "price": 0.0,
+      "base": 60.050261741149846
+    }
+  ],
+  "origins": [
+    "2019-09-01 00:00:00+00:00",
+    "2020-04-01 00:00:00+00:00",
+    "2020-11-01 00:00:00+00:00"
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "fig-27-01",
+    "chapter": 27,
+    "title": "Can one calibration explain several products?",
+    "caption": "Thirty synthetic mature products: one shared scale fitted on 24, six held out. Agreement tests the assumed transferable relationship, not its causal truth.",
+    "anchor": "## Section Four: The Build-Up Problem",
+    "alt": "Can one calibration explain several products?. Thirty synthetic mature products: one shared scale fitted on 24, six held out. Agreement tests the assumed transferable relationship, not its causal truth.",
+    "seed": 20260945,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch27/fig-27-01.png",
+      "pdf": "figures/ch27/fig-27-01.pdf",
+      "svg": "figures/ch27/fig-27-01.svg"
+    }
+  },
+  {
+    "id": "fig-27-02",
+    "chapter": 27,
+    "title": "Build-up changes first-year trial volume",
+    "caption": "Continuous gamma trial rates peak exactly at months 3, 4 and 5. Standard has 80% of the explicit horizon trial total in year one. Areas under the curves give trial counts; the notebook also calculates monthly totals. Awareness/distribution development is represented once.",
+    "anchor": "## Section Four: The Build-Up Problem",
+    "alt": "Build-up changes first-year trial volume. Continuous gamma trial rates peak exactly at months 3, 4 and 5. Standard has 80% of the explicit horizon trial total in year one. Areas under the curves give trial counts; the notebook also calculates monthly totals. Awareness/distribution development is represented once.",
+    "seed": 20260945,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch27/fig-27-02.png",
+      "pdf": "figures/ch27/fig-27-02.pdf",
+      "svg": "figures/ch27/fig-27-02.svg"
+    }
+  },
+  {
+    "id": "fig-27-03",
+    "chapter": 27,
+    "title": "Repeat purchasing changes the volume trajectory",
+    "caption": "Synthetic trial cohorts with an assumed repeat kernel. Equal horizon trial totals need not yield equal 24-month sales: earlier triers have more time to repeat.",
+    "anchor": "## Section Four: The Build-Up Problem",
+    "alt": "Repeat purchasing changes the volume trajectory. Synthetic trial cohorts with an assumed repeat kernel. Equal horizon trial totals need not yield equal 24-month sales: earlier triers have more time to repeat.",
+    "seed": 20260945,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch27/fig-27-03.png",
+      "pdf": "figures/ch27/fig-27-03.pdf",
+      "svg": "figures/ch27/fig-27-03.svg"
+    }
+  },
+  {
+    "id": "fig-27-04",
+    "chapter": 27,
+    "title": "Where the launch forecast is fragile",
+    "caption": "One input moved at a time through the illustrative desk model; bars show the change from the 3.5 million unit central forecast. Distribution, penetration and the evoked-set judgment move the forecast most; media spend moves it least because awareness is near its plateau. Illustrative weights, not measured elasticities.",
+    "anchor": "## Section Four: The Build-Up Problem",
+    "alt": "Where the launch forecast is fragile. One input moved at a time through the illustrative desk model; bars show the change from the 3.5 million unit central forecast. Distribution, penetration and the evoked-set judgment move the forecast most; media spend moves it least because awareness is near its plateau. Illustrative weights, not measured elasticities.",
+    "seed": 20260945,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch27/fig-27-04.png",
+      "pdf": "figures/ch27/fig-27-04.pdf",
+      "svg": "figures/ch27/fig-27-04.svg"
+    }
+  }
+]

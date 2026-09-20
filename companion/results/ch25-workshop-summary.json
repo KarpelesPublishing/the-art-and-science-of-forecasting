@@ -1,0 +1,8 @@
+{
+  "quantiles": {
+    "0.5": 1.4079476180834145,
+    "0.8": null,
+    "0.9": null
+  },
+  "interpretation": "Kaplan\u2013Meier ratios treat incomplete actual durations as right-censored elapsed time. This requires noninformative censoring; abandonment as failure may violate it. Unidentified upper quantiles remain null, never invented."
+}

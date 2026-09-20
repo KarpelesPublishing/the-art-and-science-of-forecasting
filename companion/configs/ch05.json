@@ -1,0 +1,11 @@
+{
+  "source": "Seeded synthetic educational input; not business observations",
+  "units": "illustrative units",
+  "horizon": 12,
+  "season": 12,
+  "seed": 417,
+  "outcome_due": "Declare before issuing a real forecast",
+  "model": "local level",
+  "seasonal": true,
+  "origins": 3
+}

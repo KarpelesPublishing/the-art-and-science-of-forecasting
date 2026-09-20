@@ -1,0 +1,42 @@
+{
+  "method": "Intermittent-demand forecasts, bootstrapped order-up-to policy simulation, N-echelon bullwhip",
+  "interpretation": "Intermittent forecasts MAE: Croston 5.62, SBA 6.23, TSB 5.62. Order-up-to policy at 95% target over a 3-period protection window: cycle service 100%, fill rate 100%, mean on-hand 61.5, mean backlog 0. Bullwhip variance ratios by echelon, local [4.01, 18.3, 72.45] vs shared signal [4.01, 10.11, 19.3].",
+  "assumptions": [
+    "Lead time 2, review period 1",
+    "Demand during protection window bootstrapped from the trailing window",
+    "Unmet demand is backordered, not lost"
+  ],
+  "not_done": [
+    "Lead time treated as fixed; no supplier variability or capacity limits",
+    "Demand treated as uncensored sales; stockouts in history are not corrected",
+    "Costs are per period on-hand and backlog only"
+  ],
+  "status": "passed",
+  "mae": {
+    "Croston": 5.621972528617353,
+    "SBA": 6.23002183629881,
+    "TSB": 5.621922257881865
+  },
+  "lead_time": 2,
+  "review_period": 1,
+  "service_level": 0.95,
+  "achieved_cycle_service": 1.0,
+  "fill_rate": 1.0,
+  "mean_on_hand": 61.47883985417977,
+  "mean_backlog": 0.0,
+  "mean_cost": 184.43651956253933,
+  "bullwhip": {
+    "echelons": 3,
+    "local_variance_ratios": [
+      4.009506592725595,
+      18.297490803256906,
+      72.45344197133589
+    ],
+    "shared_variance_ratios": [
+      4.009506592725595,
+      10.109573856428305,
+      19.30020179110813
+    ]
+  },
+  "training_quantile_order": 48.739606526232656
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-14-01",
+    "chapter": 14,
+    "title": "Global transfer to unseen entities",
+    "caption": "Actual CPU-trained Gaussian autoregressive MLP versus a local seasonal-naive baseline on eight synthetic entities absent from training. Both receive 14 recent observations.",
+    "anchor": "The Catalog and the Cold Start",
+    "alt": "Global transfer to unseen entities. Actual CPU-trained Gaussian autoregressive MLP versus a local seasonal-naive baseline on eight synthetic entities absent from training. Both receive 14 recent observations.",
+    "seed": 20260932,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch14/fig-14-01.png",
+      "pdf": "figures/ch14/fig-14-01.pdf",
+      "svg": "figures/ch14/fig-14-01.svg"
+    }
+  },
+  {
+    "id": "fig-14-02",
+    "chapter": 14,
+    "title": "Autoregressive predictive paths",
+    "caption": "Synthetic entity 32 was never used for weight updates. Four hundred recursively sampled Gaussian paths yield marginal 10th\u201390th percentile bands, not simultaneous path coverage.",
+    "anchor": "Section Three: The Probabilistic Imperative",
+    "alt": "Autoregressive predictive paths. Synthetic entity 32 was never used for weight updates. Four hundred recursively sampled Gaussian paths yield marginal 10th\u201390th percentile bands, not simultaneous path coverage.",
+    "seed": 20260932,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch14/fig-14-02.png",
+      "pdf": "figures/ch14/fig-14-02.pdf",
+      "svg": "figures/ch14/fig-14-02.svg"
+    }
+  },
+  {
+    "id": "fig-14-03",
+    "chapter": 14,
+    "title": "Neural forecast coverage by horizon",
+    "caption": "Empirical marginal coverage from eight unseen synthetic entities at three origins. Small, dependent samples make this a diagnostic rather than a calibration guarantee.",
+    "anchor": "Section Five: The Distribution and the Decision",
+    "alt": "Neural forecast coverage by horizon. Empirical marginal coverage from eight unseen synthetic entities at three origins. Small, dependent samples make this a diagnostic rather than a calibration guarantee.",
+    "seed": 20260932,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch14/fig-14-03.png",
+      "pdf": "figures/ch14/fig-14-03.pdf",
+      "svg": "figures/ch14/fig-14-03.svg"
+    }
+  }
+]

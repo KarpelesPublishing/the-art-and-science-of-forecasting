@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-18-01",
+    "chapter": 18,
+    "title": "The forecasts do not add up",
+    "caption": "Illustrative forecasts: the independently forecast national total differs from the sum of stores.",
+    "anchor": "## Section One: The Forecasts That Didn't Add Up",
+    "alt": "The forecasts do not add up. Illustrative forecasts: the independently forecast national total differs from the sum of stores.",
+    "seed": 20260936,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch18/fig-18-01.png",
+      "pdf": "figures/ch18/fig-18-01.pdf",
+      "svg": "figures/ch18/fig-18-01.svg"
+    }
+  },
+  {
+    "id": "fig-18-02",
+    "chapter": 18,
+    "title": "Reconciliation changes all levels",
+    "caption": "Synthetic example. MinT uses the estimated error covariance to project the base forecasts onto coherent totals.",
+    "anchor": "## Section Three: The MinT Solution",
+    "alt": "Reconciliation changes all levels. Synthetic example. MinT uses the estimated error covariance to project the base forecasts onto coherent totals.",
+    "seed": 20260936,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch18/fig-18-02.png",
+      "pdf": "figures/ch18/fig-18-02.pdf",
+      "svg": "figures/ch18/fig-18-02.svg"
+    }
+  },
+  {
+    "id": "fig-18-03",
+    "chapter": 18,
+    "title": "Accuracy across the hierarchy",
+    "caption": "Independent synthetic evaluation cases. Reconciliation guarantees coherence, while these errors measure accuracy under the specified error process.",
+    "anchor": "## Section Four: The Full Methodology",
+    "alt": "Accuracy across the hierarchy. Independent synthetic evaluation cases. Reconciliation guarantees coherence, while these errors measure accuracy under the specified error process.",
+    "seed": 20260936,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch18/fig-18-03.png",
+      "pdf": "figures/ch18/fig-18-03.pdf",
+      "svg": "figures/ch18/fig-18-03.svg"
+    }
+  }
+]

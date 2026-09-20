@@ -1,0 +1,9 @@
+{
+  "source": "Seeded synthetic educational input; not business observations",
+  "units": "binary event probabilities",
+  "horizon": 12,
+  "season": 12,
+  "seed": 417,
+  "outcome_due": "Declare before issuing a real forecast",
+  "as_of": "2026-09-18T00:00:00+00:00"
+}

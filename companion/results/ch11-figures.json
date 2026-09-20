@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-11-01",
+    "chapter": 11,
+    "title": "Individual error can coexist with a good aggregate",
+    "caption": "Eight hundred synthetic weight estimates centered on 1,200 lb. This does not reproduce the historical ox competition.",
+    "anchor": "## Surowiecki's Framework",
+    "alt": "Individual error can coexist with a good aggregate. Eight hundred synthetic weight estimates centered on 1,200 lb. This does not reproduce the historical ox competition.",
+    "seed": 20260929,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch11/fig-11-01.png",
+      "pdf": "figures/ch11/fig-11-01.pdf",
+      "svg": "figures/ch11/fig-11-01.svg"
+    }
+  },
+  {
+    "id": "fig-11-02",
+    "chapter": 11,
+    "title": "Common error sets a floor",
+    "caption": "Repeated synthetic panels with correlated individual errors. Larger groups cannot eliminate a common component.",
+    "anchor": "## The Full Machinery",
+    "alt": "Common error sets a floor. Repeated synthetic panels with correlated individual errors. Larger groups cannot eliminate a common component.",
+    "seed": 20260929,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch11/fig-11-02.png",
+      "pdf": "figures/ch11/fig-11-02.pdf",
+      "svg": "figures/ch11/fig-11-02.svg"
+    }
+  },
+  {
+    "id": "fig-11-03",
+    "chapter": 11,
+    "title": "Robustness depends on the contamination",
+    "caption": "Synthetic panels with upward outliers. The 20% trimmed mean removes each tail; its robustness is limited as contamination increases.",
+    "anchor": "## The Room Your Organization Is In",
+    "alt": "Robustness depends on the contamination. Synthetic panels with upward outliers. The 20% trimmed mean removes each tail; its robustness is limited as contamination increases.",
+    "seed": 20260929,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch11/fig-11-03.png",
+      "pdf": "figures/ch11/fig-11-03.pdf",
+      "svg": "figures/ch11/fig-11-03.svg"
+    }
+  }
+]

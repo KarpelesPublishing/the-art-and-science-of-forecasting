@@ -1,0 +1,61 @@
+{
+  "method": "Reporting-triangle nowcast with estimated delay law and SEIR forecast",
+  "interpretation": "Delay law estimated from 41 cohorts aged 5+: [0.202, 0.305, 0.243, 0.147, 0.103, 0.0]. 5 event dates are still incomplete at the cutoff; their nowcasts carry 90% bounds from the completeness estimate. Archived nowcast MAE by age: {0: 12.167340077270179, 1: 7.373964149280048, 2: 3.5447154471544713, 3: 2.790977803482041, 4: 0.0}. SEIR mean RMSE 166 vs persistence 19.1 over 2 origins (R0 estimates [5.73, 1.71]). Nowcasting answers what is happening now; the SEIR block answers what may happen next; do not read one as proof of the other.",
+  "assumptions": [
+    "Delay law stable across cohorts",
+    "Reports at the cutoff are complete for their lag",
+    "Eventual totals follow a negative binomial given the reported count"
+  ],
+  "not_done": [],
+  "status": "passed",
+  "delay_law": {
+    "probabilities": [
+      0.20210166177908112,
+      0.30498533724340177,
+      0.2429130009775171,
+      0.1466275659824047,
+      0.10337243401759531,
+      0.0
+    ],
+    "source": "estimated from 41 cohorts aged 5+",
+    "cohorts": 41,
+    "mature_age": 5
+  },
+  "archived_evaluation": {
+    "mae_by_age": {
+      "0": 12.167340077270179,
+      "1": 7.373964149280048,
+      "2": 3.5447154471544713,
+      "3": 2.790977803482041,
+      "4": 0.0
+    },
+    "cohorts": 41,
+    "note": "In-sample where the delay law was estimated from the same cohorts"
+  },
+  "seir": {
+    "origins": [
+      {
+        "origin_index": 17,
+        "beta": 0.5730520090374756,
+        "sigma": 0.05000000000000001,
+        "R0": 5.730520090374755,
+        "rmse": 203.8801171812222,
+        "persistence_rmse": 20.489834878137337
+      },
+      {
+        "origin_index": 29,
+        "beta": 0.17088661477295092,
+        "sigma": 0.9999999999999928,
+        "R0": 1.708866147729509,
+        "rmse": 128.0489032757332,
+        "persistence_rmse": 17.771700350088434
+      }
+    ],
+    "gamma": 0.1,
+    "sigma_fixed": null,
+    "mean_rmse": 165.9645102284777,
+    "mean_persistence_rmse": 19.130767614112884,
+    "note": "Fitted on delay-adjusted mature incidence up to each origin; conditional scenario, behaviour and reporting changes are not modelled"
+  },
+  "as_of": "2020-02-15 00:00:00+00:00"
+}

@@ -1,0 +1,7 @@
+{
+  "threshold": 0.2,
+  "brier": 0.18447641287879485,
+  "mean_loss": 0.84,
+  "best_constant_policy_hindsight_cost": 1.07,
+  "interpretation": "The threshold is Bayes-optimal only for calibrated probabilities and the stated loss structure. The best constant-policy cost shown is a hindsight diagnostic, not a preselected baseline."
+}

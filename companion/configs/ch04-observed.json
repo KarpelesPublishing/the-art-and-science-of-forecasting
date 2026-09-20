@@ -1,0 +1,8 @@
+{
+  "source": "Public-domain statsmodels El Ni\u00f1o observations, 1950\u20132010; historical revised snapshot",
+  "units": "degrees Celsius",
+  "horizon": 12,
+  "season": 12,
+  "seed": 417,
+  "outcome_due": "Declare before issuing a real forecast"
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "fig-02-01",
+    "chapter": 2,
+    "title": "Beliefs change in proportion to evidence",
+    "caption": "A synthetic ten-trial sample with seven successes updates a Beta(2,2) prior. Both curves are normalized probability densities.",
+    "anchor": "## Part One: The Essay in the Drawer",
+    "alt": "Beliefs change in proportion to evidence. A synthetic ten-trial sample with seven successes updates a Beta(2,2) prior. Both curves are normalized probability densities.",
+    "seed": 20260920,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch02/fig-02-01.png",
+      "pdf": "figures/ch02/fig-02-01.pdf",
+      "svg": "figures/ch02/fig-02-01.svg"
+    }
+  },
+  {
+    "id": "fig-02-02",
+    "chapter": 2,
+    "title": "Extremes contain temporary noise",
+    "caption": "Synthetic measurements share an underlying ability but have independent noise. Extreme first measurements predict less extreme second measurements.",
+    "anchor": "## Part Three: Taller Parents, Less Tall Children",
+    "alt": "Extremes contain temporary noise. Synthetic measurements share an underlying ability but have independent noise. Extreme first measurements predict less extreme second measurements.",
+    "seed": 20260920,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch02/fig-02-02.png",
+      "pdf": "figures/ch02/fig-02-02.pdf",
+      "svg": "figures/ch02/fig-02-02.svg"
+    }
+  },
+  {
+    "id": "fig-02-03",
+    "chapter": 2,
+    "title": "The sample contains only returning aircraft",
+    "caption": "Conceptual illustration, not historical damage records. Bullet holes show damage that returning aircraft survived. Sparse hits in critical areas can signal missing aircraft, not safety, when comparable exposure and damage-dependent survival are plausible. The next figure demonstrates the selection mechanism with synthetic data.",
+    "anchor": "### The Planes That Didn't Come Back",
+    "alt": "The sample contains only returning aircraft. Conceptual illustration, not historical damage records. Bullet holes show damage that returning aircraft survived. Sparse hits in critical areas can signal missing aircraft, not safety, when comparable exposure and damage-dependent survival are plausible. The next figure demonstrates the selection mechanism with synthetic data.",
+    "seed": 20260920,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch02/fig-02-03.png",
+      "pdf": "figures/ch02/fig-02-03.pdf",
+      "svg": "figures/ch02/fig-02-03.svg"
+    }
+  },
+  {
+    "id": "fig-02-04",
+    "chapter": 2,
+    "title": "Missing aircraft change the inference",
+    "caption": "Synthetic damage and survival process, not wartime records. Rare engine damage among survivors conceals its high fatality in the simulation. Solid bars include all aircraft; hatched bars include survivors only.",
+    "anchor": "### The Planes That Didn't Come Back",
+    "alt": "Missing aircraft change the inference. Synthetic damage and survival process, not wartime records. Rare engine damage among survivors conceals its high fatality in the simulation. Solid bars include all aircraft; hatched bars include survivors only.",
+    "seed": 20260920,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch02/fig-02-04.png",
+      "pdf": "figures/ch02/fig-02-04.pdf",
+      "svg": "figures/ch02/fig-02-04.svg"
+    }
+  }
+]

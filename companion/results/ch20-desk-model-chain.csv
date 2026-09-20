@@ -1,0 +1,17 @@
+step,value,source
+Households (MM),118.0,client
+x category penetration,0.53,client
+x probability of trial,0.233,detector
+x awareness,0.24783665713414854,awareness model
+x distribution,0.63,client
+x triers who try in year one,0.925959712,build speed
+x units at trial,1.2149999999999999,derived from repeat units
+= trial units (MM),2.5596952298464117,
+repeat occasions per year minus one,3.666666666666666,observed frequency
+x share of choice,0.25,override
+x dynamics ratio,0.33052267376525035,build speed
+x repeat units per purchase,1.43,survey
+= repeat units (MM),0.9857541722044614,
+= total units (MM),3.545449402050873,
+x price,3.99,options
+= dollars (MM),14.146343114182985,

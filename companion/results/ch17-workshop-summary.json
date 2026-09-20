@@ -1,0 +1,108 @@
+{
+  "method": "Split and adaptive conformal intervals around an engine-selected model",
+  "interpretation": "ETS(auto) intervals: split-conformal coverage 71% (target 80%, mean width 5.29); adaptive coverage 77% (mean width 6.42). the model's own nominal 80% band covered 75% on the same test block. Lower interval score is better; judge width and coverage together.",
+  "assumptions": [
+    "Calibration residuals exchangeable with test residuals for the split guarantee",
+    "Adaptive update with gamma 0.05 targets long-run coverage 0.80",
+    "Specification frozen before the calibration block"
+  ],
+  "not_done": [
+    "Conditional (per-time) coverage is not guaranteed; the split guarantee is marginal under exchangeability, the adaptive guarantee is long-run"
+  ],
+  "status": "passed",
+  "selected": "ETS(auto)",
+  "alpha": 0.2,
+  "gamma": 0.05,
+  "calibration_rows": {
+    "1": 36,
+    "2": 35,
+    "3": 34,
+    "4": 33,
+    "5": 32,
+    "6": 31,
+    "7": 30,
+    "8": 29,
+    "9": 28,
+    "10": 27,
+    "11": 26,
+    "12": 25
+  },
+  "test_rows": 222,
+  "radius": {
+    "1": 2.6637425086457256,
+    "2": 2.654079903273164,
+    "3": 2.654781643076099,
+    "4": 2.7102692388339733,
+    "5": 2.628153418686715,
+    "6": 2.577308397752603,
+    "7": 2.6349333566064033,
+    "8": 2.6866565218049345,
+    "9": 2.625446816556135,
+    "10": 2.585527961968239,
+    "11": 2.6128032415850413,
+    "12": 2.6434641575838143
+  },
+  "coverage": {
+    "split": 0.7117117117117117,
+    "adaptive": 0.7657657657657657,
+    "model_nominal_80": 0.7477477477477478
+  },
+  "mean_width": {
+    "split": 5.285249957583807,
+    "adaptive": 6.4225597084475385,
+    "model_nominal_80": 5.757616965833915
+  },
+  "interval_score": {
+    "split": 8.00245191807805,
+    "adaptive": 8.191128771265827
+  },
+  "pinball": {
+    "split": {
+      "lower": 0.3806795149198526,
+      "upper": 0.41956567688795227
+    },
+    "adaptive": {
+      "lower": 0.3760400894810073,
+      "upper": 0.44307278764557534
+    }
+  },
+  "by_horizon": {
+    "split": {
+      "1": 0.8333333333333334,
+      "2": 0.782608695652174,
+      "3": 0.7272727272727273,
+      "4": 0.6190476190476191,
+      "5": 0.6,
+      "6": 0.6842105263157895,
+      "7": 0.6666666666666666,
+      "8": 0.6470588235294118,
+      "9": 0.75,
+      "10": 0.8,
+      "11": 0.7857142857142857,
+      "12": 0.6153846153846154
+    },
+    "adaptive": {
+      "1": 0.7916666666666666,
+      "2": 0.7391304347826086,
+      "3": 0.7272727272727273,
+      "4": 0.7619047619047619,
+      "5": 0.75,
+      "6": 0.7368421052631579,
+      "7": 0.7777777777777778,
+      "8": 0.7647058823529411,
+      "9": 0.8125,
+      "10": 0.8,
+      "11": 0.7857142857142857,
+      "12": 0.7692307692307693
+    }
+  },
+  "guarantee": "split: marginal coverage >= 1-alpha under exchangeability; adaptive: long-run empirical coverage -> 1-alpha under the update",
+  "calibration_block": [
+    "2017-01-01 00:00:00+00:00",
+    "2019-12-01 00:00:00+00:00"
+  ],
+  "test_block": [
+    "2020-01-01 00:00:00+00:00",
+    "2021-12-01 00:00:00+00:00"
+  ]
+}

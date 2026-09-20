@@ -1,0 +1,13 @@
+{
+  "forecast_value_added": {
+    "0": 3.3586119631066396,
+    "1": 3.6763852109407367,
+    "2": 2.792897763287286,
+    "3": 1.9982828277775297,
+    "4": 7.165602001085887,
+    "5": 2.2072963217659094,
+    "6": 3.0652968960312705,
+    "7": 6.4914362560037375
+  },
+  "interpretation": "Positive FVA means the final median improved on the initial median for this question. Convergence alone is not accuracy; check whether panel membership changed."
+}

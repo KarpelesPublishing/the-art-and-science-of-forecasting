@@ -1,0 +1,8 @@
+{
+  "method": "Beta-binomial posterior",
+  "successes": 21.0,
+  "failures": 11.0,
+  "posterior_alpha": 23.0,
+  "posterior_beta": 13.0,
+  "interpretation": "The middle row uses the declared prior; other rows vary its strength while preserving its mean. Credible intervals assume exchangeable Bernoulli trials and no selection bias."
+}

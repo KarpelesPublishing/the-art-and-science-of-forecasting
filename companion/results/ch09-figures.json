@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-09-01",
+    "chapter": 9,
+    "title": "Calibration requires repeated outcomes",
+    "caption": "Reliability curves from 6,000 synthetic events. Only bins with more than twenty observations are shown.",
+    "anchor": "### Calibration, Accuracy, and Resolution",
+    "alt": "Calibration requires repeated outcomes. Reliability curves from 6,000 synthetic events. Only bins with more than twenty observations are shown.",
+    "seed": 20260927,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch09/fig-09-01.png",
+      "pdf": "figures/ch09/fig-09-01.pdf",
+      "svg": "figures/ch09/fig-09-01.svg"
+    }
+  },
+  {
+    "id": "fig-09-02",
+    "chapter": 9,
+    "title": "Keep score on the same questions",
+    "caption": "Synthetic events scored with mean squared probability error. The constant reference uses the known generating base rate of one third.",
+    "anchor": "### The Brier Score",
+    "alt": "Keep score on the same questions. Synthetic events scored with mean squared probability error. The constant reference uses the known generating base rate of one third.",
+    "seed": 20260927,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch09/fig-09-02.png",
+      "pdf": "figures/ch09/fig-09-02.pdf",
+      "svg": "figures/ch09/fig-09-02.svg"
+    }
+  },
+  {
+    "id": "fig-09-03",
+    "chapter": 9,
+    "title": "Confidence is a testable claim",
+    "caption": "Synthetic overconfident forecasts grouped by confidence, with event counts. A single confident success proves little.",
+    "anchor": "### Overconfidence Revisited",
+    "alt": "Confidence is a testable claim. Synthetic overconfident forecasts grouped by confidence, with event counts. A single confident success proves little.",
+    "seed": 20260927,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch09/fig-09-03.png",
+      "pdf": "figures/ch09/fig-09-03.pdf",
+      "svg": "figures/ch09/fig-09-03.svg"
+    }
+  }
+]

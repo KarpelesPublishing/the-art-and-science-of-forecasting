@@ -1,0 +1,51 @@
+{
+  "method": "UnobservedComponents state-space model",
+  "interpretation": "local level + seasonal(12) fitted with 5 missing observations handled by the filter. Rolling check over 3 origins: model MAE 1.93 vs last-value 6.695. Ljung-Box p on second-half innovations 0.33. Smoothed states use later observations and are retrospective; filtered states and forecasts use only the past.",
+  "assumptions": [
+    "Gaussian state and measurement noise",
+    "local level dynamics, deterministic-period seasonality",
+    "Missing values are missing at random"
+  ],
+  "not_done": [
+    "No regression effects or exogenous inputs",
+    "Nonlinear or non-Gaussian filtering not attempted"
+  ],
+  "status": "passed",
+  "model": "local level",
+  "seasonal": true,
+  "cycle": false,
+  "params": {
+    "sigma2.irregular": 4.103879912175733,
+    "sigma2.level": 0.19087213850251014,
+    "sigma2.seasonal": 3.0021965331864165e-10
+  },
+  "llf": -297.4180909624539,
+  "missing_count": 5,
+  "missing_timestamps": [
+    "2011-09-01 00:00:00+00:00",
+    "2011-10-01 00:00:00+00:00",
+    "2014-10-01 00:00:00+00:00",
+    "2017-07-01 00:00:00+00:00",
+    "2020-01-01 00:00:00+00:00"
+  ],
+  "ljung_box_p": 0.3277174880819238,
+  "validation": [
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "model_mae": 1.5153716865406601,
+      "naive_mae": 6.765015340468126
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "model_mae": 2.7875850227067343,
+      "naive_mae": 7.230018275669022
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "model_mae": 1.4880056999664335,
+      "naive_mae": 6.0904023313751425
+    }
+  ],
+  "test_mae": 1.930320803071276,
+  "horizon": 12
+}

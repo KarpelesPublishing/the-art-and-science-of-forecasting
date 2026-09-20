@@ -1,0 +1,13 @@
+{
+  "source": "Seeded synthetic educational input; not business observations",
+  "units": "cumulative unique adopters",
+  "horizon": 12,
+  "season": 12,
+  "seed": 417,
+  "outcome_due": "Declare before issuing a real forecast",
+  "ceilings": [
+    110000,
+    150000,
+    200000
+  ]
+}

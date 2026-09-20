@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-19-01",
+    "chapter": 19,
+    "title": "Adoption accumulates toward a ceiling",
+    "caption": "Synthetic Bass curve with p=0.025/year, q=0.35/year and a 100,000-adopter ceiling. Parameters are rates, not population fractions.",
+    "anchor": "## Section Two: The Pre-Launch Problem",
+    "alt": "Adoption accumulates toward a ceiling. Synthetic Bass curve with p=0.025/year, q=0.35/year and a 100,000-adopter ceiling. Parameters are rates, not population fractions.",
+    "seed": 20260937,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch19/fig-19-01.png",
+      "pdf": "figures/ch19/fig-19-01.pdf",
+      "svg": "figures/ch19/fig-19-01.svg"
+    }
+  },
+  {
+    "id": "fig-19-02",
+    "chapter": 19,
+    "title": "The adoption rate peaks before saturation",
+    "caption": "Derivative of the synthetic cumulative curve. The interior peak formula applies when q is greater than p; the ceiling scales volume, not peak timing.",
+    "anchor": "## Section Three: From Television to TikTok",
+    "alt": "The adoption rate peaks before saturation. Derivative of the synthetic cumulative curve. The interior peak formula applies when q is greater than p; the ceiling scales volume, not peak timing.",
+    "seed": 20260937,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch19/fig-19-02.png",
+      "pdf": "figures/ch19/fig-19-02.pdf",
+      "svg": "figures/ch19/fig-19-02.svg"
+    }
+  },
+  {
+    "id": "fig-19-03",
+    "chapter": 19,
+    "title": "Early fits can hide ceiling uncertainty",
+    "caption": "Synthetic five-point calibration with three assumed market ceilings. These are sensitivity scenarios, not a calibrated prediction band.",
+    "anchor": "## Section Four: The Full Methodology",
+    "alt": "Early fits can hide ceiling uncertainty. Synthetic five-point calibration with three assumed market ceilings. These are sensitivity scenarios, not a calibrated prediction band.",
+    "seed": 20260937,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch19/fig-19-03.png",
+      "pdf": "figures/ch19/fig-19-03.pdf",
+      "svg": "figures/ch19/fig-19-03.svg"
+    }
+  }
+]

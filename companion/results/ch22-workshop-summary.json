@@ -1,0 +1,305 @@
+{
+  "method": "DiD, OLS counterfactual, synthetic control, placebo and event-study checks",
+  "interpretation": "DiD 9.959; OLS counterfactual post-mean effect 7.276 (pre RMSE 0.9782); synthetic control effect 38.76 with weights {'control': 0.3333333333333333, 'control_2': 0.3333333333333333, 'control_3': 0.3333333333333333}; placebo-in-space p 0.25; placebo-in-time p 0.00. Pre-trend slope p 0.42. Identification: Synthetic controlled generator; treated-only shock absent by construction. These are conditional counterfactual calculations, not automatic causal identification.",
+  "assumptions": [
+    "Controls unaffected by the intervention",
+    "Pre-period relationship would have continued untreated",
+    "No concurrent treated-only shocks",
+    "Intervention date declared before estimation"
+  ],
+  "not_done": [],
+  "status": "passed",
+  "did": 9.959271337294581,
+  "post_mean_effect": 7.275508017739059,
+  "pre_rmse": 0.9782480778881705,
+  "sc_weights": {
+    "control": 0.3333333333333333,
+    "control_2": 0.3333333333333333,
+    "control_3": 0.3333333333333333
+  },
+  "sc_post_mean_effect": 38.76151336617633,
+  "sc_pre_rmse": 28.861379836714676,
+  "placebo_space": {
+    "ratios": [
+      1.1282001082213249,
+      0.68746789744759,
+      1.078218467808434
+    ],
+    "actual_ratio": 1.3430235694021688,
+    "p_value": 0.25,
+    "note": "Ratio of post effect to pre RMSE; p is the rank of the treated unit among donors treated in turn"
+  },
+  "placebo_time": {
+    "effects_summary": {
+      "mean": -0.294857515378416,
+      "sd": 0.49510741819666043,
+      "q05": -1.033129166800487,
+      "q95": 0.4588007245922091
+    },
+    "p_value": 0.0,
+    "draws": 86
+  },
+  "event_study": [
+    {
+      "relative_period": -6,
+      "ols_effect": -1.8334330901626004,
+      "sc_effect": 30.49388726080241
+    },
+    {
+      "relative_period": -5,
+      "ols_effect": -0.09044288968476621,
+      "sc_effect": 30.872143039750483
+    },
+    {
+      "relative_period": -4,
+      "ols_effect": 1.3206965445794197,
+      "sc_effect": 31.83999886602595
+    },
+    {
+      "relative_period": -3,
+      "ols_effect": -1.3633917571695804,
+      "sc_effect": 27.742559954343974
+    },
+    {
+      "relative_period": -2,
+      "ols_effect": 0.4638141728021026,
+      "sc_effect": 32.58230070586663
+    },
+    {
+      "relative_period": -1,
+      "ols_effect": 0.16448381088856934,
+      "sc_effect": 31.277998340103395
+    },
+    {
+      "relative_period": 0,
+      "ols_effect": 6.98646675869216,
+      "sc_effect": 37.708004615444864
+    },
+    {
+      "relative_period": 1,
+      "ols_effect": 7.3749136766613645,
+      "sc_effect": 37.98421306541829
+    },
+    {
+      "relative_period": 2,
+      "ols_effect": 7.161859764330643,
+      "sc_effect": 38.76410884420169
+    },
+    {
+      "relative_period": 3,
+      "ols_effect": 8.749977461282057,
+      "sc_effect": 40.18613483044078
+    },
+    {
+      "relative_period": 4,
+      "ols_effect": 7.379589388485414,
+      "sc_effect": 38.80740443219693
+    },
+    {
+      "relative_period": 5,
+      "ols_effect": 6.493999776801132,
+      "sc_effect": 38.07971570051916
+    },
+    {
+      "relative_period": 6,
+      "ols_effect": 7.2811531874096715,
+      "sc_effect": 39.22203825064223
+    },
+    {
+      "relative_period": 7,
+      "ols_effect": 6.251894299266027,
+      "sc_effect": 35.216533013739465
+    },
+    {
+      "relative_period": 8,
+      "ols_effect": 8.54638355635521,
+      "sc_effect": 37.98374832320164
+    },
+    {
+      "relative_period": 9,
+      "ols_effect": 5.632997313508753,
+      "sc_effect": 36.3771919604342
+    },
+    {
+      "relative_period": 10,
+      "ols_effect": 6.300319457095398,
+      "sc_effect": 34.90141299564549
+    },
+    {
+      "relative_period": 11,
+      "ols_effect": 5.858498102805925,
+      "sc_effect": 36.204208109365055
+    },
+    {
+      "relative_period": 12,
+      "ols_effect": 7.115909077003636,
+      "sc_effect": 38.09133111709791
+    },
+    {
+      "relative_period": 13,
+      "ols_effect": 7.098847015415615,
+      "sc_effect": 37.844543502582894
+    },
+    {
+      "relative_period": 14,
+      "ols_effect": 5.6450832660096495,
+      "sc_effect": 35.386270574233265
+    },
+    {
+      "relative_period": 15,
+      "ols_effect": 6.873664750652438,
+      "sc_effect": 38.152876067501026
+    },
+    {
+      "relative_period": 16,
+      "ols_effect": 6.095852001885845,
+      "sc_effect": 37.05695016568106
+    },
+    {
+      "relative_period": 17,
+      "ols_effect": 7.036781818368922,
+      "sc_effect": 38.183649882809505
+    },
+    {
+      "relative_period": 18,
+      "ols_effect": 9.62730383050868,
+      "sc_effect": 40.83466524177527
+    },
+    {
+      "relative_period": 19,
+      "ols_effect": 6.25153049503885,
+      "sc_effect": 38.15931900811823
+    },
+    {
+      "relative_period": 20,
+      "ols_effect": 8.558572231821927,
+      "sc_effect": 42.39155146809222
+    },
+    {
+      "relative_period": 21,
+      "ols_effect": 6.6788732647954845,
+      "sc_effect": 38.71541141458599
+    },
+    {
+      "relative_period": 22,
+      "ols_effect": 8.525434691644179,
+      "sc_effect": 41.278942955142654
+    },
+    {
+      "relative_period": 23,
+      "ols_effect": 8.053435618386175,
+      "sc_effect": 37.63023644496104
+    },
+    {
+      "relative_period": 24,
+      "ols_effect": 7.332605012956023,
+      "sc_effect": 40.720170963649366
+    },
+    {
+      "relative_period": 25,
+      "ols_effect": 8.721562226670741,
+      "sc_effect": 39.726353453804066
+    },
+    {
+      "relative_period": 26,
+      "ols_effect": 7.729281478118693,
+      "sc_effect": 37.8558636572094
+    },
+    {
+      "relative_period": 27,
+      "ols_effect": 7.00802398184355,
+      "sc_effect": 40.879859350725496
+    },
+    {
+      "relative_period": 28,
+      "ols_effect": 8.415715600732895,
+      "sc_effect": 41.27800904306814
+    },
+    {
+      "relative_period": 29,
+      "ols_effect": 7.943407804485432,
+      "sc_effect": 41.21296567337957
+    },
+    {
+      "relative_period": 30,
+      "ols_effect": 7.779718567630397,
+      "sc_effect": 40.0481002200374
+    },
+    {
+      "relative_period": 31,
+      "ols_effect": 5.98671211979314,
+      "sc_effect": 37.88613116939089
+    },
+    {
+      "relative_period": 32,
+      "ols_effect": 6.60432157647999,
+      "sc_effect": 39.53090396472055
+    },
+    {
+      "relative_period": 33,
+      "ols_effect": 7.964959366026719,
+      "sc_effect": 39.493811946703076
+    },
+    {
+      "relative_period": 34,
+      "ols_effect": 7.708897165598287,
+      "sc_effect": 40.0391589492836
+    },
+    {
+      "relative_period": 35,
+      "ols_effect": 8.368773961272481,
+      "sc_effect": 39.54986954453436
+    },
+    {
+      "relative_period": 36,
+      "ols_effect": 6.164410257904223,
+      "sc_effect": 39.153695288578376
+    },
+    {
+      "relative_period": 37,
+      "ols_effect": 6.938745559988504,
+      "sc_effect": 39.0930808225682
+    },
+    {
+      "relative_period": 38,
+      "ols_effect": 6.683369203708708,
+      "sc_effect": 37.60297524263319
+    },
+    {
+      "relative_period": 39,
+      "ols_effect": 7.400078017760691,
+      "sc_effect": 40.04496235759518
+    },
+    {
+      "relative_period": 40,
+      "ols_effect": 8.517226790889055,
+      "sc_effect": 39.00323427410848
+    },
+    {
+      "relative_period": 41,
+      "ols_effect": 8.052269908624126,
+      "sc_effect": 40.128624584511954
+    },
+    {
+      "relative_period": 42,
+      "ols_effect": 6.256200982625529,
+      "sc_effect": 38.376980559459994
+    },
+    {
+      "relative_period": 43,
+      "ols_effect": 6.966732393184358,
+      "sc_effect": 38.72137506196614
+    }
+  ],
+  "pretrend": {
+    "slope": 0.2562362111704987,
+    "p_value": 0.42247671573133905,
+    "flag": false
+  },
+  "identification": "Synthetic controlled generator; treated-only shock absent by construction",
+  "controls": [
+    "control",
+    "control_2",
+    "control_3"
+  ]
+}

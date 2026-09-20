@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-07-01",
+    "chapter": 7,
+    "title": "A distribution is more useful than one budget",
+    "caption": "Independent synthetic lognormal cost components. Quantiles describe this assumed model, not empirical project risk.",
+    "anchor": "## Part Two: Beyond the Weapons Lab",
+    "alt": "A distribution is more useful than one budget. Independent synthetic lognormal cost components. Quantiles describe this assumed model, not empirical project risk.",
+    "seed": 20260925,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch07/fig-07-01.png",
+      "pdf": "figures/ch07/fig-07-01.pdf",
+      "svg": "figures/ch07/fig-07-01.svg"
+    }
+  },
+  {
+    "id": "fig-07-02",
+    "chapter": 7,
+    "title": "The price of another decimal place",
+    "caption": "Repeated Monte Carlo estimates of a standard normal mean. More simulation cannot repair a wrong data-generating model.",
+    "anchor": "## Part Four: Sampling the Future",
+    "alt": "The price of another decimal place. Repeated Monte Carlo estimates of a standard normal mean. More simulation cannot repair a wrong data-generating model.",
+    "seed": 20260925,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch07/fig-07-02.png",
+      "pdf": "figures/ch07/fig-07-02.pdf",
+      "svg": "figures/ch07/fig-07-02.svg"
+    }
+  },
+  {
+    "id": "fig-07-03",
+    "chapter": 7,
+    "title": "A chain can recover a posterior distribution",
+    "caption": "Synthetic Beta(9,5) target with a symmetric Metropolis proposal. The density uses draws after a 2,000-iteration warm-up.",
+    "anchor": "## Part Three: The MCMC Revolution",
+    "alt": "A chain can recover a posterior distribution. Synthetic Beta(9,5) target with a symmetric Metropolis proposal. The density uses draws after a 2,000-iteration warm-up.",
+    "seed": 20260925,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch07/fig-07-03.png",
+      "pdf": "figures/ch07/fig-07-03.pdf",
+      "svg": "figures/ch07/fig-07-03.svg"
+    }
+  }
+]

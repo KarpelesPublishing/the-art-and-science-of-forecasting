@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-05-01",
+    "chapter": 5,
+    "title": "Tracking what cannot be directly observed",
+    "caption": "Synthetic random walk with measurement noise. The filter uses observations available at each time; the true state is shown only for evaluation.",
+    "anchor": "## The State-Space Framework",
+    "alt": "Tracking what cannot be directly observed. Synthetic random walk with measurement noise. The filter uses observations available at each time; the true state is shown only for evaluation.",
+    "seed": 20260923,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch05/fig-05-01.png",
+      "pdf": "figures/ch05/fig-05-01.pdf",
+      "svg": "figures/ch05/fig-05-01.svg"
+    }
+  },
+  {
+    "id": "fig-05-02",
+    "chapter": 5,
+    "title": "Filtering and smoothing answer different questions",
+    "caption": "Synthetic tracking example. The smoother uses future measurements retrospectively; the shaded interval belongs to the online filter.",
+    "anchor": "## The Methods",
+    "alt": "Filtering and smoothing answer different questions. Synthetic tracking example. The smoother uses future measurements retrospectively; the shaded interval belongs to the online filter.",
+    "seed": 20260923,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch05/fig-05-02.png",
+      "pdf": "figures/ch05/fig-05-02.pdf",
+      "svg": "figures/ch05/fig-05-02.svg"
+    }
+  },
+  {
+    "id": "fig-05-03",
+    "chapter": 5,
+    "title": "Listen to the innovations",
+    "caption": "Standardized one-step prediction errors from the synthetic filter. Persistent patterns would question the assumed state or noise model.",
+    "anchor": "## What You Cannot See But Must Estimate",
+    "alt": "Listen to the innovations. Standardized one-step prediction errors from the synthetic filter. Persistent patterns would question the assumed state or noise model.",
+    "seed": 20260923,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch05/fig-05-03.png",
+      "pdf": "figures/ch05/fig-05-03.pdf",
+      "svg": "figures/ch05/fig-05-03.svg"
+    }
+  }
+]

@@ -1,0 +1,44 @@
+{
+  "method": "UnobservedComponents state-space model",
+  "interpretation": "local level fitted with 0 missing observations handled by the filter. Rolling check over 3 origins: model MAE 81.62 vs last-value 124.5. Ljung-Box p on second-half innovations 0.68. Smoothed states use later observations and are retrospective; filtered states and forecasts use only the past.",
+  "assumptions": [
+    "Gaussian state and measurement noise",
+    "local level dynamics",
+    "Missing values are missing at random"
+  ],
+  "not_done": [
+    "No regression effects or exogenous inputs",
+    "Nonlinear or non-Gaussian filtering not attempted"
+  ],
+  "status": "passed",
+  "model": "local level",
+  "seasonal": false,
+  "cycle": false,
+  "params": {
+    "sigma2.irregular": 15078.010345575303,
+    "sigma2.level": 1478.8117042302547
+  },
+  "llf": -632.5377605757358,
+  "missing_count": 0,
+  "missing_timestamps": [],
+  "ljung_box_p": 0.6835272884299759,
+  "validation": [
+    {
+      "origin": "1930-01-01 00:00:00+00:00",
+      "model_mae": 82.51489173281031,
+      "naive_mae": 117.1
+    },
+    {
+      "origin": "1940-01-01 00:00:00+00:00",
+      "model_mae": 71.4328865291091,
+      "naive_mae": 165.6
+    },
+    {
+      "origin": "1950-01-01 00:00:00+00:00",
+      "model_mae": 90.9,
+      "naive_mae": 90.9
+    }
+  ],
+  "test_mae": 81.61592608730648,
+  "horizon": 10
+}

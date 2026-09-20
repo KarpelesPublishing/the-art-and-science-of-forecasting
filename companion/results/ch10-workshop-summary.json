@@ -1,0 +1,28 @@
+{
+  "brier": 0.20415200561479346,
+  "baseline_brier": 0.25,
+  "excluded_event_ids": [
+    "synthetic-100",
+    "synthetic-101",
+    "synthetic-102",
+    "synthetic-103",
+    "synthetic-104",
+    "synthetic-105",
+    "synthetic-106",
+    "synthetic-107",
+    "synthetic-108",
+    "synthetic-109",
+    "synthetic-110",
+    "synthetic-111",
+    "synthetic-112",
+    "synthetic-113",
+    "synthetic-114",
+    "synthetic-115",
+    "synthetic-116",
+    "synthetic-117",
+    "synthetic-118",
+    "synthetic-119"
+  ],
+  "unselected_revision_count": 141,
+  "interpretation": "One latest eligible revision per resolved event. Unselected revisions include superseded or ineligible entries, not necessarily errors. Editable timestamps are not authenticated; retain an external append-only history."
+}

@@ -1,0 +1,43 @@
+{
+  "method": "Prophet with event calendar and known regressors",
+  "interpretation": "Prophet (multiplicative seasonality, changepoint prior 0.05) holdout MAE 0.7201, nominal 80% band coverage 83%. Removing events changes validation MAE from 0.8709 to 0.8709. Table scope: future.",
+  "assumptions": [
+    "multiplicative seasonality chosen by Box-Cox on training data",
+    "Event dates and windows correct and known in advance",
+    "Regressors known for the horizon"
+  ],
+  "not_done": [
+    "No regressors supplied",
+    "Coverage measured on one holdout only; nominal 80% band is not certified"
+  ],
+  "status": "passed",
+  "mode": "multiplicative",
+  "mode_note": {
+    "boxcox_lambda": -0.6648820892653157
+  },
+  "prior": 0.05,
+  "validation": {
+    "0.001": [
+      1.317099862402573,
+      0.4292349799589899
+    ],
+    "0.05": [
+      1.2047888653401786,
+      0.5370737253800808
+    ],
+    "0.5": [
+      1.0929820243154273,
+      0.7406578725814738
+    ]
+  },
+  "ablation": {
+    "full": 0.8709312953601297,
+    "without_events": 0.8709312953601297
+  },
+  "test_mae": 0.720079072859258,
+  "test_coverage": 0.8333333333333334,
+  "nominal": 0.8,
+  "table_scope": "future",
+  "events": 14,
+  "regressors": []
+}

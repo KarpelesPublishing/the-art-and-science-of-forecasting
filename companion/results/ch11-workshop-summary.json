@@ -1,0 +1,10 @@
+{
+  "mae": {
+    "mean": 8.892831943693938,
+    "median": 7.53818853921544,
+    "trimmed": 8.151197005445951
+  },
+  "brier": null,
+  "extremize_a": null,
+  "interpretation": "Unweighted rules are evaluated on identical questions. Precision weights require earlier resolved questions, and shared bias can defeat every aggregation rule."
+}

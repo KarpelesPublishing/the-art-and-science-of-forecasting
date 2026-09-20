@@ -1,0 +1,16 @@
+{
+  "source": "Seeded synthetic educational input; not business observations",
+  "units": "illustrative units",
+  "horizon": 12,
+  "season": 12,
+  "seed": 417,
+  "outcome_due": "Declare before issuing a real forecast",
+  "intervention": "2018-05-01",
+  "identification": "Synthetic controlled generator; treated-only shock absent by construction",
+  "controls": [
+    "control",
+    "control_2",
+    "control_3"
+  ],
+  "placebos": 100
+}

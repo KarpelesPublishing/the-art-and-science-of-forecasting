@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-16-01",
+    "chapter": 16,
+    "title": "Prophet changepoint sensitivity",
+    "caption": "Actual Prophet fits on synthetic activity, evaluated at two chronological validation origins. Smaller prior scales constrain trend changes more strongly; the final 45 days are not used for selection.",
+    "anchor": "Section Four: The Full Methodology",
+    "alt": "Prophet changepoint sensitivity. Actual Prophet fits on synthetic activity, evaluated at two chronological validation origins. Smaller prior scales constrain trend changes more strongly; the final 45 days are not used for selection.",
+    "seed": 20260934,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch16/fig-16-01.png",
+      "pdf": "figures/ch16/fig-16-01.pdf",
+      "svg": "figures/ch16/fig-16-01.svg"
+    }
+  },
+  {
+    "id": "fig-16-02",
+    "chapter": 16,
+    "title": "Prophet component audit",
+    "caption": "Actual fitted Prophet components. The middle panel shows one weekly cycle, avoiding hundreds of compressed oscillations. Trend and campaign panels use the full synthetic timeline; their dotted lines separate training from final test. Corresponding component values add to the point forecast.",
+    "anchor": "Section Two: What Prophet Got Right",
+    "alt": "Prophet component audit. Actual fitted Prophet components. The middle panel shows one weekly cycle, avoiding hundreds of compressed oscillations. Trend and campaign panels use the full synthetic timeline; their dotted lines separate training from final test. Corresponding component values add to the point forecast.",
+    "seed": 20260934,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch16/fig-16-02.png",
+      "pdf": "figures/ch16/fig-16-02.pdf",
+      "svg": "figures/ch16/fig-16-02.svg"
+    }
+  },
+  {
+    "id": "fig-16-03",
+    "chapter": 16,
+    "title": "Validate the event calendar",
+    "caption": "Final 45-day synthetic holdout with an actual Prophet holiday component versus its omission, after separately selecting each model\u2019s flexibility on earlier folds. MAP-based uncertainty is not a calibration guarantee.",
+    "anchor": "Section Five: The Distribution of Responsibility",
+    "alt": "Validate the event calendar. Final 45-day synthetic holdout with an actual Prophet holiday component versus its omission, after separately selecting each model\u2019s flexibility on earlier folds. MAP-based uncertainty is not a calibration guarantee.",
+    "seed": 20260934,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch16/fig-16-03.png",
+      "pdf": "figures/ch16/fig-16-03.pdf",
+      "svg": "figures/ch16/fig-16-03.svg"
+    }
+  }
+]

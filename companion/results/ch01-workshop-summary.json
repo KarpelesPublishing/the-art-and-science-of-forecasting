@@ -1,0 +1,63 @@
+{
+  "method": "Predeclared one-step price rules with directional hit rates",
+  "interpretation": "One-step rules scored on 44 test closes after a 70% training share. MAE: persistence 0.7331, momentum 0.7758, mean_reversion 1.245; best persistence. momentum calls direction 56.8% of the time (binomial p vs coin 0.45). mean_reversion calls direction 43.2% of the time (binomial p vs coin 0.45). Benford first-digit chi-square p on close: 2.8e-60 (prices are not expected to obey Benford; the test is a data-integrity habit, not a signal). Price error is not net return; nothing here is a trading result.",
+  "assumptions": [
+    "Rules declared before scoring",
+    "Closing prices are comparable across the sample (no unadjusted splits)",
+    "Zero-change periods excluded from hit rates"
+  ],
+  "not_done": [
+    "No returns, transaction costs or position sizing",
+    "No session or corporate-action checks",
+    "No out-of-sample period beyond this series"
+  ],
+  "status": "passed",
+  "rules": [
+    "persistence",
+    "momentum",
+    "mean_reversion"
+  ],
+  "k": 5,
+  "train_fraction": 0.7,
+  "test_rows": 44,
+  "mae": {
+    "persistence": 0.7331132973091893,
+    "momentum": 0.775801769435856,
+    "mean_reversion": 1.245258315961496
+  },
+  "hit_rate": {
+    "momentum": 0.5681818181818182,
+    "mean_reversion": 0.4318181818181818
+  },
+  "hit_rate_p_value": {
+    "momentum": 0.4513808323961257,
+    "mean_reversion": 0.4513808323961257
+  },
+  "benford": {
+    "n": 144,
+    "observed": [
+      0.9583,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0417
+    ],
+    "expected": [
+      0.301,
+      0.1761,
+      0.1249,
+      0.0969,
+      0.0792,
+      0.0669,
+      0.058,
+      0.0512,
+      0.0458
+    ],
+    "chi_square": 300.78857688054933,
+    "p_value": 2.797851979479054e-60
+  }
+}

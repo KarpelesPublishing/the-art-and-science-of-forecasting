@@ -1,0 +1,49 @@
+{
+  "forecast_date": "2026-09-18",
+  "outcome_due": "2028-09-18",
+  "horizon_months": 24,
+  "denominator": "horizon",
+  "denominator_status": "author-confirmed standard: horizon; eventual is a nonstandard sensitivity option",
+  "input_source": "synthetic educational inputs",
+  "inputs": {
+    "eligible_buyers": 120000,
+    "awareness": 0.65,
+    "availability_given_awareness": 0.7,
+    "interest": 0.28
+  },
+  "shared_scale": 0.8537686947081796,
+  "trial_total": 13052.415804698652,
+  "year1_trial_share": {
+    "3": 0.8983373225268372,
+    "4": 0.7999999999999998,
+    "5": 0.7130511177133468
+  },
+  "repeat_kernel": [
+    1.0,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15,
+    0.15
+  ],
+  "outcome": null,
+  "status": "illustrative_forecast_unresolved"
+}

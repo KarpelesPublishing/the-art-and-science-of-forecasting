@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-24-01",
+    "chapter": 24,
+    "title": "The old model keeps predicting the old world",
+    "caption": "Synthetic series with a level increase at period 100. The frozen model is estimated only on the first fifty observations.",
+    "anchor": "## Section One: The Dashboard Turns Red",
+    "alt": "The old model keeps predicting the old world. Synthetic series with a level increase at period 100. The frozen model is estimated only on the first fifty observations.",
+    "seed": 20260942,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch24/fig-24-01.png",
+      "pdf": "figures/ch24/fig-24-01.pdf",
+      "svg": "figures/ch24/fig-24-01.svg"
+    }
+  },
+  {
+    "id": "fig-24-02",
+    "chapter": 24,
+    "title": "An alarm accumulates evidence",
+    "caption": "Online standardized residual CUSUM on the synthetic stream. Values are recorded before resetting to zero after each marked alarm; connecting lines break at resets. Each alarm is available only after its observation; the threshold is illustrative.",
+    "anchor": "## Section Three: Building for Structural Breaks",
+    "alt": "An alarm accumulates evidence. Online standardized residual CUSUM on the synthetic stream. Values are recorded before resetting to zero after each marked alarm; connecting lines break at resets. Each alarm is available only after its observation; the threshold is illustrative.",
+    "seed": 20260942,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch24/fig-24-02.png",
+      "pdf": "figures/ch24/fig-24-02.pdf",
+      "svg": "figures/ch24/fig-24-02.svg"
+    }
+  },
+  {
+    "id": "fig-24-03",
+    "chapter": 24,
+    "title": "Adaptation policies have different costs",
+    "caption": "Synthetic one-step forecasts computed before each observation. Rolling windows adapt faster here but discard data that could help in stable periods.",
+    "anchor": "## Section Four: The Full Methodology",
+    "alt": "Adaptation policies have different costs. Synthetic one-step forecasts computed before each observation. Rolling windows adapt faster here but discard data that could help in stable periods.",
+    "seed": 20260942,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch24/fig-24-03.png",
+      "pdf": "figures/ch24/fig-24-03.pdf",
+      "svg": "figures/ch24/fig-24-03.svg"
+    }
+  }
+]

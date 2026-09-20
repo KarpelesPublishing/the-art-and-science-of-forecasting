@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-25-01",
+    "chapter": 25,
+    "title": "Start with outcomes of comparable projects",
+    "caption": "Synthetic durations for projects initially planned at twelve months. The distribution is right-skewed by construction.",
+    "anchor": "## Section Four: Reference Class Forecasting",
+    "alt": "Start with outcomes of comparable projects. Synthetic durations for projects initially planned at twelve months. The distribution is right-skewed by construction.",
+    "seed": 20260943,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch25/fig-25-01.png",
+      "pdf": "figures/ch25/fig-25-01.pdf",
+      "svg": "figures/ch25/fig-25-01.svg"
+    }
+  },
+  {
+    "id": "fig-25-02",
+    "chapter": 25,
+    "title": "The class you select changes the forecast",
+    "caption": "Synthetic reference-class estimates. Excluding long projects makes the forecast optimistic; dropping abandoned or unfinished projects can introduce related bias.",
+    "anchor": "## Section Five: The Hardest Reference Class",
+    "alt": "The class you select changes the forecast. Synthetic reference-class estimates. Excluding long projects makes the forecast optimistic; dropping abandoned or unfinished projects can introduce related bias.",
+    "seed": 20260943,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch25/fig-25-02.png",
+      "pdf": "figures/ch25/fig-25-02.pdf",
+      "svg": "figures/ch25/fig-25-02.svg"
+    }
+  },
+  {
+    "id": "fig-25-03",
+    "chapter": 25,
+    "title": "A commitment needs a risk level",
+    "caption": "Empirical quantiles of the synthetic duration class. Higher completion probabilities require larger contingency; the appropriate percentile depends on costs.",
+    "anchor": "## Section Seven: The Full Methodology",
+    "alt": "A commitment needs a risk level. Empirical quantiles of the synthetic duration class. Higher completion probabilities require larger contingency; the appropriate percentile depends on costs.",
+    "seed": 20260943,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch25/fig-25-03.png",
+      "pdf": "figures/ch25/fig-25-03.pdf",
+      "svg": "figures/ch25/fig-25-03.svg"
+    }
+  }
+]

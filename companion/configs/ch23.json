@@ -1,0 +1,11 @@
+{
+  "source": "Seeded synthetic educational input; not business observations",
+  "units": "cases",
+  "horizon": 12,
+  "season": 12,
+  "seed": 417,
+  "outcome_due": "Declare before issuing a real forecast",
+  "as_of": "2020-02-15",
+  "mature_age": 5,
+  "population": 1000000
+}

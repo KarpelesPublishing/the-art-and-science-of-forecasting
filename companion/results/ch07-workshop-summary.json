@@ -1,0 +1,6 @@
+{
+  "mean": 180.04887870208142,
+  "mean_mcse": 0.29927583212743164,
+  "analytic_mean": 180.0,
+  "interpretation": "Dependence is imposed in latent normal draws; it is not the Pearson correlation of lognormal components. Quantiles describe supplied assumptions, not measured real-world risk."
+}

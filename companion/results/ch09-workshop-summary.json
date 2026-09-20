@@ -1,0 +1,5 @@
+{
+  "brier": 0.18447641287879485,
+  "baseline_brier": 0.25,
+  "interpretation": "Wilson bin intervals assume independent events. They express finite-sample uncertainty, not a guarantee of calibration; dependent events need grouped evaluation."
+}

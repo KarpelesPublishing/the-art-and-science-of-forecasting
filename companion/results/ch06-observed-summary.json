@@ -1,0 +1,4150 @@
+{
+  "method": "Rolling-origin model comparison with final holdout",
+  "pool": "arima",
+  "selected": "ARIMA(auto)",
+  "transform": "log",
+  "specification": {
+    "ets": null,
+    "arima": [
+      [
+        2,
+        0,
+        2
+      ],
+      [
+        0,
+        1,
+        1,
+        12
+      ]
+    ],
+    "notes": {
+      "transform": {
+        "boxcox_lambda": -0.7041897213407325
+      },
+      "differencing": {
+        "seasonal_strength": 0.9039442193823376,
+        "kpss_d": 0,
+        "seasonal_D": 1
+      }
+    }
+  },
+  "origins": [
+    "2004-12-01 00:00:00+00:00",
+    "2005-12-01 00:00:00+00:00",
+    "2006-12-01 00:00:00+00:00",
+    "2007-12-01 00:00:00+00:00",
+    "2008-12-01 00:00:00+00:00"
+  ],
+  "horizon": 12,
+  "season": 12,
+  "leaderboard": [
+    {
+      "model": "ARIMA(auto)",
+      "mae": 0.9385622504627633,
+      "rmse": 1.061697599793869,
+      "mase": 0.800854340982975,
+      "interval_coverage": 0.65
+    },
+    {
+      "model": "Seasonal naive",
+      "mae": 1.1049999999999998,
+      "rmse": 1.3016371768605026,
+      "mase": 0.9435238560630342,
+      "interval_coverage": null
+    },
+    {
+      "model": "Airline ARIMA",
+      "mae": 1.4218169779054135,
+      "rmse": 1.5290693701226945,
+      "mase": 1.2136332813284554,
+      "interval_coverage": 0.5666666666666667
+    },
+    {
+      "model": "ARIMA(0,1,1)",
+      "mae": 2.0141441825596886,
+      "rmse": 2.4055710187499786,
+      "mase": 1.7190242638664508,
+      "interval_coverage": 0.8166666666666667
+    },
+    {
+      "model": "Naive",
+      "mae": 2.084833333333334,
+      "rmse": 2.462978791483941,
+      "mase": 1.7789922998533823,
+      "interval_coverage": null
+    },
+    {
+      "model": "Drift",
+      "mae": 2.0911768890915803,
+      "rmse": 2.468003964065864,
+      "mase": 1.7844064846567478,
+      "interval_coverage": null
+    },
+    {
+      "model": "ARIMA(1,1,0)",
+      "mae": 3.2057604530230037,
+      "rmse": 3.703377210263118,
+      "mase": 2.737167749611968,
+      "interval_coverage": 0.85
+    }
+  ],
+  "validation": [
+    {
+      "origin": 660,
+      "model": "Naive",
+      "mae": 1.9875000000000007,
+      "rmse": 2.1819009296177208,
+      "mase": 1.6947836614380467
+    },
+    {
+      "origin": 660,
+      "model": "Seasonal naive",
+      "mae": 0.8641666666666664,
+      "rmse": 1.0786836113213798,
+      "mase": 0.7368933571954941
+    },
+    {
+      "origin": 660,
+      "model": "Drift",
+      "mae": 1.9892099750200558,
+      "rmse": 2.1840069159048894,
+      "mase": 1.6962417936269558
+    },
+    {
+      "origin": 660,
+      "model": "ARIMA(0,1,1)",
+      "mae": 1.9882603094524207,
+      "rmse": 2.183447094815277,
+      "mase": 1.6954319935324358
+    },
+    {
+      "origin": 660,
+      "model": "ARIMA(1,1,0)",
+      "mae": 2.474848658727716,
+      "rmse": 2.976536433523607,
+      "mase": 2.1103562623112433
+    },
+    {
+      "origin": 660,
+      "model": "Airline ARIMA",
+      "mae": 1.0657961092944335,
+      "rmse": 1.146201768754287,
+      "mase": 0.9088270855126762
+    },
+    {
+      "origin": 660,
+      "model": "ARIMA(auto)",
+      "mae": 0.6604774969888743,
+      "rmse": 0.7798950709847795,
+      "mase": 0.563203255670058
+    },
+    {
+      "origin": 672,
+      "model": "Naive",
+      "mae": 1.5374999999999985,
+      "rmse": 2.1020961760426955,
+      "mase": 1.3173609939113828
+    },
+    {
+      "origin": 672,
+      "model": "Seasonal naive",
+      "mae": 1.2199999999999998,
+      "rmse": 1.4335271186831455,
+      "mase": 1.0453205935426915
+    },
+    {
+      "origin": 672,
+      "model": "Drift",
+      "mae": 1.5423722689339516,
+      "rmse": 2.105758018584549,
+      "mase": 1.3215356521523167
+    },
+    {
+      "origin": 672,
+      "model": "ARIMA(0,1,1)",
+      "mae": 1.3224999999999998,
+      "rmse": 1.7083544683957879,
+      "mase": 1.1331446598034505
+    },
+    {
+      "origin": 672,
+      "model": "ARIMA(1,1,0)",
+      "mae": 3.187522254182411,
+      "rmse": 3.4985918553451323,
+      "mase": 2.7311333235020463
+    },
+    {
+      "origin": 672,
+      "model": "Airline ARIMA",
+      "mae": 1.1011479013914054,
+      "rmse": 1.249552984303083,
+      "mase": 0.9434857195579944
+    },
+    {
+      "origin": 672,
+      "model": "ARIMA(auto)",
+      "mae": 0.86170057542782,
+      "rmse": 0.9841639553999255,
+      "mase": 0.7383224237395801
+    },
+    {
+      "origin": 684,
+      "model": "Naive",
+      "mae": 2.9008333333333343,
+      "rmse": 3.1649684042656743,
+      "mase": 2.4834826035442656
+    },
+    {
+      "origin": 684,
+      "model": "Seasonal naive",
+      "mae": 1.526666666666667,
+      "rmse": 1.8234582528810468,
+      "mase": 1.3070210082427736
+    },
+    {
+      "origin": 684,
+      "model": "Drift",
+      "mae": 2.9083586587613652,
+      "rmse": 3.174393985934769,
+      "mase": 2.4899252400693532
+    },
+    {
+      "origin": 684,
+      "model": "ARIMA(0,1,1)",
+      "mae": 3.2882102621430955,
+      "rmse": 3.820051012509125,
+      "mase": 2.815126566904259
+    },
+    {
+      "origin": 684,
+      "model": "ARIMA(1,1,0)",
+      "mae": 5.509601544759072,
+      "rmse": 6.483805907618916,
+      "mase": 4.7169202834368615
+    },
+    {
+      "origin": 684,
+      "model": "Airline ARIMA",
+      "mae": 2.1614955374160574,
+      "rmse": 2.3362155667696904,
+      "mase": 1.8505153340343603
+    },
+    {
+      "origin": 684,
+      "model": "ARIMA(auto)",
+      "mae": 1.2350750881585946,
+      "rmse": 1.353860171793079,
+      "mase": 1.057381498022213
+    },
+    {
+      "origin": 696,
+      "model": "Naive",
+      "mae": 2.455000000000005,
+      "rmse": 3.0687918361031525,
+      "mase": 2.090532212885158
+    },
+    {
+      "origin": 696,
+      "model": "Seasonal naive",
+      "mae": 1.4558333333333333,
+      "rmse": 1.5642543484570108,
+      "mase": 1.2397012138188608
+    },
+    {
+      "origin": 696,
+      "model": "Drift",
+      "mae": 2.4725213268775246,
+      "rmse": 3.078235600692071,
+      "mase": 2.1054523343718974
+    },
+    {
+      "origin": 696,
+      "model": "ARIMA(0,1,1)",
+      "mae": 2.0684170078695936,
+      "rmse": 2.74263100043943,
+      "mase": 1.7613410935360123
+    },
+    {
+      "origin": 696,
+      "model": "ARIMA(1,1,0)",
+      "mae": 2.47178675802406,
+      "rmse": 2.6909738439485476,
+      "mase": 2.1048268191577426
+    },
+    {
+      "origin": 696,
+      "model": "Airline ARIMA",
+      "mae": 2.0689873330340194,
+      "rmse": 2.113869929987598,
+      "mase": 1.7618267485779884
+    },
+    {
+      "origin": 696,
+      "model": "ARIMA(auto)",
+      "mae": 1.1247137962265341,
+      "rmse": 1.2725690236289255,
+      "mase": 0.9577394791396816
+    },
+    {
+      "origin": 708,
+      "model": "Naive",
+      "mae": 1.5433333333333321,
+      "rmse": 1.797136611390462,
+      "mase": 1.308802027488058
+    },
+    {
+      "origin": 708,
+      "model": "Seasonal naive",
+      "mae": 0.4583333333333324,
+      "rmse": 0.6082625529599305,
+      "mase": 0.38868310751535157
+    },
+    {
+      "origin": 708,
+      "model": "Drift",
+      "mae": 1.543422215865003,
+      "rmse": 1.797625299213041,
+      "mase": 1.3088774030632153
+    },
+    {
+      "origin": 708,
+      "model": "ARIMA(0,1,1)",
+      "mae": 1.4033333333333333,
+      "rmse": 1.573371517590271,
+      "mase": 1.190077005556097
+    },
+    {
+      "origin": 708,
+      "model": "ARIMA(1,1,0)",
+      "mae": 2.38504304942176,
+      "rmse": 2.866978010879389,
+      "mase": 2.0226020596519456
+    },
+    {
+      "origin": 708,
+      "model": "Airline ARIMA",
+      "mae": 0.711658008391152,
+      "rmse": 0.7995066007988152,
+      "mase": 0.6035115189592575
+    },
+    {
+      "origin": 708,
+      "model": "ARIMA(auto)",
+      "mae": 0.8108442955119939,
+      "rmse": 0.9179997771626355,
+      "mase": 0.687625048343342
+    }
+  ],
+  "validation_predictions": [
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2005-01-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 24.61,
+      "forecast": 23.390000000000004,
+      "absolute_error": 1.2199999999999953
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2005-02-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 25.09,
+      "forecast": 23.390000000000004,
+      "absolute_error": 1.6999999999999957
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2005-03-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 25.23,
+      "forecast": 23.390000000000004,
+      "absolute_error": 1.8399999999999963
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2005-04-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 25.21,
+      "forecast": 23.390000000000004,
+      "absolute_error": 1.8199999999999967
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2005-05-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 24.31,
+      "forecast": 23.390000000000004,
+      "absolute_error": 0.9199999999999946
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2005-06-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 22.6,
+      "forecast": 23.390000000000004,
+      "absolute_error": 0.7900000000000027
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2005-07-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.61,
+      "forecast": 23.390000000000004,
+      "absolute_error": 1.7800000000000047
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2005-08-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 20.47,
+      "forecast": 23.390000000000004,
+      "absolute_error": 2.9200000000000053
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2005-09-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 20.0,
+      "forecast": 23.390000000000004,
+      "absolute_error": 3.390000000000004
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2005-10-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 19.89,
+      "forecast": 23.390000000000004,
+      "absolute_error": 3.5000000000000036
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2005-11-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 20.61,
+      "forecast": 23.390000000000004,
+      "absolute_error": 2.7800000000000047
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2005-12-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 22.2,
+      "forecast": 23.390000000000004,
+      "absolute_error": 1.1900000000000048
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2005-01-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 24.61,
+      "forecast": 25.09,
+      "absolute_error": 0.4800000000000004
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2005-02-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 25.09,
+      "forecast": 26.47,
+      "absolute_error": 1.379999999999999
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2005-03-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 25.23,
+      "forecast": 26.120000000000005,
+      "absolute_error": 0.8900000000000041
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2005-04-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 25.21,
+      "forecast": 25.269999999999992,
+      "absolute_error": 0.059999999999991616
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2005-05-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 24.31,
+      "forecast": 23.440000000000005,
+      "absolute_error": 0.8699999999999939
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2005-06-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 22.6,
+      "forecast": 22.54,
+      "absolute_error": 0.060000000000002274
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2005-07-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.61,
+      "forecast": 21.259999999999998,
+      "absolute_error": 0.3500000000000014
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2005-08-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 20.47,
+      "forecast": 20.79,
+      "absolute_error": 0.3200000000000003
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2005-09-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 20.0,
+      "forecast": 20.830000000000002,
+      "absolute_error": 0.8300000000000018
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2005-10-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 19.89,
+      "forecast": 21.559999999999995,
+      "absolute_error": 1.6699999999999946
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2005-11-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 20.61,
+      "forecast": 22.880000000000003,
+      "absolute_error": 2.270000000000003
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2005-12-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 22.2,
+      "forecast": 23.390000000000004,
+      "absolute_error": 1.1900000000000048
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2005-01-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 24.61,
+      "forecast": 23.390427453717795,
+      "absolute_error": 1.2195725462822047
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2005-02-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 25.09,
+      "forecast": 23.390854915247328,
+      "absolute_error": 1.6991450847526721
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2005-03-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 25.23,
+      "forecast": 23.39128238458875,
+      "absolute_error": 1.8387176154112517
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2005-04-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 25.21,
+      "forecast": 23.3917098617422,
+      "absolute_error": 1.818290138257801
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2005-05-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 24.31,
+      "forecast": 23.39213734670782,
+      "absolute_error": 0.917862653292179
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2005-06-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 22.6,
+      "forecast": 23.392564839485757,
+      "absolute_error": 0.7925648394857561
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2005-07-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.61,
+      "forecast": 23.392992340076148,
+      "absolute_error": 1.7829923400761487
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2005-08-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 20.47,
+      "forecast": 23.393419848479144,
+      "absolute_error": 2.9234198484791456
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2005-09-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 20.0,
+      "forecast": 23.39384736469488,
+      "absolute_error": 3.3938473646948815
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2005-10-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 19.89,
+      "forecast": 23.3942748887235,
+      "absolute_error": 3.5042748887235007
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2005-11-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 20.61,
+      "forecast": 23.394702420565153,
+      "absolute_error": 2.7847024205651536
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2005-12-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 22.2,
+      "forecast": 23.395129960219975,
+      "absolute_error": 1.195129960219976
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2005-01-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 24.61,
+      "forecast": 23.394561856714525,
+      "absolute_error": 1.2154381432854748
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2005-02-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 25.09,
+      "forecast": 23.394561856714525,
+      "absolute_error": 1.6954381432854753
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2005-03-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 25.23,
+      "forecast": 23.394561856714525,
+      "absolute_error": 1.8354381432854758
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2005-04-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 25.21,
+      "forecast": 23.394561856714525,
+      "absolute_error": 1.8154381432854763
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2005-05-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 24.31,
+      "forecast": 23.394561856714525,
+      "absolute_error": 0.9154381432854741
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2005-06-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 22.6,
+      "forecast": 23.394561856714525,
+      "absolute_error": 0.7945618567145232
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2005-07-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.61,
+      "forecast": 23.394561856714525,
+      "absolute_error": 1.7845618567145252
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2005-08-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 20.47,
+      "forecast": 23.394561856714525,
+      "absolute_error": 2.9245618567145257
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2005-09-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 20.0,
+      "forecast": 23.394561856714525,
+      "absolute_error": 3.3945618567145246
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2005-10-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 19.89,
+      "forecast": 23.394561856714525,
+      "absolute_error": 3.504561856714524
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2005-11-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 20.61,
+      "forecast": 23.394561856714525,
+      "absolute_error": 2.784561856714525
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2005-12-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 22.2,
+      "forecast": 23.394561856714525,
+      "absolute_error": 1.1945618567145253
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2005-01-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 24.61,
+      "forecast": 23.771721895380328,
+      "absolute_error": 0.8382781046196719
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2005-02-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 25.09,
+      "forecast": 24.055984664409745,
+      "absolute_error": 1.0340153355902544
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2005-03-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 25.23,
+      "forecast": 24.266883471602508,
+      "absolute_error": 0.9631165283974923
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2005-04-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 25.21,
+      "forecast": 24.422924711262084,
+      "absolute_error": 0.7870752887379169
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2005-05-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 24.31,
+      "forecast": 24.53814568862512,
+      "absolute_error": 0.22814568862512274
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2005-06-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 22.6,
+      "forecast": 24.623099434247266,
+      "absolute_error": 2.023099434247264
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2005-07-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.61,
+      "forecast": 24.68566892919357,
+      "absolute_error": 3.075668929193572
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2005-08-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 20.47,
+      "forecast": 24.731715468368844,
+      "absolute_error": 4.261715468368845
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2005-09-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 20.0,
+      "forecast": 24.765582522882458,
+      "absolute_error": 4.7655825228824575
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2005-10-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 19.89,
+      "forecast": 24.790480920832362,
+      "absolute_error": 4.900480920832361
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2005-11-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 20.61,
+      "forecast": 24.808779967422524,
+      "absolute_error": 4.198779967422524
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2005-12-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 22.2,
+      "forecast": 24.82222571581511,
+      "absolute_error": 2.6222257158151123
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2005-01-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 24.61,
+      "forecast": 25.02815163805748,
+      "absolute_error": 0.41815163805748057
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2005-02-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 25.09,
+      "forecast": 26.532284154177187,
+      "absolute_error": 1.4422841541771874
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2005-03-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 25.23,
+      "forecast": 26.99121190012363,
+      "absolute_error": 1.7612119001236302
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2005-04-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 25.21,
+      "forecast": 26.083277097241226,
+      "absolute_error": 0.8732770972412247
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2005-05-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 24.31,
+      "forecast": 24.79974811513028,
+      "absolute_error": 0.4897481151302827
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2005-06-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 22.6,
+      "forecast": 23.429518730137634,
+      "absolute_error": 0.8295187301376323
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2005-07-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.61,
+      "forecast": 22.28852232620952,
+      "absolute_error": 0.6785223262095208
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2005-08-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 20.47,
+      "forecast": 21.38503383327944,
+      "absolute_error": 0.9150338332794412
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2005-09-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 20.0,
+      "forecast": 21.13686640961213,
+      "absolute_error": 1.1368664096121286
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2005-10-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 19.89,
+      "forecast": 21.457108745556674,
+      "absolute_error": 1.5671087455566735
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2005-11-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 20.61,
+      "forecast": 22.156894189749323,
+      "absolute_error": 1.5468941897493238
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2005-12-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 22.2,
+      "forecast": 23.330936172258674,
+      "absolute_error": 1.130936172258675
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2005-01-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 24.61,
+      "forecast": 24.98198020729854,
+      "absolute_error": 0.37198020729854164
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2005-02-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 25.09,
+      "forecast": 26.399426752371898,
+      "absolute_error": 1.3094267523718983
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2005-03-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 25.23,
+      "forecast": 26.767012934731273,
+      "absolute_error": 1.5370129347312727
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2005-04-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 25.21,
+      "forecast": 25.787679557342468,
+      "absolute_error": 0.5776795573424671
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2005-05-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 24.31,
+      "forecast": 24.443012070793536,
+      "absolute_error": 0.13301207079353716
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2005-06-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 22.6,
+      "forecast": 23.026180622349454,
+      "absolute_error": 0.4261806223494524
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2005-07-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.61,
+      "forecast": 21.846540168402825,
+      "absolute_error": 0.23654016840282566
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2005-08-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 20.47,
+      "forecast": 20.903040236231366,
+      "absolute_error": 0.433040236231367
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2005-09-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 20.0,
+      "forecast": 20.60634525250985,
+      "absolute_error": 0.6063452525098505
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2005-10-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 19.89,
+      "forecast": 20.866288655064604,
+      "absolute_error": 0.9762886550646037
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2005-11-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 20.61,
+      "forecast": 21.51128709538753,
+      "absolute_error": 0.9012870953875307
+    },
+    {
+      "origin": "2004-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2005-12-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 22.2,
+      "forecast": 22.616936411383143,
+      "absolute_error": 0.4169364113831442
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2006-01-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 24.76,
+      "forecast": 22.200000000000003,
+      "absolute_error": 2.5599999999999987
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2006-02-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 26.52,
+      "forecast": 22.200000000000003,
+      "absolute_error": 4.319999999999997
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2006-03-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 26.22,
+      "forecast": 22.200000000000003,
+      "absolute_error": 4.019999999999996
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2006-04-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 24.29,
+      "forecast": 22.200000000000003,
+      "absolute_error": 2.0899999999999963
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2006-05-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 23.84,
+      "forecast": 22.200000000000003,
+      "absolute_error": 1.639999999999997
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2006-06-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 22.82,
+      "forecast": 22.200000000000003,
+      "absolute_error": 0.6199999999999974
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2006-07-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 22.2,
+      "forecast": 22.200000000000003,
+      "absolute_error": 3.552713678800501e-15
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2006-08-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.89,
+      "forecast": 22.200000000000003,
+      "absolute_error": 0.3100000000000023
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2006-09-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.93,
+      "forecast": 22.200000000000003,
+      "absolute_error": 0.2700000000000031
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2006-10-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 22.46,
+      "forecast": 22.200000000000003,
+      "absolute_error": 0.259999999999998
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2006-11-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 22.61,
+      "forecast": 22.200000000000003,
+      "absolute_error": 0.4099999999999966
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2006-12-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 24.15,
+      "forecast": 22.200000000000003,
+      "absolute_error": 1.9499999999999957
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2006-01-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 24.76,
+      "forecast": 24.61,
+      "absolute_error": 0.15000000000000213
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2006-02-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 26.52,
+      "forecast": 25.09,
+      "absolute_error": 1.4299999999999997
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2006-03-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 26.22,
+      "forecast": 25.230000000000004,
+      "absolute_error": 0.9899999999999949
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2006-04-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 24.29,
+      "forecast": 25.209999999999997,
+      "absolute_error": 0.9199999999999982
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2006-05-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 23.84,
+      "forecast": 24.309999999999995,
+      "absolute_error": 0.4699999999999953
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2006-06-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 22.82,
+      "forecast": 22.6,
+      "absolute_error": 0.21999999999999886
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2006-07-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 22.2,
+      "forecast": 21.61,
+      "absolute_error": 0.5899999999999999
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2006-08-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.89,
+      "forecast": 20.469999999999995,
+      "absolute_error": 1.4200000000000053
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2006-09-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.93,
+      "forecast": 19.999999999999996,
+      "absolute_error": 1.9300000000000033
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2006-10-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 22.46,
+      "forecast": 19.889999999999997,
+      "absolute_error": 2.570000000000004
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2006-11-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 22.61,
+      "forecast": 20.61,
+      "absolute_error": 2.0
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2006-12-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 24.15,
+      "forecast": 22.200000000000003,
+      "absolute_error": 1.9499999999999957
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2006-01-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 24.76,
+      "forecast": 22.198670913697455,
+      "absolute_error": 2.561329086302546
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2006-02-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 26.52,
+      "forecast": 22.197341906965637,
+      "absolute_error": 4.322658093034363
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2006-03-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 26.22,
+      "forecast": 22.196012979799807,
+      "absolute_error": 4.023987020200192
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2006-04-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 24.29,
+      "forecast": 22.194684132195185,
+      "absolute_error": 2.095315867804814
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2006-05-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 23.84,
+      "forecast": 22.19335536414701,
+      "absolute_error": 1.64664463585299
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2006-06-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 22.82,
+      "forecast": 22.192026675650514,
+      "absolute_error": 0.6279733243494867
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2006-07-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 22.2,
+      "forecast": 22.190698066700946,
+      "absolute_error": 0.009301933299052934
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2006-08-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.89,
+      "forecast": 22.189369537293544,
+      "absolute_error": 0.29936953729354343
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2006-09-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.93,
+      "forecast": 22.188041087423525,
+      "absolute_error": 0.25804108742352483
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2006-10-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 22.46,
+      "forecast": 22.186712717086156,
+      "absolute_error": 0.2732872829138451
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2006-11-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 22.61,
+      "forecast": 22.18538442627666,
+      "absolute_error": 0.42461557372334013
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2006-12-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 24.15,
+      "forecast": 22.184056214990278,
+      "absolute_error": 1.9659437850097206
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2006-01-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 24.76,
+      "forecast": 22.882105878446556,
+      "absolute_error": 1.877894121553446
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2006-02-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 26.52,
+      "forecast": 22.882105878446556,
+      "absolute_error": 3.637894121553444
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2006-03-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 26.22,
+      "forecast": 22.882105878446556,
+      "absolute_error": 3.3378941215534432
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2006-04-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 24.29,
+      "forecast": 22.882105878446556,
+      "absolute_error": 1.4078941215534435
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2006-05-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 23.84,
+      "forecast": 22.882105878446556,
+      "absolute_error": 0.9578941215534442
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2006-06-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 22.82,
+      "forecast": 22.882105878446556,
+      "absolute_error": 0.06210587844655535
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2006-07-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 22.2,
+      "forecast": 22.882105878446556,
+      "absolute_error": 0.6821058784465563
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2006-08-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.89,
+      "forecast": 22.882105878446556,
+      "absolute_error": 0.9921058784465551
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2006-09-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.93,
+      "forecast": 22.882105878446556,
+      "absolute_error": 0.9521058784465559
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2006-10-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 22.46,
+      "forecast": 22.882105878446556,
+      "absolute_error": 0.4221058784465548
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2006-11-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 22.61,
+      "forecast": 22.882105878446556,
+      "absolute_error": 0.2721058784465562
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2006-12-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 24.15,
+      "forecast": 22.882105878446556,
+      "absolute_error": 1.267894121553443
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2006-01-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 24.76,
+      "forecast": 23.44736419463678,
+      "absolute_error": 1.3126358053632217
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2006-02-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 26.52,
+      "forecast": 24.40943000455026,
+      "absolute_error": 2.1105699954497403
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2006-03-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 26.22,
+      "forecast": 25.142221043182584,
+      "absolute_error": 1.077778956817415
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2006-04-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 24.29,
+      "forecast": 25.69525850590517,
+      "absolute_error": 1.40525850590517
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2006-05-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 23.84,
+      "forecast": 26.109815928622275,
+      "absolute_error": 2.2698159286222754
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2006-06-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 22.82,
+      "forecast": 26.4190223000072,
+      "absolute_error": 3.5990223000071992
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2006-07-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 22.2,
+      "forecast": 26.648805483630817,
+      "absolute_error": 4.448805483630817
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2006-08-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.89,
+      "forecast": 26.81910577301546,
+      "absolute_error": 4.929105773015458
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2006-09-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.93,
+      "forecast": 26.945070755431527,
+      "absolute_error": 5.015070755431527
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2006-10-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 22.46,
+      "forecast": 27.038106455290265,
+      "absolute_error": 4.578106455290264
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2006-11-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 22.61,
+      "forecast": 27.106747290651104,
+      "absolute_error": 4.496747290651104
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2006-12-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 24.15,
+      "forecast": 27.157349800004738,
+      "absolute_error": 3.0073498000047394
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2006-01-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 24.76,
+      "forecast": 23.90755395443239,
+      "absolute_error": 0.8524460455676106
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2006-02-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 26.52,
+      "forecast": 25.32477136662627,
+      "absolute_error": 1.1952286333737305
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2006-03-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 26.22,
+      "forecast": 25.755999450193084,
+      "absolute_error": 0.4640005498069151
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2006-04-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 24.29,
+      "forecast": 24.908264990966277,
+      "absolute_error": 0.6182649909662778
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2006-05-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 23.84,
+      "forecast": 23.6895215091164,
+      "absolute_error": 0.1504784908836001
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2006-06-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 22.82,
+      "forecast": 22.373907538114377,
+      "absolute_error": 0.44609246188562324
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2006-07-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 22.2,
+      "forecast": 21.287488850673117,
+      "absolute_error": 0.9125111493268818
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2006-08-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.89,
+      "forecast": 20.417475597199324,
+      "absolute_error": 1.4725244028006763
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2006-09-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.93,
+      "forecast": 20.173414996492184,
+      "absolute_error": 1.7565850035078157
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2006-10-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 22.46,
+      "forecast": 20.467076566008167,
+      "absolute_error": 1.9929234339918338
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2006-11-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 22.61,
+      "forecast": 21.13792167745987,
+      "absolute_error": 1.4720783225401277
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2006-12-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 24.15,
+      "forecast": 22.269358667954226,
+      "absolute_error": 1.8806413320457729
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2006-01-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 24.76,
+      "forecast": 23.95500954950607,
+      "absolute_error": 0.804990450493932
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2006-02-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 26.52,
+      "forecast": 25.447773109665622,
+      "absolute_error": 1.0722268903343775
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2006-03-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 26.22,
+      "forecast": 25.949245283809823,
+      "absolute_error": 0.27075471619017577
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2006-04-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 24.29,
+      "forecast": 25.157460402144405,
+      "absolute_error": 0.8674604021444061
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2006-05-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 23.84,
+      "forecast": 23.980495418766147,
+      "absolute_error": 0.14049541876614668
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2006-06-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 22.82,
+      "forecast": 22.69674447651941,
+      "absolute_error": 0.12325552348059077
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2006-07-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 22.2,
+      "forecast": 21.634653769096122,
+      "absolute_error": 0.5653462309038773
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2006-08-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.89,
+      "forecast": 20.78142623937104,
+      "absolute_error": 1.1085737606289605
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2006-09-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.93,
+      "forecast": 20.557653492561048,
+      "absolute_error": 1.3723465074389516
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2006-10-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 22.46,
+      "forecast": 20.876023177318046,
+      "absolute_error": 1.5839768226819544
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2006-11-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 22.61,
+      "forecast": 21.580030303440164,
+      "absolute_error": 1.029969696559835
+    },
+    {
+      "origin": "2005-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2006-12-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 24.15,
+      "forecast": 22.748989514489367,
+      "absolute_error": 1.401010485510632
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2007-01-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 25.82,
+      "forecast": 24.150000000000002,
+      "absolute_error": 1.6699999999999982
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2007-02-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 26.81,
+      "forecast": 24.150000000000002,
+      "absolute_error": 2.6599999999999966
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2007-03-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 26.41,
+      "forecast": 24.150000000000002,
+      "absolute_error": 2.259999999999998
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2007-04-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 24.96,
+      "forecast": 24.150000000000002,
+      "absolute_error": 0.8099999999999987
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2007-05-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 23.05,
+      "forecast": 24.150000000000002,
+      "absolute_error": 1.1000000000000014
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2007-06-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.61,
+      "forecast": 24.150000000000002,
+      "absolute_error": 2.5400000000000027
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2007-07-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.05,
+      "forecast": 24.150000000000002,
+      "absolute_error": 3.1000000000000014
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2007-08-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 19.95,
+      "forecast": 24.150000000000002,
+      "absolute_error": 4.200000000000003
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2007-09-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 19.85,
+      "forecast": 24.150000000000002,
+      "absolute_error": 4.300000000000001
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2007-10-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 19.31,
+      "forecast": 24.150000000000002,
+      "absolute_error": 4.840000000000003
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2007-11-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 19.82,
+      "forecast": 24.150000000000002,
+      "absolute_error": 4.330000000000002
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2007-12-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.15,
+      "forecast": 24.150000000000002,
+      "absolute_error": 3.0000000000000036
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2007-01-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 25.82,
+      "forecast": 24.760000000000005,
+      "absolute_error": 1.0599999999999952
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2007-02-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 26.81,
+      "forecast": 26.520000000000003,
+      "absolute_error": 0.2899999999999956
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2007-03-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 26.41,
+      "forecast": 26.21999999999999,
+      "absolute_error": 0.19000000000000838
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2007-04-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 24.96,
+      "forecast": 24.289999999999996,
+      "absolute_error": 0.6700000000000053
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2007-05-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 23.05,
+      "forecast": 23.84,
+      "absolute_error": 0.7899999999999991
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2007-06-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.61,
+      "forecast": 22.819999999999997,
+      "absolute_error": 1.2099999999999973
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2007-07-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.05,
+      "forecast": 22.200000000000003,
+      "absolute_error": 1.1500000000000021
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2007-08-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 19.95,
+      "forecast": 21.89,
+      "absolute_error": 1.9400000000000013
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2007-09-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 19.85,
+      "forecast": 21.93,
+      "absolute_error": 2.0799999999999983
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2007-10-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 19.31,
+      "forecast": 22.459999999999997,
+      "absolute_error": 3.1499999999999986
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2007-11-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 19.82,
+      "forecast": 22.61,
+      "absolute_error": 2.789999999999999
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2007-12-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.15,
+      "forecast": 24.150000000000002,
+      "absolute_error": 3.0000000000000036
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2007-01-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 25.82,
+      "forecast": 24.15155650371938,
+      "absolute_error": 1.66844349628062
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2007-02-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 26.81,
+      "forecast": 24.153113107757747,
+      "absolute_error": 2.6568868922422517
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2007-03-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 26.41,
+      "forecast": 24.15466981212159,
+      "absolute_error": 2.2553301878784104
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2007-04-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 24.96,
+      "forecast": 24.156226616817364,
+      "absolute_error": 0.8037733831826372
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2007-05-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 23.05,
+      "forecast": 24.157783521851524,
+      "absolute_error": 1.1077835218515233
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2007-06-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.61,
+      "forecast": 24.159340527230558,
+      "absolute_error": 2.5493405272305587
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2007-07-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.05,
+      "forecast": 24.160897632960925,
+      "absolute_error": 3.110897632960924
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2007-08-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 19.95,
+      "forecast": 24.162454839049083,
+      "absolute_error": 4.212454839049084
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2007-09-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 19.85,
+      "forecast": 24.164012145501516,
+      "absolute_error": 4.314012145501515
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2007-10-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 19.31,
+      "forecast": 24.165569552324687,
+      "absolute_error": 4.855569552324688
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2007-11-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 19.82,
+      "forecast": 24.167127059525065,
+      "absolute_error": 4.347127059525064
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2007-12-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.15,
+      "forecast": 24.168684667109105,
+      "absolute_error": 3.018684667109106
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2007-01-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 25.82,
+      "forecast": 25.194753857619524,
+      "absolute_error": 0.625246142380476
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2007-02-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 26.81,
+      "forecast": 25.194753857619524,
+      "absolute_error": 1.6152461423804745
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2007-03-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 26.41,
+      "forecast": 25.194753857619524,
+      "absolute_error": 1.215246142380476
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2007-04-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 24.96,
+      "forecast": 25.194753857619524,
+      "absolute_error": 0.2347538576195234
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2007-05-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 23.05,
+      "forecast": 25.194753857619524,
+      "absolute_error": 2.1447538576195235
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2007-06-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.61,
+      "forecast": 25.194753857619524,
+      "absolute_error": 3.584753857619525
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2007-07-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.05,
+      "forecast": 25.194753857619524,
+      "absolute_error": 4.1447538576195235
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2007-08-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 19.95,
+      "forecast": 25.194753857619524,
+      "absolute_error": 5.244753857619525
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2007-09-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 19.85,
+      "forecast": 25.194753857619524,
+      "absolute_error": 5.344753857619523
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2007-10-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 19.31,
+      "forecast": 25.194753857619524,
+      "absolute_error": 5.8847538576195255
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2007-11-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 19.82,
+      "forecast": 25.194753857619524,
+      "absolute_error": 5.374753857619524
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2007-12-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.15,
+      "forecast": 25.194753857619524,
+      "absolute_error": 4.044753857619526
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2007-01-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 25.82,
+      "forecast": 25.34586421446589,
+      "absolute_error": 0.4741357855341093
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2007-02-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 26.81,
+      "forecast": 26.260502689282454,
+      "absolute_error": 0.5494973107175447
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2007-03-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 26.41,
+      "forecast": 26.952297786984463,
+      "absolute_error": 0.542297786984463
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2007-04-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 24.96,
+      "forecast": 27.471281758859764,
+      "absolute_error": 2.511281758859763
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2007-05-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 23.05,
+      "forecast": 27.858293763759995,
+      "absolute_error": 4.808293763759995
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2007-06-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.61,
+      "forecast": 28.145625079746527,
+      "absolute_error": 6.535625079746527
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2007-07-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.05,
+      "forecast": 28.358262064101165,
+      "absolute_error": 7.308262064101164
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2007-08-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 19.95,
+      "forecast": 28.515249770881947,
+      "absolute_error": 8.565249770881948
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2007-09-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 19.85,
+      "forecast": 28.630950912692526,
+      "absolute_error": 8.780950912692525
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2007-10-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 19.31,
+      "forecast": 28.71611488943073,
+      "absolute_error": 9.406114889430732
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2007-11-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 19.82,
+      "forecast": 28.778742819151752,
+      "absolute_error": 8.958742819151752
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2007-12-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.15,
+      "forecast": 28.824766595248338,
+      "absolute_error": 7.6747665952483395
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2007-01-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 25.82,
+      "forecast": 26.015840728007824,
+      "absolute_error": 0.19584072800782337
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2007-02-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 26.81,
+      "forecast": 27.56600587757337,
+      "absolute_error": 0.7560058775733722
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2007-03-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 26.41,
+      "forecast": 28.020283998107427,
+      "absolute_error": 1.6102839981074268
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2007-04-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 24.96,
+      "forecast": 27.07612008642292,
+      "absolute_error": 2.116120086422921
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2007-05-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 23.05,
+      "forecast": 25.766168368263845,
+      "absolute_error": 2.716168368263844
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2007-06-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.61,
+      "forecast": 24.342540779238224,
+      "absolute_error": 2.7325407792382244
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2007-07-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.05,
+      "forecast": 23.170918909062085,
+      "absolute_error": 2.120918909062084
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2007-08-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 19.95,
+      "forecast": 22.234424738695406,
+      "absolute_error": 2.2844247386954066
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2007-09-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 19.85,
+      "forecast": 21.972648043322426,
+      "absolute_error": 2.1226480433224246
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2007-10-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 19.31,
+      "forecast": 22.294120546113923,
+      "absolute_error": 2.9841205461139246
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2007-11-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 19.82,
+      "forecast": 23.01525410333382,
+      "absolute_error": 3.19525410333382
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2007-12-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.15,
+      "forecast": 24.253620270851414,
+      "absolute_error": 3.1036202708514153
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2007-01-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 25.82,
+      "forecast": 25.848963265300796,
+      "absolute_error": 0.028963265300795626
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2007-02-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 26.81,
+      "forecast": 27.20405911180157,
+      "absolute_error": 0.39405911180157105
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2007-03-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 26.41,
+      "forecast": 27.461172703073967,
+      "absolute_error": 1.0511727030739664
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2007-04-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 24.96,
+      "forecast": 26.348280395087738,
+      "absolute_error": 1.3882803950877367
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2007-05-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 23.05,
+      "forecast": 24.914719584002768,
+      "absolute_error": 1.864719584002767
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2007-06-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.61,
+      "forecast": 23.388174839360513,
+      "absolute_error": 1.7781748393605135
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2007-07-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.05,
+      "forecast": 22.133911660189494,
+      "absolute_error": 1.083911660189493
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2007-08-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 19.95,
+      "forecast": 21.136178189350236,
+      "absolute_error": 1.1861781893502368
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2007-09-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 19.85,
+      "forecast": 20.798760034470558,
+      "absolute_error": 0.9487600344705562
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2007-10-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 19.31,
+      "forecast": 21.02829952601775,
+      "absolute_error": 1.718299526017752
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2007-11-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 19.82,
+      "forecast": 21.624173176692004,
+      "absolute_error": 1.8041731766920037
+    },
+    {
+      "origin": "2006-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2007-12-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.15,
+      "forecast": 22.724208572555742,
+      "absolute_error": 1.5742085725557438
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2008-01-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 24.24,
+      "forecast": 21.149999999999995,
+      "absolute_error": 3.0900000000000034
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2008-02-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 26.39,
+      "forecast": 21.149999999999995,
+      "absolute_error": 5.2400000000000055
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2008-03-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 26.91,
+      "forecast": 21.149999999999995,
+      "absolute_error": 5.760000000000005
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2008-04-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 25.68,
+      "forecast": 21.149999999999995,
+      "absolute_error": 4.530000000000005
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2008-05-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 24.43,
+      "forecast": 21.149999999999995,
+      "absolute_error": 3.2800000000000047
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2008-06-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 23.19,
+      "forecast": 21.149999999999995,
+      "absolute_error": 2.0400000000000063
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2008-07-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 23.02,
+      "forecast": 21.149999999999995,
+      "absolute_error": 1.8700000000000045
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2008-08-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 22.14,
+      "forecast": 21.149999999999995,
+      "absolute_error": 0.9900000000000055
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2008-09-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.6,
+      "forecast": 21.149999999999995,
+      "absolute_error": 0.4500000000000064
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2008-10-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.39,
+      "forecast": 21.149999999999995,
+      "absolute_error": 0.24000000000000554
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2008-11-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.54,
+      "forecast": 21.149999999999995,
+      "absolute_error": 0.3900000000000041
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2008-12-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 22.73,
+      "forecast": 21.149999999999995,
+      "absolute_error": 1.5800000000000054
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2008-01-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 24.24,
+      "forecast": 25.82,
+      "absolute_error": 1.5800000000000018
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2008-02-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 26.39,
+      "forecast": 26.809999999999995,
+      "absolute_error": 0.4199999999999946
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2008-03-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 26.91,
+      "forecast": 26.41,
+      "absolute_error": 0.5
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2008-04-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 25.68,
+      "forecast": 24.96,
+      "absolute_error": 0.7199999999999989
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2008-05-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 24.43,
+      "forecast": 23.050000000000004,
+      "absolute_error": 1.3799999999999955
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2008-06-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 23.19,
+      "forecast": 21.61,
+      "absolute_error": 1.5800000000000018
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2008-07-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 23.02,
+      "forecast": 21.049999999999997,
+      "absolute_error": 1.9700000000000024
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2008-08-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 22.14,
+      "forecast": 19.95,
+      "absolute_error": 2.1900000000000013
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2008-09-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.6,
+      "forecast": 19.85,
+      "absolute_error": 1.75
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2008-10-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.39,
+      "forecast": 19.310000000000002,
+      "absolute_error": 2.0799999999999983
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2008-11-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.54,
+      "forecast": 19.82,
+      "absolute_error": 1.7199999999999989
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2008-12-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 22.73,
+      "forecast": 21.149999999999995,
+      "absolute_error": 1.5800000000000054
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2008-01-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 24.24,
+      "forecast": 21.147303150769602,
+      "absolute_error": 3.0926968492303963
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2008-02-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 26.39,
+      "forecast": 21.14460664541608,
+      "absolute_error": 5.245393354583921
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2008-03-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 26.91,
+      "forecast": 21.141910483895575,
+      "absolute_error": 5.768089516104425
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2008-04-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 25.68,
+      "forecast": 21.13921466616425,
+      "absolute_error": 4.54078533383575
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2008-05-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 24.43,
+      "forecast": 21.13651919217827,
+      "absolute_error": 3.29348080782173
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2008-06-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 23.19,
+      "forecast": 21.133824061893794,
+      "absolute_error": 2.0561759381062075
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2008-07-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 23.02,
+      "forecast": 21.131129275267007,
+      "absolute_error": 1.8888707247329926
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2008-08-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 22.14,
+      "forecast": 21.128434832254083,
+      "absolute_error": 1.0115651677459176
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2008-09-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.6,
+      "forecast": 21.125740732811213,
+      "absolute_error": 0.4742592671887884
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2008-10-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.39,
+      "forecast": 21.12304697689459,
+      "absolute_error": 0.2669530231054118
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2008-11-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.54,
+      "forecast": 21.120353564460398,
+      "absolute_error": 0.419646435539601
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2008-12-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 22.73,
+      "forecast": 21.117660495464847,
+      "absolute_error": 1.6123395045351536
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2008-01-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 24.24,
+      "forecast": 21.57237448819561,
+      "absolute_error": 2.6676255118043883
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2008-02-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 26.39,
+      "forecast": 21.57237448819561,
+      "absolute_error": 4.8176255118043905
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2008-03-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 26.91,
+      "forecast": 21.57237448819561,
+      "absolute_error": 5.33762551180439
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2008-04-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 25.68,
+      "forecast": 21.57237448819561,
+      "absolute_error": 4.10762551180439
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2008-05-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 24.43,
+      "forecast": 21.57237448819561,
+      "absolute_error": 2.8576255118043896
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2008-06-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 23.19,
+      "forecast": 21.57237448819561,
+      "absolute_error": 1.6176255118043912
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2008-07-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 23.02,
+      "forecast": 21.57237448819561,
+      "absolute_error": 1.4476255118043895
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2008-08-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 22.14,
+      "forecast": 21.57237448819561,
+      "absolute_error": 0.5676255118043905
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2008-09-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.6,
+      "forecast": 21.57237448819561,
+      "absolute_error": 0.027625511804391323
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2008-10-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.39,
+      "forecast": 21.57237448819561,
+      "absolute_error": 0.18237448819560953
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2008-11-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.54,
+      "forecast": 21.57237448819561,
+      "absolute_error": 0.03237448819561095
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2008-12-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 22.73,
+      "forecast": 21.57237448819561,
+      "absolute_error": 1.1576255118043903
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2008-01-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 24.24,
+      "forecast": 22.181879009386233,
+      "absolute_error": 2.058120990613766
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2008-02-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 26.39,
+      "forecast": 22.970567580333135,
+      "absolute_error": 3.4194324196668653
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2008-03-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 26.91,
+      "forecast": 23.566794384256525,
+      "absolute_error": 3.343205615743475
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2008-04-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 25.68,
+      "forecast": 24.013906683674847,
+      "absolute_error": 1.6660933163251528
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2008-05-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 24.43,
+      "forecast": 24.347220384194152,
+      "absolute_error": 0.08277961580584758
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2008-06-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 23.19,
+      "forecast": 24.59462358955281,
+      "absolute_error": 1.4046235895528092
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2008-07-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 23.02,
+      "forecast": 24.77767586102582,
+      "absolute_error": 1.7576758610258203
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2008-08-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 22.14,
+      "forecast": 24.912799366185926,
+      "absolute_error": 2.772799366185925
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2008-09-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.6,
+      "forecast": 25.01237266186382,
+      "absolute_error": 3.41237266186382
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2008-10-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.39,
+      "forecast": 25.08565668198714,
+      "absolute_error": 3.6956566819871384
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2008-11-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.54,
+      "forecast": 25.139542628943396,
+      "absolute_error": 3.5995426289433965
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2008-12-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 22.73,
+      "forecast": 25.1791383485747,
+      "absolute_error": 2.4491383485746994
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2008-01-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 24.24,
+      "forecast": 22.769327370029483,
+      "absolute_error": 1.4706726299705153
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2008-02-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 26.39,
+      "forecast": 24.117984661913567,
+      "absolute_error": 2.272015338086433
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2008-03-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 26.91,
+      "forecast": 24.50200912770115,
+      "absolute_error": 2.40799087229885
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2008-04-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 25.68,
+      "forecast": 23.667634013631687,
+      "absolute_error": 2.0123659863683123
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2008-05-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 24.43,
+      "forecast": 22.50981960212744,
+      "absolute_error": 1.92018039787256
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2008-06-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 23.19,
+      "forecast": 21.263455506652047,
+      "absolute_error": 1.9265444933479543
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2008-07-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 23.02,
+      "forecast": 20.24839635766909,
+      "absolute_error": 2.771603642330909
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2008-08-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 22.14,
+      "forecast": 19.424913715430872,
+      "absolute_error": 2.7150862845691286
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2008-09-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.6,
+      "forecast": 19.197703749367033,
+      "absolute_error": 2.4022962506329684
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2008-10-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.39,
+      "forecast": 19.462810691367423,
+      "absolute_error": 1.9271893086325775
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2008-11-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.54,
+      "forecast": 20.09120971619143,
+      "absolute_error": 1.4487902838085702
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2008-12-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 22.73,
+      "forecast": 21.176887491510545,
+      "absolute_error": 1.5531125084894555
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2008-01-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 24.24,
+      "forecast": 22.90388076724432,
+      "absolute_error": 1.336119232755678
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2008-02-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 26.39,
+      "forecast": 24.44691478727062,
+      "absolute_error": 1.943085212729379
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2008-03-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 26.91,
+      "forecast": 25.036982672237308,
+      "absolute_error": 1.8730173277626925
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2008-04-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 25.68,
+      "forecast": 24.37927047923361,
+      "absolute_error": 1.3007295207663887
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2008-05-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 24.43,
+      "forecast": 23.377589809680366,
+      "absolute_error": 1.052410190319634
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2008-06-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 23.19,
+      "forecast": 22.250586614065192,
+      "absolute_error": 0.9394133859348095
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2008-07-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 23.02,
+      "forecast": 21.341774696304004,
+      "absolute_error": 1.6782253036959958
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2008-08-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 22.14,
+      "forecast": 20.60951999044317,
+      "absolute_error": 1.530480009556829
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2008-09-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.6,
+      "forecast": 20.489613485676863,
+      "absolute_error": 1.1103865143231388
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2008-10-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.39,
+      "forecast": 20.874670855443732,
+      "absolute_error": 0.5153291445562687
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2008-11-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.54,
+      "forecast": 21.623426074301154,
+      "absolute_error": 0.08342607430115478
+    },
+    {
+      "origin": "2007-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2008-12-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 22.73,
+      "forecast": 22.86394363801644,
+      "absolute_error": 0.13394363801644005
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2009-01-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 24.39,
+      "forecast": 22.730000000000004,
+      "absolute_error": 1.6599999999999966
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2009-02-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 25.53,
+      "forecast": 22.730000000000004,
+      "absolute_error": 2.799999999999997
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2009-03-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 25.48,
+      "forecast": 22.730000000000004,
+      "absolute_error": 2.7499999999999964
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2009-04-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 25.84,
+      "forecast": 22.730000000000004,
+      "absolute_error": 3.109999999999996
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2009-05-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 24.95,
+      "forecast": 22.730000000000004,
+      "absolute_error": 2.2199999999999953
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2009-06-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 24.09,
+      "forecast": 22.730000000000004,
+      "absolute_error": 1.3599999999999959
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2009-07-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 23.09,
+      "forecast": 22.730000000000004,
+      "absolute_error": 0.3599999999999959
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2009-08-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 22.03,
+      "forecast": 22.730000000000004,
+      "absolute_error": 0.7000000000000028
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2009-09-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.48,
+      "forecast": 22.730000000000004,
+      "absolute_error": 1.2500000000000036
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2009-10-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.64,
+      "forecast": 22.730000000000004,
+      "absolute_error": 1.0900000000000034
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2009-11-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 21.99,
+      "forecast": 22.730000000000004,
+      "absolute_error": 0.7400000000000055
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2009-12-01 00:00:00+00:00",
+      "model": "Naive",
+      "actual": 23.21,
+      "forecast": 22.730000000000004,
+      "absolute_error": 0.4799999999999969
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2009-01-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 24.39,
+      "forecast": 24.24,
+      "absolute_error": 0.15000000000000213
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2009-02-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 25.53,
+      "forecast": 26.389999999999997,
+      "absolute_error": 0.8599999999999959
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2009-03-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 25.48,
+      "forecast": 26.910000000000004,
+      "absolute_error": 1.4300000000000033
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2009-04-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 25.84,
+      "forecast": 25.680000000000003,
+      "absolute_error": 0.1599999999999966
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2009-05-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 24.95,
+      "forecast": 24.43,
+      "absolute_error": 0.5199999999999996
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2009-06-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 24.09,
+      "forecast": 23.190000000000005,
+      "absolute_error": 0.899999999999995
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2009-07-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 23.09,
+      "forecast": 23.019999999999996,
+      "absolute_error": 0.07000000000000384
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2009-08-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 22.03,
+      "forecast": 22.139999999999997,
+      "absolute_error": 0.10999999999999588
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2009-09-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.48,
+      "forecast": 21.6,
+      "absolute_error": 0.120000000000001
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2009-10-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.64,
+      "forecast": 21.389999999999997,
+      "absolute_error": 0.25000000000000355
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2009-11-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 21.99,
+      "forecast": 21.540000000000003,
+      "absolute_error": 0.44999999999999574
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2009-12-01 00:00:00+00:00",
+      "model": "Seasonal naive",
+      "actual": 23.21,
+      "forecast": 22.730000000000004,
+      "absolute_error": 0.4799999999999969
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2009-01-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 24.39,
+      "forecast": 22.729466967289156,
+      "absolute_error": 1.6605330327108447
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2009-02-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 25.53,
+      "forecast": 22.72893394707826,
+      "absolute_error": 2.8010660529217404
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2009-03-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 25.48,
+      "forecast": 22.72840093936703,
+      "absolute_error": 2.7515990606329694
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2009-04-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 25.84,
+      "forecast": 22.727867944155157,
+      "absolute_error": 3.1121320558448424
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2009-05-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 24.95,
+      "forecast": 22.727334961442356,
+      "absolute_error": 2.2226650385576434
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2009-06-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 24.09,
+      "forecast": 22.726801991228328,
+      "absolute_error": 1.363198008771672
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2009-07-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 23.09,
+      "forecast": 22.726269033512786,
+      "absolute_error": 0.36373096648721415
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2009-08-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 22.03,
+      "forecast": 22.72573608829545,
+      "absolute_error": 0.6957360882954475
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2009-09-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.48,
+      "forecast": 22.725203155575997,
+      "absolute_error": 1.2452031555759966
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2009-10-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.64,
+      "forecast": 22.72467023535415,
+      "absolute_error": 1.0846702353541495
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2009-11-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 21.99,
+      "forecast": 22.72413732762962,
+      "absolute_error": 0.7341373276296217
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2009-12-01 00:00:00+00:00",
+      "model": "Drift",
+      "actual": 23.21,
+      "forecast": 22.723604432402105,
+      "absolute_error": 0.4863955675978957
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2009-01-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 24.39,
+      "forecast": 23.36053356292662,
+      "absolute_error": 1.0294664370733813
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2009-02-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 25.53,
+      "forecast": 23.36053356292662,
+      "absolute_error": 2.169466437073382
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2009-03-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 25.48,
+      "forecast": 23.36053356292662,
+      "absolute_error": 2.119466437073381
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2009-04-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 25.84,
+      "forecast": 23.36053356292662,
+      "absolute_error": 2.4794664370733805
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2009-05-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 24.95,
+      "forecast": 23.36053356292662,
+      "absolute_error": 1.58946643707338
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2009-06-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 24.09,
+      "forecast": 23.36053356292662,
+      "absolute_error": 0.7294664370733805
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2009-07-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 23.09,
+      "forecast": 23.36053356292662,
+      "absolute_error": 0.27053356292661945
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2009-08-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 22.03,
+      "forecast": 23.36053356292662,
+      "absolute_error": 1.3305335629266182
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2009-09-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.48,
+      "forecast": 23.36053356292662,
+      "absolute_error": 1.8805335629266189
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2009-10-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.64,
+      "forecast": 23.36053356292662,
+      "absolute_error": 1.7205335629266187
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2009-11-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 21.99,
+      "forecast": 23.36053356292662,
+      "absolute_error": 1.3705335629266209
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2009-12-01 00:00:00+00:00",
+      "model": "ARIMA(0,1,1)",
+      "actual": 23.21,
+      "forecast": 23.36053356292662,
+      "absolute_error": 0.15053356292661846
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2009-01-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 24.39,
+      "forecast": 23.643524441748582,
+      "absolute_error": 0.7464755582514186
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2009-02-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 25.53,
+      "forecast": 24.33614846044452,
+      "absolute_error": 1.1938515395554816
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2009-03-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 25.48,
+      "forecast": 24.85652637222383,
+      "absolute_error": 0.6234736277761712
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2009-04-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 25.84,
+      "forecast": 25.244891399576765,
+      "absolute_error": 0.5951086004232344
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2009-05-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 24.95,
+      "forecast": 25.53331825287276,
+      "absolute_error": 0.5833182528727612
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2009-06-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 24.09,
+      "forecast": 25.74675702078035,
+      "absolute_error": 1.6567570207803506
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2009-07-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 23.09,
+      "forecast": 25.904289140121335,
+      "absolute_error": 2.8142891401213355
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2009-08-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 22.03,
+      "forecast": 26.02033460058814,
+      "absolute_error": 3.990334600588138
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2009-09-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.48,
+      "forecast": 26.10569844954987,
+      "absolute_error": 4.625698449549869
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2009-10-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.64,
+      "forecast": 26.16842775173423,
+      "absolute_error": 4.528427751734231
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2009-11-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 21.99,
+      "forecast": 26.21448920439258,
+      "absolute_error": 4.224489204392583
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2009-12-01 00:00:00+00:00",
+      "model": "ARIMA(1,1,0)",
+      "actual": 23.21,
+      "forecast": 26.24829284701555,
+      "absolute_error": 3.0382928470155477
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2009-01-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 24.39,
+      "forecast": 24.471304943305274,
+      "absolute_error": 0.08130494330527327
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2009-02-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 25.53,
+      "forecast": 25.932938520490225,
+      "absolute_error": 0.40293852049022405
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2009-03-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 25.48,
+      "forecast": 26.347018560321786,
+      "absolute_error": 0.8670185603217853
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2009-04-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 25.84,
+      "forecast": 25.443507485636985,
+      "absolute_error": 0.3964925143630147
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2009-05-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 24.95,
+      "forecast": 24.199062952093566,
+      "absolute_error": 0.750937047906433
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2009-06-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 24.09,
+      "forecast": 22.860915837469474,
+      "absolute_error": 1.2290841625305262
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2009-07-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 23.09,
+      "forecast": 21.786224708001434,
+      "absolute_error": 1.3037752919985657
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2009-08-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 22.03,
+      "forecast": 20.901597293732497,
+      "absolute_error": 1.1284027062675044
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2009-09-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.48,
+      "forecast": 20.65294315162339,
+      "absolute_error": 0.8270568483766105
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2009-10-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.64,
+      "forecast": 20.92959806310295,
+      "absolute_error": 0.7104019368970498
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2009-11-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 21.99,
+      "forecast": 21.594949644380122,
+      "absolute_error": 0.3950503556198761
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2009-12-01 00:00:00+00:00",
+      "model": "Airline ARIMA",
+      "actual": 23.21,
+      "forecast": 22.76256678738304,
+      "absolute_error": 0.4474332126169607
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2009-01-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 24.39,
+      "forecast": 24.414493401581055,
+      "absolute_error": 0.024493401581054286
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2009-02-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 25.53,
+      "forecast": 25.812332327521222,
+      "absolute_error": 0.28233232752122106
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2009-03-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 25.48,
+      "forecast": 26.17220556036943,
+      "absolute_error": 0.6922055603694304
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2009-04-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 25.84,
+      "forecast": 25.22885464742956,
+      "absolute_error": 0.6111453525704391
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2009-05-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 24.95,
+      "forecast": 23.98341093963024,
+      "absolute_error": 0.9665890603697598
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2009-06-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 24.09,
+      "forecast": 22.647107654623166,
+      "absolute_error": 1.4428923453768334
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2009-07-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 23.09,
+      "forecast": 21.598765356731644,
+      "absolute_error": 1.4912346432683563
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2009-08-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 22.03,
+      "forecast": 20.737975678815413,
+      "absolute_error": 1.2920243211845879
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2009-09-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.48,
+      "forecast": 20.511669754372285,
+      "absolute_error": 0.9683302456277154
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2009-10-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.64,
+      "forecast": 20.799395220819374,
+      "absolute_error": 0.8406047791806266
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2009-11-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 21.99,
+      "forecast": 21.451228252108994,
+      "absolute_error": 0.5387717478910048
+    },
+    {
+      "origin": "2008-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2009-12-01 00:00:00+00:00",
+      "model": "ARIMA(auto)",
+      "actual": 23.21,
+      "forecast": 22.630492238797103,
+      "absolute_error": 0.5795077612028976
+    }
+  ],
+  "test_mae": {
+    "ARIMA(0,1,1)": 2.5568171920125096,
+    "ARIMA(1,1,0)": 3.7991627523512097,
+    "ARIMA(auto)": 0.6475456918276089,
+    "Airline ARIMA": 0.8695400126899573,
+    "Drift": 2.4445848306045517,
+    "Naive": 2.4441666666666664,
+    "Seasonal naive": 1.2124999999999988
+  },
+  "test_interval_coverage": {
+    "ARIMA(0,1,1)": 1.0,
+    "ARIMA(1,1,0)": 1.0,
+    "ARIMA(auto)": 0.8333333333333334,
+    "Airline ARIMA": 0.8333333333333334
+  },
+  "skipped": {},
+  "executed": [
+    "ARIMA(0,1,1)",
+    "ARIMA(1,1,0)",
+    "ARIMA(auto)",
+    "Airline ARIMA",
+    "Drift",
+    "Naive",
+    "Seasonal naive"
+  ],
+  "evaluation": "5 expanding origins spaced 12 steps apart select the model on mean MAE; the final 12 observations are scored once and never used for selection; the selection is refitted on all history.",
+  "intervals": "lower/upper are the ARIMA(auto) model's nominal 80% intervals; their coverage at the 5 selection origins was 65%. empirical_q* columns add signed residual quantiles by horizon step from those origins (5 residuals per step).",
+  "interpretation": "ARIMA(auto) had the lowest mean validation MAE (0.939); the runner-up was Seasonal naive (1.1). Final-holdout MAE for the selection: 0.648. Compare against Seasonal naive before trusting the gain.",
+  "status": "passed"
+}

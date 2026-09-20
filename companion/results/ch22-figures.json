@@ -1,0 +1,62 @@
+[
+  {
+    "id": "fig-22-01",
+    "chapter": 22,
+    "title": "An intervention against a common trend",
+    "caption": "Synthetic treated and control outcomes with an eight-unit treatment effect starting at period 80.",
+    "anchor": "## Section 3: When Forecasting and Causation Meet",
+    "alt": "An intervention against a common trend. Synthetic treated and control outcomes with an eight-unit treatment effect starting at period 80.",
+    "seed": 20260940,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch22/fig-22-01.png",
+      "pdf": "figures/ch22/fig-22-01.pdf",
+      "svg": "figures/ch22/fig-22-01.svg"
+    }
+  },
+  {
+    "id": "fig-22-02",
+    "chapter": 22,
+    "title": "The counterfactual is a model assumption",
+    "caption": "Pre-period OLS relationship projected using the control series. Synthetic cumulative effects are estimates, not directly observed treatment outcomes.",
+    "anchor": "## Section 4: The Full Methodology",
+    "alt": "The counterfactual is a model assumption. Pre-period OLS relationship projected using the control series. Synthetic cumulative effects are estimates, not directly observed treatment outcomes.",
+    "seed": 20260940,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch22/fig-22-02.png",
+      "pdf": "figures/ch22/fig-22-02.pdf",
+      "svg": "figures/ch22/fig-22-02.svg"
+    }
+  },
+  {
+    "id": "fig-22-03",
+    "chapter": 22,
+    "title": "A placebo tests a specific failure mechanism",
+    "caption": "Repeated no-treatment synthetic outcomes under the same generator. This simulation reference is not a randomization p-value for observational real-world data.",
+    "anchor": "## Section 5: What the Counterfactual Actually Is",
+    "alt": "A placebo tests a specific failure mechanism. Repeated no-treatment synthetic outcomes under the same generator. This simulation reference is not a randomization p-value for observational real-world data.",
+    "seed": 20260940,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch22/fig-22-03.png",
+      "pdf": "figures/ch22/fig-22-03.pdf",
+      "svg": "figures/ch22/fig-22-03.svg"
+    }
+  },
+  {
+    "id": "fig-22-04",
+    "chapter": 22,
+    "title": "The same pretrends can support different explanations",
+    "caption": "Both synthetic cases have identical pre-period data. A six-unit treated-only post-period shock contaminates DiD without changing the true eight-unit intervention effect.",
+    "anchor": "## Section 5: What the Counterfactual Actually Is",
+    "alt": "The same pretrends can support different explanations. Both synthetic cases have identical pre-period data. A six-unit treated-only post-period shock contaminates DiD without changing the true eight-unit intervention effect.",
+    "seed": 20260940,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch22/fig-22-04.png",
+      "pdf": "figures/ch22/fig-22-04.pdf",
+      "svg": "figures/ch22/fig-22-04.svg"
+    }
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-04-01",
+    "chapter": 4,
+    "title": "How fast should a forecast forget?",
+    "caption": "Synthetic level shift. Faster updates react sooner but follow more observation noise.",
+    "anchor": "## The Methods",
+    "alt": "How fast should a forecast forget?. Synthetic level shift. Faster updates react sooner but follow more observation noise.",
+    "seed": 20260922,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch04/fig-04-01.png",
+      "pdf": "figures/ch04/fig-04-01.pdf",
+      "svg": "figures/ch04/fig-04-01.svg"
+    }
+  },
+  {
+    "id": "fig-04-02",
+    "chapter": 4,
+    "title": "Damping the distant trend",
+    "caption": "Synthetic trend. The undamped forecast extrapolates its final slope; the damped model progressively reduces it.",
+    "anchor": "## The Methods",
+    "alt": "Damping the distant trend. Synthetic trend. The undamped forecast extrapolates its final slope; the damped model progressively reduces it.",
+    "seed": 20260922,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch04/fig-04-02.png",
+      "pdf": "figures/ch04/fig-04-02.pdf",
+      "svg": "figures/ch04/fig-04-02.svg"
+    }
+  },
+  {
+    "id": "fig-04-03",
+    "chapter": 4,
+    "title": "Seasonality earns its place on the holdout",
+    "caption": "Synthetic monthly demand; errors are computed on 24 unseen months. Seasonal-naive is the reference.",
+    "anchor": "## The Methods",
+    "alt": "Seasonality earns its place on the holdout. Synthetic monthly demand; errors are computed on 24 unseen months. Seasonal-naive is the reference.",
+    "seed": 20260922,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch04/fig-04-03.png",
+      "pdf": "figures/ch04/fig-04-03.pdf",
+      "svg": "figures/ch04/fig-04-03.svg"
+    }
+  }
+]

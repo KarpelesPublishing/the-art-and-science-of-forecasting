@@ -1,0 +1,11 @@
+{
+  "source": "Public-domain statsmodels Nile annual flow, 1871\u20131970",
+  "units": "10^8 cubic metres",
+  "horizon": 10,
+  "season": 1,
+  "seed": 417,
+  "outcome_due": "Declare before issuing a real forecast",
+  "model": "local level",
+  "seasonal": false,
+  "origins": 3
+}

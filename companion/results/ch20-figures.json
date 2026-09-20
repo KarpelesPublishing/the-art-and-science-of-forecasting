@@ -1,0 +1,122 @@
+[
+  {
+    "id": "fig-20-01",
+    "chapter": 20,
+    "title": "Advertising can carry into later periods",
+    "caption": "Synthetic single-spend impulse under three geometric decay assumptions. Unnormalized stock totals differ with decay.",
+    "anchor": "## Section Four: The Methodology",
+    "alt": "Advertising can carry into later periods. Synthetic single-spend impulse under three geometric decay assumptions. Unnormalized stock totals differ with decay.",
+    "seed": 20260938,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch20/fig-20-01.png",
+      "pdf": "figures/ch20/fig-20-01.pdf",
+      "svg": "figures/ch20/fig-20-01.svg"
+    }
+  },
+  {
+    "id": "fig-20-02",
+    "chapter": 20,
+    "title": "Marginal response declines in this model",
+    "caption": "Michaelis-Menten response curves with assumed parameters. General Hill curves with exponent above one are S-shaped, not globally concave.",
+    "anchor": "## Section Four: The Methodology",
+    "alt": "Marginal response declines in this model. Michaelis-Menten response curves with assumed parameters. General Hill curves with exponent above one are S-shaped, not globally concave.",
+    "seed": 20260938,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch20/fig-20-02.png",
+      "pdf": "figures/ch20/fig-20-02.pdf",
+      "svg": "figures/ch20/fig-20-02.svg"
+    }
+  },
+  {
+    "id": "fig-20-03",
+    "chapter": 20,
+    "title": "Attribution is not automatically incrementality",
+    "caption": "Known synthetic effect of two units. Observational spending shares a cause with demand; randomization and correct adjustment address that bias under this generator.",
+    "anchor": "## Section Two: Geo-Experiments and the Randomized Approach",
+    "alt": "Attribution is not automatically incrementality. Known synthetic effect of two units. Observational spending shares a cause with demand; randomization and correct adjustment address that bias under this generator.",
+    "seed": 20260938,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch20/fig-20-03.png",
+      "pdf": "figures/ch20/fig-20-03.pdf",
+      "svg": "figures/ch20/fig-20-03.svg"
+    }
+  },
+  {
+    "id": "fig-20-04",
+    "chapter": 20,
+    "title": "Stable estimates can still assign the wrong credit",
+    "caption": "Synthetic correlated channels: true A=12 and B=8. Compare joint OLS, fixed correct/wrong backgrounds, and two conflicting Gaussian priors. Fixed backgrounds and priors impose assumptions; stability is not identification.",
+    "anchor": "## Section Five: What the Model Can and Cannot Tell You",
+    "alt": "Stable estimates can still assign the wrong credit. Synthetic correlated channels: true A=12 and B=8. Compare joint OLS, fixed correct/wrong backgrounds, and two conflicting Gaussian priors. Fixed backgrounds and priors impose assumptions; stability is not identification.",
+    "seed": 20260938,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch20/fig-20-04.png",
+      "pdf": "figures/ch20/fig-20-04.pdf",
+      "svg": "figures/ch20/fig-20-04.svg"
+    }
+  },
+  {
+    "id": "fig-20-05",
+    "chapter": 20,
+    "title": "Initial conditions are not an intercept",
+    "caption": "Synthetic geometric carryover includes twelve weeks before the modeled outcome window. Omitting that history creates a transient stock error; no causal attribution is established by this illustration.",
+    "anchor": "## Section Four: The Methodology",
+    "alt": "Initial conditions are not an intercept. Synthetic geometric carryover includes twelve weeks before the modeled outcome window. Omitting that history creates a transient stock error; no causal attribution is established by this illustration.",
+    "seed": 20260938,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch20/fig-20-05.png",
+      "pdf": "figures/ch20/fig-20-05.pdf",
+      "svg": "figures/ch20/fig-20-05.svg"
+    }
+  },
+  {
+    "id": "fig-20-06",
+    "chapter": 20,
+    "title": "Launch speed changes the first-year share",
+    "caption": "Illustrative 4,000-trier total over 24 months. The standard gamma allocates 80% to year one; faster/slower timing changes that share. Trial timing is not a total-sales curve.",
+    "anchor": "## Section Three: Simulated Test Markets",
+    "alt": "Launch speed changes the first-year share. Illustrative 4,000-trier total over 24 months. The standard gamma allocates 80% to year one; faster/slower timing changes that share. Trial timing is not a total-sales curve.",
+    "seed": 20260938,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch20/fig-20-06.png",
+      "pdf": "figures/ch20/fig-20-06.pdf",
+      "svg": "figures/ch20/fig-20-06.svg"
+    }
+  },
+  {
+    "id": "fig-20-07",
+    "chapter": 20,
+    "title": "Where the trial estimate comes from",
+    "caption": "Seven judged attribute scores times illustrative weights. Negative terms are shaded. Per point of score, the evoked-set weight is by far the heaviest; at these scores it and expensiveness carry the downside. Weights are generic starting values, not fitted estimates; the net index gives a 23% trial rate.",
+    "anchor": "## Section Three: Simulated Test Markets",
+    "alt": "Where the trial estimate comes from. Seven judged attribute scores times illustrative weights. Negative terms are shaded. Per point of score, the evoked-set weight is by far the heaviest; at these scores it and expensiveness carry the downside. Weights are generic starting values, not fitted estimates; the net index gives a 23% trial rate.",
+    "seed": 20260938,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch20/fig-20-07.png",
+      "pdf": "figures/ch20/fig-20-07.pdf",
+      "svg": "figures/ch20/fig-20-07.svg"
+    }
+  },
+  {
+    "id": "fig-20-08",
+    "chapter": 20,
+    "title": "The inputs are made to agree with each other",
+    "caption": "Copying implied values back into the typed inputs. The claimed purchase frequency falls from 20 to 12 in two passes and the implied category size meets the typed 415 million units. This is a coherence check on judgments, not evidence about the launch.",
+    "anchor": "## Section Three: Simulated Test Markets",
+    "alt": "The inputs are made to agree with each other. Copying implied values back into the typed inputs. The claimed purchase frequency falls from 20 to 12 in two passes and the implied category size meets the typed 415 million units. This is a coherence check on judgments, not evidence about the launch.",
+    "seed": 20260938,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch20/fig-20-08.png",
+      "pdf": "figures/ch20/fig-20-08.pdf",
+      "svg": "figures/ch20/fig-20-08.svg"
+    }
+  }
+]

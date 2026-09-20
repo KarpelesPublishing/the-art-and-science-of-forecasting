@@ -1,0 +1,13 @@
+{
+  "source": "Seeded synthetic educational input; not business observations",
+  "units": "illustrative units",
+  "horizon": 12,
+  "season": 12,
+  "seed": 417,
+  "outcome_due": "Declare before issuing a real forecast",
+  "alpha": 0.2,
+  "pool": "smoothing",
+  "calibration_size": 36,
+  "test_size": 24,
+  "origins": 3
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-08-01",
+    "chapter": 8,
+    "title": "Feedback concentrates expert estimates",
+    "caption": "Synthetic experts begin with shared positive bias. Anonymous median feedback narrows their spread.",
+    "anchor": "## Delphi in the Wild",
+    "alt": "Feedback concentrates expert estimates. Synthetic experts begin with shared positive bias. Anonymous median feedback narrows their spread.",
+    "seed": 20260926,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch08/fig-08-01.png",
+      "pdf": "figures/ch08/fig-08-01.pdf",
+      "svg": "figures/ch08/fig-08-01.svg"
+    }
+  },
+  {
+    "id": "fig-08-02",
+    "chapter": 8,
+    "title": "Consensus is not calibration",
+    "caption": "The same synthetic rounds: declining disagreement can coexist with persistent bias in the group estimate.",
+    "anchor": "## The Cognitive Problem Delphi Did Not Solve",
+    "alt": "Consensus is not calibration. The same synthetic rounds: declining disagreement can coexist with persistent bias in the group estimate.",
+    "seed": 20260926,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch08/fig-08-02.png",
+      "pdf": "figures/ch08/fig-08-02.pdf",
+      "svg": "figures/ch08/fig-08-02.svg"
+    }
+  },
+  {
+    "id": "fig-08-03",
+    "chapter": 8,
+    "title": "A larger panel cannot average away shared error",
+    "caption": "Repeated synthetic panels with equal individual error variance: 15\u00b2 = 9\u00b2 + 12\u00b2. Shared error persists even when idiosyncratic errors average out.",
+    "anchor": "## The Full Machinery",
+    "alt": "A larger panel cannot average away shared error. Repeated synthetic panels with equal individual error variance: 15\u00b2 = 9\u00b2 + 12\u00b2. Shared error persists even when idiosyncratic errors average out.",
+    "seed": 20260926,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch08/fig-08-03.png",
+      "pdf": "figures/ch08/fig-08-03.pdf",
+      "svg": "figures/ch08/fig-08-03.svg"
+    }
+  }
+]

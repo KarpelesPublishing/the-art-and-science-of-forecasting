@@ -1,0 +1,62 @@
+[
+  {
+    "id": "fig-10-01",
+    "chapter": 10,
+    "title": "Evidence updates the odds",
+    "caption": "Illustrative likelihood ratios update a 20% prior. Evidence dependence must be accounted for before multiplying ratios.",
+    "anchor": "## The Methodology",
+    "alt": "Evidence updates the odds. Illustrative likelihood ratios update a 20% prior. Evidence dependence must be accounted for before multiplying ratios.",
+    "seed": 20260928,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch10/fig-10-01.png",
+      "pdf": "figures/ch10/fig-10-01.pdf",
+      "svg": "figures/ch10/fig-10-01.svg"
+    }
+  },
+  {
+    "id": "fig-10-02",
+    "chapter": 10,
+    "title": "Extremization needs validation",
+    "caption": "Synthetic independent event groups. The multiplier is selected on the first 2,000 events and evaluated on a separate 2,000.",
+    "anchor": "## The Methodology",
+    "alt": "Extremization needs validation. Synthetic independent event groups. The multiplier is selected on the first 2,000 events and evaluated on a separate 2,000.",
+    "seed": 20260928,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch10/fig-10-02.png",
+      "pdf": "figures/ch10/fig-10-02.pdf",
+      "svg": "figures/ch10/fig-10-02.svg"
+    }
+  },
+  {
+    "id": "fig-10-03",
+    "chapter": 10,
+    "title": "Which assumptions deserve more investigation?",
+    "caption": "Piano-tuner example: 1.1 million households \u00d7 10% ownership \u00d7 one annual tuning \u00d7 1.5 hours, divided by 1,500 annual hours per tuner, gives 110. Ranges are illustrative assumptions, not measured uncertainty or confidence intervals. Each row varies only its named input; wider spans identify greater sensitivity under these selected ranges.",
+    "anchor": "## The Methodology",
+    "alt": "Which assumptions deserve more investigation?. Piano-tuner example: 1.1 million households \u00d7 10% ownership \u00d7 one annual tuning \u00d7 1.5 hours, divided by 1,500 annual hours per tuner, gives 110. Ranges are illustrative assumptions, not measured uncertainty or confidence intervals. Each row varies only its named input; wider spans identify greater sensitivity under these selected ranges.",
+    "seed": 20260928,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch10/fig-10-03.png",
+      "pdf": "figures/ch10/fig-10-03.pdf",
+      "svg": "figures/ch10/fig-10-03.svg"
+    }
+  },
+  {
+    "id": "fig-10-04",
+    "chapter": 10,
+    "title": "Keep the forecast before learning the outcome",
+    "caption": "One hundred resolved synthetic events, one pre-cutoff forecast per event; twenty unresolved events and a hindsight update are excluded. Bin counts reveal limited support; the plot does not certify real-world calibration.",
+    "anchor": "## Practicing the Skill",
+    "alt": "Keep the forecast before learning the outcome. One hundred resolved synthetic events, one pre-cutoff forecast per event; twenty unresolved events and a hindsight update are excluded. Bin counts reveal limited support; the plot does not certify real-world calibration.",
+    "seed": 20260928,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch10/fig-10-04.png",
+      "pdf": "figures/ch10/fig-10-04.pdf",
+      "svg": "figures/ch10/fig-10-04.svg"
+    }
+  }
+]

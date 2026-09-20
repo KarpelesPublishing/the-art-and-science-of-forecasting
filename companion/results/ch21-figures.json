@@ -1,0 +1,62 @@
+[
+  {
+    "id": "fig-21-01",
+    "chapter": 21,
+    "title": "Local corrections become upstream volatility",
+    "caption": "Synthetic inventory-position policies with three-week lead times. Each stage forecasts its own incoming demand signal.",
+    "anchor": "## Section One: Forrester at the Plant",
+    "alt": "Local corrections become upstream volatility. Synthetic inventory-position policies with three-week lead times. Each stage forecasts its own incoming demand signal.",
+    "seed": 20260939,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch21/fig-21-01.png",
+      "pdf": "figures/ch21/fig-21-01.pdf",
+      "svg": "figures/ch21/fig-21-01.svg"
+    }
+  },
+  {
+    "id": "fig-21-02",
+    "chapter": 21,
+    "title": "Measure amplification after warm-up",
+    "caption": "Variance ratios from the synthetic chain, excluding fifty initialization periods. Policy and delay choices determine the amplification.",
+    "anchor": "## Section Three: When the Model Sees Noise as Signal",
+    "alt": "Measure amplification after warm-up. Variance ratios from the synthetic chain, excluding fifty initialization periods. Policy and delay choices determine the amplification.",
+    "seed": 20260939,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch21/fig-21-02.png",
+      "pdf": "figures/ch21/fig-21-02.pdf",
+      "svg": "figures/ch21/fig-21-02.svg"
+    }
+  },
+  {
+    "id": "fig-21-03",
+    "chapter": 21,
+    "title": "The cheapest inventory level is not the mean",
+    "caption": "Synthetic normal demand with underage cost 9 and overage cost 3. The optimal demand CDF is cu/(cu+co), not the probability of selling an extra unit.",
+    "anchor": "## Section Four: The Full Methodology",
+    "alt": "The cheapest inventory level is not the mean. Synthetic normal demand with underage cost 9 and overage cost 3. The optimal demand CDF is cu/(cu+co), not the probability of selling an extra unit.",
+    "seed": 20260939,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch21/fig-21-03.png",
+      "pdf": "figures/ch21/fig-21-03.pdf",
+      "svg": "figures/ch21/fig-21-03.svg"
+    }
+  },
+  {
+    "id": "fig-21-04",
+    "chapter": 21,
+    "title": "Obsolescence changes demand occurrence",
+    "caption": "Synthetic intermittent demand stops after period 80. Forecast lines are pre-update one-step estimates; TSB continues updating occurrence probability during zeros.",
+    "anchor": "## Section Four: The Full Methodology",
+    "alt": "Obsolescence changes demand occurrence. Synthetic intermittent demand stops after period 80. Forecast lines are pre-update one-step estimates; TSB continues updating occurrence probability during zeros.",
+    "seed": 20260939,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch21/fig-21-04.png",
+      "pdf": "figures/ch21/fig-21-04.pdf",
+      "svg": "figures/ch21/fig-21-04.svg"
+    }
+  }
+]

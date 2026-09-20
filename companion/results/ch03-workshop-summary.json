@@ -1,0 +1,5 @@
+{
+  "method": "Descriptive STL with vintage comparison",
+  "max_trend_revision": 0.8875486929403849,
+  "interpretation": "Full-series components describe the past. Their revision after adding observations demonstrates why they cannot be used as origin-known backtest features."
+}

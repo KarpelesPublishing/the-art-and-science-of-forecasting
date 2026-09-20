@@ -1,0 +1,62 @@
+[
+  {
+    "id": "fig-23-01",
+    "chapter": 23,
+    "title": "Behavior scenarios produce different epidemic paths",
+    "caption": "Synthetic closed-population SIR trajectories with fixed removal rate 0.1/day. These are conditional scenarios, not estimated probabilities.",
+    "anchor": "## Section Four: The Full Methodology",
+    "alt": "Behavior scenarios produce different epidemic paths. Synthetic closed-population SIR trajectories with fixed removal rate 0.1/day. These are conditional scenarios, not estimated probabilities.",
+    "seed": 20260941,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch23/fig-23-01.png",
+      "pdf": "figures/ch23/fig-23-01.pdf",
+      "svg": "figures/ch23/fig-23-01.svg"
+    }
+  },
+  {
+    "id": "fig-23-02",
+    "chapter": 23,
+    "title": "A falling report count may be a delay",
+    "caption": "Synthetic reporting triangle with a known seven-day delay distribution. The most recent dates have incomplete reports at the fixed as-of cutoff.",
+    "anchor": "## Section Three: Nowcasting and the Real-Time Estimation Problem",
+    "alt": "A falling report count may be a delay. Synthetic reporting triangle with a known seven-day delay distribution. The most recent dates have incomplete reports at the fixed as-of cutoff.",
+    "seed": 20260941,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch23/fig-23-02.png",
+      "pdf": "figures/ch23/fig-23-02.pdf",
+      "svg": "figures/ch23/fig-23-02.svg"
+    }
+  },
+  {
+    "id": "fig-23-03",
+    "chapter": 23,
+    "title": "Adjustment helps but recent uncertainty remains",
+    "caption": "Repeated synthetic event counts under the known delay law. This evaluates nowcast error by reporting age, not future epidemic forecast accuracy.",
+    "anchor": "## Section Five: The Universal Structure",
+    "alt": "Adjustment helps but recent uncertainty remains. Repeated synthetic event counts under the known delay law. This evaluates nowcast error by reporting age, not future epidemic forecast accuracy.",
+    "seed": 20260941,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch23/fig-23-03.png",
+      "pdf": "figures/ch23/fig-23-03.pdf",
+      "svg": "figures/ch23/fig-23-03.svg"
+    }
+  },
+  {
+    "id": "fig-23-04",
+    "chapter": 23,
+    "title": "Score the epidemic forecast after its origin",
+    "caption": "Four chronological origins on noisy synthetic infectious counts. Transmission is fitted using observations available at each origin; future SIR forecasts and persistence are scored on identical horizons. This is not reporting-delay nowcast error.",
+    "anchor": "## Section Five: The Universal Structure",
+    "alt": "Score the epidemic forecast after its origin. Four chronological origins on noisy synthetic infectious counts. Transmission is fitted using observations available at each origin; future SIR forecasts and persistence are scored on identical horizons. This is not reporting-delay nowcast error.",
+    "seed": 20260941,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch23/fig-23-04.png",
+      "pdf": "figures/ch23/fig-23-04.pdf",
+      "svg": "figures/ch23/fig-23-04.svg"
+    }
+  }
+]

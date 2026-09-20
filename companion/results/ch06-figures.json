@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-06-01",
+    "chapter": 6,
+    "title": "Difference the changing level",
+    "caption": "Synthetic integrated autoregressive observations. First differencing removes the accumulated level without assuming that every trend should be differenced.",
+    "anchor": "## Part Three: What ARIMA Actually Is",
+    "alt": "Difference the changing level. Synthetic integrated autoregressive observations. First differencing removes the accumulated level without assuming that every trend should be differenced.",
+    "seed": 20260924,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch06/fig-06-01.png",
+      "pdf": "figures/ch06/fig-06-01.pdf",
+      "svg": "figures/ch06/fig-06-01.svg"
+    }
+  },
+  {
+    "id": "fig-06-02",
+    "chapter": 6,
+    "title": "A signature in the lag structure",
+    "caption": "ACF and PACF of training differences only. Approximate confidence bands help screen candidate models; they do not select an order with certainty.",
+    "anchor": "## Part Four: The Full Methodology",
+    "alt": "A signature in the lag structure. ACF and PACF of training differences only. Approximate confidence bands help screen candidate models; they do not select an order with certainty.",
+    "seed": 20260924,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch06/fig-06-02.png",
+      "pdf": "figures/ch06/fig-06-02.pdf",
+      "svg": "figures/ch06/fig-06-02.svg"
+    }
+  },
+  {
+    "id": "fig-06-03",
+    "chapter": 6,
+    "title": "Forecast uncertainty accumulates",
+    "caption": "Held-out synthetic observations with the ARIMA model's nominal 95% prediction interval. Coverage on one path is not a calibration guarantee.",
+    "anchor": "## Part Five: Listening to the Residuals",
+    "alt": "Forecast uncertainty accumulates. Held-out synthetic observations with the ARIMA model's nominal 95% prediction interval. Coverage on one path is not a calibration guarantee.",
+    "seed": 20260924,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch06/fig-06-03.png",
+      "pdf": "figures/ch06/fig-06-03.pdf",
+      "svg": "figures/ch06/fig-06-03.svg"
+    }
+  }
+]

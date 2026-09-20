@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-03-01",
+    "chapter": 3,
+    "title": "Small initial differences become different futures",
+    "caption": "Each panel compares the same reference with one perturbed initial x on common axes. Numerical Lorenz trajectories; model time is dimensionless, not forecast days.",
+    "anchor": "## II. The ENIAC Run and the Modern Era",
+    "alt": "Small initial differences become different futures. Each panel compares the same reference with one perturbed initial x on common axes. Numerical Lorenz trajectories; model time is dimensionless, not forecast days.",
+    "seed": 20260921,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch03/fig-03-01.png",
+      "pdf": "figures/ch03/fig-03-01.pdf",
+      "svg": "figures/ch03/fig-03-01.svg"
+    }
+  },
+  {
+    "id": "fig-03-02",
+    "chapter": 3,
+    "title": "Uncertainty grows with the forecast horizon",
+    "caption": "Absolute divergence from the reference trajectory. Growth is irregular and bounded by the dynamical system; it is not indefinite exponential growth.",
+    "anchor": "## II. The ENIAC Run and the Modern Era",
+    "alt": "Uncertainty grows with the forecast horizon. Absolute divergence from the reference trajectory. Growth is irregular and bounded by the dynamical system; it is not indefinite exponential growth.",
+    "seed": 20260921,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch03/fig-03-02.png",
+      "pdf": "figures/ch03/fig-03-02.pdf",
+      "svg": "figures/ch03/fig-03-02.svg"
+    }
+  },
+  {
+    "id": "fig-03-03",
+    "chapter": 3,
+    "title": "Structure beneath a noisy series",
+    "caption": "STL decomposition of synthetic monthly observations. Trend and seasonality are estimates, not independently observed causes.",
+    "anchor": "## IV. Time Series Structure as Methodology",
+    "alt": "Structure beneath a noisy series. STL decomposition of synthetic monthly observations. Trend and seasonality are estimates, not independently observed causes.",
+    "seed": 20260921,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch03/fig-03-03.png",
+      "pdf": "figures/ch03/fig-03-03.pdf",
+      "svg": "figures/ch03/fig-03-03.svg"
+    }
+  }
+]

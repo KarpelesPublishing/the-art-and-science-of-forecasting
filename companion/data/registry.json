@@ -1,0 +1,92 @@
+[
+  {
+    "id": "elnino",
+    "path": "data/observed/elnino.csv",
+    "source": "\nNational Oceanic and Atmospheric Administration's National Weather Service\n\nERSST.V3B dataset, Nino 1+2\nhttp://www.cpc.ncep.noaa.gov/data/indices/\n",
+    "notes": "::\n\n    Number of Observations - 61 x 12\n\n    Number of Variables - 1\n\n    Variable name definitions::\n\n        TEMPERATURE - average sea surface temperature in degrees Celsius\n                      (12 columns, one per month).\n",
+    "license": "This data is in the public domain.",
+    "package": "statsmodels",
+    "version": "0.15.0",
+    "retrieved": "2026-09-18",
+    "sha256": "943c737c7430447b21cc819212e97c7e4aa895042043c129f8d4f04d465bff36",
+    "url": "https://www.statsmodels.org/stable/datasets/generated/elnino.html",
+    "kind": "observed historical snapshot",
+    "availability": "Revised historical observations, not a real-time data vintage"
+  },
+  {
+    "id": "nile",
+    "path": "data/observed/nile.csv",
+    "source": "\nThis data is first analyzed in:\n\n    Cobb, G. W. 1978. \"The Problem of the Nile: Conditional Solution to a\n        Changepoint Problem.\" *Biometrika*. 65.2, 243-51.\n",
+    "notes": "::\n\n    Number of observations: 100\n    Number of variables: 2\n    Variable name definitions:\n\n        year - the year of the observations\n        volume - the discharge at Aswan in 10^8, m^3\n",
+    "license": "This is public domain.",
+    "package": "statsmodels",
+    "version": "0.15.0",
+    "retrieved": "2026-09-18",
+    "sha256": "5bc2a189305d45958d08a37a52c37d35ab08667b6c8a4ab5c2c764a9bdd6b142",
+    "url": "https://www.statsmodels.org/stable/datasets/generated/nile.html",
+    "kind": "observed historical snapshot",
+    "availability": "Revised historical observations, not a real-time data vintage"
+  },
+  {
+    "id": "macrodata",
+    "path": "data/observed/macrodata.csv",
+    "source": "\nCompiled by Skipper Seabold. All data are from the Federal Reserve Bank of St.\nLouis [1] except the unemployment rate which was taken from the National\nBureau of Labor Statistics [2]. ::\n\n    [1] Data Source: FRED, Federal Reserve Economic Data, Federal Reserve Bank of\n        St. Louis; http://research.stlouisfed.org/fred2/; accessed December 15,\n        2009.\n\n    [2] Data Source: Bureau of Labor Statistics, U.S. Department of Labor;\n        http://www.bls.gov/data/; accessed December 15, 2009.\n",
+    "notes": "::\n    Number of Observations - 203\n\n    Number of Variables - 14\n\n    Variable name definitions::\n\n        year      - 1959q1 - 2009q3\n        quarter   - 1-4\n        realgdp   - Real gross domestic product (Bil. of chained 2005 US$,\n                    seasonally adjusted annual rate)\n        realcons  - Real personal consumption expenditures (Bil. of chained\n                    2005 US$, seasonally adjusted annual rate)\n        realinv   - Real gross private domestic investment (Bil. of chained\n                    2005 US$, seasonally adjusted annual rate)\n        realgovt  - Real federal consumption expenditures & gross investment\n                    (Bil. of chained 2005 US$, seasonally adjusted annual rate)\n        realdpi   - Real private disposable income (Bil. of chained 2005\n                    US$, seasonally adjusted annual rate)\n        cpi       - End of the quarter consumer price index for all urban\n                    consumers: all items (1982-84 = 100, seasonally adjusted).\n        m1        - End of the quarter M1 nominal money stock (Seasonally\n                    adjusted)\n        tbilrate  - Quarterly monthly average of the monthly 3-month\n                    treasury bill: secondary market rate\n        unemp     - Seasonally adjusted unemployment rate (%)\n        pop       - End of the quarter total population: all ages incl. armed\n                    forces over seas\n        infl      - Inflation rate (ln(cpi_{t}/cpi_{t-1}) * 400)\n        realint   - Real interest rate (tbilrate - infl)\n",
+    "license": "This is public domain.",
+    "package": "statsmodels",
+    "version": "0.15.0",
+    "retrieved": "2026-09-18",
+    "sha256": "242dee4a4188894324cf152b49e31e1687e359cfdbc2ea5a2f8a69a9d0e1a849",
+    "url": "https://www.statsmodels.org/stable/datasets/generated/macrodata.html",
+    "kind": "observed historical snapshot",
+    "availability": "Revised historical observations, not a real-time data vintage"
+  },
+  {
+    "id": "strikes",
+    "path": "data/observed/strikes.csv",
+    "source": "\nThis is a subset of the data used in Kennan (1985). It was originally\npublished by the Bureau of Labor Statistics.\n\n::\n\n    Kennan, J. 1985. \"The duration of contract strikes in US manufacturing.\n        *Journal of Econometrics* 28.1, 5-28.\n",
+    "notes": "::\n\n    Number of observations - 62\n\n    Number of variables - 2\n\n    Variable name definitions::\n\n                duration - duration of the strike in days\n                iprod - unanticipated industrial production\n",
+    "license": "This is public domain.",
+    "package": "statsmodels",
+    "version": "0.15.0",
+    "retrieved": "2026-09-18",
+    "sha256": "d47321082a45fe44343a6876013b04d9f4f235baffe308755877b15bdc06d9da",
+    "url": "https://www.statsmodels.org/stable/datasets/generated/strikes.html",
+    "kind": "observed historical snapshot",
+    "availability": "Revised historical observations, not a real-time data vintage"
+  },
+  {
+    "id": "grunfeld",
+    "path": "data/observed/grunfeld.csv",
+    "source": "This is the Grunfeld (1950) Investment Data.\n\nThe source for the data was the original 11-firm data set from Grunfeld's Ph.D.\nthesis recreated by Kleiber and Zeileis (2008) \"The Grunfeld Data at 50\".\nThe data can be found here.\nhttp://statmath.wu-wien.ac.at/~zeileis/grunfeld/\n\nFor a note on the many versions of the Grunfeld data circulating see:\nhttp://www.stanford.edu/~clint/bench/grunfeld.htm\n",
+    "notes": "::\n\n    Number of observations - 220 (20 years for 11 firms)\n\n    Number of variables - 5\n\n    Variables name definitions::\n\n        invest  - Gross investment in 1947 dollars\n        value   - Market value as of Dec. 31 in 1947 dollars\n        capital - Stock of plant and equipment in 1947 dollars\n        firm    - General Motors, US Steel, General Electric, Chrysler,\n                Atlantic Refining, IBM, Union Oil, Westinghouse, Goodyear,\n                Diamond Match, American Steel\n        year    - 1935 - 1954\n\n    Note that raw_data has firm expanded to dummy variables, since it is a\n    string categorical variable.\n",
+    "license": "This is public domain.",
+    "package": "statsmodels",
+    "version": "0.15.0",
+    "retrieved": "2026-09-18",
+    "sha256": "45e6892bf942cf2ff61a9fe615b18af86eacbfc863daa9762b958c066b3c8fa7",
+    "url": "https://www.statsmodels.org/stable/datasets/generated/grunfeld.html",
+    "kind": "observed historical snapshot",
+    "availability": "Revised historical observations, not a real-time data vintage"
+  },
+  {
+    "id": "monthly-temperature",
+    "path": "data/observed/monthly-temperature.csv",
+    "kind": "observed derived",
+    "source_id": "elnino",
+    "transformation": "Flatten JAN\u2013DEC columns in year order; month-start timestamps",
+    "units": "degrees Celsius, Ni\u00f1o 1+2 sea-surface temperature",
+    "license": "Public Domain",
+    "sha256": "d49de16500c78df8609b2ce74dee73e44bb2c35c57c42bf0b48f804aaa9f3ff3"
+  },
+  {
+    "id": "annual-nile",
+    "path": "data/observed/annual-nile.csv",
+    "kind": "observed derived",
+    "source_id": "nile",
+    "transformation": "Map year to January 1; preserve annual volume",
+    "units": "10^8 cubic metres",
+    "license": "Public Domain",
+    "sha256": "f7a96da26ad5fedd43080a1fb76dee2d9b4587852d368ef9549f7c4b61322b71"
+  }
+]

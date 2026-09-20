@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-12-01",
+    "chapter": 12,
+    "title": "Compare the same forecast horizons",
+    "caption": "Thirty synthetic monthly series and five rolling origins. Every method is evaluated against the same future observations.",
+    "anchor": "## Section Three: The Problem of Measuring Accuracy",
+    "alt": "Compare the same forecast horizons. Thirty synthetic monthly series and five rolling origins. Every method is evaluated against the same future observations.",
+    "seed": 20260930,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch12/fig-12-01.png",
+      "pdf": "figures/ch12/fig-12-01.pdf",
+      "svg": "figures/ch12/fig-12-01.svg"
+    }
+  },
+  {
+    "id": "fig-12-02",
+    "chapter": 12,
+    "title": "How large is the gap to the benchmark?",
+    "caption": "At each origin, average errors cover the same thirty synthetic series and twelve horizons. Values are 100 \u00d7 (method MAE / seasonal-naive MAE \u2212 1); zero ties the benchmark and negative is better. Stable ranks can still hide changing error gaps.",
+    "anchor": "## Section Four: A Systematic Account of What the Competitions Established",
+    "alt": "How large is the gap to the benchmark?. At each origin, average errors cover the same thirty synthetic series and twelve horizons. Values are 100 \u00d7 (method MAE / seasonal-naive MAE \u2212 1); zero ties the benchmark and negative is better. Stable ranks can still hide changing error gaps.",
+    "seed": 20260930,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch12/fig-12-02.png",
+      "pdf": "figures/ch12/fig-12-02.pdf",
+      "svg": "figures/ch12/fig-12-02.svg"
+    }
+  },
+  {
+    "id": "fig-12-03",
+    "chapter": 12,
+    "title": "Combination is a candidate, not a guarantee",
+    "caption": "Per-series mean errors across the same rolling origins. Equal-weight combinations can be robust without beating every constituent.",
+    "anchor": "## Section Five: What This Means for Your Organization",
+    "alt": "Combination is a candidate, not a guarantee. Per-series mean errors across the same rolling origins. Equal-weight combinations can be robust without beating every constituent.",
+    "seed": 20260930,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch12/fig-12-03.png",
+      "pdf": "figures/ch12/fig-12-03.pdf",
+      "svg": "figures/ch12/fig-12-03.svg"
+    }
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "scale": 0.8537686947081798,
+  "trial_total": 13052.415804698656,
+  "held_out_mae": 1842.696803765811,
+  "interpretation": "Mature-sales calibration does not identify trial conversion separately from repeat. Transferring the scale is an additional assumption. Modes 3/4/5 are scenarios, not probabilities; the standard allocates 80% of the declared horizon trial total to year one. Repeat rate is units per original trier per subsequent month."
+}

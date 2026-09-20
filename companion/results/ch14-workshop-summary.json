@@ -1,0 +1,10 @@
+{
+  "method": "Gaussian autoregressive MLP (not DeepAR)",
+  "training_entities": 6,
+  "held_out_entities": 2,
+  "coverage": 0.7857142857142857,
+  "interval_score": 28.43477638163555,
+  "mae": 5.588227103675536,
+  "baseline_mae": 5.60756575746192,
+  "interpretation": "Entity holdout tests transfer of related patterns. 100 recursive paths provide marginal 80% bands. This small Gaussian model is not a count model; hyperparameters are predeclared, not tuned on held-out entities."
+}

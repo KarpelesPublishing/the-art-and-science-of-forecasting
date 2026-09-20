@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-01-01",
+    "chapter": 1,
+    "title": "What a price candle records",
+    "caption": "Synthetic opening, high, low and closing prices. Hollow candles close above the opening; filled candles close below it.",
+    "anchor": "## What the Market Knows",
+    "alt": "What a price candle records. Synthetic opening, high, low and closing prices. Hollow candles close above the opening; filled candles close below it.",
+    "seed": 20260919,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch01/fig-01-01.png",
+      "pdf": "figures/ch01/fig-01-01.pdf",
+      "svg": "figures/ch01/fig-01-01.svg"
+    }
+  },
+  {
+    "id": "fig-01-02",
+    "chapter": 1,
+    "title": "Price adjustment after news",
+    "caption": "Synthetic information shock with partial adjustment and trading noise. The adjustment rule is assumed, not estimated from historical markets.",
+    "anchor": "## Prediction Markets: The Mechanism Generalized",
+    "alt": "Price adjustment after news. Synthetic information shock with partial adjustment and trading noise. The adjustment rule is assumed, not estimated from historical markets.",
+    "seed": 20260919,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch01/fig-01-02.png",
+      "pdf": "figures/ch01/fig-01-02.pdf",
+      "svg": "figures/ch01/fig-01-02.svg"
+    }
+  },
+  {
+    "id": "fig-01-03",
+    "chapter": 1,
+    "title": "A plausible pattern needs a benchmark",
+    "caption": "Four hundred synthetic random walks, with the final thirty observations held out. Momentum is a fixed rule, not tuned on the holdout.",
+    "anchor": "## A Sidebar on Patterns in Numbers",
+    "alt": "A plausible pattern needs a benchmark. Four hundred synthetic random walks, with the final thirty observations held out. Momentum is a fixed rule, not tuned on the holdout.",
+    "seed": 20260919,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch01/fig-01-03.png",
+      "pdf": "figures/ch01/fig-01-03.pdf",
+      "svg": "figures/ch01/fig-01-03.svg"
+    }
+  }
+]

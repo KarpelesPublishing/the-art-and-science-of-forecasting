@@ -1,0 +1,17 @@
+{
+  "source": "Seeded synthetic educational input; not business observations",
+  "units": "triers and purchase units, separately",
+  "horizon": 24,
+  "season": 12,
+  "seed": 417,
+  "outcome_due": "Declare before issuing a real forecast",
+  "mode": "launch",
+  "trial_conversion_assumption": "Synthetic teaching assumption: mature-sales scale transfers to trial; not identified by mature-sales fit",
+  "new_product": {
+    "eligible_buyers": 120000,
+    "awareness": 0.65,
+    "availability_given_awareness": 0.7,
+    "interest": 0.28
+  },
+  "repeat_rate": 0.15
+}

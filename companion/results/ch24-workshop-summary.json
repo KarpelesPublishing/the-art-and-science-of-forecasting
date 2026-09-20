@@ -1,0 +1,61 @@
+{
+  "method": "Changepoint dating, CUSUM alarm, drift metrics and adaptation-policy comparison",
+  "interpretation": "3 changepoint(s) dated by binary segmentation at ['2012-01-01', '2015-02-01', '2018-02-01']; strongest single split at 2015-02-01 (t 6.7). CUSUM raised 9 alarm(s) at a threshold targeting 5% false-alarm probability over the horizon; detection delay 41 periods; repeated alarms after a reset mean the frozen reference mean no longer describes the series, which is the signal to recalibrate. Policy MAE after the calibration window: frozen 7.39, rolling 6.05, expanding 6.15, adaptive 6.15; rolling was best. Alarms are known only after the observation. The series is declared seasonal (season > 1) and the segmentation works on the raw mean, so seasonal swings and trend can be dated as breaks; remove them first or read the dates as regime candidates only.",
+  "assumptions": [
+    "Calibration window is a stable regime",
+    "Two-sided CUSUM threshold calibrated under an iid normal null with plug-in mean and sd",
+    "Mean shifts, not variance-only changes, are the dated breaks"
+  ],
+  "not_done": [
+    "No multivariate or regression-based break tests",
+    "Variance changepoints are reported as drift metrics only, not dated"
+  ],
+  "status": "passed",
+  "threshold": 6.216901011682276,
+  "alarm_count": 9,
+  "alarms": [
+    "2015-06-01 00:00:00+00:00",
+    "2016-06-01 00:00:00+00:00",
+    "2017-06-01 00:00:00+00:00",
+    "2018-05-01 00:00:00+00:00",
+    "2019-04-01 00:00:00+00:00",
+    "2020-02-01 00:00:00+00:00",
+    "2020-06-01 00:00:00+00:00",
+    "2021-04-01 00:00:00+00:00",
+    "2021-11-01 00:00:00+00:00"
+  ],
+  "changepoints": [
+    "2012-01-01 00:00:00+00:00",
+    "2015-02-01 00:00:00+00:00",
+    "2018-02-01 00:00:00+00:00"
+  ],
+  "changepoint_positions": [
+    24,
+    61,
+    97
+  ],
+  "best_split": {
+    "position": 61,
+    "timestamp": "2015-02-01 00:00:00+00:00",
+    "welch_t": 6.739822476269463
+  },
+  "detection": {
+    "first_changepoint": "2012-01-01 00:00:00+00:00",
+    "first_alarm_after": "2015-06-01 00:00:00+00:00",
+    "delay_periods": 41,
+    "false_alarms_before": 0
+  },
+  "drift": {
+    "final_mean_shift_sd": 1.4743079413489129,
+    "final_variance_ratio": 0.8809156144020208,
+    "max_abs_mean_shift_sd": 1.6850759326092792
+  },
+  "mae": {
+    "frozen": 7.391268418015096,
+    "rolling": 6.054708743425316,
+    "expanding": 6.146784790431394,
+    "adaptive": 6.145561216232606
+  },
+  "best_policy": "rolling",
+  "calibration_size": 30
+}

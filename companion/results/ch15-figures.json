@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fig-15-01",
+    "chapter": 15,
+    "title": "Actual zero-shot Chronos forecast",
+    "caption": "CPU inference with pinned pretrained Chronos-T5-Tiny on a newly generated synthetic series. Context ends at day 143; the level changes at day 145. Bands summarize 64 sampled paths.",
+    "anchor": "Section One: The Bet That Paid Off",
+    "alt": "Actual zero-shot Chronos forecast. CPU inference with pinned pretrained Chronos-T5-Tiny on a newly generated synthetic series. Context ends at day 143; the level changes at day 145. Bands summarize 64 sampled paths.",
+    "seed": 20260933,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch15/fig-15-01.png",
+      "pdf": "figures/ch15/fig-15-01.pdf",
+      "svg": "figures/ch15/fig-15-01.svg"
+    }
+  },
+  {
+    "id": "fig-15-02",
+    "chapter": 15,
+    "title": "Chronos versus seasonal naive",
+    "caption": "Actual pretrained-model forecasts and a seven-day seasonal-naive baseline on two synthetic series, averaged over four fixed 14-day forecast origins. This tiny benchmark establishes no general model ranking.",
+    "anchor": "Section Five: What This Means in Practice",
+    "alt": "Chronos versus seasonal naive. Actual pretrained-model forecasts and a seven-day seasonal-naive baseline on two synthetic series, averaged over four fixed 14-day forecast origins. This tiny benchmark establishes no general model ranking.",
+    "seed": 20260933,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch15/fig-15-02.png",
+      "pdf": "figures/ch15/fig-15-02.pdf",
+      "svg": "figures/ch15/fig-15-02.svg"
+    }
+  },
+  {
+    "id": "fig-15-03",
+    "chapter": 15,
+    "title": "Simulated benchmark contamination",
+    "caption": "A separate nearest-neighbor toy achieves zero error when test context\u2013future pairs are deliberately inserted into its library. This is not a Chronos score and does not diagnose its training corpus.",
+    "anchor": "Section Two: The Leakage Problem",
+    "alt": "Simulated benchmark contamination. A separate nearest-neighbor toy achieves zero error when test context\u2013future pairs are deliberately inserted into its library. This is not a Chronos score and does not diagnose its training corpus.",
+    "seed": 20260933,
+    "data": "Seeded synthetic educational example unless caption states otherwise",
+    "outputs": {
+      "png": "figures/ch15/fig-15-03.png",
+      "pdf": "figures/ch15/fig-15-03.pdf",
+      "svg": "figures/ch15/fig-15-03.svg"
+    }
+  }
+]
