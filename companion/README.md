@@ -11,7 +11,7 @@ from the [chapter map](../forecasting-skills/all-chapters-forecasting/references
 
 ## The book
 
-*The Art and Science of Forecasting* by Jason Karpeles. Book website and errata: <https://karpeles.com/publishing/the-art-and-science-of-forecasting>. This repository is the free companion; it does not contain the book text.
+*The Art and Science of Forecasting* by Jason Karpeles. Book website, with the audiobook and additional material: <https://karpeles.com/publishing/the-art-and-science-of-forecasting>. This repository is the free companion; it does not contain the book text.
 
 ## Data and method scope
 

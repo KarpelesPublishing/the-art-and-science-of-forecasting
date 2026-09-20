@@ -17,7 +17,7 @@ SKIP_PARTS = {'.venv', '__pycache__', '.pytest_cache', 'legacy-run-journals', 'c
 SKIP_COMPANION = {'revision', 'reports/quality-loop', 'reports/triage-report.md', 'reports/applied-corrections.json', 'reports/index-review.json', 'reports/black-and-white-review.md',
                   'reports/chart-and-navigation-review.md', 'reports/current-quality-audit.md', 'reports/practitioner-revision.md', 'reports/validation.md', 'reports/package.json',
                   'reports/method-audit.md', 'reports/visual-audit.md', 'reports/original-pdf-audit.json', 'reports/current-quality-audit-evidence.json', 'reports/layout-inspection.json', 'reports/skill-review.md', 'reports/prophet-page.png', 'reports/build.json', 'reports/validation.json',
-                  'scripts/author_revision.py', 'scripts/build_revision.py', 'scripts/revision_index.py', 'scripts/strip_em_dashes.py', 'scripts/audit_pdf.py', 'scripts/package.py', 'scripts/validate.py',
+                  'scripts/author_revision.py', 'scripts/build_revision.py', 'scripts/revision_index.py', 'scripts/index_common.py', 'scripts/epub_index.py', 'scripts/strip_em_dashes.py', 'scripts/audit_pdf.py', 'scripts/package.py', 'scripts/validate.py',
                   'public-README.md', 'public-LICENSE', 'scripts/review_grayscale.py', 'scripts/review_layout.py', 'tests/test_author_revision.py', 'tests/test_book_review.py', 'tests/test_epub_equations.py', 'tests/test_no_em_dashes.py', 'tests/test_package.py', 'tests/test_revision_index.py'}
 
 
@@ -58,7 +58,7 @@ def public_readme(path):
     """The technical guide without the author's book-production section."""
     s = path.read_text()
     a = s.index('## Read the revised book'); b = s.index('## Data and method scope')
-    s = s[:a] + '## The book\n\n*The Art and Science of Forecasting* by Jason Karpeles. Book website and errata: <https://karpeles.com/publishing/the-art-and-science-of-forecasting>. This repository is the free companion; it does not contain the book text.\n\n' + s[b:]
+    s = s[:a] + '## The book\n\n*The Art and Science of Forecasting* by Jason Karpeles. Book website, with the audiobook and additional material: <https://karpeles.com/publishing/the-art-and-science-of-forecasting>. This repository is the free companion; it does not contain the book text.\n\n' + s[b:]
     s = s.replace('This package connects the revised book\'s figures to 27 executed Jupyter notebooks,', 'This package connects the book\'s figures to 27 executed Jupyter notebooks,')
     for line in ('companion/.venv/bin/python companion/scripts/build_revision.py\n', 'companion/.venv/bin/python companion/scripts/validate.py\n'):
         s = s.replace(line, '')
