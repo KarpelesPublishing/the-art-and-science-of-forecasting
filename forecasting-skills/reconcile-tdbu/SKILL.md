@@ -1,6 +1,6 @@
 ---
 name: reconcile-tdbu
-description: Interviews the user, then builds and runs a top-down/bottom-up new-product volume forecast that reconciles a trial-and-repeat model against a market-share model. Use this whenever someone wants to forecast first-year volume, units, or share for a new product or concept; mentions trial and repeat, repeat rate, share of choice, category penetration, MPCT, depth of repeat, or a volumetric concept test; asks to reconcile two forecasts or two modelling approaches that disagree; asks why a bottom-up estimate does not match a top-down one; or brings up the desk model from *The Art and Science of Forecasting* (chapters 20 and 27). Also use it for teaching or writing about reconciliation between estimation procedures, balancing variables, or survey overstatement correction. Trigger it even when the user has only partial data, the skill is built to interview for the missing inputs rather than require them upfront.
+description: Interviews the user, then builds and runs a top-down/bottom-up new-product volume forecast that reconciles a trial-and-repeat model against a market-share model. Use this whenever someone wants to forecast first-year volume, units, or share for a new product or concept; mentions trial and repeat, repeat rate, share of choice, category penetration, MPCT (a monadic product concept test, the survey a concept is shown to one respondent group at a time), depth of repeat, or a volumetric concept test; asks to reconcile two forecasts or two modelling approaches that disagree; asks why a bottom-up estimate does not match a top-down one; or brings up the desk model from *The Art and Science of Forecasting* (chapters 20 and 27). Also use it for teaching or writing about reconciliation between estimation procedures, balancing variables, or survey overstatement correction. Trigger it even when the user has only partial data, the skill is built to interview for the missing inputs rather than require them upfront.
 ---
 
 # Top-down / bottom-up volume reconciliation
@@ -127,13 +127,13 @@ When the gap is wide, the `implied_*` fields say where the contradiction sits.
 Compare each against what the user gave you:
 
 - `implied_purchases_year` far below the claimed figure means the survey
-  frequency is overstated relative to the category size. Extremely common , 
-  people overstate purchase frequency, which is why the model deflates claimed
+  frequency is overstated relative to the category size. This is extremely
+  common: people overstate purchase frequency, which is why the model deflates claimed
   frequency by a factor of three before using it.
 - `implied_penetration` far from the given penetration means the category size
   and the buyer base disagree about how many people are in the market.
 - `implied_market_size` far from the given market size means the bottom-up build
-  cannot reach the category the client described.
+  cannot reach the category the reader described.
 
 Say which input the model is arguing with, in words, before you touch anything.
 

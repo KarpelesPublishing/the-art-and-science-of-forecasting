@@ -1,5 +1,14 @@
 {
-  "method": "Descriptive STL with vintage comparison",
-  "max_trend_revision": 0.8875486929403849,
-  "interpretation": "Full-series components describe the past. Their revision after adding observations demonstrates why they cannot be used as origin-known backtest features."
+  "method": "Descriptive STL decomposition with a vintage comparison",
+  "interpretation": "STL with period 12 on 144 observations. Refitting without the last 12 points moved the trend by up to 0.8875: full-series components describe the past, and their revision after adding observations shows why they cannot be used as origin-known backtest features.",
+  "assumptions": [
+    "The seasonal period is the declared season",
+    "Robust STL weights limit the influence of outliers"
+  ],
+  "not_done": [
+    "No forecast: decomposition is descriptive (chapter 4 or 12 forecast the series)",
+    "No test of chaotic sensitivity beyond the vintage comparison"
+  ],
+  "status": "passed",
+  "max_trend_revision": 0.8875486929403849
 }

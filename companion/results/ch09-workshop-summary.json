@@ -1,5 +1,17 @@
 {
+  "method": "Brier score with reliability bins against a predeclared baseline",
+  "interpretation": "Brier 0.1845 against baseline 0.2500 over 200 events (better than the baseline). Reliability bins show the outcome frequency per probability band with Wilson intervals; those intervals assume independent events and express finite-sample uncertainty, not a guarantee of calibration.",
+  "assumptions": [
+    "Forecasts were issued before the outcomes were known",
+    "Events are independent enough for binomial bin intervals",
+    "The baseline was declared before scoring"
+  ],
+  "not_done": [
+    "No decomposition into reliability, resolution and uncertainty",
+    "No comparison across forecasters or event types"
+  ],
+  "status": "passed",
   "brier": 0.18447641287879485,
   "baseline_brier": 0.25,
-  "interpretation": "Wilson bin intervals assume independent events. They express finite-sample uncertainty, not a guarantee of calibration; dependent events need grouped evaluation."
+  "events": 200
 }

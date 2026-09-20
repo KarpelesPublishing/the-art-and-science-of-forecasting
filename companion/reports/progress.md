@@ -1,6 +1,6 @@
 # Chapter artifact verification
 
-| Chapter | Original charts | Executed/exported charts | Executed code cells | Inserted charts |
+| Chapter | Charts in the original manuscript | Executed/exported charts | Executed code cells | Figures placed in the book |
 |---|---|---|---|---|
 | 01 | 0 | 3 | 6 | 3 |
 | 02 | 0 | 4 | 7 | 4 |

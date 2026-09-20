@@ -10,7 +10,8 @@ import nbformat
 
 ROOT = Path(__file__).resolve().parents[1]
 
-def build(source):
+def build(source, write=True):
+    """Return the notebook for a lesson; write it beside the other notebooks unless write=False."""
     text = source.read_text()
     cells = []
     for i, part in enumerate(re.split(r'^# %%', text, flags=re.M)):
@@ -27,6 +28,8 @@ def build(source):
         'kernelspec': {'name':'python3','display_name':'Python 3','language':'python'},
         'language_info': {'name':'python','version':'3.12'}})
     dest = ROOT/'notebooks'/f'{source.stem}.ipynb'
+    if not write:
+        return nb
     dest.parent.mkdir(exist_ok=True)
     nbformat.write(nb, dest)
     return dest

@@ -627,7 +627,7 @@ def run(inp: Inputs) -> Result:
 
     bu = bottom_up(d)
 
-    # the client market size, or the bottom-up figure when none was given
+    # the market size the reader gave, or the bottom-up figure when none was given
     if inp.market_size_mm is None:
         ms = bu.market_size
     else:

@@ -99,7 +99,7 @@ print({'resolved_scored':len(scored),'unresolved_excluded':20,'late_revisions_ex
        'mean_Brier':float(np.mean([r['brier'] for r in scored])),
        'baseline_Brier':float(np.mean([r['baseline_brier'] for r in scored]))})
 folder=Path(os.environ.get('FORECAST_OUTPUT',project/'companion'))/'results'
-(folder/'ch10-event-journal.json').write_text(json.dumps(dict(events=events,revisions=revisions,scored=scored),indent=2)+'\n')
+_ = (folder/'ch10-event-journal.json').write_text(json.dumps(dict(events=events,revisions=revisions,scored=scored),indent=2)+'\n')
 # %% [markdown]
 # ## Calibration is a repeated-event diagnostic, not a verdict on one forecast
 # Score one latest eligible forecast per event at the predeclared seven-day lead.
@@ -127,9 +127,41 @@ save(10,4,'Keep the forecast before learning the outcome','One hundred resolved 
 # %% [markdown]
 # <!-- APPLIED-WORKSHOP-START -->
 # ## Guided application workshop
-# The sections below connect the controlled figures to a complete applied input/output workflow.
+# The sections below come from the chapter skill: the mechanism, the arithmetic, how to adapt the lesson to your data, exercises with worked solutions, and the exact contract of the applied tool.
 # %% [markdown]
-# # Chapter 10 workshop: from lesson to decision
+# ## Input contract and format example
+# Two linked tables or a JSON journal: events require event_id, question, cutoff, deadline, resolution_source, resolution_rule, baseline; outcome is 0/1 or null with resolved_at. Revisions require event_id,timestamp,probability,reason,evidence_source,counterargument,update_trigger. Timestamps include timezone; probabilities lie in [0,1]. Retain every revision.
+#
+# Minimal **journal-format illustration**, unresolved and therefore not yet scoreable:
+#
+# ```json
+# {
+#   "events": [
+#     {
+#       "event_id": "launch-1",
+#       "question": "Will 24-month units exceed 50000?",
+#       "cutoff": "2026-09-18T12:00:00+00:00",
+#       "deadline": "2028-09-18T12:00:00+00:00",
+#       "resolution_source": "Audited sales register",
+#       "resolution_rule": "Strictly greater than 50000 net units",
+#       "baseline": 0.2,
+#       "outcome": null,
+#       "resolved_at": null
+#     }
+#   ],
+#   "revisions": [
+#     {
+#       "event_id": "launch-1",
+#       "timestamp": "2026-09-18T12:00:00+00:00",
+#       "probability": 0.2,
+#       "reason": "Comparable launches",
+#       "evidence_source": "Internal cohort",
+#       "counterargument": "Channel access differs",
+#       "update_trigger": "Distribution agreement signed"
+#     }
+#   ]
+# }
+# ```
 #
 # ## Explain the mechanism
 #
@@ -139,13 +171,9 @@ save(10,4,'Keep the forecast before learning the outcome','One hundred resolved 
 #
 # Start at p=.2: odds=.2/.8=.25. A likelihood ratio of 2 gives odds .5 and probability 1/3. A subsequent conditionally independent LR=.5 returns odds .25 and probability .2. Multiplying .2 directly by 2 would incorrectly produce .4. A prediction .7 for an event that occurs has Brier (.7-1)^2=.09.
 #
-# Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-#
 # ## Adapt the lesson to reader data
 #
 # Replace the synthetic events/revisions construction in the journal sublesson with user records; preserve the score_journal selection rules. Keep as_of explicit and timezone-aware. Do not overwrite originals while cleaning. The odds toy accepts assumed likelihood ratios; business news does not supply those ratios automatically. Replace the piano-tuner factors only after defining numerator and denominator units.
-#
-# Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 #
 # For this chapter, settle these questions before fitting: Exactly what counts as yes, by what deadline and timezone? Which resolution source and ambiguity rule apply? What comparable-event base rate exists? Which evidence items share a source? At what lead time will forecasts be scored?
 #
@@ -155,12 +183,10 @@ save(10,4,'Keep the forecast before learning the outcome','One hundred resolved 
 #
 # The current applied adapter adds a separately inspectable numerical result:
 #
-# - `results.csv`: `event_id,timestamp,probability,outcome,brier,baseline_brier (plus retained scoring fields)`.
-# - `summary.json`: inspect `brier,baseline_brier,excluded_event_ids,unselected_revision_count` when events are scoreable. Unselected revisions include superseded valid forecasts as well as ineligible entries.
+# - `results.csv`: `event_id,probability,outcome,timestamp,brier,baseline_brier`.
+# - `summary.json`: `brier,baseline_brier,excluded_event_ids,unselected_revision_count` plus method, interpretation, assumptions, not_done and status.
 #
 # Input is JSON with events and revisions arrays. score_journal chooses the latest eligible revision for each resolved event; if none are scoreable it returns status=needs_evidence with event_id/scoring_status rows. The JSON file can retain unresolved events, but editable timestamps are not authenticated.
-#
-# The [fixture](../data/examples/ch10.json) and [config](../configs/ch10.json) match the current interface. Run the `apply` command in the [skill entrypoint](../../forecasting-skills/forecasting-ch10-superforecasting/SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 #
 # ## Decide what the evidence supports
 #
@@ -168,7 +194,7 @@ save(10,4,'Keep the forecast before learning the outcome','One hundred resolved 
 #
 # With no defensible base rate, give a range of plausible reference classes and a labeled judgment probability if a decision requires one. Without a resolution rule, keep a draft question rather than a scoreable forecast. Null outcomes remain unresolved, never zero.
 #
-# The applied deliverable must make these items inspectable: Return the event contract, base-rate source, initial and current probability, complete revision journal, update triggers, resolved-event score table and exclusions. Mark editable local JSON as unauthenticated; it is not tamper-proof storage.
+# The applied deliverable must make these items inspectable: `results.csv` columns: `event_id,probability,outcome,timestamp,brier,baseline_brier`; `summary.json` keys: `brier,baseline_brier,excluded_event_ids,unselected_revision_count` plus method, interpretation, assumptions, not_done and status. Return the event contract, base-rate source, initial and current probability, complete revision journal, update triggers, resolved-event score table and exclusions. Mark editable local JSON as unauthenticated; it is not tamper-proof storage.
 #
 # ## Three exercises with worked solutions
 #
@@ -196,58 +222,36 @@ save(10,4,'Keep the forecast before learning the outcome','One hundred resolved 
 #
 # > Use chapter 10 to define and journal whether our launch exceeds 50,000 units within 24 months. Separate business assumptions from measured evidence, give a justified initial probability or state why one is unsupported, and predeclare resolution and scoring rules.
 #
-# Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-#
 # ## Real-data boundary
 #
 # The [data registry](../data/registry.json) and [data notes](../data/README.md) distinguish bundled observations from controlled fixtures. No matching observed-data application is claimed for this chapter. Supply the chapter-specific records and their provenance before treating the exercise as business evidence; an observed outcome table is not automatically a historical forecast journal or identified experiment.
+#
+# Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).
 # %% [markdown]
-# ## Configure and run the applied case
+# ## Apply this chapter to your own data
 #
-# The input file and JSON below are the only entry-point changes needed to try another
-# case with the same schema. Keep the original examples for comparison. Supply source
-# and units in the configuration; resolve missing periods rather than silently filling
-# unknown observations with zeros. These calculations call the same tested functions
-# as the `run.py apply` command. A failed validation is a reason to inspect the data,
-# not to replace it with invented observations.
-#
-# The default input here is a **seeded synthetic schema example**, separate from any
-# observed-data application below. Read the summary before interpreting its results.
+# The two paths below are the only things to change: point `INPUT_PATH` at a file with the
+# columns in the input contract above and `CONFIG_PATH` at a copy of the shipped configuration
+# with your `source` and `units`. The call is the same tested function behind `run.py apply`.
+# The printed digest shows what ran, its status, the interpretation, the assumptions and the
+# `not_done` list; the full summary is saved beside the table. A validation error is a reason to
+# inspect the data, not to fill gaps with invented observations. Shared rules for provenance,
+# output folders and reading `status` are in the Complete Forecasting Skill's conventions reference.
 # %%
 from forecasting_companion.applied.methods import analyze as analyze_chapter
-from forecasting_companion.applied.core import clean_json
+from forecasting_companion.applied.core import clean_json, summarize, preview
 import pandas as pd
 import json, os
-INPUT_PATH = project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists()) / 'companion/data/examples/ch10.json'
-CONFIG_PATH = project_path.parents[2] / 'configs/ch10.json'
-# Input paths are explicit and may be replaced with reader-supplied files.
+project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists())
+INPUT_PATH = project_path / 'companion/data/examples/ch10.json'      # replace with your file
+CONFIG_PATH = project_path / 'companion/configs/ch10.json'            # replace with your configuration
 workshop_config = json.loads(CONFIG_PATH.read_text())
 workshop_input = json.loads(INPUT_PATH.read_text())
 workshop_table, workshop_summary = analyze_chapter(10, workshop_input, workshop_config)
-print(json.dumps(clean_json(workshop_summary), indent=2))
-print(workshop_table.head(12).to_string(index=False))
-workshop_output = Path(os.environ.get('FORECAST_OUTPUT', CONFIG_PATH.parents[1])) / 'results'
+print(summarize(workshop_summary, workshop_table))
+print()
+print(preview(workshop_table))
+workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'companion')) / 'results'
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch10-workshop-results.csv', index=False)
-(workshop_output/'ch10-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
-# %% [markdown]
-# ## Real-data boundary
-#
-# The bundled case is controlled, not a reconstruction of historical records. No
-# verified, appropriately licensed domain dataset is supplied for this particular
-# workflow. Use the input contract to supply your own observations and evidence.
-# Do not substitute an unrelated public dataset simply to call the example real.
-# The wider companion includes observed time-series applications in chapters
-# 3–6, 12, 15–16 and 24; their data do not establish this chapter’s domain assumptions.
-# %% [markdown]
-# ## Read the result as a decision record
-#
-# Start with the summary’s **interpretation**, then examine its numerical evidence.
-# Distinguish what was fitted, what was supplied, and what remains unidentified.
-# The results table is the calculation; it is not permission to act. Explain which
-# assumption would most change the answer and what new evidence would test it.
-# For a live forecast, set an outcome date and keep the original result for scoring.
-#
-# The exercises and worked solutions above test interpretation, calculation, and
-# adaptation. Re-run a changed assumption and compare the actual output; do not
-# reuse numbers from the book when your input or horizon changes.
+_ = (workshop_output/'ch10-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')

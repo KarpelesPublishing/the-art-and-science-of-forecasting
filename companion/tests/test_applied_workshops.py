@@ -5,10 +5,11 @@ import pandas as pd
 import pytest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'))
-from forecasting_companion.applied.core import run,time_frame
+from forecasting_companion.applied.core import run,time_frame,STANDARD_STATUS
 from forecasting_companion.applied.methods import analyze
+FAST=[n for n in range(1,28) if n not in [13,14,15,16]]   # 13 to 16 load LightGBM, torch, Chronos and Prophet; sync_contracts.py --check covers them
 
-@pytest.mark.parametrize('chapter',[n for n in range(1,28) if n not in [13,14,15,16]])
+@pytest.mark.parametrize('chapter',FAST)
 def test_chapter_adapter_fixture(chapter):
     path=ROOT/'data/examples'/f'ch{chapter:02d}.{ "json" if chapter==10 else "csv"}'
     data=json.loads(path.read_text()) if chapter==10 else pd.read_csv(path)
@@ -16,6 +17,22 @@ def test_chapter_adapter_fixture(chapter):
     table,summary=analyze(chapter,data,config)
     assert len(table)>0 and summary.get('interpretation')
     assert np.isfinite(table.select_dtypes(include='number').to_numpy()).all()
+    # every tool returns through core.finish: the five standard keys, a valid status, lists for the two lists
+    assert {'method','interpretation','assumptions','not_done','status'}<=set(summary)
+    assert summary['status'] in STANDARD_STATUS and summary['method']
+    assert isinstance(summary['assumptions'],list) and isinstance(summary['not_done'],list)
+
+def test_skill_contracts_match_live_tools():
+    sys.path.insert(0,str(ROOT/'scripts'))
+    import sync_contracts
+    assert sync_contracts.sync(FAST,check=True)==[], 'run scripts/sync_contracts.py to refresh the skills'
+
+def test_provisional_and_needs_evidence_paths_keep_the_contract():
+    short=pd.read_csv(ROOT/'data/examples/ch04.csv').iloc[:40]
+    _,s=analyze(4,short,{'horizon':12,'season':12})
+    assert s['status']=='provisional' and s['not_done'] and s['method'] and s['assumptions']
+    _,s=analyze(27,short,{'mode':'estimate','horizon':12})
+    assert s['status']=='needs_evidence' and s['not_done'] and s['required_evidence']
 
 def test_applied_output_isolated_and_hashes_change(tmp_path):
     inp=tmp_path/'input.csv';cfg=tmp_path/'config.json'

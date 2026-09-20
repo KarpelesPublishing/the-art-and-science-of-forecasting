@@ -3,5 +3,7 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 companion/applied-runs/
+.agents/
+.claude/
 *.pyc
 .DS_Store

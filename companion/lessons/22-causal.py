@@ -73,9 +73,19 @@ save(22,4,'The same pretrends can support different explanations','Both syntheti
 # %% [markdown]
 # <!-- APPLIED-WORKSHOP-START -->
 # ## Guided application workshop
-# The sections below connect the controlled figures to a complete applied input/output workflow.
+# The sections below come from the chapter skill: the mechanism, the arithmetic, how to adapt the lesson to your data, exercises with worked solutions, and the exact contract of the applied tool.
 # %% [markdown]
-# # Chapter 22 workshop: from lesson to decision
+# ## Input contract and format example
+# A regular series with the treated outcome and at least one control series; name every control column in config `controls`; without that key the tool looks for one column literally named `control`. Synthetic control and placebo-in-space need at least two, better three or more, controls. Declare `intervention` (the first treated timestamp) and write down the `identification` argument before running.
+#
+# Minimal **format illustration**, not sufficient training data:
+#
+# ```csv
+# timestamp,control,control_2,control_3,treated
+# 2010-01-01,99.9,80.7,49.1,104.3
+# 2010-02-01,100.3,81.0,52.4,105.1
+# 2010-03-01,100.1,80.9,47.8,104.6
+# ```
 #
 # ## Explain the mechanism
 #
@@ -85,13 +95,9 @@ save(22,4,'The same pretrends can support different explanations','Both syntheti
 #
 # Treated rises from 100 to 120; control rises from 80 to 90. DiD is (120-100)-(90-80)=10. If an unrelated treated-only event contributed 6, the same observed DiD would combine treatment 4 and shock 6. The pre-period data cannot distinguish those explanations.
 #
-# Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-#
 # ## Adapt the lesson to reader data
 #
 # Replace treated/control/time arrays and intervention boundary with aligned observed outcomes. Keep candidate-control and pre-period selection separate from post-effect estimation. Do not label the regression block CausalImpact or BSTS; it is a pre-period OLS counterfactual.
-#
-# Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 #
 # For this chapter, settle these questions before fitting: What treatment, alternative and population define the effect? When did treatment start? Why did it vary? Could controls be affected? What else changed at the same time?
 #
@@ -101,12 +107,10 @@ save(22,4,'The same pretrends can support different explanations','Both syntheti
 #
 # The current applied adapter adds a separately inspectable numerical result:
 #
-# - `results.csv`: `timestamp,observed,ols_counterfactual,ols_effect,post,relative_period[,sc_counterfactual,sc_effect]`.
+# - `results.csv`: `timestamp,observed,ols_counterfactual,ols_effect,post,relative_period,sc_counterfactual,sc_effect`.
 # - `summary.json`: `did,post_mean_effect,pre_rmse,sc_weights,sc_post_mean_effect,sc_pre_rmse,placebo_space,placebo_time,event_study,pretrend,identification,controls` plus method, interpretation, assumptions, not_done and status.
 #
 # The tool computes difference-in-differences, a pre-period OLS counterfactual on all declared controls, and, with two or more controls, a synthetic control with nonnegative weights summing to one fitted on the pre-period only. It then runs placebo-in-space (each control treated in turn against the remaining donors; the p-value is the treated unit's rank on post-effect over pre-RMSE), placebo-in-time (`placebos` pseudo interventions inside the pre period; p is the share at least as large as the estimate), and an event-study table of per-period effects over `event_window` pre periods and all post periods with a pre-trend slope test. Every estimate is conditional on the declared identification; the tool does not decide whether the comparison is defensible. The tool runs only when asked; the assistant decides, with the reader, whether the method fits before running it.
-#
-# The [fixture](../data/examples/ch22.csv) and [config](../configs/ch22.json) match the current interface. Run the `apply` command in the [skill entrypoint](../../forecasting-skills/forecasting-ch22-causal/SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 #
 # ## Decide what the evidence supports
 #
@@ -114,7 +118,7 @@ save(22,4,'The same pretrends can support different explanations','Both syntheti
 #
 # With no credible unaffected comparator or assignment argument, report observed changes and bounded scenarios rather than causal lift. If prehistory is short, disclose weak trend diagnostics. An experiment is useful only if ethical, feasible, adequately powered and uncontaminated.
 #
-# The applied deliverable must make these items inspectable: `results.csv` columns: `timestamp,observed,ols_counterfactual,ols_effect,post,relative_period[,sc_counterfactual,sc_effect]`; `summary.json` keys: `did,post_mean_effect,pre_rmse,sc_weights,sc_post_mean_effect,sc_pre_rmse,placebo_space,placebo_time,event_study,pretrend,identification,controls` plus method, interpretation, assumptions, not_done and status. Quote the placebo p-values and the pre-trend flag with the effect; an effect without them is a difference, not evidence.
+# The applied deliverable must make these items inspectable: `results.csv` columns: `timestamp,observed,ols_counterfactual,ols_effect,post,relative_period,sc_counterfactual,sc_effect`; `summary.json` keys: `did,post_mean_effect,pre_rmse,sc_weights,sc_post_mean_effect,sc_pre_rmse,placebo_space,placebo_time,event_study,pretrend,identification,controls` plus method, interpretation, assumptions, not_done and status. Quote the placebo p-values and the pre-trend flag with the effect; an effect without them is a difference, not evidence.
 #
 # ## Three exercises with worked solutions
 #
@@ -142,58 +146,36 @@ save(22,4,'The same pretrends can support different explanations','Both syntheti
 #
 # > Apply chapter 22 to intervention.csv, state the identifying assumptions before computing effects, and show how a plausible concurrent shock changes the interpretation.
 #
-# Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-#
 # ## Real-data boundary
 #
 # The [data registry](../data/registry.json) and [data notes](../data/README.md) distinguish bundled observations from controlled fixtures. No matching observed-data application is claimed for this chapter. Supply the chapter-specific records and their provenance before treating the exercise as business evidence; an observed outcome table is not automatically a historical forecast journal or identified experiment.
+#
+# Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).
 # %% [markdown]
-# ## Configure and run the applied case
+# ## Apply this chapter to your own data
 #
-# The input file and JSON below are the only entry-point changes needed to try another
-# case with the same schema. Keep the original examples for comparison. Supply source
-# and units in the configuration; resolve missing periods rather than silently filling
-# unknown observations with zeros. These calculations call the same tested functions
-# as the `run.py apply` command. A failed validation is a reason to inspect the data,
-# not to replace it with invented observations.
-#
-# The default input here is a **seeded synthetic schema example**, separate from any
-# observed-data application below. Read the summary before interpreting its results.
+# The two paths below are the only things to change: point `INPUT_PATH` at a file with the
+# columns in the input contract above and `CONFIG_PATH` at a copy of the shipped configuration
+# with your `source` and `units`. The call is the same tested function behind `run.py apply`.
+# The printed digest shows what ran, its status, the interpretation, the assumptions and the
+# `not_done` list; the full summary is saved beside the table. A validation error is a reason to
+# inspect the data, not to fill gaps with invented observations. Shared rules for provenance,
+# output folders and reading `status` are in the Complete Forecasting Skill's conventions reference.
 # %%
 from forecasting_companion.applied.methods import analyze as analyze_chapter
-from forecasting_companion.applied.core import clean_json
+from forecasting_companion.applied.core import clean_json, summarize, preview
 import pandas as pd
 import json, os
-INPUT_PATH = project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists()) / 'companion/data/examples/ch22.csv'
-CONFIG_PATH = project_path.parents[2] / 'configs/ch22.json'
-# Input paths are explicit and may be replaced with reader-supplied files.
+project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists())
+INPUT_PATH = project_path / 'companion/data/examples/ch22.csv'      # replace with your file
+CONFIG_PATH = project_path / 'companion/configs/ch22.json'            # replace with your configuration
 workshop_config = json.loads(CONFIG_PATH.read_text())
 workshop_input = pd.read_csv(INPUT_PATH)
 workshop_table, workshop_summary = analyze_chapter(22, workshop_input, workshop_config)
-print(json.dumps(clean_json(workshop_summary), indent=2))
-print(workshop_table.head(12).to_string(index=False))
-workshop_output = Path(os.environ.get('FORECAST_OUTPUT', CONFIG_PATH.parents[1])) / 'results'
+print(summarize(workshop_summary, workshop_table))
+print()
+print(preview(workshop_table))
+workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'companion')) / 'results'
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch22-workshop-results.csv', index=False)
-(workshop_output/'ch22-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
-# %% [markdown]
-# ## Real-data boundary
-#
-# The bundled case is controlled, not a reconstruction of historical records. No
-# verified, appropriately licensed domain dataset is supplied for this particular
-# workflow. Use the input contract to supply your own observations and evidence.
-# Do not substitute an unrelated public dataset simply to call the example real.
-# The wider companion includes observed time-series applications in chapters
-# 3–6, 12, 15–16 and 24; their data do not establish this chapter’s domain assumptions.
-# %% [markdown]
-# ## Read the result as a decision record
-#
-# Start with the summary’s **interpretation**, then examine its numerical evidence.
-# Distinguish what was fitted, what was supplied, and what remains unidentified.
-# The results table is the calculation; it is not permission to act. Explain which
-# assumption would most change the answer and what new evidence would test it.
-# For a live forecast, set an outcome date and keep the original result for scoring.
-#
-# The exercises and worked solutions above test interpretation, calculation, and
-# adaptation. Re-run a changed assumption and compare the actual output; do not
-# reuse numbers from the book when your input or horizon changes.
+_ = (workshop_output/'ch22-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')

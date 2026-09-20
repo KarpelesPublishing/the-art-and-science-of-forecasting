@@ -1,6 +1,23 @@
 {
+  "method": "Exposure model calibrated on reference products, trial timing curves (peak month 3, 4, 5) and repeat cohorts",
+  "interpretation": "Shared scale 0.854 from 24 calibration products (held-out MAE 1843 on 6); trial total 13,052. Year-one units: peak 3: 22,999, peak 4: 19,398, peak 5: 16,685. Mature-sales calibration does not identify trial conversion separately from repeat; transferring the scale is an additional assumption. Peaks 3/4/5 are scenarios, not probabilities; the standard allocates 80% of the declared trial total to year one.",
+  "assumptions": [
+    "The exposure-to-units relationship of the reference products transfers to the new product",
+    "Trial timing follows the gamma launch curve with the stated peak month",
+    "Repeat purchasing follows the supplied kernel (units per original trier per month)"
+  ],
+  "not_done": [
+    "No independent cross-check from a different mechanism (channel capacity, market share)",
+    "No uncertainty band: the three peaks are timing scenarios, not a distribution",
+    "Media, distribution and awareness build are inputs here, not modelled (see reconcile-tdbu)"
+  ],
+  "status": "passed",
   "scale": 0.8537686947081798,
   "trial_total": 13052.415804698656,
   "held_out_mae": 1842.696803765811,
-  "interpretation": "Mature-sales calibration does not identify trial conversion separately from repeat. Transferring the scale is an additional assumption. Modes 3/4/5 are scenarios, not probabilities; the standard allocates 80% of the declared horizon trial total to year one. Repeat rate is units per original trier per subsequent month."
+  "year_one_units": {
+    "3": 22998.991050410223,
+    "4": 19398.254877928677,
+    "5": 16685.44657892705
+  }
 }

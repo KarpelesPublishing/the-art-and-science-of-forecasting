@@ -55,9 +55,18 @@ assert np.allclose(y,fit.trend+fit.seasonal+fit.resid)
 # %% [markdown]
 # <!-- APPLIED-WORKSHOP-START -->
 # ## Guided application workshop
-# The sections below connect the controlled figures to a complete applied input/output workflow.
+# The sections below come from the chapter skill: the mechanism, the arithmetic, how to adapt the lesson to your data, exercises with worked solutions, and the exact contract of the applied tool.
 # %% [markdown]
-# # Chapter 3 workshop: from lesson to decision
+# ## Input contract and format example
+# CSV timestamp,target on a regular unique calendar; metadata frequency, season,units and cutoff. For a dynamics experiment separately specify the equations, initial states and integration tolerance; those are not columns in the business-series CSV.
+#
+# Minimal **format illustration**, not sufficient training data:
+#
+# ```csv
+# timestamp,target
+# 2024-01-01,100
+# 2024-02-01,110
+# ```
 #
 # ## Explain the mechanism
 #
@@ -67,13 +76,9 @@ assert np.allclose(y,fit.trend+fit.seasonal+fit.resid)
 #
 # If a monthly observation is 120, estimated trend is 100 and seasonal component is 15, the remainder is 5. A spectral frequency 1/12 cycles per month corresponds to a 12-month period. Frequency is reciprocal period, not the number of months itself.
 #
-# Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-#
 # ## Adapt the lesson to reader data
 #
 # Replace seasonal_series in the STL block with the regular user series and update period. Leave Lorenz simulation separate from that business analysis. If using decomposition features in a model, move the STL fit inside the historical-origin loop rather than decomposing once before splitting.
-#
-# Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 #
 # For this chapter, settle these questions before fitting: What interval is sampled? Which seasonal periods are physically or commercially plausible? Is the goal descriptive decomposition or future forecasting? Are current state estimates uncertain?
 #
@@ -84,11 +89,9 @@ assert np.allclose(y,fit.trend+fit.seasonal+fit.resid)
 # The current applied adapter adds a separately inspectable numerical result:
 #
 # - `results.csv`: `timestamp,observed,trend,seasonal,remainder`.
-# - `summary.json`: inspect `max_trend_revision`.
+# - `summary.json`: `max_trend_revision` plus method, interpretation, assumptions, not_done and status.
 #
 # STL is descriptive. At least three seasonal cycles are required. The adapter refits an earlier vintage and reports the maximum historical trend revision; it does not issue a weather or business forecast.
-#
-# The [fixture](../data/examples/ch03.csv) and [config](../configs/ch03.json) match the current interface. Run the `apply` command in the [skill entrypoint](../../forecasting-skills/forecasting-ch03-weather/SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 #
 # ## Decide what the evidence supports
 #
@@ -96,7 +99,7 @@ assert np.allclose(y,fit.trend+fit.seasonal+fit.resid)
 #
 # With irregular sampling, first decide whether calendar aggregation is defensible; do not run a regular-grid FFT uncritically. With too few cycles, use plots and a simple baseline and mark seasonal decomposition provisional.
 #
-# The applied deliverable must make these items inspectable: Return the calendar audit, chosen period and rationale, decomposition table, reconstruction error, and any origin-safe baseline comparison. For dynamics report initial-state and numerical-tolerance assumptions separately.
+# The applied deliverable must make these items inspectable: `results.csv` columns: `timestamp,observed,trend,seasonal,remainder`; `summary.json` keys: `max_trend_revision` plus method, interpretation, assumptions, not_done and status. Return the calendar audit, chosen period and rationale, decomposition table, reconstruction error, and any origin-safe baseline comparison. For dynamics report initial-state and numerical-tolerance assumptions separately.
 #
 # ## Three exercises with worked solutions
 #
@@ -124,8 +127,6 @@ assert np.allclose(y,fit.trend+fit.seasonal+fit.resid)
 #
 # > Use chapter 3 to audit the seasonality of demand.csv and explain which components are retrospective and which can safely inform future forecasts.
 #
-# Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-#
 # ## Observed-data transfer exercise
 #
 # A bundled [observed series](../data/observed/monthly-temperature.csv) and [matching config](../configs/ch03-observed.json) provide a second application after the controlled fixture. Read the [data registry](../data/registry.json) for provenance and transformations. These are historical snapshots, not archived real-time release vintages.
@@ -138,62 +139,51 @@ assert np.allclose(y,fit.trend+fit.seasonal+fit.resid)
 # ```
 #
 # Inspect max_trend_revision and explain why full-history decomposition cannot supply origin-known features. Record the actual result of your run. Do not import the controlled example’s winner or interpret a successful numerical execution as evidence of operational accuracy.
+#
+# Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).
 # %% [markdown]
-# ## Configure and run the applied case
+# ## Apply this chapter to your own data
 #
-# The input file and JSON below are the only entry-point changes needed to try another
-# case with the same schema. Keep the original examples for comparison. Supply source
-# and units in the configuration; resolve missing periods rather than silently filling
-# unknown observations with zeros. These calculations call the same tested functions
-# as the `run.py apply` command. A failed validation is a reason to inspect the data,
-# not to replace it with invented observations.
-#
-# The default input here is a **seeded synthetic schema example**, separate from any
-# observed-data application below. Read the summary before interpreting its results.
+# The two paths below are the only things to change: point `INPUT_PATH` at a file with the
+# columns in the input contract above and `CONFIG_PATH` at a copy of the shipped configuration
+# with your `source` and `units`. The call is the same tested function behind `run.py apply`.
+# The printed digest shows what ran, its status, the interpretation, the assumptions and the
+# `not_done` list; the full summary is saved beside the table. A validation error is a reason to
+# inspect the data, not to fill gaps with invented observations. Shared rules for provenance,
+# output folders and reading `status` are in the Complete Forecasting Skill's conventions reference.
 # %%
 from forecasting_companion.applied.methods import analyze as analyze_chapter
-from forecasting_companion.applied.core import clean_json
+from forecasting_companion.applied.core import clean_json, summarize, preview
 import pandas as pd
 import json, os
-INPUT_PATH = project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists()) / 'companion/data/examples/ch03.csv'
-CONFIG_PATH = project_path.parents[2] / 'configs/ch03.json'
-# Input paths are explicit and may be replaced with reader-supplied files.
+project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists())
+INPUT_PATH = project_path / 'companion/data/examples/ch03.csv'      # replace with your file
+CONFIG_PATH = project_path / 'companion/configs/ch03.json'            # replace with your configuration
 workshop_config = json.loads(CONFIG_PATH.read_text())
 workshop_input = pd.read_csv(INPUT_PATH)
 workshop_table, workshop_summary = analyze_chapter(3, workshop_input, workshop_config)
-print(json.dumps(clean_json(workshop_summary), indent=2))
-print(workshop_table.head(12).to_string(index=False))
-workshop_output = Path(os.environ.get('FORECAST_OUTPUT', CONFIG_PATH.parents[1])) / 'results'
+print(summarize(workshop_summary, workshop_table))
+print()
+print(preview(workshop_table))
+workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'companion')) / 'results'
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch03-workshop-results.csv', index=False)
-(workshop_output/'ch03-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
+_ = (workshop_output/'ch03-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
 # %% [markdown]
-# ## Apply the same workflow to observed data
+# ## The same workflow on observed data
 #
-# This second case uses a bundled public-domain historical dataset documented in
-# `data/registry.json`. It is a revised snapshot, not an archived real-time vintage.
-# The earlier time cuts prevent fitting on held-out outcomes; they do not undo
-# revisions that may have occurred before the snapshot was published. Compare the
-# actual output below with the controlled case. A method need not win to be useful.
-# The source, transformation and units are in the configuration and registry.
+# A second run on a bundled public-domain series documented in `data/registry.json` (a revised
+# historical snapshot, not an archived real-time vintage). The earlier time cuts prevent fitting
+# on held-out outcomes; they do not undo revisions made before the snapshot was published.
+# Compare this digest with the controlled case above: a method need not win to be useful, and
+# the winner on synthetic data has no claim on observed data.
 # %%
-observed_input = pd.read_csv(CONFIG_PATH.parents[1]/'data/observed/monthly-temperature.csv')
-observed_config = json.loads((CONFIG_PATH.parent/'ch03-observed.json').read_text())
+observed_input = pd.read_csv(project_path/'companion/data/observed/monthly-temperature.csv')
+observed_config = json.loads((project_path/'companion/configs/ch03-observed.json').read_text())
 observed_table, observed_summary = analyze_chapter(3, observed_input, observed_config)
 print('Observed-data source:', observed_config['source'])
-print(json.dumps(clean_json(observed_summary), indent=2))
-print(observed_table.head(12).to_string(index=False))
+print(summarize(observed_summary, observed_table))
+print()
+print(preview(observed_table))
 observed_table.to_csv(workshop_output/'ch03-observed-results.csv', index=False)
-(workshop_output/'ch03-observed-summary.json').write_text(json.dumps(clean_json(observed_summary), indent=2)+'\n')
-# %% [markdown]
-# ## Read the result as a decision record
-#
-# Start with the summary’s **interpretation**, then examine its numerical evidence.
-# Distinguish what was fitted, what was supplied, and what remains unidentified.
-# The results table is the calculation; it is not permission to act. Explain which
-# assumption would most change the answer and what new evidence would test it.
-# For a live forecast, set an outcome date and keep the original result for scoring.
-#
-# The exercises and worked solutions above test interpretation, calculation, and
-# adaptation. Re-run a changed assumption and compare the actual output; do not
-# reuse numbers from the book when your input or horizon changes.
+_ = (workshop_output/'ch03-observed-summary.json').write_text(json.dumps(clean_json(observed_summary), indent=2)+'\n')

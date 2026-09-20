@@ -26,7 +26,7 @@ Q1,E3,1000,100
 
 ## Executable interface
 
-Exact CLI columns: `question,expert,estimate,actual`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, extremize_a, frequency, horizon, season, seed`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `question,expert,estimate,actual`. Supported method controls: `as_of, extremize_a, frequency, horizon, season, seed`.
 
 The adapter requires resolved question actuals and compares fixed mean, median and 20%-each-tail trimmed mean. When the estimates are event probabilities with binary actuals, `extremize_a` (a positive number, 2.5 is the usual starting value) adds a logit-extremized pool and scores every rule by Brier as well as MAE; extremization helps only when experts share information and the plain pool is too timid, and the tool refuses it on non-probability data. It does not learn weights or turn disagreement into calibrated outcome intervals.
 
@@ -43,37 +43,29 @@ Mean aggregation cancels idiosyncratic error but not common bias. Median robustn
 
 ## Missing evidence and fallback
 
-With few estimates, report each judgment and simple aggregates rather than unstable learned weights. Without resolved outcomes, compare robustness and assumptions only. If everyone shares one source, state that the aggregate contains little independent information. Never invent observations, provenance, executed methods, validation scores or interval coverage. Label controlled examples, real observations, judgment and scenarios distinctly.
+With few estimates, report each judgment and simple aggregates rather than unstable learned weights. Without resolved outcomes, compare robustness and assumptions only. If everyone shares one source, state that the aggregate contains little independent information.
 
 ## Applied report contract
 
-Return respondent count, mean/median/trimmed estimates, source-dependence notes, outlier sensitivity and held-out aggregation losses if available. Include units, horizon, evidence cutoff, sources, assumptions and limitations. For a live forecast record creation time and outcome/scoring date.
+`results.csv` columns: `question,actual,mean,median,trimmed`. `summary.json` keys: `mae,brier,extremize_a` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
-## Learn and apply
+Return respondent count, mean/median/trimmed estimates, source-dependence notes, outlier sensitivity and held-out aggregation losses if available.
 
-Read [workshop.md](references/workshop.md) for worked arithmetic, data replacement guidance, output interpretation and solved exercises. Use [evaluation.md](references/evaluation.md) to assess transfer; its expected answers are not executed agent-test results.
+## Run it
 
-Learning prompt: “Teach me chapter 11 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+The [notebook](../../companion/notebooks/11-crowds.ipynb) is the worked lesson; its editable [source](../../companion/lessons/11-crowds.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
-Applied prompt: “Apply chapter 11 to estimates.csv, compare transparent aggregators and explain whether apparent agreement comes from independent information or shared evidence.”
-
-The [notebook](../../companion/notebooks/11-crowds.ipynb) is a worked lesson; its editable [source](../../companion/lessons/11-crowds.py) defines what is actually executed. Run the controlled example from the project root after installing the companion environment:
-
-```bash
-companion/.venv/bin/python companion/scripts/run.py chapters --chapter 11
-```
-
-A successful lesson run does not mean all applied steps above were executed on user data. The workshop states the adaptation boundary. Use the [Complete Forecasting Skill](../all-chapters-forecasting/SKILL.md) when the decision genuinely needs multiple chapters.
-
-## Apply the supplied input or your own file
-
-The [controlled fixture](../../companion/data/examples/ch11.csv) and [editable config](../../companion/configs/ch11.json) provide a complete runnable example:
+Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 
 ```bash
 companion/.venv/bin/python companion/scripts/run.py apply --chapter 11 \
   --input companion/data/examples/ch11.csv \
   --config companion/configs/ch11.json \
-  --output companion/applied-runs/ch11-reader-example
+  --output companion/applied-runs/ch11-example
 ```
 
-Use a new empty output directory for each run. Copy and edit the input/config for real observations; replace the fixture’s synthetic source label with actual provenance. The command writes `results.csv` with `question,actual,mean,median,trimmed`, `summary.json` containing `mae`, `diagnostic.png`, and a hashed `run.json` execution record. These files cover the numerical adapter; the fuller applied report above also requires evidence and business interpretation. `execution_status=passed` means execution succeeded, not that the forecast is accurate.
+It writes `results.csv` and `summary.json` with exactly the columns and keys listed under Applied report contract, `diagnostic.png`, and a hashed `run.json` execution record. To run the lesson itself: `run.py chapters --chapter 11`.
+
+Learning prompt: “Teach me chapter 11 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+
+Applied prompt: “Apply chapter 11 to estimates.csv, compare transparent aggregators and explain whether apparent agreement comes from independent information or shared evidence.”

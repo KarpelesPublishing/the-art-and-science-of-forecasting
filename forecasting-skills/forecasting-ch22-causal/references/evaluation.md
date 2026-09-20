@@ -1,11 +1,5 @@
 # Evaluation scenarios: chapter 22
 
-Status: specification and documentation comparison, not executed agent testing.
-
-## Before the upgrade
-
-The entrypoint contained 432 words. Its concise method guidance did not provide the complete schema, worked adaptation, three solved exercises and output interpretation now supplied together. Preserve the existing scientific safeguards; expanding the instructions does not establish forecasting accuracy.
-
 ## Acceptance scenarios
 
 1. **Scenario:** Treated change 30, control change 12: DiD?
@@ -20,6 +14,4 @@ The entrypoint contained 432 words. Its concise method guidance did not provide 
 4. **Transfer request:** Apply chapter 22 to intervention.csv, state the identifying assumptions before computing effects, and show how a plausible concurrent shock changes the interpretation.
    **Expected artifacts:** Return estimand/design record, data windows, observed changes, counterfactual/effect table, assumptions and threats, placebo/sensitivity results and causal-status statement.
 
-## Review procedure
-
-Give a reader or agent the scenario and the skill without the answer key. Check arithmetic, evidence cutoff, unsupported claims and artifact completeness. Record actual outputs and failures separately. Do not turn these expected responses into a claim that a usability or accuracy test has passed.
+How to use these scenarios: [conventions.md](../../all-chapters-forecasting/references/conventions.md), Learning mode. Expected behaviour is a specification, not a recorded test result.

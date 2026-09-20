@@ -61,9 +61,22 @@ save(18,3,'Accuracy across the hierarchy','Independent synthetic evaluation case
 # %% [markdown]
 # <!-- APPLIED-WORKSHOP-START -->
 # ## Guided application workshop
-# The sections below connect the controlled figures to a complete applied input/output workflow.
+# The sections below come from the chapter skill: the mechanism, the arithmetic, how to adapt the lesson to your data, exercises with worked solutions, and the exact contract of the applied tool.
 # %% [markdown]
-# # Chapter 18 workshop: from lesson to decision
+# ## Input contract and format example
+# Long format, one row per node and period: `node,timestamp,target`, with every node on an identical calendar and historical values that already add up within `history_tolerance`. The hierarchy is declared in config as `edges`, a list of `[child, parent]` pairs; the tool builds the summing matrix itself (aggregates first, leaves last). The older `node,forecast` input with a supplied `S` is still accepted for a one-shot reconciliation of forecasts you already hold.
+#
+# Minimal **format illustration**, not sufficient training data:
+#
+# ```csv
+# node,timestamp,target
+# Total,2010-01-01,100.7
+# A,2010-01-01,60.4
+# B,2010-01-01,40.3
+# Total,2010-02-01,105.9
+# A,2010-02-01,63.1
+# B,2010-02-01,42.8
+# ```
 #
 # ## Explain the mechanism
 #
@@ -73,13 +86,9 @@ save(18,3,'Accuracy across the hierarchy','Independent synthetic evaluation case
 #
 # For total 210 and stores 90,105, the discrepancy is 15. Bottom-up sets total to 195 and retains stores. Equal-weight OLS adds 5 to each store and subtracts 5 from total, giving [205,95,110]. These values are coherent because 95+110=205; their accuracy still needs actual outcomes.
 #
-# Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-#
 # ## Adapt the lesson to reader data
 #
 # Replace S, base and historical error construction. Keep historical covariance data separate from test errors. The original source demonstrates bottom-up and MinT; if OLS is absent in the current lesson, add a W=I comparison in the applied copy rather than claiming the chart already contains it.
-#
-# Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 #
 # For this chapter, settle these questions before fitting: What are the bottom-level quantities and summing relationships? Do nodes overlap? Are base forecasts for the same origin/horizon? Are historical forecast errors available to estimate covariance?
 #
@@ -89,12 +98,10 @@ save(18,3,'Accuracy across the hierarchy','Independent synthetic evaluation case
 #
 # The current applied adapter adds a separately inspectable numerical result:
 #
-# - `results.csv`: `node,timestamp,base,bottom_up,OLS[,MinT][,MinT_q10,MinT_q50,MinT_q90]`.
+# - `results.csv`: `node,timestamp,base,bottom_up,OLS,MinT`.
 # - `summary.json`: `nodes,leaves,S,selected,shrinkage,error_rows,holdout,leaderboard,coherence_max_abs_residual,pool,horizon` plus method, interpretation, assumptions, not_done and status.
 #
 # The tool builds S from `edges`, forecasts every node with the companion engine (default `pool: smoothing`; `full` and `arima` are available), takes each node's base-forecast errors from the engine's own validation origins, shrinks their covariance toward the diagonal by `shrinkage` (default 0.2), and reconciles by bottom-up, OLS and MinT. Coherence is asserted for every reconciled column. Every method, including the unreconciled base, is scored per node on the untouched final holdout, so the leaderboard shows whether reconciliation helped this hierarchy rather than assuming it. `coherent_quantiles: true` reconciles 500 joint draws when every node's model has intervals and returns MinT q10/q50/q90. MinT is dropped, and reported under `not_done`, when fewer than n_nodes+2 matched errors exist or the covariance is not positive definite. Nonnegativity is not enforced. When the history is too short to hold the engine's rolling origins twice over (for monthly data with a 12-step horizon, fewer than 84 observations), the tool still reconciles the production forecasts but skips the holdout leaderboard, takes the error covariance from the engine's own rolling origins, returns `status: provisional` and says so under `not_done`. The tool runs only when asked; the assistant decides, with the reader, whether the method fits before running it.
-#
-# The [fixture](../data/examples/ch18.csv) and [config](../configs/ch18.json) match the current interface. Run the `apply` command in the [skill entrypoint](../../forecasting-skills/forecasting-ch18-hierarchy/SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 #
 # ## Decide what the evidence supports
 #
@@ -102,7 +109,7 @@ save(18,3,'Accuracy across the hierarchy','Independent synthetic evaluation case
 #
 # Without past errors, use bottom-up or clearly labeled OLS, not fabricated MinT covariance. If hierarchy mapping is ambiguous, return inconsistencies before fitting. If constraints are required but unsupported, report infeasibility rather than hiding negative nodes.
 #
-# The applied deliverable must make these items inspectable: `results.csv` columns: `node,timestamp,base,bottom_up,OLS[,MinT][,MinT_q10,MinT_q50,MinT_q90]`; `summary.json` keys: `nodes,leaves,S,selected,shrinkage,error_rows,holdout,leaderboard,coherence_max_abs_residual,pool,horizon` plus method, interpretation, assumptions, not_done and status. Quote the holdout leaderboard beside the reconciled forecasts; a coherent forecast that lost accuracy on the holdout is a finding, not a success.
+# The applied deliverable must make these items inspectable: `results.csv` columns: `node,timestamp,base,bottom_up,OLS,MinT`; `summary.json` keys: `nodes,leaves,S,selected,shrinkage,error_rows,holdout,leaderboard,coherence_max_abs_residual,pool,horizon` plus method, interpretation, assumptions, not_done and status. Quote the holdout leaderboard beside the reconciled forecasts; a coherent forecast that lost accuracy on the holdout is a finding, not a success.
 #
 # ## Three exercises with worked solutions
 #
@@ -130,58 +137,36 @@ save(18,3,'Accuracy across the hierarchy','Independent synthetic evaluation case
 #
 # > Use chapter 18 to reconcile hierarchy.csv using the supplied summing matrix, compare eligible methods and verify coherence without claiming accuracy from addition alone.
 #
-# Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-#
 # ## Real-data boundary
 #
 # The [data registry](../data/registry.json) and [data notes](../data/README.md) distinguish bundled observations from controlled fixtures. No matching observed-data application is claimed for this chapter. Supply the chapter-specific records and their provenance before treating the exercise as business evidence; an observed outcome table is not automatically a historical forecast journal or identified experiment.
+#
+# Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).
 # %% [markdown]
-# ## Configure and run the applied case
+# ## Apply this chapter to your own data
 #
-# The input file and JSON below are the only entry-point changes needed to try another
-# case with the same schema. Keep the original examples for comparison. Supply source
-# and units in the configuration; resolve missing periods rather than silently filling
-# unknown observations with zeros. These calculations call the same tested functions
-# as the `run.py apply` command. A failed validation is a reason to inspect the data,
-# not to replace it with invented observations.
-#
-# The default input here is a **seeded synthetic schema example**, separate from any
-# observed-data application below. Read the summary before interpreting its results.
+# The two paths below are the only things to change: point `INPUT_PATH` at a file with the
+# columns in the input contract above and `CONFIG_PATH` at a copy of the shipped configuration
+# with your `source` and `units`. The call is the same tested function behind `run.py apply`.
+# The printed digest shows what ran, its status, the interpretation, the assumptions and the
+# `not_done` list; the full summary is saved beside the table. A validation error is a reason to
+# inspect the data, not to fill gaps with invented observations. Shared rules for provenance,
+# output folders and reading `status` are in the Complete Forecasting Skill's conventions reference.
 # %%
 from forecasting_companion.applied.methods import analyze as analyze_chapter
-from forecasting_companion.applied.core import clean_json
+from forecasting_companion.applied.core import clean_json, summarize, preview
 import pandas as pd
 import json, os
-INPUT_PATH = project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists()) / 'companion/data/examples/ch18.csv'
-CONFIG_PATH = project_path.parents[2] / 'configs/ch18.json'
-# Input paths are explicit and may be replaced with reader-supplied files.
+project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists())
+INPUT_PATH = project_path / 'companion/data/examples/ch18.csv'      # replace with your file
+CONFIG_PATH = project_path / 'companion/configs/ch18.json'            # replace with your configuration
 workshop_config = json.loads(CONFIG_PATH.read_text())
 workshop_input = pd.read_csv(INPUT_PATH)
 workshop_table, workshop_summary = analyze_chapter(18, workshop_input, workshop_config)
-print(json.dumps(clean_json(workshop_summary), indent=2))
-print(workshop_table.head(12).to_string(index=False))
-workshop_output = Path(os.environ.get('FORECAST_OUTPUT', CONFIG_PATH.parents[1])) / 'results'
+print(summarize(workshop_summary, workshop_table))
+print()
+print(preview(workshop_table))
+workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'companion')) / 'results'
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch18-workshop-results.csv', index=False)
-(workshop_output/'ch18-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
-# %% [markdown]
-# ## Real-data boundary
-#
-# The bundled case is controlled, not a reconstruction of historical records. No
-# verified, appropriately licensed domain dataset is supplied for this particular
-# workflow. Use the input contract to supply your own observations and evidence.
-# Do not substitute an unrelated public dataset simply to call the example real.
-# The wider companion includes observed time-series applications in chapters
-# 3–6, 12, 15–16 and 24; their data do not establish this chapter’s domain assumptions.
-# %% [markdown]
-# ## Read the result as a decision record
-#
-# Start with the summary’s **interpretation**, then examine its numerical evidence.
-# Distinguish what was fitted, what was supplied, and what remains unidentified.
-# The results table is the calculation; it is not permission to act. Explain which
-# assumption would most change the answer and what new evidence would test it.
-# For a live forecast, set an outcome date and keep the original result for scoring.
-#
-# The exercises and worked solutions above test interpretation, calculation, and
-# adaptation. Re-run a changed assumption and compare the actual output; do not
-# reuse numbers from the book when your input or horizon changes.
+_ = (workshop_output/'ch18-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')

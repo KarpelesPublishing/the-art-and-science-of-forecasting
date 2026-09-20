@@ -44,8 +44,8 @@ export formats or multiple panels.
 
 ## Set up
 
-Run these commands from the book project directory (the directory containing
-`companion`, `manuscript` and `forecasting-skills`). Python 3.12 is the tested target.
+Run these commands from the project directory (the directory containing
+`companion` and `forecasting-skills`). Python 3.12 is the tested target.
 
 ```bash
 uv venv companion/.venv --python 3.12
@@ -87,11 +87,14 @@ chapter section calls for a later-produced chart.
 
 ## Forecast many series
 
-CSV requires `series_id,timestamp,target`. Keep frequencies consistent; missing
-periods, duplicate keys and invalid targets are reported rather than silently fixed.
+CSV requires `series_id,timestamp,target`; `data/examples/sales.csv` (six monthly series,
+seven years) is a runnable example. Keep frequencies consistent; missing periods,
+duplicate keys and invalid targets are reported rather than silently fixed. The full
+engine needs 2 seasons + 4 horizons per series (72 monthly points for a 12-month
+horizon); shorter series are listed in `failures.json` and the rest continue.
 
 ```bash
-companion/.venv/bin/python companion/scripts/run.py forecast --input data/sales.csv --horizon 12 --frequency MS --workers 4 --resume --output companion/results/sales
+companion/.venv/bin/python companion/scripts/run.py forecast --input companion/data/examples/sales.csv --horizon 12 --frequency MS --workers 4 --resume --engine full --output companion/applied-runs/sales
 ```
 
 Use `--as-of YYYY-MM-DD` for historical cutoffs. Two engines: `--engine baseline`
@@ -123,16 +126,17 @@ agent runtime discovers the skill, an example one-line request is:
 Use $all-chapters-forecasting to forecast my sales data for the next 12 months, compare suitable methods, and report uncertainty and validation results.
 ```
 
-To expose these skills to Codex in this project, run:
+To expose these skills to Codex and Claude Code in this project, run:
 
 ```bash
 companion/.venv/bin/python companion/scripts/install_skills.py
 ```
 
-This creates project-local `.agents/skills/` links to the existing skill files.
-Restart/open a session in the project if required for discovery. The script never
-overwrites a different existing skill. For another runtime, use its documented
-skill directory; preserve the sibling chapter/method folders and companion paths.
+This creates project-local links in `.agents/skills/` (Codex) and `.claude/skills/`
+(Claude Code) to the existing skill folders; pass `codex` or `claude` to make only one.
+Open a session in the project directory for discovery. The script never overwrites a
+different existing skill. Any other assistant that reads `SKILL.md` files can be pointed
+at `forecasting-skills/` directly; preserve the sibling folders and companion paths.
 
 ## What the checks establish
 
@@ -157,13 +161,19 @@ input and configuration, then replace them with your own evidence:
 companion/.venv/bin/python companion/scripts/run.py apply --chapter 4 --input companion/data/observed/monthly-temperature.csv --config companion/configs/ch04-observed.json --output applied-runs/temperature
 ```
 
-The output directory must be empty and outside the publication/source/data trees.
-The command writes `results.csv`, `summary.json`, `diagnostic.png`, and `run.json`.
-The run record includes input/configuration/code hashes and library versions.
-`status: provisional` or `needs_evidence` describes forecast readiness, even when
-execution itself succeeded. Unsupported configuration keys are rejected. Each
-chapter's skill lists its exact adapter schema and limitations; the adapters do
-not implement every professional extension discussed in the skill.
+The output directory must be empty and outside the publication/source/data trees
+(or under `companion/applied-runs/`). The command writes `results.csv`, `summary.json`,
+`diagnostic.png`, and `run.json`. Every `summary.json` carries `method`, `interpretation`,
+`assumptions`, `not_done` and `status`; `status: provisional` or `needs_evidence` describes
+forecast readiness even when execution succeeded. The run record includes
+input/configuration/code hashes and library versions. Unsupported configuration keys
+are rejected. Each chapter's skill lists its exact schema, its data floor and its
+limitations; the shared rules and the meaning of each status are in
+[conventions.md](../forecasting-skills/all-chapters-forecasting/references/conventions.md).
+The series chapters (4, 6, 12, 27) need 2 seasons + 4 horizons of history (72 monthly
+points for a 12-month horizon, 48 for six months); below that they return a provisional
+persistence baseline and say how many points are missing. `run.py --help` lists the
+three commands (`chapters`, `apply`, `forecast`).
 
 Synthetic examples are `companion/data/examples/chNN.csv` (JSON for chapter 10);
 matching settings are `companion/configs/chNN.json`. Keep source and units explicit.
@@ -172,6 +182,8 @@ Eight notebooks additionally execute observed public-domain data. Read
 of real-time forecasting performance.
 
 For maintainers: edit lesson sources and workshop references, synchronize with
-`scripts/expand_workshops.py`, execute chapters, regenerate the catalog, rebuild,
-and validate. Provenance conservatively hashes all shared code, bundled teaching
-data, and configurations. Input changes therefore invalidate stale executions.
+`scripts/expand_workshops.py`, keep the skills' output contracts equal to the tools with
+`scripts/sync_contracts.py` (`--check` in the tests), execute chapters, regenerate the
+catalog, rebuild, and validate. Provenance conservatively hashes all shared code,
+bundled teaching data, and configurations. Input changes therefore invalidate stale
+executions.

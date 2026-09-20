@@ -34,14 +34,22 @@ def main():
     fixtures[8]=pd.DataFrame(rows);fixtures[11]=fixtures[8].query('round == 1').drop(columns='round')
     p=rng.uniform(.1,.9,200);outcomes=rng.binomial(1,p);events=pd.DataFrame({'event_id':[f'e{i}' for i in range(200)],'probability':p,'outcome':outcomes,'baseline':.5});fixtures[9]=events;fixtures[26]=events.drop(columns='baseline')
     journal=json.loads((ROOT/'results/ch10-event-journal.json').read_text());(examples/'ch10.json').write_text(json.dumps({'events':journal['events'],'revisions':journal['revisions']},indent=2)+'\n')
-    panels=[]
+    # Chapters 13 and 14: a daily retail panel, matching the lessons (weekly seasonality, one-week horizon).
+    days=210;td=np.arange(days);daily_dates=pd.date_range('2025-01-06',periods=days,freq='D');panels=[]
     for entity in range(8):
-        promo=rng.binomial(1,.2,n);panels.append(pd.DataFrame({'series_id':f'item-{entity}','timestamp':dates,'target':y+entity*3+10*promo+rng.normal(0,1,n),'promo':promo,'price':10-2*promo}))
+        promo=rng.binomial(1,.2,days);weekly=6*np.sin(2*np.pi*td/7)+2*np.cos(4*np.pi*td/7)
+        panels.append(pd.DataFrame({'series_id':f'item-{entity}','timestamp':daily_dates,'target':np.round(40+entity*4+.03*td+weekly+10*promo+rng.normal(0,1.5,days),2),'promo':promo,'price':np.round(10-2*promo,2)}))
     fixtures[13]=pd.concat(panels,ignore_index=True);fixtures[14]=fixtures[13][['series_id','timestamp','target']]
+    # Many-series example for the batch runner: six monthly series, seven years each (the full engine needs 2 seasons + 4 horizons).
+    sales=[]
+    for k in range(6):
+        level=200+60*k;amp=.12*level;trend=rng.uniform(.2,1.2)
+        sales.append(pd.DataFrame({'series_id':f'sku-{k+1:02d}','timestamp':pd.date_range('2019-01-01',periods=84,freq='MS'),'target':np.round(np.maximum(0,level+trend*np.arange(84)+amp*np.sin(2*np.pi*(np.arange(84)+2*k)/12)+rng.normal(0,.04*level,84)),0)}))
+    pd.concat(sales,ignore_index=True).to_csv(examples/'sales.csv',index=False)
     fixtures[17]=series.copy()   # plain series: the chapter tool builds and checks its own intervals
     leaf_a=60+.06*t+5*np.sin(2*np.pi*t/12)+rng.normal(0,1.5,n);leaf_b=40+.04*t+3*np.cos(2*np.pi*t/12)+rng.normal(0,1,n)
     fixtures[18]=pd.concat([pd.DataFrame({'node':k,'timestamp':dates,'target':v}) for k,v in (('Total',leaf_a+leaf_b),('A',leaf_a),('B',leaf_b))],ignore_index=True)
-    time=np.arange(1,13);e=np.exp(-(.025+.35)*time);adopt=100000*(1-e)/(1+.35/.025*e);fixtures[19]=pd.DataFrame({'time':time,'adopters':adopt})
+    time=np.arange(1,13);e=np.exp(-(.025+.35)*time);adopt=100000*(1-e)/(1+.35/.025*e);fixtures[19]=pd.DataFrame({'time':time,'adopters':np.round(adopt,0)})   # twelve months of cumulative adopters
     spend_a=rng.uniform(0,100,n);spend_b=rng.uniform(0,80,n)
     from forecasting_companion.practitioner import adstock
     sa=adstock(spend_a,.5);sb=adstock(spend_b,.5);sales=100+.1*t+8*np.sin(2*np.pi*t/12)+35*sa/(80+sa)+20*sb/(80+sb)+rng.normal(0,2,n)
@@ -60,14 +68,16 @@ def main():
         if chapter==16:cfg.update(events=[{'name':'launch','date':str(d.date()),'lower_window':0,'upper_window':1} for d in event_dates],priors=[.001,.05,.5],origins=2)
         if chapter==17:cfg.update(alpha=.2,pool='smoothing',calibration_size=36,test_size=24,origins=3)
         if chapter==18:cfg.update(edges=[['A','Total'],['B','Total']],pool='smoothing',shrinkage=.2,origins=3)
-        if chapter==19:cfg.update(ceilings=[110000,150000,200000],units='cumulative unique adopters')
+        if chapter==1:cfg.update(rules=['persistence','momentum','mean_reversion'],k=5,units='price')
+        if chapter==19:cfg.update(ceilings=[110000,150000,200000],units='adopters (cumulative) and units (sales layer)',time_unit='month',sales_horizon=24,peak=4,units_at_trial=1,
+                                  repeat_kernel=[.35,.3,.25,.2,.15,.12,.1,.08,.06,.05,.04,.03],parfitt_collins={'T':.18,'R':.42,'B':1.1})
         if chapter==22:cfg.update(intervention=str(dates[100].date()),identification='Synthetic controlled generator; treated-only shock absent by construction',controls=['control','control_2','control_3'],placebos=100)
         if chapter==21:cfg.update(lead_time=2,review_period=1,service_level=.95,echelons=3)
         if chapter==20:cfg.update(channels=['spend_a','spend_b'],saturation='auto',origins=3,windows=3)
         if chapter==23:cfg.update(as_of='2020-02-15',mature_age=5,population=1000000,units='cases')
         if chapter==5:cfg.update(model='local level',seasonal=True,origins=3)
         if chapter==27:cfg.update(mode='launch',horizon=24,trial_conversion_assumption='Synthetic teaching assumption: mature-sales scale transfers to trial; not identified by mature-sales fit',new_product={'eligible_buyers':120000,'awareness':.65,'availability_given_awareness':.7,'interest':.28},repeat_rate=.15,units='triers and purchase units, separately')
-        if chapter in [13,14]:cfg['horizon']=7
+        if chapter in [13,14]:cfg.update(horizon=7,season=7,units='units sold per day')
         (configs/f'ch{chapter:02d}.json').write_text(json.dumps(cfg,indent=2)+'\n')
     for chapter in [3,4,6,12,15,16]:
         cfg=json.loads((configs/f'ch{chapter:02d}.json').read_text());cfg.update(source='Public-domain statsmodels El Niño observations, 1950–2010; historical revised snapshot',units='degrees Celsius');(configs/f'ch{chapter:02d}-observed.json').write_text(json.dumps(cfg,indent=2)+'\n')
@@ -77,5 +87,5 @@ def main():
         if chapter==24:cfg.update(calibration_size=20)
         (configs/f'ch{chapter:02d}-observed.json').write_text(json.dumps(cfg,indent=2)+'\n')
     (ROOT/'data/registry.json').write_text(json.dumps(registry,indent=2)+'\n')
-    print('Bundled five public-domain datasets, two derived time series, 27 input examples and configurations.')
+    print('Bundled five public-domain datasets, two derived time series, 27 input examples, a six-series batch example and configurations.')
 if __name__=='__main__':main()

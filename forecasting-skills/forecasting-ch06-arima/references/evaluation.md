@@ -1,11 +1,5 @@
 # Evaluation scenarios: chapter 6
 
-Status: specification and documentation comparison, not executed agent testing.
-
-## Before the upgrade
-
-The entrypoint contained 264 words. Its concise method guidance did not provide the complete schema, worked adaptation, three solved exercises and output interpretation now supplied together. Preserve the existing scientific safeguards; expanding the instructions does not establish forecasting accuracy.
-
 ## Acceptance scenarios
 
 1. **Scenario:** Levels 10,13,12: first differences?
@@ -20,6 +14,4 @@ The entrypoint contained 264 words. Its concise method guidance did not provide 
 4. **Transfer request:** Apply chapter 6 to sales.csv with a twelve-period horizon, compare supported ARIMA and seasonal-naive candidates at earlier origins, and explain selection and residual limitations.
    **Expected artifacts:** Return differencing/order rationale, fit warnings, origin-by-horizon benchmark losses, residual diagnostics, dated forecasts and model-interval assumptions.
 
-## Review procedure
-
-Give a reader or agent the scenario and the skill without the answer key. Check arithmetic, evidence cutoff, unsupported claims and artifact completeness. Record actual outputs and failures separately. Do not turn these expected responses into a claim that a usability or accuracy test has passed.
+How to use these scenarios: [conventions.md](../../all-chapters-forecasting/references/conventions.md), Learning mode. Expected behaviour is a specification, not a recorded test result.

@@ -118,9 +118,19 @@ save(13, 3, 'Explain a LightGBM forecast',
 # %% [markdown]
 # <!-- APPLIED-WORKSHOP-START -->
 # ## Guided application workshop
-# The sections below connect the controlled figures to a complete applied input/output workflow.
+# The sections below come from the chapter skill: the mechanism, the arithmetic, how to adapt the lesson to your data, exercises with worked solutions, and the exact contract of the applied tool.
 # %% [markdown]
-# # Chapter 13 workshop: from lesson to decision
+# ## Input contract and format example
+# A panel of at least four related series with any number of numeric covariate columns. Declare the covariates to use in config `covariates` and, within them, those whose future values are genuinely known at the forecast origin in `known_in_advance` (a promotion calendar, a list price). Covariates not known in advance are lagged one period by the tool; they never enter at their own timestamp.
+#
+# Minimal **format illustration**, not sufficient training data:
+#
+# ```csv
+# series_id,timestamp,target,promo,price
+# item-0,2021-01-01,53.8,0,10
+# item-0,2021-01-02,55.1,1,8
+# item-1,2021-01-01,41.2,0,10
+# ```
 #
 # ## Explain the mechanism
 #
@@ -130,19 +140,15 @@ save(13, 3, 'Explain a LightGBM forecast',
 #
 # For demand values 10,12,14 on days 1–3, the day-4 three-day rolling feature is 12. A rolling mean that includes day-4 actual 20 would use [12,14,20], or 15.333, and leak the target. If base prediction 20 and SHAP contributions 3,-1,5 sum to 7, the model output is 27.
 #
-# Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-#
 # ## Adapt the lesson to reader data
 #
-# Replace panel construction with series_id mapped to the lesson’s entity key and a consistent time index. Preserve groupby boundaries for all lags. Include store/item fields only if actual metadata supports them; series_id alone does not magically recover that hierarchy. Keep observed-lag updating consistent with the one-step task.
-#
-# Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
+# Replace panel construction with series_id mapped to the lesson’s entity key and a consistent time index. Preserve groupby boundaries for all lags. Include store/item fields only if actual metadata supports them; series_id alone does not magically recover that hierarchy. The lesson's folds are successive one-step forecasts with lag updates; the tool's default `strategy: direct` issues the whole horizon once at each origin (the daily example forecasts seven days from Monday). Choose the strategy that matches the decision and say which one ran.
 #
 # For this chapter, settle these questions before fitting: Is the decision daily one-step replenishment or a fixed-origin horizon? Were promotions and prices known then? Are sales censored by stockouts? What defines a series?
 #
 # ## Interpret the actual lesson outputs
 #
-# The source runs actual LightGBM and native TreeSHAP on synthetic retail data. Its 28-day folds contain successive one-day forecasts with lag updates, not a 28-day forecast issued once. It does not reproduce M5 hierarchy, WRMSSE or Walmart data.
+# The source runs actual LightGBM and native TreeSHAP on synthetic retail data. Its 28-day folds contain successive one-day forecasts with lag updates, not a 28-day forecast issued once; the applied tool below issues a seven-day direct forecast at each origin on the same kind of daily panel. It does not reproduce M5 hierarchy, WRMSSE or Walmart data. In the shipped example the ablation shows that dropping a feature group can also lower MAE: a feature that does not help on the holdout is noise for that panel, not a law.
 #
 # The current applied adapter adds a separately inspectable numerical result:
 #
@@ -150,8 +156,6 @@ save(13, 3, 'Explain a LightGBM forecast',
 # - `summary.json`: `strategy,features,feature_groups,covariates,known_in_advance,validation,ablation,test_mae,baseline_mae,first_explanation,origins` plus method, interpretation, assumptions, not_done and status.
 #
 # LightGBM on leakage-safe grouped features: lags (`lags`), shifted rolling means (`rolling`), a calendar term (day of week for daily data, month otherwise), an entity code, and the declared covariates. `strategy: direct` (default) fits one booster per horizon step, each mapping the origin's lag features plus the target date's known covariates and calendar to that step's target; `recursive` fits a one-step model and feeds its own predictions back as lags. Evaluation uses expanding origins (`origins`) against seasonal naive computed from pre-origin history, then scores the untouched final holdout once. `ablation: true` drops each feature group (calendar, lags, rolling, covariates) in turn at every origin and reports the change in MAE. Additive contributions are returned for `shap_rows` rows with an additivity check. No hyperparameter search, no quantile objective. The tool runs only when asked; the assistant decides, with the reader, whether the method fits before running it.
-#
-# The [fixture](../data/examples/ch13.csv) and [config](../configs/ch13.json) match the current interface. Run the `apply` command in the [skill entrypoint](../../forecasting-skills/forecasting-ch13-retail-ml/SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 #
 # ## Decide what the evidence supports
 #
@@ -187,58 +191,36 @@ save(13, 3, 'Explain a LightGBM forecast',
 #
 # > Use chapter 13 to forecast retail_panel.csv one day ahead, audit every feature’s availability and compare LightGBM with seasonal-naive and a promotion/price ablation.
 #
-# Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-#
 # ## Real-data boundary
 #
 # The [data registry](../data/registry.json) and [data notes](../data/README.md) distinguish bundled observations from controlled fixtures. No matching observed-data application is claimed for this chapter. Supply the chapter-specific records and their provenance before treating the exercise as business evidence; an observed outcome table is not automatically a historical forecast journal or identified experiment.
+#
+# Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).
 # %% [markdown]
-# ## Configure and run the applied case
+# ## Apply this chapter to your own data
 #
-# The input file and JSON below are the only entry-point changes needed to try another
-# case with the same schema. Keep the original examples for comparison. Supply source
-# and units in the configuration; resolve missing periods rather than silently filling
-# unknown observations with zeros. These calculations call the same tested functions
-# as the `run.py apply` command. A failed validation is a reason to inspect the data,
-# not to replace it with invented observations.
-#
-# The default input here is a **seeded synthetic schema example**, separate from any
-# observed-data application below. Read the summary before interpreting its results.
+# The two paths below are the only things to change: point `INPUT_PATH` at a file with the
+# columns in the input contract above and `CONFIG_PATH` at a copy of the shipped configuration
+# with your `source` and `units`. The call is the same tested function behind `run.py apply`.
+# The printed digest shows what ran, its status, the interpretation, the assumptions and the
+# `not_done` list; the full summary is saved beside the table. A validation error is a reason to
+# inspect the data, not to fill gaps with invented observations. Shared rules for provenance,
+# output folders and reading `status` are in the Complete Forecasting Skill's conventions reference.
 # %%
 from forecasting_companion.applied.methods import analyze as analyze_chapter
-from forecasting_companion.applied.core import clean_json
+from forecasting_companion.applied.core import clean_json, summarize, preview
 import pandas as pd
 import json, os
-INPUT_PATH = project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists()) / 'companion/data/examples/ch13.csv'
-CONFIG_PATH = project_path.parents[2] / 'configs/ch13.json'
-# Input paths are explicit and may be replaced with reader-supplied files.
+project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists())
+INPUT_PATH = project_path / 'companion/data/examples/ch13.csv'      # replace with your file
+CONFIG_PATH = project_path / 'companion/configs/ch13.json'            # replace with your configuration
 workshop_config = json.loads(CONFIG_PATH.read_text())
 workshop_input = pd.read_csv(INPUT_PATH)
 workshop_table, workshop_summary = analyze_chapter(13, workshop_input, workshop_config)
-print(json.dumps(clean_json(workshop_summary), indent=2))
-print(workshop_table.head(12).to_string(index=False))
-workshop_output = Path(os.environ.get('FORECAST_OUTPUT', CONFIG_PATH.parents[1])) / 'results'
+print(summarize(workshop_summary, workshop_table))
+print()
+print(preview(workshop_table))
+workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'companion')) / 'results'
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch13-workshop-results.csv', index=False)
-(workshop_output/'ch13-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
-# %% [markdown]
-# ## Real-data boundary
-#
-# The bundled case is controlled, not a reconstruction of historical records. No
-# verified, appropriately licensed domain dataset is supplied for this particular
-# workflow. Use the input contract to supply your own observations and evidence.
-# Do not substitute an unrelated public dataset simply to call the example real.
-# The wider companion includes observed time-series applications in chapters
-# 3–6, 12, 15–16 and 24; their data do not establish this chapter’s domain assumptions.
-# %% [markdown]
-# ## Read the result as a decision record
-#
-# Start with the summary’s **interpretation**, then examine its numerical evidence.
-# Distinguish what was fitted, what was supplied, and what remains unidentified.
-# The results table is the calculation; it is not permission to act. Explain which
-# assumption would most change the answer and what new evidence would test it.
-# For a live forecast, set an outcome date and keep the original result for scoring.
-#
-# The exercises and worked solutions above test interpretation, calculation, and
-# adaptation. Re-run a changed assumption and compare the actual output; do not
-# reuse numbers from the book when your input or horizon changes.
+_ = (workshop_output/'ch13-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')

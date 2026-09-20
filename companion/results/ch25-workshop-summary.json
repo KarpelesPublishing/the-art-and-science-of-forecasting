@@ -1,8 +1,20 @@
 {
+  "method": "Kaplan-Meier distribution of actual/planned ratios in the reference class",
+  "interpretation": "60 reference cases, 46 completed. 50% of cases finished within 1.30x plan; unidentified upper quantiles stay null rather than being invented. Kaplan-Meier treats incomplete actual durations as right-censored elapsed time, which requires noninformative censoring; abandonment as failure may violate it.",
+  "assumptions": [
+    "The reference class was chosen before looking at the outcome",
+    "Censoring is noninformative: unfinished cases are not systematically the worst"
+  ],
+  "not_done": [
+    "No adjustment for differences between the new case and the class (a regression on case features)",
+    "No decision-loss percentile was chosen; the reader picks it"
+  ],
+  "status": "passed",
   "quantiles": {
-    "0.5": 1.4079476180834145,
+    "0.5": 1.297556202619205,
     "0.8": null,
     "0.9": null
   },
-  "interpretation": "Kaplan\u2013Meier ratios treat incomplete actual durations as right-censored elapsed time. This requires noninformative censoring; abandonment as failure may violate it. Unidentified upper quantiles remain null, never invented."
+  "cases": 60,
+  "completed": 46
 }

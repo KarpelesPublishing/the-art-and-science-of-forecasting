@@ -1,6 +1,6 @@
 {
   "method": "Chronos-T5 tiny zero-shot forecast",
-  "interpretation": "Chronos tiny: mean median-MAE over 3 selection origins 2.481 vs engine baselines Seasonal naive 2.908, Equal ensemble 4.916, Naive 6.567, Drift 6.604; final holdout MAE 2.763, coverage of the 0.1-0.9 band 67%. Mean latency 0.14 s per call on CPU. Pretraining overlap with this series is not certified; one holdout cannot establish calibration.",
+  "interpretation": "Chronos tiny: mean median-MAE over 3 selection origins 2.481 vs engine baselines Seasonal naive 2.908, Equal ensemble 4.916, Naive 6.567, Drift 6.604; final holdout MAE 2.763, coverage of the 0.1-0.9 band 67%. Mean latency 0.13 s per call on CPU. Pretraining overlap with this series is not certified; one holdout cannot establish calibration.",
   "assumptions": [
     "Series treated as univariate without covariates",
     "Sampled quantiles from the pretrained model at the given seed"
@@ -27,28 +27,28 @@
       "holdout": false,
       "median_mae": 2.5161913186134934,
       "coverage": 0.75,
-      "latency_s": 0.13272462505847216
+      "latency_s": 0.12899945816025138
     },
     {
       "origin": "2018-12-01 00:00:00+00:00",
       "holdout": false,
       "median_mae": 3.498368439377734,
       "coverage": 0.6666666666666666,
-      "latency_s": 0.13505974994041026
+      "latency_s": 0.12757458304986358
     },
     {
       "origin": "2019-12-01 00:00:00+00:00",
       "holdout": false,
       "median_mae": 1.4282437712108322,
       "coverage": 1.0,
-      "latency_s": 0.13499766611494124
+      "latency_s": 0.1318368329666555
     },
     {
       "origin": "2020-12-01 00:00:00+00:00",
       "holdout": true,
       "median_mae": 2.7634547482869394,
       "coverage": 0.6666666666666666,
-      "latency_s": 0.13859187508933246
+      "latency_s": 0.130032709101215
     }
   ],
   "engine_baselines": {
@@ -59,7 +59,7 @@
   },
   "test_mae": 2.7634547482869394,
   "test_coverage": 0.6666666666666666,
-  "mean_latency_s": 0.1370232664514333,
+  "mean_latency_s": 0.13010657504200934,
   "quantiles": [
     0.1,
     0.5,

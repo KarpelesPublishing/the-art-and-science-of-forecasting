@@ -25,7 +25,7 @@ Materials,50,15
 
 ## Executable interface
 
-Exact CLI columns: `component,mean,sd`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, correlation, frequency, horizon, samples, season, seed`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `component,mean,sd`. Supported method controls: `as_of, correlation, frequency, horizon, samples, season, seed`.
 
 Positive arithmetic means and nonnegative SDs define lognormal components. correlation is shared latent-normal correlation in [0,1), not the resulting components’ Pearson correlation. The adapter simulates totals directly; it does not run MCMC or report budget exceedance unless added separately.
 
@@ -43,37 +43,29 @@ More draws reduce Monte Carlo error, not model error. Independent-draw formulas 
 
 ## Missing evidence and fallback
 
-With only unweighted scenarios, report scenario outcomes rather than invented percentiles. With unknown dependence, show several defensible dependence scenarios. If serious MCMC diagnostics are absent, report the missing diagnostics and use an analytic/direct sampler when available. Never invent observations, provenance, executed methods, validation scores or interval coverage. Label controlled examples, real observations, judgment and scenarios distinctly.
+With only unweighted scenarios, report scenario outcomes rather than invented percentiles. With unknown dependence, show several defensible dependence scenarios. If serious MCMC diagnostics are absent, report the missing diagnostics and use an analytic/direct sampler when available.
 
 ## Applied report contract
 
-Return input distributions and provenance, dependence assumptions, seed/draw count, outcome quantiles, exceedance probabilities, Monte Carlo precision and separate model-sensitivity results. Include units, horizon, evidence cutoff, sources, assumptions and limitations. For a live forecast record creation time and outcome/scoring date.
+`results.csv` columns: `quantile,total`. `summary.json` keys: `mean,mean_mcse,analytic_mean,samples,correlation` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
-## Learn and apply
+Return input distributions and provenance, dependence assumptions, seed/draw count, outcome quantiles, exceedance probabilities, Monte Carlo precision and separate model-sensitivity results.
 
-Read [workshop.md](references/workshop.md) for worked arithmetic, data replacement guidance, output interpretation and solved exercises. Use [evaluation.md](references/evaluation.md) to assess transfer; its expected answers are not executed agent-test results.
+## Run it
 
-Learning prompt: “Teach me chapter 7 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+The [notebook](../../companion/notebooks/07-monte-carlo.ipynb) is the worked lesson; its editable [source](../../companion/lessons/07-monte-carlo.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
-Applied prompt: “Apply chapter 7 to cost_components.csv, preserve the stated dependence assumptions, calculate budget-exceedance probabilities and distinguish simulation error from model uncertainty.”
-
-The [notebook](../../companion/notebooks/07-monte-carlo.ipynb) is a worked lesson; its editable [source](../../companion/lessons/07-monte-carlo.py) defines what is actually executed. Run the controlled example from the project root after installing the companion environment:
-
-```bash
-companion/.venv/bin/python companion/scripts/run.py chapters --chapter 7
-```
-
-A successful lesson run does not mean all applied steps above were executed on user data. The workshop states the adaptation boundary. Use the [Complete Forecasting Skill](../all-chapters-forecasting/SKILL.md) when the decision genuinely needs multiple chapters.
-
-## Apply the supplied input or your own file
-
-The [controlled fixture](../../companion/data/examples/ch07.csv) and [editable config](../../companion/configs/ch07.json) provide a complete runnable example:
+Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 
 ```bash
 companion/.venv/bin/python companion/scripts/run.py apply --chapter 7 \
   --input companion/data/examples/ch07.csv \
   --config companion/configs/ch07.json \
-  --output companion/applied-runs/ch07-reader-example
+  --output companion/applied-runs/ch07-example
 ```
 
-Use a new empty output directory for each run. Copy and edit the input/config for real observations; replace the fixture’s synthetic source label with actual provenance. The command writes `results.csv` with `quantile,total`, `summary.json` containing `mean,mean_mcse,analytic_mean`, `diagnostic.png`, and a hashed `run.json` execution record. These files cover the numerical adapter; the fuller applied report above also requires evidence and business interpretation. `execution_status=passed` means execution succeeded, not that the forecast is accurate.
+It writes `results.csv` and `summary.json` with exactly the columns and keys listed under Applied report contract, `diagnostic.png`, and a hashed `run.json` execution record. To run the lesson itself: `run.py chapters --chapter 7`.
+
+Learning prompt: “Teach me chapter 7 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+
+Applied prompt: “Apply chapter 7 to cost_components.csv, preserve the stated dependence assumptions, calculate budget-exceedance probabilities and distinguish simulation error from model uncertainty.”

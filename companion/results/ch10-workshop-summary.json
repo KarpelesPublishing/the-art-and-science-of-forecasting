@@ -1,4 +1,15 @@
 {
+  "method": "Forecast journal scoring: latest eligible revision per resolved event",
+  "interpretation": "100 resolved events scored, Brier 0.2042 against baseline 0.2500; 20 events excluded as unresolved or without an eligible forecast. Unselected revisions include superseded or ineligible entries, not necessarily errors. Editable timestamps are not authenticated; retain an external append-only history.",
+  "assumptions": [
+    "Revisions were recorded at the timestamps they carry",
+    "One forecast per event counts: the latest revision before the cutoff"
+  ],
+  "not_done": [
+    "No reliability bins (use chapter 9 on the scored rows)",
+    "No authentication of the journal timestamps"
+  ],
+  "status": "passed",
   "brier": 0.20415200561479346,
   "baseline_brier": 0.25,
   "excluded_event_ids": [
@@ -23,6 +34,5 @@
     "synthetic-118",
     "synthetic-119"
   ],
-  "unselected_revision_count": 141,
-  "interpretation": "One latest eligible revision per resolved event. Unselected revisions include superseded or ineligible entries, not necessarily errors. Editable timestamps are not authenticated; retain an external append-only history."
+  "unselected_revision_count": 141
 }

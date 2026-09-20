@@ -26,7 +26,7 @@ timestamp,target,temp
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,target[,regressors...]`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, events, frequency, horizon, mode, origins, priors, regressors, season, seed, weekly, yearly`. Unknown config keys are rejected.
+Exact CLI columns: `timestamp,target[,regressors...]`. Supported method controls: `as_of, events, frequency, horizon, mode, origins, priors, regressors, season, seed, weekly, yearly`.
 
 Prophet with the event calendar as holidays and the declared regressors. `mode: auto` chooses multiplicative seasonality when a Box-Cox check on training data calls for a log scale, else additive. The changepoint prior is chosen from `priors` on `origins` earlier blocks; the calendar and the regressors are each ablated on the same blocks so their contribution is measured, not assumed. The untouched holdout is scored once with MAE and the coverage of the nominal 80 percent band. The forecast table is the future when no regressors are needed or exactly `horizon` future regressor rows were supplied, otherwise the holdout, and the summary says which under `table_scope`.
 
@@ -46,37 +46,29 @@ Model components are fitted explanations, not independently observed causal effe
 
 ## Missing evidence and fallback
 
-Without repeated event history, use a stated event scenario or omit unsupported event estimation. If future regressors are unknown, provide conditional forecasts. If Prophet is unavailable, name the missing dependency and use a labeled baseline. Never invent observations, provenance, executed methods, validation scores or interval coverage. Label controlled examples, real observations, judgment and scenarios distinctly.
+Without repeated event history, use a stated event scenario or omit unsupported event estimation. If future regressors are unknown, provide conditional forecasts. If Prophet is unavailable, name the missing dependency and use a labeled baseline.
 
 ## Applied report contract
 
-`results.csv` columns: `timestamp,lower,forecast,upper`. `summary.json` keys: `mode,mode_note,prior,validation,ablation,test_mae,test_coverage,nominal,table_scope,events,regressors` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`. Quote the ablation: if removing the calendar barely changes validation MAE, the calendar is decoration and the report should say so. Include units, horizon, evidence cutoff, sources, assumptions and limitations. For a live forecast record creation time and outcome/scoring date.
+`results.csv` columns: `timestamp,lower,forecast,upper`. `summary.json` keys: `mode,mode_note,prior,validation,ablation,test_mae,test_coverage,nominal,table_scope,events,regressors` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
-## Learn and apply
+Quote the ablation: if removing the calendar barely changes validation MAE, the calendar is decoration and the report should say so.
 
-Read [workshop.md](references/workshop.md) for worked arithmetic, data replacement guidance, output interpretation and solved exercises. Use [evaluation.md](references/evaluation.md) to assess transfer; its expected answers are not executed agent-test results.
+## Run it
 
-Learning prompt: “Teach me chapter 16 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+The [notebook](../../companion/notebooks/16-prophet.ipynb) is the worked lesson; its editable [source](../../companion/lessons/16-prophet.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
-Applied prompt: “Use chapter 16 to forecast activity.csv with the actual known event calendar, select trend flexibility on earlier origins and explain components and held-out uncertainty.”
-
-The [notebook](../../companion/notebooks/16-prophet.ipynb) is a worked lesson; its editable [source](../../companion/lessons/16-prophet.py) defines what is actually executed. Run the controlled example from the project root after installing the companion environment:
-
-```bash
-companion/.venv/bin/python companion/scripts/run.py chapters --chapter 16
-```
-
-A successful lesson run does not mean all applied steps above were executed on user data. The workshop states the adaptation boundary. Use the [Complete Forecasting Skill](../all-chapters-forecasting/SKILL.md) when the decision genuinely needs multiple chapters.
-
-## Apply the supplied input or your own file
-
-The [controlled fixture](../../companion/data/examples/ch16.csv) and [editable config](../../companion/configs/ch16.json) provide a complete runnable example:
+Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 
 ```bash
 companion/.venv/bin/python companion/scripts/run.py apply --chapter 16 \
   --input companion/data/examples/ch16.csv \
   --config companion/configs/ch16.json \
-  --output companion/applied-runs/ch16-reader-example
+  --output companion/applied-runs/ch16-example
 ```
 
-Use a new empty output directory for each run. Copy and edit the input/config for real observations; replace the fixture’s synthetic source label with actual provenance. The command writes `results.csv` with `timestamp,lower,forecast,upper`, `summary.json` containing `prior,validation_mae,test_mae`, `diagnostic.png`, and a hashed `run.json` execution record. These files cover the numerical adapter; the fuller applied report above also requires evidence and business interpretation. `execution_status=passed` means execution succeeded, not that the forecast is accurate.
+It writes `results.csv` and `summary.json` with exactly the columns and keys listed under Applied report contract, `diagnostic.png`, and a hashed `run.json` execution record. To run the lesson itself: `run.py chapters --chapter 16`.
+
+Learning prompt: “Teach me chapter 16 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+
+Applied prompt: “Use chapter 16 to forecast activity.csv with the actual known event calendar, select trend flexibility on earlier origins and explain components and held-out uncertainty.”

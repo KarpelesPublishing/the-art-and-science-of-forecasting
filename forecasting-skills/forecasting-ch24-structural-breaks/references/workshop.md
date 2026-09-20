@@ -8,13 +8,9 @@ A detector accumulates evidence that the existing model no longer fits. It does 
 
 For k=.5, threshold h=3 and standardized residuals [1,2,2], CUSUM values before reset are [.5,2,3.5]. The third observation triggers an alarm; the next update starts from zero under a resetting policy. Drawing a continuous line from 3.5 without showing the reset can misrepresent the detector.
 
-Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-
 ## Adapt the lesson to reader data
 
 Replace the generated series while preserving the initial training and subsequent monitoring split. Plot alarm markers and reset-aware paths. The original lesson used an illustrative threshold and no alarm-triggered override; the applied interface must explicitly report which calibration and policies it actually runs.
-
-Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 
 For this chapter, settle these questions before fitting: What stable period can calibrate the detector? What false-alarm burden is tolerable? Which errors are available online? What action follows the first alarm? Could the anomaly be bad data?
 
@@ -25,11 +21,9 @@ The original controlled level shift occurs at period 100. Its frozen/rolling/exp
 The current applied adapter adds a separately inspectable numerical result:
 
 - `results.csv`: `timestamp,actual,frozen,rolling,expanding,adaptive,cusum_before_reset,alarm,rolling_mean,rolling_var,mean_shift_sd,variance_ratio,segment_id`.
-- `summary.json`: `changepoints,changepoint_positions,best_split,threshold,alarm_count,alarms,detection,drift,mae,best_policy,calibration_size` plus method, interpretation, assumptions, not_done and status.
+- `summary.json`: `threshold,alarm_count,alarms,changepoints,changepoint_positions,best_split,detection,drift,mae,best_policy,calibration_size` plus method, interpretation, assumptions, not_done and status.
 
 The tool dates mean shifts by binary segmentation with a Gaussian cost and a penalty of three times log(n) times a robust noise variance (about a one percent false split rate on white noise), reports the strongest single split with its Welch t statistic, runs a two-sided CUSUM alarm calibrated by simulation to a five percent false-alarm probability over the monitored span, tracks rolling mean and variance against the calibration window as standardised drift metrics, and scores four adaptation policies after the calibration window: frozen calibration mean, rolling mean over `rolling_window`, expanding mean, and an alarm-adaptive mean that restarts at each alarm. Detection delay is the gap between the first dated changepoint and the first alarm after it. Variance-only changes appear in the drift metrics but are not dated. The tool runs only when asked; the assistant decides, with the reader, whether the method fits before running it.
-
-The [fixture](../../../companion/data/examples/ch24.csv) and [config](../../../companion/configs/ch24.json) match the current interface. Run the `apply` command in the [skill entrypoint](../SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 
 ## Decide what the evidence supports
 
@@ -37,7 +31,7 @@ Repeated alarms after resets are not independent discoveries. An iid-normal cali
 
 Without a plausible stable calibration period, report exploratory alarms with no controlled false-alarm claim. If no response policy was implemented, state that monitoring alone was evaluated. Missing observations require an explicit skip/elapsed-time treatment.
 
-The applied deliverable must make these items inspectable: `results.csv` columns: `timestamp,actual,frozen,rolling,expanding,adaptive,cusum_before_reset,alarm,rolling_mean,rolling_var,mean_shift_sd,variance_ratio,segment_id`; `summary.json` keys: `changepoints,changepoint_positions,best_split,threshold,alarm_count,alarms,detection,drift,mae,best_policy,calibration_size` plus method, interpretation, assumptions, not_done and status. Quote the detection delay with the alarm count; a monitor that fires eleven times after one break has not found eleven breaks, it has kept a stale reference mean.
+The applied deliverable must make these items inspectable: `results.csv` columns: `timestamp,actual,frozen,rolling,expanding,adaptive,cusum_before_reset,alarm,rolling_mean,rolling_var,mean_shift_sd,variance_ratio,segment_id`; `summary.json` keys: `threshold,alarm_count,alarms,changepoints,changepoint_positions,best_split,detection,drift,mae,best_policy,calibration_size` plus method, interpretation, assumptions, not_done and status. Quote the detection delay with the alarm count; a monitor that fires eleven times after one break has not found eleven breaks, it has kept a stale reference mean.
 
 ## Three exercises with worked solutions
 
@@ -65,8 +59,6 @@ Use this request with the skill:
 
 > Apply chapter 24 to monitored_series.csv, predeclare threshold calibration and post-alarm action, and compare false alarms, delay and forecasting costs honestly.
 
-Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-
 ## Observed-data transfer exercise
 
 A bundled [observed series](../../../companion/data/observed/annual-nile.csv) and [matching config](../../../companion/configs/ch24-observed.json) provide a second application after the controlled fixture. Read the [data registry](../../../companion/data/registry.json) for provenance and transformations. These are historical snapshots, not archived real-time release vintages.
@@ -79,3 +71,5 @@ companion/.venv/bin/python companion/scripts/run.py apply --chapter 24 \
 ```
 
 Inspect first and repeated alarms, and distinguish a historical regime-change signal from evidence of its cause. Record the actual result of your run. Do not import the controlled example’s winner or interpret a successful numerical execution as evidence of operational accuracy.
+
+Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../all-chapters-forecasting/references/conventions.md).

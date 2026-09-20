@@ -25,7 +25,7 @@ B,12,18,false
 
 ## Executable interface
 
-Exact CLI columns: `case_id,planned,actual,completed`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, frequency, horizon, season, seed`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `case_id,planned,actual,completed`. Supported method controls: `as_of, frequency, horizon, season, seed`.
 
 Kaplan–Meier estimates the ratio survival curve under independent right-censoring. P50/P80/P90 are the first steps crossing their cumulative probabilities, not interpolated empirical quantiles. Unsupported upper quantiles remain null. Abandonment needs a separate outcome interpretation.
 
@@ -43,37 +43,29 @@ Completion-only data can underestimate durations. Independent censoring is an as
 
 ## Missing evidence and fallback
 
-If no comparable class exists, broaden it transparently and show sensitivity rather than asserting precision. If a survival curve never reaches the requested quantile, report that quantile not estimable. Without censoring metadata, show limitations of completed-case estimates. Never invent observations, provenance, executed methods, validation scores or interval coverage. Label controlled examples, real observations, judgment and scenarios distinctly.
+If no comparable class exists, broaden it transparently and show sensitivity rather than asserting precision. If a survival curve never reaches the requested quantile, report that quantile not estimable. Without censoring metadata, show limitations of completed-case estimates.
 
 ## Applied report contract
 
-Return class definition/inclusions, completion and censoring counts, empirical or survival quantiles, uplift factors, chosen commitment and its decision rationale, plus unidentifiable tail risks. Include units, horizon, evidence cutoff, sources, assumptions and limitations. For a live forecast record creation time and outcome/scoring date.
+`results.csv` columns: `duration_ratio,at_risk,completed,survival`. `summary.json` keys: `quantiles,cases,completed` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
-## Learn and apply
+Return class definition/inclusions, completion and censoring counts, empirical or survival quantiles, uplift factors, chosen commitment and its decision rationale, plus unidentifiable tail risks.
 
-Read [workshop.md](references/workshop.md) for worked arithmetic, data replacement guidance, output interpretation and solved exercises. Use [evaluation.md](references/evaluation.md) to assess transfer; its expected answers are not executed agent-test results.
+## Run it
 
-Learning prompt: “Teach me chapter 25 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+The [notebook](../../companion/notebooks/25-reference-classes.ipynb) is the worked lesson; its editable [source](../../companion/lessons/25-reference-classes.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
-Applied prompt: “Apply chapter 25 to projects.csv, retain censored cases, defend the reference class and translate supported quantiles into a commitment aligned with delay costs.”
-
-The [notebook](../../companion/notebooks/25-reference-classes.ipynb) is a worked lesson; its editable [source](../../companion/lessons/25-reference-classes.py) defines what is actually executed. Run the controlled example from the project root after installing the companion environment:
-
-```bash
-companion/.venv/bin/python companion/scripts/run.py chapters --chapter 25
-```
-
-A successful lesson run does not mean all applied steps above were executed on user data. The workshop states the adaptation boundary. Use the [Complete Forecasting Skill](../all-chapters-forecasting/SKILL.md) when the decision genuinely needs multiple chapters.
-
-## Apply the supplied input or your own file
-
-The [controlled fixture](../../companion/data/examples/ch25.csv) and [editable config](../../companion/configs/ch25.json) provide a complete runnable example:
+Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 
 ```bash
 companion/.venv/bin/python companion/scripts/run.py apply --chapter 25 \
   --input companion/data/examples/ch25.csv \
   --config companion/configs/ch25.json \
-  --output companion/applied-runs/ch25-reader-example
+  --output companion/applied-runs/ch25-example
 ```
 
-Use a new empty output directory for each run. Copy and edit the input/config for real observations; replace the fixture’s synthetic source label with actual provenance. The command writes `results.csv` with `duration_ratio,at_risk,completed,survival`, `summary.json` containing `quantiles`, `diagnostic.png`, and a hashed `run.json` execution record. These files cover the numerical adapter; the fuller applied report above also requires evidence and business interpretation. `execution_status=passed` means execution succeeded, not that the forecast is accurate.
+It writes `results.csv` and `summary.json` with exactly the columns and keys listed under Applied report contract, `diagnostic.png`, and a hashed `run.json` execution record. To run the lesson itself: `run.py chapters --chapter 25`.
+
+Learning prompt: “Teach me chapter 25 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+
+Applied prompt: “Apply chapter 25 to projects.csv, retain censored cases, defend the reference class and translate supported quantiles into a commitment aligned with delay costs.”

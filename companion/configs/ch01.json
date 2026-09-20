@@ -1,8 +1,14 @@
 {
   "source": "Seeded synthetic educational input; not business observations",
-  "units": "illustrative units",
+  "units": "price",
   "horizon": 12,
   "season": 12,
   "seed": 417,
-  "outcome_due": "Declare before issuing a real forecast"
+  "outcome_due": "Declare before issuing a real forecast",
+  "rules": [
+    "persistence",
+    "momentum",
+    "mean_reversion"
+  ],
+  "k": 5
 }

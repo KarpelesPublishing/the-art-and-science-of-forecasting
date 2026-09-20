@@ -1,10 +1,15 @@
-"""Chapter adapters. Chapters 4, 6, 12 and 27 use the real forecasting engine; the others are explicit calculators."""
+"""Chapter adapters: `analyze(chapter, data, config)` validates the config and dispatches to the chapter tool.
+
+Chapters 4, 6, 12 and 27 use the forecasting engine; most other chapters have a tool module
+(`tools_*.py`); the small calculators below serve the remaining chapters. Every path returns
+through `core.finish`, so every summary carries method, interpretation, assumptions, not_done
+and status."""
 import numpy as np
 import pandas as pd
 from scipy import stats
 from scipy.optimize import least_squares
-from .core import require,numeric,probability,integer,time_frame,result
-from .series import compare,kalman,decomposition,monitoring,pretrained,prophet_fit
+from .core import require,numeric,probability,integer,time_frame,finish
+from .series import compare,decomposition
 
 
 def analyze(chapter,d,c):
@@ -19,7 +24,11 @@ def analyze(chapter,d,c):
             for name,g in d.groupby('series_id'):
                 t,s=compare(g,c,chapter);t['series_id']=name;tables.append(t);summaries[str(name)]=s
             readiness='needs_evidence' if any(s.get('status')=='needs_evidence' for s in summaries.values()) else ('provisional' if any(s.get('status')=='provisional' for s in summaries.values()) else 'passed')
-            return pd.concat(tables,ignore_index=True),{'series':summaries,'status':readiness,'interpretation':'Each series has its own chronological comparison; no pooled ranking is imposed. Overall readiness reflects the least-supported series.'}
+            chosen={k:v.get('selected') for k,v in summaries.items()}
+            return finish(pd.concat(tables,ignore_index=True),method='Per-series rolling-origin comparison (no pooling)',
+                          interpretation=f'Each of the {len(summaries)} series has its own chronological comparison; no pooled ranking is imposed. Selected: {chosen}. Overall readiness reflects the least-supported series.',
+                          assumptions=['Series are forecast independently; no shared structure is used'],
+                          not_done=['No global or hierarchical model across series (chapters 13, 14, 18)'],status=readiness,series=summaries)
         return compare(d,c,chapter)
     if chapter==3:return decomposition(d,c)
     if chapter==1:
@@ -61,16 +70,10 @@ def analyze(chapter,d,c):
     if chapter==18 and ('edges' in c or 'timestamp' in d):
         from .tools_hierarchy import reconcile_hierarchy
         return reconcile_hierarchy(d,c)
-    dispatch={1:markets,2:belief,7:simulation,8:delphi,9:scoring,10:journal,11:crowds,17:intervals,18:hierarchy,19:diffusion,20:marketing,21:inventory,22:causal,23:nowcast,25:reference,26:decision,27:directed}
+    dispatch={2:belief,7:simulation,8:delphi,9:scoring,10:journal,11:crowds,17:intervals,18:hierarchy,19:diffusion,25:reference,26:decision,27:directed}
     if chapter not in dispatch:raise ValueError('Unsupported chapter')
     return dispatch[chapter](d,c)
 
-
-def markets(d,c):
-    f,_=time_frame(d,c,columns=('open','high','low','close'),minimum=30)
-    if np.any(f.low>f[['open','close']].min(axis=1)) or np.any(f.high<f[['open','close']].max(axis=1)) or np.any(f.low>f.high):raise ValueError('OHLC bounds are inconsistent')
-    y=f.close.to_numpy();start=max(2,int(len(y)*.7));actual=y[start:];naive=y[start-1:-1];momentum=naive+.5*np.diff(y)[start-2:-1]
-    return result({'timestamp':f.timestamp.iloc[start:],'actual':actual,'naive':naive,'momentum':momentum},mae={'naive':float(abs(actual-naive).mean()),'momentum':float(abs(actual-momentum).mean())},interpretation='Predeclared one-step momentum versus persistence. This is price-error evaluation, not a net-return trading backtest. Corporate actions and market sessions require source checks.')
 
 
 def belief(d,c):
@@ -82,7 +85,12 @@ def belief(d,c):
     for strength in [.25,1,4]:
         alpha=pa*strength+successes;beta=pb*strength+failures
         rows.append(dict(prior_strength=strength,posterior_mean=alpha/(alpha+beta),lower=stats.beta.ppf(.025,alpha,beta),upper=stats.beta.ppf(.975,alpha,beta)))
-    return result(rows,method='Beta-binomial posterior',successes=float(successes),failures=float(failures),posterior_alpha=pa+successes,posterior_beta=pb+failures,interpretation='The middle row uses the declared prior; other rows vary its strength while preserving its mean. Credible intervals assume exchangeable Bernoulli trials and no selection bias.')
+    mid=rows[1]
+    return finish(rows,method='Beta-binomial posterior with prior-strength sensitivity',
+                  interpretation=f'With {int(successes)} successes in {int(successes+failures)} trials and a Beta({pa:g},{pb:g}) prior, the posterior mean is {mid["posterior_mean"]:.3f} (95% credible {mid["lower"]:.3f} to {mid["upper"]:.3f}). The other rows vary the prior strength while keeping its mean; if they disagree materially, the data are not yet decisive.',
+                  assumptions=['Trials are exchangeable Bernoulli draws with one common success probability','The recorded trials are all the trials (no selection of favourable results)','The prior expresses belief before these trials'],
+                  not_done=['No pooling across groups or time (a hierarchical model)','Prior parameters were supplied, not elicited or checked against outside evidence'],
+                  successes=float(successes),failures=float(failures),posterior_alpha=pa+successes,posterior_beta=pb+failures)
 
 
 def simulation(d,c):
@@ -93,7 +101,12 @@ def simulation(d,c):
     if not 0<=rho<1:raise ValueError('Shared-normal correlation must be in [0,1)')
     sigma=np.sqrt(np.log1p((a[:,1]/a[:,0])**2));mu=np.log(a[:,0])-.5*sigma**2
     rng=np.random.default_rng(integer(c,'seed',7,0));z=np.sqrt(rho)*rng.normal(size=(n,1))+np.sqrt(1-rho)*rng.normal(size=(n,k));totals=np.exp(mu+sigma*z).sum(axis=1)
-    return result({'quantile':[.1,.5,.8,.9,.95],'total':np.quantile(totals,[.1,.5,.8,.9,.95])},mean=float(totals.mean()),mean_mcse=float(totals.std(ddof=1)/np.sqrt(n)),analytic_mean=float(a[:,0].sum()),interpretation='Dependence is imposed in latent normal draws; it is not the Pearson correlation of lognormal components. Quantiles describe supplied assumptions, not measured real-world risk.')
+    q=np.quantile(totals,[.1,.5,.8,.9,.95])
+    return finish({'quantile':[.1,.5,.8,.9,.95],'total':q},method='Monte Carlo sum of lognormal components with a shared latent factor',
+                  interpretation=f'{n} draws over {k} components: median total {q[1]:.4g}, 90th percentile {q[3]:.4g}, mean {totals.mean():.4g} against an analytic mean of {a[:,0].sum():.4g} (Monte Carlo error {totals.std(ddof=1)/np.sqrt(n):.3g}). Dependence rho={rho:g} is imposed on latent normal draws, not as the Pearson correlation of the components. The quantiles describe the supplied assumptions, not measured real-world risk.',
+                  assumptions=['Each component is lognormal with the stated mean and standard deviation','Dependence is one shared normal factor with the same weight for every component','Components add; there are no other interactions'],
+                  not_done=['No model uncertainty layer: the distribution shapes are taken as given','No calibration against realized totals'],
+                  mean=float(totals.mean()),mean_mcse=float(totals.std(ddof=1)/np.sqrt(n)),analytic_mean=float(a[:,0].sum()),samples=n,correlation=rho)
 
 
 def delphi(d,c):
@@ -104,7 +117,12 @@ def delphi(d,c):
     for (q,r),g in d.groupby(['question','round']):
         rows.append(dict(question=q,round=r,n=len(g),median=g.estimate.median(),iqr=g.estimate.quantile(.75)-g.estimate.quantile(.25),absolute_error=abs(g.estimate.median()-g.actual.iloc[0])))
     t=pd.DataFrame(rows);fva={str(q):float(g.sort_values('round').absolute_error.iloc[0]-g.sort_values('round').absolute_error.iloc[-1]) for q,g in t.groupby('question')}
-    return t,dict(forecast_value_added=fva,interpretation='Positive FVA means the final median improved on the initial median for this question. Convergence alone is not accuracy; check whether panel membership changed.')
+    improved=sum(v>0 for v in fva.values())
+    return finish(t,method='Delphi round comparison: median, spread and forecast value added',
+                  interpretation=f'Across {len(fva)} questions the final-round median beat the first-round median on {improved}. Positive forecast value added means the panel moved toward the outcome; convergence alone is not accuracy. Check whether panel membership changed between rounds.',
+                  assumptions=['Each question has one resolved outcome','Round numbers are comparable across questions','Estimates in a round were made before that round\'s feedback'],
+                  not_done=['No test of whether shared information drove the convergence','No weighting of experts by past accuracy'],
+                  forecast_value_added=fva,questions=len(fva),rounds=int(d['round'].nunique()))
 
 
 def scoring(d,c):
@@ -116,7 +134,12 @@ def scoring(d,c):
         if mask.any():
             n=mask.sum();rate=y[mask].mean();z=1.96;den=1+z*z/n;center=(rate+z*z/(2*n))/den;half=z*np.sqrt(rate*(1-rate)/n+z*z/(4*n*n))/den
             rows.append(dict(bin_lower=lo,count=n,mean_probability=p[mask].mean(),frequency=rate,frequency_lower=center-half,frequency_upper=center+half))
-    return result(rows,brier=float(np.mean((p-y)**2)),baseline_brier=float(np.mean((b-y)**2)),interpretation='Wilson bin intervals assume independent events. They express finite-sample uncertainty, not a guarantee of calibration; dependent events need grouped evaluation.')
+    brier=float(np.mean((p-y)**2));base=float(np.mean((b-y)**2))
+    return finish(rows,method='Brier score with reliability bins against a predeclared baseline',
+                  interpretation=f'Brier {brier:.4f} against baseline {base:.4f} over {len(y)} events ({"better" if brier<base else "not better"} than the baseline). Reliability bins show the outcome frequency per probability band with Wilson intervals; those intervals assume independent events and express finite-sample uncertainty, not a guarantee of calibration.',
+                  assumptions=['Forecasts were issued before the outcomes were known','Events are independent enough for binomial bin intervals','The baseline was declared before scoring'],
+                  not_done=['No decomposition into reliability, resolution and uncertainty','No comparison across forecasters or event types'],
+                  brier=brier,baseline_brier=base,events=int(len(y)))
 
 
 def journal(d,c):
@@ -127,8 +150,15 @@ def journal(d,c):
     eligible_ids={r['event_id'] for r in rows}
     excluded=[e['event_id'] for e in d['events'] if e['event_id'] not in eligible_ids]
     if not rows:
-        return result({'event_id':excluded,'scoring_status':['unresolved or no eligible forecast']*len(excluded)},status='needs_evidence',excluded_event_ids=excluded,interpretation='No eligible resolved forecasts to score yet. Preserve the journal and revisit at the declared resolution date; missing outcomes are not failures.')
-    return result(rows,brier=float(np.mean([r['brier'] for r in rows])),baseline_brier=float(np.mean([r['baseline_brier'] for r in rows])),excluded_event_ids=excluded,unselected_revision_count=len(d['revisions'])-len(rows),interpretation='One latest eligible revision per resolved event. Unselected revisions include superseded or ineligible entries, not necessarily errors. Editable timestamps are not authenticated; retain an external append-only history.')
+        return finish({'event_id':excluded,'scoring_status':['unresolved or no eligible forecast']*len(excluded)},method='Forecast journal scoring',status='needs_evidence',
+                      interpretation='No eligible resolved forecasts to score yet. Preserve the journal and revisit at the declared resolution date; missing outcomes are not failures.',
+                      assumptions=['Revisions carry honest timestamps'],not_done=['Nothing scored: no event has resolved with an eligible pre-resolution forecast'],excluded_event_ids=excluded)
+    brier=float(np.mean([r['brier'] for r in rows]));base=float(np.mean([r['baseline_brier'] for r in rows]))
+    return finish(rows,method='Forecast journal scoring: latest eligible revision per resolved event',
+                  interpretation=f'{len(rows)} resolved events scored, Brier {brier:.4f} against baseline {base:.4f}; {len(excluded)} events excluded as unresolved or without an eligible forecast. Unselected revisions include superseded or ineligible entries, not necessarily errors. Editable timestamps are not authenticated; retain an external append-only history.',
+                  assumptions=['Revisions were recorded at the timestamps they carry','One forecast per event counts: the latest revision before the cutoff'],
+                  not_done=['No reliability bins (use chapter 9 on the scored rows)','No authentication of the journal timestamps'],
+                  brier=brier,baseline_brier=base,excluded_event_ids=excluded,unselected_revision_count=len(d['revisions'])-len(rows))
 
 
 def crowds(d,c):
@@ -147,7 +177,12 @@ def crowds(d,c):
         pooled=table['mean'].clip(1e-6,1-1e-6);logit=np.log(pooled/(1-pooled));table['extremized']=1/(1+np.exp(-a*logit));names.append('extremized')
         note=f' Logit extremization with a={a:g} pushes the pooled probability toward 0 or 1 on the assumption that experts share information; it is scored here by Brier alongside the plain mean and helps only when the pool was too timid.'
     scores={name:float(abs(table[name]-table.actual).mean()) for name in names}
-    return table,dict(mae=scores,brier={name:float(((table[name]-table.actual)**2).mean()) for name in names} if a is not None else None,extremize_a=a,interpretation='Unweighted rules are evaluated on identical questions. Precision weights require earlier resolved questions, and shared bias can defeat every aggregation rule.'+note)
+    best=min(scores,key=scores.get)
+    return finish(table,method='Crowd aggregation rules (mean, median, trimmed mean'+(', logit extremization' if a is not None else '')+') scored on identical questions',
+                  interpretation=f'Over {len(table)} questions the lowest MAE came from the {best} ({scores[best]:.4g}); all rules: '+', '.join(f'{k} {v:.4g}' for k,v in scores.items())+'. Unweighted rules are evaluated on identical questions. Precision weights require earlier resolved questions, and shared bias can defeat every aggregation rule.'+note,
+                  assumptions=['Each expert answered every question independently of the others','One resolved outcome per question'],
+                  not_done=['No accuracy-weighted combination (needs earlier resolved questions)','No test for shared information among experts'],
+                  mae=scores,brier={name:float(((table[name]-table.actual)**2).mean()) for name in names} if a is not None else None,extremize_a=a)
 
 
 def intervals(d,c):
@@ -178,7 +213,10 @@ def hierarchy(d,c):
         inv=np.linalg.inv(W);G=np.linalg.solve(S.T@inv@S,S.T@inv);table['MinT']=S@G@y;note='MinT uses supplied earlier base-forecast errors with fixed 20% diagonal shrinkage.'
     for name in table.columns[2:]:
         if not np.allclose(table[name],S@table[name].to_numpy()[-m:]):raise AssertionError('Reconciliation lost coherence')
-    return table,dict(interpretation=note+' Coherence does not guarantee improved accuracy or nonnegative forecasts.')
+    return finish(table,method='Reconciliation of supplied base forecasts (bottom-up, OLS'+(', MinT' if 'MinT' in table else '')+')',
+                  interpretation=note+' Coherence does not guarantee improved accuracy or nonnegative forecasts.',
+                  assumptions=['The summing matrix S describes the hierarchy completely','Base forecasts are for the same period and units'],
+                  not_done=['No base forecasts were fitted here: supply node histories in long form with edges for the full tool','No holdout comparison of the reconciliation methods'],status='provisional',nodes=nodes)
 
 
 def diffusion(d,c):
@@ -198,67 +236,14 @@ def diffusion(d,c):
         holdout_rmse=float(np.sqrt(np.mean((bass(a[-2:,0],*early.x,m)-a[-2:,1])**2)))
         p,q=fit.x;fits.append(dict(ceiling=m,p=p,q=q,early_fit_holdout_rmse=holdout_rmse,fit_rmse=float(np.sqrt(np.mean((bass(a[:,0],p,q,m)-a[:,1])**2))),jacobian_condition=float(np.linalg.cond(fit.jac)),peak_time=float(np.log(q/p)/(p+q)) if q>p else 0.))
         for t,v in zip(future,bass(future,p,q,m)):rows.append(dict(time=t,ceiling=m,cumulative_adopters=v,incidence=(p+q*v/m)*(m-v)))
-    return result(rows,fits=fits,interpretation='Alternative ceilings are sensitivity scenarios, not probability bounds. Large Jacobian condition numbers warn of weak local identification. First adoption is not recurring sales.')
+    return finish(rows,method='Bass diffusion fits under declared market ceilings',fits=fits,ceilings=list(ceilings),
+                  interpretation='Alternative ceilings are sensitivity scenarios, not probability bounds. Large Jacobian condition numbers warn of weak local identification. First adoption is not recurring sales.',
+                  assumptions=['Cumulative adopters follow a Bass curve under each declared ceiling','The ceiling is a judgment input, not estimated from these data'],
+                  not_done=['No sales conversion, repeat purchasing or timing comparison (the chapter 19 tool adds them)'])
 
 
-def marketing(d,c):
-    from ..practitioner import adstock
-    f,_=time_frame(d,c,columns=('sales','spend_a','spend_b'),minimum=60);numeric(f,['spend_a','spend_b'],True)
-    h=integer(c,'horizon',12);t=np.arange(len(f));season=integer(c,'season',52)
-    if h>=len(f)//3:raise ValueError('Reserve enough training observations before holdout')
-    transformed=[]
-    for name in ['a','b']:
-        decay=float(c.get('decay_'+name,.5));half=float(c.get('half_'+name,80));initial=float(c.get('initial_'+name,0))
-        if half<=0:raise ValueError('Half saturation must be positive')
-        stock=adstock(f['spend_'+name],decay,initial);transformed.append(stock/(half+stock))
-    X=np.c_[np.ones(len(t)),t/season,np.sin(2*np.pi*t/season),np.cos(2*np.pi*t/season),*transformed]
-    y=f.sales.to_numpy(float);end=len(y)-h;beta=np.linalg.lstsq(X[:end],y[:end],rcond=None)[0];pred=X[end:]@beta
-    sensitivity=[]
-    for stop in [end-h,end]:
-        if stop<12:continue
-        fit=np.linalg.lstsq(X[:stop],y[:stop],rcond=None)[0];sensitivity.append(dict(training_rows=stop,channel_a=float(fit[-2]),channel_b=float(fit[-1])))
-    return result({'timestamp':f.timestamp.iloc[end:],'actual':y[end:],'prediction':pred},coefficients=beta,condition_number=float(np.linalg.cond(X[:end])),refits=sensitivity,test_mae=float(abs(y[end:]-pred).mean()),interpretation='Retrospective prediction conditional on holdout spend, fixed transformations, and supplied pre-window stocks. Verify schedules were known at origin before calling it a forecast. Coefficients do not identify causal ROI; missing confounders and correlated media remain threats.')
 
 
-def inventory(d,c):
-    f,_=time_frame(d,c,minimum=30);numeric(f,['target'],True);y=f.target.to_numpy(float);alpha=.15;size=max(y[0],1);interval=5.;prob=.2;gap=1;rows=[]
-    for t,v in enumerate(y):
-        rows.append(dict(timestamp=f.timestamp.iloc[t],actual=v,Croston=size/interval,SBA=(1-alpha/2)*size/interval,TSB=prob*size))
-        prob=(1-alpha)*prob+alpha*(v>0)
-        if v>0:size=(1-alpha)*size+alpha*v;interval=(1-alpha)*interval+alpha*gap;gap=1
-        else:gap+=1
-    table=pd.DataFrame(rows);start=max(10,len(y)//2);cu=float(c.get('underage_cost',9));co=float(c.get('overage_cost',3))
-    if not np.isfinite([cu,co]).all() or min(cu,co)<=0:raise ValueError('Positive finite underage and overage costs required')
-    q=float(np.quantile(y[:start],cu/(cu+co)));actual=y[start:]
-    return table,dict(mae={k:float(abs(table[k].iloc[start:]-actual).mean()) for k in ['Croston','SBA','TSB']},training_quantile_order=q,test_mean_cost=float(np.mean(cu*np.maximum(actual-q,0)+co*np.maximum(q-actual,0))),interpretation='Demand forecasts are computed before each observation. The empirical one-period newsvendor comparison assumes stationary uncensored demand; it is not a lead-time inventory policy.')
-
-
-def causal(d,c):
-    f,_=time_frame(d,c,columns=('treated','control'),minimum=30)
-    if not c.get('intervention'):raise ValueError('Declare the intervention timestamp before estimation')
-    split=pd.to_datetime(c['intervention'],utc=True);pre=f.timestamp<split
-    if pre.sum()<15 or (~pre).sum()<5:raise ValueError('Need 15 pre and 5 post observations')
-    X=np.c_[np.ones(len(f)),f.control];beta=np.linalg.lstsq(X[pre],f.treated[pre],rcond=None)[0];counter=X@beta;effect=f.treated.to_numpy()-counter
-    did=(f.treated[~pre].mean()-f.treated[pre].mean())-(f.control[~pre].mean()-f.control[pre].mean())
-    return result({'timestamp':f.timestamp,'observed':f.treated,'counterfactual':counter,'effect':effect,'post':~pre},did=float(did),post_mean_effect=float(effect[~pre].mean()),pre_rmse=float(np.sqrt(np.mean(effect[pre]**2))),identification=c.get('identification','Not established from these data alone'),interpretation='Pre-period OLS and DiD are conditional counterfactual calculations, not automatic causal identification. Defend untreated parallel trends, control stability, no spillovers and no concurrent treated-only shocks.')
-
-
-def nowcast(d,c):
-    require(d,['event_date','report_date','count']);numeric(d,['count'],True)
-    if np.any(d['count']!=np.floor(d['count'])):raise ValueError('Case counts must be integers')
-    p=np.asarray(c.get('delay_prob'),float)
-    if p.ndim!=1 or not len(p) or not np.isfinite(p).all() or np.any(p<0) or not np.isclose(p.sum(),1):raise ValueError('Supply a nonnegative delay distribution summing to one')
-    if not c.get('as_of'):raise ValueError('as_of is required')
-    asof=pd.to_datetime(c['as_of'],utc=True);f=d.copy();f['event_date']=pd.to_datetime(f.event_date,utc=True);f['report_date']=pd.to_datetime(f.report_date,utc=True)
-    if (f.report_date<f.event_date).any():raise ValueError('Report date cannot precede event date')
-    f=f[(f.report_date<=asof)&(f.event_date<=asof)]
-    if f.empty:raise ValueError('No reports available at cutoff')
-    rows=[]
-    for day,g in f.groupby('event_date'):
-        age=(asof-day).days;complete=p[:min(len(p),age+1)].sum()
-        if complete<=0:raise ValueError('Zero completeness prevents finite nowcast')
-        rows.append(dict(event_date=day,reported=g['count'].sum(),completeness=complete,nowcast=g['count'].sum()/complete))
-    return result(rows,interpretation='Nowcasts only dates represented by available reports; absent dates are not silently zero-filled. Delay probabilities must come from earlier complete vintages. Changing reporting behavior invalidates a fixed delay law; this is not a future epidemic forecast.')
 
 
 def reference(d,c):
@@ -270,7 +255,12 @@ def reference(d,c):
     table=pd.DataFrame(rows);quantiles={}
     for p in [.5,.8,.9]:
         hits=table[table.survival<=1-p];quantiles[str(p)]=float(hits.duration_ratio.iloc[0]) if len(hits) else None
-    return table,dict(quantiles=quantiles,interpretation='Kaplan–Meier ratios treat incomplete actual durations as right-censored elapsed time. This requires noninformative censoring; abandonment as failure may violate it. Unidentified upper quantiles remain null, never invented.')
+    known={k:v for k,v in quantiles.items() if v is not None}
+    return finish(table,method='Kaplan-Meier distribution of actual/planned ratios in the reference class',
+                  interpretation=f'{len(d)} reference cases, {int(event.sum())} completed. '+(' '.join(f'{float(k):.0%} of cases finished within {v:.2f}x plan;' for k,v in known.items()) if known else 'No quantile is identified yet;')+' unidentified upper quantiles stay null rather than being invented. Kaplan-Meier treats incomplete actual durations as right-censored elapsed time, which requires noninformative censoring; abandonment as failure may violate it.',
+                  assumptions=['The reference class was chosen before looking at the outcome','Censoring is noninformative: unfinished cases are not systematically the worst'],
+                  not_done=['No adjustment for differences between the new case and the class (a regression on case features)','No decision-loss percentile was chosen; the reader picks it'],
+                  quantiles=quantiles,cases=int(len(d)),completed=int(event.sum()))
 
 
 def decision(d,c):
@@ -279,7 +269,11 @@ def decision(d,c):
     fp=float(c.get('false_alarm_cost',2));fn=float(c.get('miss_cost',8))
     if min(fp,fn)<=0 or not np.isfinite([fp,fn]).all():raise ValueError('Positive finite costs required')
     threshold=fp/(fp+fn);action=p>=threshold;loss=fp*(action&(y==0))+fn*(~action&(y==1));baseline=np.minimum(fp*np.sum(y==0),fn*np.sum(y==1))/len(y)
-    return result({'event_id':d.event_id,'probability':p,'outcome':y,'action':action,'loss':loss,'cumulative_loss':np.cumsum(loss)},threshold=threshold,brier=float(np.mean((p-y)**2)),mean_loss=float(loss.mean()),best_constant_policy_hindsight_cost=float(baseline),interpretation='The threshold is Bayes-optimal only for calibrated probabilities and the stated loss structure. The best constant-policy cost shown is a hindsight diagnostic, not a preselected baseline.')
+    return finish({'event_id':d.event_id,'probability':p,'outcome':y,'action':action,'loss':loss,'cumulative_loss':np.cumsum(loss)},method='Cost-weighted decision threshold applied to probability forecasts',
+                  interpretation=f'Acting when probability >= {threshold:.3f} (false alarm {fp:g}, miss {fn:g}) gave mean loss {loss.mean():.4g} per event over {len(y)} events; the best constant policy in hindsight costs {baseline:.4g}. The threshold is Bayes-optimal only for calibrated probabilities and the stated loss structure; the hindsight cost is a diagnostic, not a preselected baseline.',
+                  assumptions=['Probabilities are calibrated','Costs are fixed per event and known in advance'],
+                  not_done=['No recalibration of the probabilities before thresholding','No value-of-information analysis for waiting'],
+                  threshold=threshold,brier=float(np.mean((p-y)**2)),mean_loss=float(loss.mean()),best_constant_policy_hindsight_cost=float(baseline))
 
 
 def directed(d,c):
@@ -288,7 +282,10 @@ def directed(d,c):
     if mode in ('history','estimate'):
         require(d,['timestamp','target'])
         if mode=='estimate' or len(d)<max(36,4*integer(c,'horizon',12)):
-            return result({'available_observations':[len(d)]},status='needs_evidence',interpretation='Sparse history does not establish seasonal structure. Supply defensible reference products, population/reach/trial assumptions and a distinct cross-check; no numeric forecast is manufactured.',required_evidence=['Target and decision','Comparable outcomes','Defended proxy inputs','Uncertainty and scoring plan'])
+            return finish({'available_observations':[len(d)]},method='Chapter 27 routing check',status='needs_evidence',
+                          interpretation=f'{len(d)} observations do not establish seasonal structure (the rolling comparison needs at least {max(36,4*integer(c,"horizon",12))}). Supply defensible reference products, population/reach/trial assumptions and a distinct cross-check; no numeric forecast is manufactured.',
+                          assumptions=[],not_done=['No forecast: history too short or mode=estimate; use launch mode with calibration products or the reconcile-tdbu desk model'],
+                          required_evidence=['Target and decision','Comparable outcomes','Defended proxy inputs','Uncertainty and scoring plan'])
         return compare(d,c,27)
     if mode!='launch':raise ValueError('mode must be launch, history or estimate')
     columns=['eligible_buyers','awareness','availability_given_awareness','interest','units_per_buyer_24m','observed_units_24m'];a=numeric(d,columns,True);require(d,['split'])
@@ -318,4 +315,9 @@ def directed(d,c):
     for peak in [3,4,5]:
         trial=launch_trials(total,peak=peak,horizon=h,denominator='horizon');units=cohort_units(trial,kernel)
         for month in range(h):rows.append(dict(month=month+1,peak=peak,trials=trial[month],units=units[month]))
-    return result(rows,scale=scale,trial_total=total,held_out_mae=float(abs(exposure[test]*scale-a[test,5]).mean()),interpretation='Mature-sales calibration does not identify trial conversion separately from repeat. Transferring the scale is an additional assumption. Modes 3/4/5 are scenarios, not probabilities; the standard allocates 80% of the declared horizon trial total to year one. Repeat rate is units per original trier per subsequent month.')
+    table=pd.DataFrame(rows);year1={int(p):float(g.units[:12].sum()) for p,g in table.groupby('peak')}
+    return finish(table,method='Exposure model calibrated on reference products, trial timing curves (peak month 3, 4, 5) and repeat cohorts',
+                  interpretation=f'Shared scale {scale:.3f} from {int(train.sum())} calibration products (held-out MAE {float(abs(exposure[test]*scale-a[test,5]).mean()):.4g} on {int(test.sum())}); trial total {total:,.0f}. Year-one units: '+', '.join(f'peak {p}: {v:,.0f}' for p,v in year1.items())+'. Mature-sales calibration does not identify trial conversion separately from repeat; transferring the scale is an additional assumption. Peaks 3/4/5 are scenarios, not probabilities; the standard allocates 80% of the declared trial total to year one.',
+                  assumptions=['The exposure-to-units relationship of the reference products transfers to the new product','Trial timing follows the gamma launch curve with the stated peak month','Repeat purchasing follows the supplied kernel (units per original trier per month)'],
+                  not_done=['No independent cross-check from a different mechanism (channel capacity, market share)','No uncertainty band: the three peaks are timing scenarios, not a distribution','Media, distribution and awareness build are inputs here, not modelled (see reconcile-tdbu)'],
+                  scale=scale,trial_total=total,held_out_mae=float(abs(exposure[test]*scale-a[test,5]).mean()),year_one_units=year1)

@@ -8,13 +8,9 @@ Proper scores reward honest probabilities over repeated events. Calibration asks
 
 For p=[.7,.2] and outcomes [1,0], Brier contributions are .09 and .04, averaging .065. A .5 baseline scores .25 on both. On these two events the difference is -.185, but two events cannot certify skill or calibration.
 
-Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-
 ## Adapt the lesson to reader data
 
 Replace generated p/outcomes with recorded eligible forecasts and resolved outcomes. Retain the fixed event set across comparisons. Do not use the observed full-sample event rate as though it were known when historical baseline forecasts were issued.
-
-Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 
 For this chapter, settle these questions before fitting: Which events and forecast lead time are shared? Were forecasts recorded before resolution? What baseline was predeclared? Are outcomes missing or selectively reported?
 
@@ -25,11 +21,9 @@ The lesson’s 6,000 events are synthetic and its one-third baseline is known fr
 The current applied adapter adds a separately inspectable numerical result:
 
 - `results.csv`: `bin_lower,count,mean_probability,frequency,frequency_lower,frequency_upper`.
-- `summary.json`: inspect `brier,baseline_brier`.
+- `summary.json`: `brier,baseline_brier,events` plus method, interpretation, assumptions, not_done and status.
 
 The scoring adapter requires one resolved outcome per event and uses fixed probability bins. Wilson frequency bounds assume independent events. Preserve unresolved/late forecasts outside this scoring input and report their exclusions in the accompanying analysis.
-
-The [fixture](../../../companion/data/examples/ch09.csv) and [config](../../../companion/configs/ch09.json) match the current interface. Run the `apply` command in the [skill entrypoint](../SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 
 ## Decide what the evidence supports
 
@@ -37,7 +31,7 @@ Lower Brier is better on the same event set. Extreme probabilities are not autom
 
 Without timestamps, report score eligibility as unverified. Without baseline records, use a transparently labeled retrospective comparator, not a claimed predeclared baseline. Missing outcomes stay excluded; investigate whether missingness favors successful predictions.
 
-The applied deliverable must make these items inspectable: Return per-event and mean Brier, baseline difference, eligibility/exclusion counts, bin means and counts, and limitations of expert comparison.
+The applied deliverable must make these items inspectable: `results.csv` columns: `bin_lower,count,mean_probability,frequency,frequency_lower,frequency_upper`; `summary.json` keys: `brier,baseline_brier,events` plus method, interpretation, assumptions, not_done and status. Return per-event and mean Brier, baseline difference, eligibility/exclusion counts, bin means and counts, and limitations of expert comparison.
 
 ## Three exercises with worked solutions
 
@@ -65,8 +59,8 @@ Use this request with the skill:
 
 > Use chapter 9 to score probabilities.csv on eligible resolved events, compare the recorded baseline and explain calibration with bin counts rather than unsupported rankings.
 
-Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-
 ## Real-data boundary
 
 The [data registry](../../../companion/data/registry.json) and [data notes](../../../companion/data/README.md) distinguish bundled observations from controlled fixtures. No matching observed-data application is claimed for this chapter. Supply the chapter-specific records and their provenance before treating the exercise as business evidence; an observed outcome table is not automatically a historical forecast journal or identified experiment.
+
+Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../all-chapters-forecasting/references/conventions.md).

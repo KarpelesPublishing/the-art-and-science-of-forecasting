@@ -84,13 +84,15 @@ book-project/
 ```
 
 For local setup and skill discovery, follow [the technical guide](README.md#set-up).
-The supplied installer exposes all 29 skills; that does not mean you must invoke
+The supplied installer links all 29 skills for Codex (`.agents/skills`) and Claude Code
+(`.claude/skills`); that does not mean you must invoke
 all of them. If your AI cannot discover installed skills, explicitly provide the
 relevant `SKILL.md` and its linked resources. An assistant without code execution
 can explain the instructions but cannot truthfully claim to have run the notebooks.
 
-The resource website and QR codes are not yet published. This guide describes
-the local companion package, not an available online service.
+The book website (<https://karpeles.com/publishing/the-art-and-science-of-forecasting>)
+has articles, additional material and the audiobook; this guide describes the local
+companion package, which runs on your machine without any online service.
 
 ## What a full workshop gives you
 
@@ -104,13 +106,11 @@ section and its longer workshop reference, check your input against the schema,
 and run the `apply` command into a new folder. The sample configuration shows the
 supported settings. The resulting summary explains what was calculated and what
 was not established. A provisional forecast or a request for more evidence is a
-valid outcome; a confident invented number is not.
+valid outcome; a confident invented number is not. For a single monthly series the
+series tools want 2 seasons + 4 horizons of history (six years for a 12-month
+horizon, four for six months); with less you get a persistence placeholder that
+says how much more history it needs.
 
 The [coverage matrix](reports/upgrade/coverage.md) lists what each chapter actually
 executes. The [technical guide](README.md#expanded-workshops-learn-then-apply)
 provides a working command and explains the saved results.
-
-## What changed in the expanded companion
-
-All 27 chapters now include guided applied workflows and three worked exercises.
-See the [upgrade report](reports/upgrade/summary.md) for coverage and verification.

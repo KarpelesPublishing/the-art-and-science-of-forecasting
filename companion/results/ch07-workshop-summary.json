@@ -1,6 +1,19 @@
 {
+  "method": "Monte Carlo sum of lognormal components with a shared latent factor",
+  "interpretation": "10000 draws over 3 components: median total 177.2, 90th percentile 219.9, mean 180 against an analytic mean of 180 (Monte Carlo error 0.299). Dependence rho=0 is imposed on latent normal draws, not as the Pearson correlation of the components. The quantiles describe the supplied assumptions, not measured real-world risk.",
+  "assumptions": [
+    "Each component is lognormal with the stated mean and standard deviation",
+    "Dependence is one shared normal factor with the same weight for every component",
+    "Components add; there are no other interactions"
+  ],
+  "not_done": [
+    "No model uncertainty layer: the distribution shapes are taken as given",
+    "No calibration against realized totals"
+  ],
+  "status": "passed",
   "mean": 180.04887870208142,
   "mean_mcse": 0.29927583212743164,
   "analytic_mean": 180.0,
-  "interpretation": "Dependence is imposed in latent normal draws; it is not the Pearson correlation of lognormal components. Quantiles describe supplied assumptions, not measured real-world risk."
+  "samples": 10000,
+  "correlation": 0.0
 }

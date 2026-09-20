@@ -1,5 +1,17 @@
 {
   "method": "Rolling-origin model comparison with final holdout",
+  "interpretation": "ARIMA(auto) had the lowest mean validation MAE (0.939); the runner-up was Seasonal naive (1.1). Final-holdout MAE for the selection: 0.648. Compare against Seasonal naive before trusting the gain.",
+  "assumptions": [
+    "Regular series with the declared season and no missing periods",
+    "The training history's pattern continues over the horizon (no regime change)",
+    "Specifications are frozen on the first training slice, so later actuals cannot steer selection"
+  ],
+  "not_done": [
+    "No regressors, promotions or calendar effects (chapter 13 or 16 add them)",
+    "No hierarchy or coherence constraints (chapter 18)",
+    "Intervals are the selected model's own plus empirical residual quantiles; no distribution-free guarantee (chapter 17)"
+  ],
+  "status": "passed",
   "pool": "arima",
   "selected": "ARIMA(auto)",
   "transform": "log",
@@ -4144,7 +4156,5 @@
     "Seasonal naive"
   ],
   "evaluation": "5 expanding origins spaced 12 steps apart select the model on mean MAE; the final 12 observations are scored once and never used for selection; the selection is refitted on all history.",
-  "intervals": "lower/upper are the ARIMA(auto) model's nominal 80% intervals; their coverage at the 5 selection origins was 65%. empirical_q* columns add signed residual quantiles by horizon step from those origins (5 residuals per step).",
-  "interpretation": "ARIMA(auto) had the lowest mean validation MAE (0.939); the runner-up was Seasonal naive (1.1). Final-holdout MAE for the selection: 0.648. Compare against Seasonal naive before trusting the gain.",
-  "status": "passed"
+  "intervals": "lower/upper are the ARIMA(auto) model's nominal 80% intervals; their coverage at the 5 selection origins was 65%. empirical_q* columns add signed residual quantiles by horizon step from those origins (5 residuals per step)."
 }

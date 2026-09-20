@@ -8,13 +8,9 @@ Monte Carlo pushes assumptions through a calculation by repeated sampling. Direc
 
 If an indicator event occurs in 2,000 of 10,000 independent draws, estimated probability is .2 and approximate Monte Carlo standard error is sqrt(.2×.8/10000)=.004. Four times as many draws reduces that standard error to .002. This is simulation precision, not uncertainty that the assumed risk model is correct.
 
-Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-
 ## Adapt the lesson to reader data
 
 Replace the cost-generation block with named components and a documented joint simulator. Do not pass arithmetic means directly as the mean argument of a lognormal generator. Keep the Metropolis demonstration separate: it targets Beta(9,5), whose analytic mean is 9/14, not a cost model.
-
-Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 
 For this chapter, settle these questions before fitting: What outcome and units matter? Which input distributions are measured or elicited? Which dependencies matter? What precision is needed for the decision?
 
@@ -25,11 +21,9 @@ The cost histogram reflects independent assumed lognormal components. The sample
 The current applied adapter adds a separately inspectable numerical result:
 
 - `results.csv`: `quantile,total`.
-- `summary.json`: inspect `mean,mean_mcse,analytic_mean`.
+- `summary.json`: `mean,mean_mcse,analytic_mean,samples,correlation` plus method, interpretation, assumptions, not_done and status.
 
 Positive arithmetic means and nonnegative SDs define lognormal components. correlation is shared latent-normal correlation in [0,1), not the resulting components’ Pearson correlation. The adapter simulates totals directly; it does not run MCMC or report budget exceedance unless added separately.
-
-The [fixture](../../../companion/data/examples/ch07.csv) and [config](../../../companion/configs/ch07.json) match the current interface. Run the `apply` command in the [skill entrypoint](../SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 
 ## Decide what the evidence supports
 
@@ -37,7 +31,7 @@ More draws reduce Monte Carlo error, not model error. Independent-draw formulas 
 
 With only unweighted scenarios, report scenario outcomes rather than invented percentiles. With unknown dependence, show several defensible dependence scenarios. If serious MCMC diagnostics are absent, report the missing diagnostics and use an analytic/direct sampler when available.
 
-The applied deliverable must make these items inspectable: Return input distributions and provenance, dependence assumptions, seed/draw count, outcome quantiles, exceedance probabilities, Monte Carlo precision and separate model-sensitivity results.
+The applied deliverable must make these items inspectable: `results.csv` columns: `quantile,total`; `summary.json` keys: `mean,mean_mcse,analytic_mean,samples,correlation` plus method, interpretation, assumptions, not_done and status. Return input distributions and provenance, dependence assumptions, seed/draw count, outcome quantiles, exceedance probabilities, Monte Carlo precision and separate model-sensitivity results.
 
 ## Three exercises with worked solutions
 
@@ -65,8 +59,8 @@ Use this request with the skill:
 
 > Apply chapter 7 to cost_components.csv, preserve the stated dependence assumptions, calculate budget-exceedance probabilities and distinguish simulation error from model uncertainty.
 
-Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-
 ## Real-data boundary
 
 The [data registry](../../../companion/data/registry.json) and [data notes](../../../companion/data/README.md) distinguish bundled observations from controlled fixtures. No matching observed-data application is claimed for this chapter. Supply the chapter-specific records and their provenance before treating the exercise as business evidence; an observed outcome table is not automatically a historical forecast journal or identified experiment.
+
+Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../all-chapters-forecasting/references/conventions.md).

@@ -1,7 +1,17 @@
 {
+  "method": "Cost-weighted decision threshold applied to probability forecasts",
+  "interpretation": "Acting when probability >= 0.200 (false alarm 2, miss 8) gave mean loss 0.84 per event over 200 events; the best constant policy in hindsight costs 1.07. The threshold is Bayes-optimal only for calibrated probabilities and the stated loss structure; the hindsight cost is a diagnostic, not a preselected baseline.",
+  "assumptions": [
+    "Probabilities are calibrated",
+    "Costs are fixed per event and known in advance"
+  ],
+  "not_done": [
+    "No recalibration of the probabilities before thresholding",
+    "No value-of-information analysis for waiting"
+  ],
+  "status": "passed",
   "threshold": 0.2,
   "brier": 0.18447641287879485,
   "mean_loss": 0.84,
-  "best_constant_policy_hindsight_cost": 1.07,
-  "interpretation": "The threshold is Bayes-optimal only for calibrated probabilities and the stated loss structure. The best constant-policy cost shown is a hindsight diagnostic, not a preselected baseline."
+  "best_constant_policy_hindsight_cost": 1.07
 }

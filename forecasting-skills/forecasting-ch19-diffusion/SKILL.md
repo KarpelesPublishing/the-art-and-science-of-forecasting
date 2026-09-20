@@ -27,7 +27,7 @@ time,adopters
 
 ## Executable interface
 
-Exact CLI columns: `time,adopters`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, ceilings, fix_q, frequency, future_times, horizon, parfitt_collins, peak, repeat_kernel, sales_horizon, season, seed, time_unit, units_at_trial`. Unknown config keys are rejected.
+Exact CLI columns: `time,adopters`. Supported method controls: `as_of, ceilings, fix_q, frequency, future_times, horizon, parfitt_collins, peak, repeat_kernel, sales_horizon, season, seed, time_unit, units_at_trial`.
 
 The tool fits the Bass model for each declared ceiling (with early-fit holdout, Jacobian condition and peak time), optionally refits with `fix_q` held, then converts adoption into sales over `sales_horizon` periods (24 or more) under two timing curves that share the same trial total: Bass incidence and the author's gamma-shaped launch curve with its `peak` month. Each timing is spread with the repeat kernel into unit sales, and the tool compares peak period, twelve-period units and total units between them. With `parfitt_collins` inputs it reports the steady-state share and a plus or minus 20 percent band on repeat. Price, distribution and advertising are not in the curve; the kernel is assumed, not estimated.
 
@@ -47,37 +47,29 @@ Early adoption often weakly identifies m and can trade off with p,q. An interior
 
 ## Missing evidence and fallback
 
-With no adoption history use defended analogue parameters and explicit scenarios. With only sales units, obtain unique-adopter/cohort information or change the target; do not treat cumulative repeat sales as cumulative adoption. Never invent observations, provenance, executed methods, validation scores or interval coverage. Label controlled examples, real observations, judgment and scenarios distinctly.
+With no adoption history use defended analogue parameters and explicit scenarios. With only sales units, obtain unique-adopter/cohort information or change the target; do not treat cumulative repeat sales as cumulative adoption.
 
 ## Applied report contract
 
-`results.csv` columns: `time,ceiling,bass_trials,gamma_trials,bass_units,gamma_units`. `summary.json` keys: `fits,ceilings,sales_horizon,peak,kernel,timing_comparison,parfitt_collins,bass_table_rows` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`. Show both timing curves; the same eventual total can put half the first year in a different quarter. Include units, horizon, evidence cutoff, sources, assumptions and limitations. For a live forecast record creation time and outcome/scoring date.
+`results.csv` columns: `time,ceiling,bass_trials,gamma_trials,bass_units,gamma_units`. `summary.json` keys: `fits,ceilings,sales_horizon,peak,kernel,timing_comparison,parfitt_collins,bass_table_rows` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
-## Learn and apply
+Show both timing curves; the same eventual total can put half the first year in a different quarter.
 
-Read [workshop.md](references/workshop.md) for worked arithmetic, data replacement guidance, output interpretation and solved exercises. Use [evaluation.md](references/evaluation.md) to assess transfer; its expected answers are not executed agent-test results.
+## Run it
 
-Learning prompt: “Teach me chapter 19 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+The [notebook](../../companion/notebooks/19-diffusion.ipynb) is the worked lesson; its editable [source](../../companion/lessons/19-diffusion.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
-Applied prompt: “Apply chapter 19 to adoption.csv, defend several market ceilings and show which long-run differences are unsupported by the early history.”
-
-The [notebook](../../companion/notebooks/19-diffusion.ipynb) is a worked lesson; its editable [source](../../companion/lessons/19-diffusion.py) defines what is actually executed. Run the controlled example from the project root after installing the companion environment:
-
-```bash
-companion/.venv/bin/python companion/scripts/run.py chapters --chapter 19
-```
-
-A successful lesson run does not mean all applied steps above were executed on user data. The workshop states the adaptation boundary. Use the [Complete Forecasting Skill](../all-chapters-forecasting/SKILL.md) when the decision genuinely needs multiple chapters.
-
-## Apply the supplied input or your own file
-
-The [controlled fixture](../../companion/data/examples/ch19.csv) and [editable config](../../companion/configs/ch19.json) provide a complete runnable example:
+Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 
 ```bash
 companion/.venv/bin/python companion/scripts/run.py apply --chapter 19 \
   --input companion/data/examples/ch19.csv \
   --config companion/configs/ch19.json \
-  --output companion/applied-runs/ch19-reader-example
+  --output companion/applied-runs/ch19-example
 ```
 
-Use a new empty output directory for each run. Copy and edit the input/config for real observations; replace the fixture’s synthetic source label with actual provenance. The command writes `results.csv` with `time,ceiling,cumulative_adopters,incidence`, `summary.json` containing `fits`, `diagnostic.png`, and a hashed `run.json` execution record. These files cover the numerical adapter; the fuller applied report above also requires evidence and business interpretation. `execution_status=passed` means execution succeeded, not that the forecast is accurate.
+It writes `results.csv` and `summary.json` with exactly the columns and keys listed under Applied report contract, `diagnostic.png`, and a hashed `run.json` execution record. To run the lesson itself: `run.py chapters --chapter 19`.
+
+Learning prompt: “Teach me chapter 19 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+
+Applied prompt: “Apply chapter 19 to adoption.csv, defend several market ceilings and show which long-run differences are unsupported by the early history.”

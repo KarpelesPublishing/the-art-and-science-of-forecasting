@@ -27,28 +27,28 @@
       "holdout": false,
       "median_mae": 1.2822887674967447,
       "coverage": 0.4166666666666667,
-      "latency_s": 0.23950945888645947
+      "latency_s": 0.2359904581680894
     },
     {
       "origin": "2007-12-01 00:00:00+00:00",
       "holdout": false,
       "median_mae": 0.631011543273926,
       "coverage": 0.5833333333333334,
-      "latency_s": 0.2333071248140186
+      "latency_s": 0.224511707900092
     },
     {
       "origin": "2008-12-01 00:00:00+00:00",
       "holdout": false,
       "median_mae": 0.6236067008972167,
       "coverage": 0.9166666666666666,
-      "latency_s": 0.2307646251283586
+      "latency_s": 0.22254804195836186
     },
     {
       "origin": "2009-12-01 00:00:00+00:00",
       "holdout": true,
       "median_mae": 1.2765113830566406,
       "coverage": 0.5,
-      "latency_s": 0.2266266669612378
+      "latency_s": 0.22335783392190933
     }
   ],
   "engine_baselines": {
@@ -59,7 +59,7 @@
   },
   "test_mae": 1.2765113830566406,
   "test_coverage": 0.5,
-  "mean_latency_s": 0.23146239197812973,
+  "mean_latency_s": 0.22552563338540493,
   "quantiles": [
     0.1,
     0.5,

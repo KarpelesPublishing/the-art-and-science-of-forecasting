@@ -1,8 +1,8 @@
 {
   "source": "Seeded synthetic educational input; not business observations",
-  "units": "illustrative units",
+  "units": "units sold per day",
   "horizon": 7,
-  "season": 12,
+  "season": 7,
   "seed": 417,
   "outcome_due": "Declare before issuing a real forecast"
 }

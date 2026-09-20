@@ -1,6 +1,6 @@
 {
   "method": "Hierarchical reconciliation (bottom-up, OLS, MinT) over engine base forecasts",
-  "interpretation": "On the final 12-step holdout, OLS had the lowest mean MAE across 3 nodes (1.065 vs base 1.122). MinT used a shrunk covariance from 36 validation errors per node. Coherence holds exactly for every reconciled column; accuracy gains must be judged on the holdout, not assumed.",
+  "interpretation": "On the final 12-step holdout, OLS had the lowest mean MAE across 3 nodes (1.287 vs base 1.287). MinT used a shrunk covariance from 36 validation errors per node. Coherence holds exactly for every reconciled column; accuracy gains must be judged on the holdout, not assumed.",
   "assumptions": [
     "Tree hierarchy with one parent per node",
     "Base forecasts unbiased for MinT to dominate",
@@ -37,14 +37,14 @@
   "selected": {
     "Total": {
       "holdout_model": "ETS(auto)",
-      "production_model": "Theta"
+      "production_model": "ETS(auto)"
     },
     "A": {
-      "holdout_model": "Theta",
-      "production_model": "Theta"
+      "holdout_model": "ETS(auto)",
+      "production_model": "ETS(auto)"
     },
     "B": {
-      "holdout_model": "Theta",
+      "holdout_model": "ETS(auto)",
       "production_model": "ETS(auto)"
     }
   },
@@ -53,46 +53,46 @@
   "holdout": {
     "base": {
       "mae_by_node": {
-        "Total": 1.1392394853293244,
-        "A": 1.2635430116428434,
-        "B": 0.963059097562807
+        "Total": 1.5636392655916846,
+        "A": 1.7530038507203962,
+        "B": 0.545083919985141
       },
-      "mean_mae": 1.121947198178325,
+      "mean_mae": 1.2872423454324073,
       "nodes_improved_vs_base": 0
     },
     "bottom_up": {
       "mae_by_node": {
-        "Total": 1.1285853094618024,
-        "A": 1.2635430116428434,
-        "B": 0.963059097562807
+        "Total": 1.563930873898445,
+        "A": 1.7530038507203962,
+        "B": 0.545083919985141
       },
-      "mean_mae": 1.1183958062224841,
-      "nodes_improved_vs_base": 1
+      "mean_mae": 1.2873395482013275,
+      "nodes_improved_vs_base": 0
     },
     "OLS": {
       "mae_by_node": {
-        "Total": 1.0555136504924956,
-        "A": 1.3270794068658442,
-        "B": 0.8113371626533734
+        "Total": 1.5637364683605999,
+        "A": 1.7529502711497706,
+        "B": 0.5449380464877583
       },
-      "mean_mae": 1.064643406670571,
+      "mean_mae": 1.2872082619993763,
       "nodes_improved_vs_base": 2
     },
     "MinT": {
       "mae_by_node": {
-        "Total": 1.051422745500524,
-        "A": 1.3616912097037837,
-        "B": 0.8915884993458695
+        "Total": 1.5637876609161754,
+        "A": 1.7529405567084524,
+        "B": 0.5450413199731633
       },
-      "mean_mae": 1.1015674848500592,
+      "mean_mae": 1.2872565125325972,
       "nodes_improved_vs_base": 2
     }
   },
   "leaderboard": [
     "OLS",
+    "base",
     "MinT",
-    "bottom_up",
-    "base"
+    "bottom_up"
   ],
   "coherence_max_abs_residual": 2.842170943040401e-14,
   "pool": "smoothing",

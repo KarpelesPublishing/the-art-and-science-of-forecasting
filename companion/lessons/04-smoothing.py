@@ -10,6 +10,7 @@ import sys
 project = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists())
 sys.path.insert(0, str(project/'companion/src'))
 from forecasting_companion.common import *
+import pandas as pd
 from statsmodels.tsa.holtwinters import SimpleExpSmoothing, Holt, ExponentialSmoothing
 from statsmodels.tsa.forecasting.theta import ThetaModel
 rng = begin(4)
@@ -49,7 +50,7 @@ forecasts = {'Seasonal naive':np.tile(train[-12:],2),
     'Holt-Winters':ExponentialSmoothing(train,trend='add',seasonal='add',seasonal_periods=12).fit().forecast(24),
     'Theta':ThetaModel(train,period=12).fit().forecast(24)}
 errors = {k:mae(test,v) for k,v in forecasts.items()}
-print(errors)
+print(pd.Series(errors,name='holdout MAE (24 months)').round(2).to_string())
 assert all(np.isfinite(list(errors.values())))
 plt.figure(); plt.barh(list(errors),list(errors.values())); plt.xlabel('Holdout MAE (units)')
 save(4,3,'Seasonality earns its place on the holdout','Synthetic monthly demand; errors are computed on 24 unseen months. Seasonal-naive is the reference.','## The Methods')
@@ -63,9 +64,19 @@ save(4,3,'Seasonality earns its place on the holdout','Synthetic monthly demand;
 # %% [markdown]
 # <!-- APPLIED-WORKSHOP-START -->
 # ## Guided application workshop
-# The sections below connect the controlled figures to a complete applied input/output workflow.
+# The sections below come from the chapter skill: the mechanism, the arithmetic, how to adapt the lesson to your data, exercises with worked solutions, and the exact contract of the applied tool.
 # %% [markdown]
-# # Chapter 4 workshop: from lesson to decision
+# ## Input contract and format example
+# CSV: timestamp (unique ISO period), target (finite number in consistent units). Config: frequency, horizon, season, as_of, units and source. At least two complete seasonal cycles are needed even to attempt seasonal estimation; reserve further data for evaluation. The rolling comparison needs 2 seasons + 4 horizons of history (72 monthly points for a 12-month horizon, 48 for six months, 36 for three); with less, the tool returns a provisional persistence baseline and says how many points are missing. Zero sales are observations; absent months are missing.
+#
+# Minimal **format illustration**, not sufficient training data:
+#
+# ```csv
+# timestamp,target
+# 2024-01-01,100
+# 2024-02-01,110
+# 2024-03-01,105
+# ```
 #
 # ## Explain the mechanism
 #
@@ -75,13 +86,9 @@ save(4,3,'Seasonality earns its place on the holdout','Synthetic monthly demand;
 #
 # With previous level 100, observation 120 and alpha=.25, the updated level is .25×120+.75×100=105. That is the next one-step SES forecast, not the forecast that existed before observing 120. With Holt level 105 and slope 4, a three-step forecast is 117. With damping phi=.8 it is 105+4(.8+.64+.512)=112.808.
 #
-# Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-#
 # ## Adapt the lesson to reader data
 #
 # Replace the lesson’s generated y in the level experiment or final seasonal experiment with one regularly indexed observed timestamp,target series, keeping the experiments separate. The small CSV above illustrates syntax only: it is not enough to fit annual seasonality. Set period=12 for monthly annual seasonality only when the calendar and history justify it. The applied adapter now performs the common expanding-origin comparison. Inspect summary.json validation rows and test_mae separately; no additional loop is needed for that supplied comparison.
-#
-# Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 #
 # For this chapter, settle these questions before fitting: What is the observation frequency and decision horizon? Is demand censored by stockouts? Which seasonal period is plausible? Is the business changing enough that old cycles are misleading?
 #
@@ -91,12 +98,10 @@ save(4,3,'Seasonality earns its place on the holdout','Synthetic monthly demand;
 #
 # The current applied adapter adds a separately inspectable numerical result:
 #
-# - `results.csv`: `timestamp,forecast,model`.
-# - `summary.json`: inspect `selected,validation,validation_predictions,test_mae,intervals`.
+# - `results.csv`: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90,lower,upper,interval_level`.
+# - `summary.json`: `pool,selected,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus method, interpretation, assumptions, not_done and status.
 #
 # The adapter runs the companion engine with the `smoothing` pool: naive, seasonal naive, drift, SES, Holt, damped Holt, an AICc-selected ETS form (additive or multiplicative error and seasonality, damped or not), Theta and STL+ETS. A log transform is chosen on training data when positive values and a Box-Cox lambda near zero call for it (`transform: auto|none|log`). Up to five expanding origins (`origins`) select the model on MAE; a final untouched holdout scores it once; the selection is refitted on all history. Output carries the model's nominal 80% interval with its measured validation coverage, plus empirical residual quantiles by horizon step. Optional `pool` overrides the method set. A short but valid regular series returns status=provisional with naive and, when available, seasonal-naive scenario values rather than pretending a model was validated.
-#
-# The [fixture](../data/examples/ch04.csv) and [config](../configs/ch04.json) match the current interface. Run the `apply` command in the [skill entrypoint](../../forecasting-skills/forecasting-ch04-smoothing/SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 #
 # ## Decide what the evidence supports
 #
@@ -104,7 +109,7 @@ save(4,3,'Seasonality earns its place on the holdout','Synthetic monthly demand;
 #
 # With one seasonal cycle, use naive or a defensible seasonal-naive comparison and mark seasonality estimation unsupported. For gaps, report the cause and perform training-only imputation or shorten the usable series; do not turn unknown sales into zeros. Without evaluation history, supply an explicitly provisional forecast and scenarios.
 #
-# The applied deliverable must make these items inspectable: Forecast table: timestamp,forecast,model,lower,upper,interval_level,empirical_q10,empirical_q50,empirical_q90. Report the measured coverage of lower/upper at the selection origins beside the nominal level; never quote the nominal level alone. Also return a per-origin MAE table, skipped-method reasons, seasonal assumptions and whether uncertainty was calibrated or only scenarized.
+# The applied deliverable must make these items inspectable: `results.csv` columns: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90,lower,upper,interval_level`; `summary.json` keys: `pool,selected,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus method, interpretation, assumptions, not_done and status. Report the measured coverage of lower/upper at the selection origins beside the nominal level; never quote the nominal level alone. Also return a per-origin MAE table, skipped-method reasons, seasonal assumptions and whether uncertainty was calibrated or only scenarized.
 #
 # ## Three exercises with worked solutions
 #
@@ -132,8 +137,6 @@ save(4,3,'Seasonality earns its place on the holdout','Synthetic monthly demand;
 #
 # > Apply chapter 4 to monthly demand.csv for the next six months. Audit gaps and stockouts, compare supported smoothing methods at earlier six-month origins, retain a final holdout, and return the forecast plus a defensible uncertainty statement.
 #
-# Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-#
 # ## Observed-data transfer exercise
 #
 # A bundled [observed series](../data/observed/monthly-temperature.csv) and [matching config](../configs/ch04-observed.json) provide a second application after the controlled fixture. Read the [data registry](../data/registry.json) for provenance and transformations. These are historical snapshots, not archived real-time release vintages.
@@ -146,62 +149,51 @@ save(4,3,'Seasonality earns its place on the holdout','Synthetic monthly demand;
 # ```
 #
 # Compare the two validation origins with final-test MAE. Does the selected smoothing method still beat seasonal-naive on the last twelve months? Record the actual result of your run. Do not import the controlled example’s winner or interpret a successful numerical execution as evidence of operational accuracy.
+#
+# Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).
 # %% [markdown]
-# ## Configure and run the applied case
+# ## Apply this chapter to your own data
 #
-# The input file and JSON below are the only entry-point changes needed to try another
-# case with the same schema. Keep the original examples for comparison. Supply source
-# and units in the configuration; resolve missing periods rather than silently filling
-# unknown observations with zeros. These calculations call the same tested functions
-# as the `run.py apply` command. A failed validation is a reason to inspect the data,
-# not to replace it with invented observations.
-#
-# The default input here is a **seeded synthetic schema example**, separate from any
-# observed-data application below. Read the summary before interpreting its results.
+# The two paths below are the only things to change: point `INPUT_PATH` at a file with the
+# columns in the input contract above and `CONFIG_PATH` at a copy of the shipped configuration
+# with your `source` and `units`. The call is the same tested function behind `run.py apply`.
+# The printed digest shows what ran, its status, the interpretation, the assumptions and the
+# `not_done` list; the full summary is saved beside the table. A validation error is a reason to
+# inspect the data, not to fill gaps with invented observations. Shared rules for provenance,
+# output folders and reading `status` are in the Complete Forecasting Skill's conventions reference.
 # %%
 from forecasting_companion.applied.methods import analyze as analyze_chapter
-from forecasting_companion.applied.core import clean_json
+from forecasting_companion.applied.core import clean_json, summarize, preview
 import pandas as pd
 import json, os
-INPUT_PATH = project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists()) / 'companion/data/examples/ch04.csv'
-CONFIG_PATH = project_path.parents[2] / 'configs/ch04.json'
-# Input paths are explicit and may be replaced with reader-supplied files.
+project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists())
+INPUT_PATH = project_path / 'companion/data/examples/ch04.csv'      # replace with your file
+CONFIG_PATH = project_path / 'companion/configs/ch04.json'            # replace with your configuration
 workshop_config = json.loads(CONFIG_PATH.read_text())
 workshop_input = pd.read_csv(INPUT_PATH)
 workshop_table, workshop_summary = analyze_chapter(4, workshop_input, workshop_config)
-print(json.dumps(clean_json(workshop_summary), indent=2))
-print(workshop_table.head(12).to_string(index=False))
-workshop_output = Path(os.environ.get('FORECAST_OUTPUT', CONFIG_PATH.parents[1])) / 'results'
+print(summarize(workshop_summary, workshop_table))
+print()
+print(preview(workshop_table))
+workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'companion')) / 'results'
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch04-workshop-results.csv', index=False)
-(workshop_output/'ch04-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
+_ = (workshop_output/'ch04-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
 # %% [markdown]
-# ## Apply the same workflow to observed data
+# ## The same workflow on observed data
 #
-# This second case uses a bundled public-domain historical dataset documented in
-# `data/registry.json`. It is a revised snapshot, not an archived real-time vintage.
-# The earlier time cuts prevent fitting on held-out outcomes; they do not undo
-# revisions that may have occurred before the snapshot was published. Compare the
-# actual output below with the controlled case. A method need not win to be useful.
-# The source, transformation and units are in the configuration and registry.
+# A second run on a bundled public-domain series documented in `data/registry.json` (a revised
+# historical snapshot, not an archived real-time vintage). The earlier time cuts prevent fitting
+# on held-out outcomes; they do not undo revisions made before the snapshot was published.
+# Compare this digest with the controlled case above: a method need not win to be useful, and
+# the winner on synthetic data has no claim on observed data.
 # %%
-observed_input = pd.read_csv(CONFIG_PATH.parents[1]/'data/observed/monthly-temperature.csv')
-observed_config = json.loads((CONFIG_PATH.parent/'ch04-observed.json').read_text())
+observed_input = pd.read_csv(project_path/'companion/data/observed/monthly-temperature.csv')
+observed_config = json.loads((project_path/'companion/configs/ch04-observed.json').read_text())
 observed_table, observed_summary = analyze_chapter(4, observed_input, observed_config)
 print('Observed-data source:', observed_config['source'])
-print(json.dumps(clean_json(observed_summary), indent=2))
-print(observed_table.head(12).to_string(index=False))
+print(summarize(observed_summary, observed_table))
+print()
+print(preview(observed_table))
 observed_table.to_csv(workshop_output/'ch04-observed-results.csv', index=False)
-(workshop_output/'ch04-observed-summary.json').write_text(json.dumps(clean_json(observed_summary), indent=2)+'\n')
-# %% [markdown]
-# ## Read the result as a decision record
-#
-# Start with the summary’s **interpretation**, then examine its numerical evidence.
-# Distinguish what was fitted, what was supplied, and what remains unidentified.
-# The results table is the calculation; it is not permission to act. Explain which
-# assumption would most change the answer and what new evidence would test it.
-# For a live forecast, set an outcome date and keep the original result for scoring.
-#
-# The exercises and worked solutions above test interpretation, calculation, and
-# adaptation. Re-run a changed assumption and compare the actual output; do not
-# reuse numbers from the book when your input or horizon changes.
+_ = (workshop_output/'ch04-observed-summary.json').write_text(json.dumps(clean_json(observed_summary), indent=2)+'\n')

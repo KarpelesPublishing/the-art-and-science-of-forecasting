@@ -13,7 +13,7 @@ specific lesson. The [technical guide](../companion/README.md) covers setup. The
 skill that is not a chapter is [reconcile-tdbu](reconcile-tdbu/SKILL.md), the desk
 model from chapters 20 and 27 for a launch with no sales history.
 
-## Revised practitioner workflows
+## Practitioner workflows
 
 - Chapters 20 and 27: calibrate across established products, test shared assumptions,
   account for research age, then adapt interest, awareness and distribution for a
@@ -51,5 +51,5 @@ skill discovery. Start an applied request with:
 Use $all-chapters-forecasting to frame my question, select supported methods, and report assumptions, validation and uncertainty.
 ```
 
-The revised manuscript and notebooks are local review artifacts. Nothing in these
-skills authorizes publication, cloud spending or changes to business budgets.
+Nothing in these skills authorizes publication, cloud spending or changes to business
+budgets; they describe methods and tell an assistant how to run the companion's tools.

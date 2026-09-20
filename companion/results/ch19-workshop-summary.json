@@ -1,6 +1,6 @@
 {
   "method": "Bass diffusion with sales conversion under two timing curves",
-  "interpretation": "Alternative ceilings are sensitivity scenarios, not probability bounds. Large Jacobian condition numbers warn of weak local identification. First adoption is not recurring sales. Sales layer: over 24 months the same trial total (63911 at ceiling 150000) peaks in period 1 under Bass timing and period 5 under the 4-peak launch curve; 12-period units 57771 vs 51129. Timing assumptions change the year-one number even when the eventual total is identical.",
+  "interpretation": "Alternative ceilings are sensitivity scenarios, not probability bounds. Large Jacobian condition numbers warn of weak local identification. First adoption is not recurring sales. Sales layer: over 24 months the same trial total (63911 at ceiling 150000) peaks in period 1 under Bass timing and period 5 under the 4-peak launch curve; 12-period units 138093 vs 112589. Timing assumptions change the year-one number even when the eventual total is identical. Parfitt-Collins steady-state share 8.3% (band 6.7% to 10.0%).",
   "assumptions": [
     "Cumulative adopters follow a Bass curve for each declared ceiling",
     "Each trier buys units_at_trial at first purchase and the repeat kernel afterwards",
@@ -9,37 +9,36 @@
   ],
   "not_done": [
     "No price, distribution or advertising drivers in the adoption curve",
-    "Repeat kernel is assumed, not estimated from panel data",
-    "Parfitt-Collins share needs T, R (and B) inputs"
+    "Repeat kernel is assumed, not estimated from panel data"
   ],
   "status": "passed",
   "fits": [
     {
       "ceiling": 110000,
-      "p": 0.0265896850641851,
-      "q": 0.29514136250103656,
-      "early_fit_holdout_rmse": 2463.7313933514806,
-      "fit_rmse": 794.8254252112438,
-      "jacobian_condition": 25.203866250815935,
-      "peak_time": 7.4811899369258805
+      "p": 0.026590299553362617,
+      "q": 0.2951367308716605,
+      "early_fit_holdout_rmse": 2463.4065974190785,
+      "fit_rmse": 794.7447531161841,
+      "jacobian_condition": 25.20341543413805,
+      "peak_time": 7.48116274044082
     },
     {
       "ceiling": 150000,
-      "p": 0.025670973482432916,
-      "q": 0.19147195763238598,
-      "early_fit_holdout_rmse": 7758.570151951977,
-      "fit_rmse": 2129.192220046164,
-      "jacobian_condition": 27.8884607864332,
-      "peak_time": 9.25372258316596
+      "p": 0.02567137998464603,
+      "q": 0.19146876349626984,
+      "early_fit_holdout_rmse": 7758.089661603802,
+      "fit_rmse": 2129.0901547590956,
+      "jacobian_condition": 27.888151284018118,
+      "peak_time": 9.253691630256343
     },
     {
       "ceiling": 200000,
-      "p": 0.02147205231628861,
-      "q": 0.14496466649899784,
-      "early_fit_holdout_rmse": 10464.104726794052,
-      "fit_rmse": 2641.2860667431896,
-      "jacobian_condition": 34.51206856782694,
-      "peak_time": 11.474257902506395
+      "p": 0.021472335377726217,
+      "q": 0.14496201391678007,
+      "early_fit_holdout_rmse": 10463.529253608916,
+      "fit_rmse": 2641.175731031384,
+      "jacobian_condition": 34.51174798253482,
+      "peak_time": 11.474232111545541
     }
   ],
   "ceilings": [
@@ -50,40 +49,56 @@
   "sales_horizon": 24,
   "peak": 4,
   "kernel": [
-    1.0
+    1.0,
+    0.35,
+    0.3,
+    0.25,
+    0.2,
+    0.15,
+    0.12,
+    0.1,
+    0.08,
+    0.06,
+    0.05,
+    0.04,
+    0.03
   ],
   "timing_comparison": [
     {
       "ceiling": 110000,
-      "trial_total": 24408.285226121137,
+      "trial_total": 24408.5823857301,
       "bass_peak_period": 1,
       "gamma_peak_period": 5,
-      "bass_units_12": 23833.730163645698,
-      "gamma_units_12": 19526.628180896903,
-      "bass_units_total": 24408.285226121137,
-      "gamma_units_total": 24408.285226121137
+      "bass_units_12": 59972.079033926995,
+      "gamma_units_12": 42999.13586266138,
+      "bass_units_total": 66518.74434334764,
+      "gamma_units_total": 65018.66950557998
     },
     {
       "ceiling": 150000,
-      "trial_total": 63911.19615976057,
+      "trial_total": 63911.45825281221,
       "bass_peak_period": 1,
       "gamma_peak_period": 5,
-      "bass_units_12": 57771.30092617472,
-      "gamma_units_12": 51128.956927808445,
-      "bass_units_total": 63911.19615976057,
-      "gamma_units_total": 63911.19615976057
+      "bass_units_12": 138093.46078499127,
+      "gamma_units_12": 112588.98338152225,
+      "bass_units_total": 172664.52418088893,
+      "gamma_units_total": 170244.95384822707
     },
     {
       "ceiling": 200000,
-      "trial_total": 110610.33531819015,
+      "trial_total": 110610.41667225157,
       "bass_peak_period": 1,
       "gamma_peak_period": 5,
-      "bass_units_12": 89026.93416456941,
-      "gamma_units_12": 88488.2682545521,
-      "bass_units_total": 110610.33531819015,
-      "gamma_units_total": 110610.33531819015
+      "bass_units_12": 203838.39707747457,
+      "gamma_units_12": 194855.73800042976,
+      "bass_units_total": 294073.0499895257,
+      "gamma_units_total": 294639.8939453403
     }
   ],
-  "parfitt_collins": null,
+  "parfitt_collins": {
+    "share": 0.08316000000000001,
+    "low": 0.066528,
+    "high": 0.099792
+  },
   "bass_table_rows": 36
 }

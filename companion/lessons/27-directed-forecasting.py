@@ -37,14 +37,15 @@ references=pd.DataFrame({
     'split':['calibration']*24+['validation']*6})
 columns=['eligible_buyers','awareness','availability_given_awareness','interest','units_per_buyer_24m']
 raw=references[columns].prod(axis=1).to_numpy()
-references['observed_units_24m']=raw*.85*rng.lognormal(-.5*.06**2,.06,30)
+references['observed_units_24m']=raw*.85*rng.lognormal(-.5*.06**2,.06,30)   # synthetic truth: the generator plants a 0.85 scale plus 6% noise
 scale=calibrate_scale(raw[:24],references.observed_units_24m[:24])
 references['modeled_units_24m']=raw*scale
 references['relative_error']=references.modeled_units_24m/references.observed_units_24m-1
 references.to_csv(folder/'ch27-reference-products.csv',index=False)
 print(references[['product','split','observed_units_24m','modeled_units_24m']].tail(6).round(1).to_string(index=False))
-print({'shared_scale':scale,'held_out_MAE':mae(references.observed_units_24m[24:],raw[24:]*scale),
-       'held_out_MAPE':float(abs(references.relative_error[24:]).mean())})
+print(f'shared scale {scale:.3f} (the generator used 0.85); held-out MAE {mae(references.observed_units_24m[24:],raw[24:]*scale):,.0f} units; held-out MAPE {abs(references.relative_error[24:]).mean():.1%}')
+# The recovered scale is close to the planted 0.85 because this table is synthetic: the
+# check shows the calibration mechanics, not that a real market obeys one shared scale.
 plt.figure()
 for mask,label,marker in [(references.split=='calibration','Calibration','o'),(references.split=='validation','Held out','s')]:
     plt.scatter(references.observed_units_24m[mask]/1000,references.modeled_units_24m[mask]/1000,label=label,marker=marker,s=15)
@@ -58,9 +59,9 @@ save(27,1,'Can one calibration explain several products?','Thirty synthetic matu
 # not multiply interest. Equal age here means equal weights would not alter the fit.
 # %%
 print('18-month-old evidence: optional relevance weights',{
-    months:evidence_weight('2025-03-18','2026-09-18',months) for months in [12,24,48]})
+    months:round(float(evidence_weight('2025-03-18','2026-09-18',months)),3) for months in [12,24,48]})
 loo=[calibrate_scale(np.delete(raw[:24],i),np.delete(references.observed_units_24m[:24].to_numpy(),i)) for i in range(24)]
-print('Leave-one-product-out scale range:',min(loo),max(loo))
+print(f'Leave-one-product-out scale range: {min(loo):.3f} to {max(loo):.3f}')
 # %% [markdown]
 # ## Adapt the calibrated relationship; define the volume before phasing
 # New-product reach and interest are scenarios. Transferring the shared scale to
@@ -70,10 +71,13 @@ print('Leave-one-product-out scale range:',min(loo),max(loo))
 # %%
 new=dict(eligible_buyers=120000,awareness=.65,availability_given_awareness=.70,interest=.28)
 trial_total=float(np.prod(list(new.values()))*scale)
+print(f'new product: {new}')
+print(f'trial total over the horizon: {trial_total:,.0f} triers (reach product {np.prod(list(new.values())):,.0f} times shared scale {scale:.3f})')
 # %% [markdown]
 # ## Gamma timing represents awareness/distribution development ONCE
-# The author confirmed that the standard model allocates all trials over 24 months.
-# 'horizon' is that convention; 'eventual' remains an optional nonstandard comparison.
+# The standard in this book allocates all trials over the 24-month horizon; that is
+# the 'horizon' denominator. 'eventual' is an optional comparison in which some
+# trials fall after month 24.
 # Standard shape solves mode=4 and F(12)/F(24)=.8, or F(12)=.8 for eventual trials.
 # Faster/slower cases retain shape and change scale: an implementation convention.
 # This is the combined awareness/distribution timing, NOT an additional delay.
@@ -98,8 +102,8 @@ for p,c in curves.items():
 plt.xlabel('Elapsed months after launch'); plt.ylabel('Trial rate (triers per month)'); plt.legend(fontsize=6)
 save(27,2,'Build-up changes first-year trial volume',f'Continuous gamma trial rates peak exactly at months 3, 4 and 5. Standard has 80% of the explicit {DENOMINATOR} trial total in year one. Areas under the curves give trial counts; the notebook also calculates monthly totals. Awareness/distribution development is represented once.','## Section Four: The Build-Up Problem')
 eventual=launch_trials(trial_total,peak=4,horizon=24,denominator='eventual')
-print('Year-one shares of specified total:',shares)
-print('Alternative eventual denominator:',{'year1':eventual[:12].sum(),'year2':eventual[12:].sum(),'after_month24':trial_total-eventual.sum()})
+print('Year-one share of the trial total by peak month:',{p:round(v,3) for p,v in shares.items()})
+print('Alternative eventual denominator (peak 4):',{'year1':round(float(eventual[:12].sum())),'year2':round(float(eventual[12:].sum())),'after_month24':round(float(trial_total-eventual.sum()))})
 # %% [markdown]
 # ## Alternative: explicit progress curves, with no extra gamma multiplier
 # Factor the SAME joint progress into awareness and conditional availability.
@@ -112,6 +116,7 @@ if DENOMINATOR=='horizon': joint/=joint[-1]
 awareness_progress=np.sqrt(joint); distribution_progress=np.sqrt(joint)
 explicit=trials_from_reach(trial_total,awareness_progress,distribution_progress)
 assert np.allclose(explicit,curves[4])
+print(f'Explicit awareness and distribution progress curves reproduce the peak-4 trial curve: largest monthly difference {abs(explicit-curves[4]).max():.2e} triers')
 # %% [markdown]
 # ## Trial is not total sales: add repeat cohorts
 # One unit at trial, then .15 expected units per original trier per month: these are
@@ -127,11 +132,11 @@ save(27,3,'Repeat purchasing changes the volume trajectory',f'Synthetic trial co
 monthly=pd.DataFrame({'month':np.arange(1,25),**{f'trials_peak_{p}':c for p,c in curves.items()},**{f'units_peak_{p}':v for p,v in volume.items()}})
 monthly.to_csv(folder/'ch27-launch-scenarios.csv',index=False)
 record=dict(forecast_date='2026-09-18',outcome_due='2028-09-18',horizon_months=24,
-    denominator=DENOMINATOR,denominator_status='author-confirmed standard: horizon; eventual is a nonstandard sensitivity option',
+    denominator=DENOMINATOR,denominator_status='book standard: horizon; eventual is a sensitivity option',
     input_source='synthetic educational inputs',inputs=new,shared_scale=scale,
     trial_total=trial_total,year1_trial_share=shares,repeat_kernel=kernel.tolist(),
     outcome=None,status='illustrative_forecast_unresolved')
-(folder/'ch27-input-and-scoring-record.json').write_text(json.dumps(record,indent=2)+'\n')
+_ = (folder/'ch27-input-and-scoring-record.json').write_text(json.dumps(record,indent=2)+'\n')
 # %% [markdown]
 # ## The band and its hinge
 # Step five of the worked example: move one input at a time through the desk model
@@ -158,13 +163,13 @@ levers=[
     ('Differentiation 110 / 135',units(differentiation=110),units(differentiation=135)),
     ('Build peak month 5 / 3',units(build_speed='Somewhat Slow'),units(build_speed='Somewhat Fast')),
     ('Share of choice 20% / 33%',units(share_of_choice=.20),units(share_of_choice=.33)),
-    ('Media \\$3.5M / \\$6.0M',units(spending_mm=3.5),units(spending_mm=6.0)),
+    ('Media \\$3.5M / \\$6.0M',units(spending_mm=3.5),units(spending_mm=6.0)),   # the backslash keeps matplotlib from reading $ as math
 ]
 tornado=pd.DataFrame(levers,columns=['lever','low_units_mm','high_units_mm'])
 tornado['low_pct']=tornado.low_units_mm/base_units-1; tornado['high_pct']=tornado.high_units_mm/base_units-1
 tornado['swing']=tornado.high_pct-tornado.low_pct
 tornado=tornado.sort_values('swing')
-print(f'base year-one volume {base_units:.3f} MM units'); print(tornado.round(3).to_string(index=False))
+print(f'base year-one volume {base_units:.3f} MM units'); print(tornado.assign(lever=tornado.lever.str.replace('\\','',regex=False)).round(3).to_string(index=False))
 assert tornado.set_index('lever').loc['Media \\$3.5M / \\$6.0M','swing']<tornado.set_index('lever').loc['Distribution 55% / 70%','swing']
 plt.figure(figsize=(4.3,2.9))
 y=np.arange(len(tornado))
@@ -193,8 +198,10 @@ history_input=pd.read_csv(project/'companion/data/observed/monthly-temperature.c
 history_config={'mode':'history','horizon':12,'season':12,'source':'Public-domain historical temperature snapshot','units':'degrees Celsius'}
 history_forecast,history_evidence=route_example(27,history_input,history_config)
 sparse_result,sparse_evidence=route_example(27,history_input.tail(4),history_config)
-print('Sufficient history:',history_evidence['selected'],'test scores:',history_evidence['test_mae'])
-print('Sparse history:',sparse_evidence)
+print('Sufficient history: selected',history_evidence['selected'],'on validation MAE; holdout MAE by model:',{k:round(v,2) for k,v in history_evidence['test_mae'].items()})
+# The selection is made on the earlier validation origins, never on the final holdout, so
+# another model can score better on the holdout. That is the price of an honest test, not a bug.
+print('Sparse history:',sparse_evidence['status'],'|',sparse_evidence['interpretation'][:120]+'...')
 assert sparse_evidence['status']=='needs_evidence' and 'forecast' not in sparse_result
 # %% [markdown]
 # ## A separately supplied capacity check is a bound, not another forecast vote
@@ -206,14 +213,22 @@ assert sparse_evidence['status']=='needs_evidence' and 'forecast' not in sparse_
 # %%
 channel_capacity=500*12*.10*104
 standard_units=volume[4].sum()
-print({'synthetic_channel_capacity_24m':channel_capacity,'trial_repeat_units_24m':float(standard_units),'fraction_of_capacity':float(standard_units/channel_capacity)})
+print(f'synthetic channel capacity over 24 months {channel_capacity:,.0f} units; trial + repeat units {standard_units:,.0f}; fraction of capacity {standard_units/channel_capacity:.1%}')
 print('Interpretation: the capacity check uses a distinct outlet mechanism, but both routes contain assumptions. Agreement does not calibrate a probability interval.')
 # %% [markdown]
 # <!-- APPLIED-WORKSHOP-START -->
 # ## Guided application workshop
-# The sections below connect the controlled figures to a complete applied input/output workflow.
+# The sections below come from the chapter skill: the mechanism, the arithmetic, how to adapt the lesson to your data, exercises with worked solutions, and the exact contract of the applied tool.
 # %% [markdown]
-# # Chapter 27 workshop: from lesson to decision
+# ## Input contract and format example
+# Three routes share one command: `mode: history` runs the chapter 12 engine on an established product's `timestamp,target` series (2 seasons + 4 horizons of history, else provisional; fewer than 36 points returns needs_evidence); `mode: estimate` returns the evidence request; `mode: launch` (default) needs the reference-product table below. A launch with no reference products belongs to [reconcile-tdbu](../../forecasting-skills/forecasting-ch27-directed-forecasting/reconcile-tdbu/SKILL.md). Intake record: target,units,population,horizon_months,as_of,decision,history_available,source,outcome_due. Mature-product table: product,eligible_buyers,awareness,availability_given_awareness,interest,units_per_buyer_24m,observed_units_24m,research_date,source,split. Probabilities are conditional fractions in [0,1]; quantities are nonnegative. For the CLI launch route, config new_product supplies eligible_buyers, awareness, availability_given_awareness and interest; horizon defaults to 24. Supply either trial_conversion_assumption to explicitly defend transferring calibrated scale, or a defended declared_trial_total. Supply either repeat_rate or a full-horizon repeat_kernel. The CLI runs fixed peaks 3/4/5; custom timing peaks require notebook adaptation.
+#
+# Minimal **format illustration**, not sufficient training data:
+#
+# ```csv
+# product,eligible_buyers,awareness,availability_given_awareness,interest,units_per_buyer_24m,observed_units_24m,research_date,source,split
+# A,100000,0.5,0.6,0.2,4,20400,2025-03-18,Illustrative,calibration
+# ```
 #
 # ## Explain the mechanism
 #
@@ -223,13 +238,9 @@ print('Interpretation: the capacity check uses a distinct outlet mechanism, but 
 #
 # For 100,000 eligible buyers, awareness .5, availability conditional on awareness .6, interest .2 and four units per buyer, raw mature volume is 24,000 units. A shared scale .85 gives 20,400. Transferring .85 to trial conversion is a separate assumption: the implied trial total would be 5,100. Under the standard 24-month convention, year-one trials are .8×5,100=4,080 and year two 1,020; total sales still require repeat cohorts.
 #
-# Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-#
 # ## Adapt the lesson to reader data
 #
 # Replace the references DataFrame in the lesson with observed products and retain an explicit product-level calibration/validation split. Replace new and kernel separately. A single sample row only illustrates format, not adequate calibration. For established-product time series, use the appropriate time-series chapter rather than forcing every problem through launch gamma. Save intake and routing reasoning alongside, not inside, the numerical fit.
-#
-# Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 #
 # For this chapter, settle these questions before fitting: What decision changes with the answer? What target, population, unit, horizon and cutoff apply? Is usable history present? Are analogues comparable and current? Does stated volume mean unique trials or total units? Which genuinely distinct cross-check and eventual scoring outcome are available?
 #
@@ -239,12 +250,10 @@ print('Interpretation: the capacity check uses a distinct outlet mechanism, but 
 #
 # The current applied adapter adds a separately inspectable numerical result:
 #
-# - `results.csv`: `month,peak,trials,units in launch mode; timestamp,forecast,model in history mode`.
-# - `summary.json`: inspect `scale,trial_total,held_out_mae in launch mode; status/required_evidence in sparse mode`.
+# - `results.csv`: `month,peak,trials,units`.
+# - `summary.json`: `scale,trial_total,held_out_mae,year_one_units` plus method, interpretation, assumptions, not_done and status.
 #
 # Launch requires at least three calibration and two validation products and runs peaks 3,4,5. Explicitly defend scale transfer or supply declared_trial_total; trials may not exceed jointly reached eligible buyers. Supply a constant repeat_rate (one unit at trial) or an explicit repeat_kernel with one nonnegative units-per-trier entry per horizon month. No default repeat assumption is invented; custom timing peaks are not accepted. Standard horizon=24; larger horizons are explicitly different scenarios. mode=estimate and insufficient history return needs_evidence, not a fabricated numeric forecast.
-#
-# The [fixture](../data/examples/ch27.csv) and [config](../configs/ch27.json) match the current interface. Run the `apply` command in the [skill entrypoint](../../forecasting-skills/forecasting-ch27-directed-forecasting/SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 #
 # ## Decide what the evidence supports
 #
@@ -252,7 +261,7 @@ print('Interpretation: the capacity check uses a distinct outlet mechanism, but 
 #
 # If history is sparse, do not fabricate backtests; use explicit analogue/scenario estimates. If repeat data are absent, report trials separately and show repeat assumptions as scenarios. If no distinct cross-check exists, record that absence and the shared-input dependence rather than presenting two formulas as triangulation.
 #
-# The applied deliverable must make these items inspectable: Return an intake/routing record, proxy/source register, reference-product calibration and held-out errors, monthly trial and total-unit tables, Y1/Y2/tail reconciliation, sensitivity table, missing-evidence priorities and dated scoring plan. State which methods were executed and which remain proposed.
+# The applied deliverable must make these items inspectable: `results.csv` columns: `month,peak,trials,units`; `summary.json` keys: `scale,trial_total,held_out_mae,year_one_units` plus method, interpretation, assumptions, not_done and status. Return an intake/routing record, proxy/source register, reference-product calibration and held-out errors, monthly trial and total-unit tables, Y1/Y2/tail reconciliation, sensitivity table, missing-evidence priorities and dated scoring plan. State which methods were executed and which remain proposed.
 #
 # ## Three exercises with worked solutions
 #
@@ -280,58 +289,36 @@ print('Interpretation: the capacity check uses a distinct outlet mechanism, but 
 #
 # > Apply chapter 27 to our new product: first determine whether available history supports a model or only an estimate, defend proxy inputs, calibrate across comparable mature products, separate trials from repeat units, preserve 24-month trial totals, and save a forecast/scoring record.
 #
-# Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-#
 # ## Real-data boundary
 #
 # The [data registry](../data/registry.json) and [data notes](../data/README.md) distinguish bundled observations from controlled fixtures. No matching observed-data application is claimed for this chapter. Supply the chapter-specific records and their provenance before treating the exercise as business evidence; an observed outcome table is not automatically a historical forecast journal or identified experiment.
+#
+# Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).
 # %% [markdown]
-# ## Configure and run the applied case
+# ## Apply this chapter to your own data
 #
-# The input file and JSON below are the only entry-point changes needed to try another
-# case with the same schema. Keep the original examples for comparison. Supply source
-# and units in the configuration; resolve missing periods rather than silently filling
-# unknown observations with zeros. These calculations call the same tested functions
-# as the `run.py apply` command. A failed validation is a reason to inspect the data,
-# not to replace it with invented observations.
-#
-# The default input here is a **seeded synthetic schema example**, separate from any
-# observed-data application below. Read the summary before interpreting its results.
+# The two paths below are the only things to change: point `INPUT_PATH` at a file with the
+# columns in the input contract above and `CONFIG_PATH` at a copy of the shipped configuration
+# with your `source` and `units`. The call is the same tested function behind `run.py apply`.
+# The printed digest shows what ran, its status, the interpretation, the assumptions and the
+# `not_done` list; the full summary is saved beside the table. A validation error is a reason to
+# inspect the data, not to fill gaps with invented observations. Shared rules for provenance,
+# output folders and reading `status` are in the Complete Forecasting Skill's conventions reference.
 # %%
 from forecasting_companion.applied.methods import analyze as analyze_chapter
-from forecasting_companion.applied.core import clean_json
+from forecasting_companion.applied.core import clean_json, summarize, preview
 import pandas as pd
 import json, os
-INPUT_PATH = project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists()) / 'companion/data/examples/ch27.csv'
-CONFIG_PATH = project_path.parents[2] / 'configs/ch27.json'
-# Input paths are explicit and may be replaced with reader-supplied files.
+project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists())
+INPUT_PATH = project_path / 'companion/data/examples/ch27.csv'      # replace with your file
+CONFIG_PATH = project_path / 'companion/configs/ch27.json'            # replace with your configuration
 workshop_config = json.loads(CONFIG_PATH.read_text())
 workshop_input = pd.read_csv(INPUT_PATH)
 workshop_table, workshop_summary = analyze_chapter(27, workshop_input, workshop_config)
-print(json.dumps(clean_json(workshop_summary), indent=2))
-print(workshop_table.head(12).to_string(index=False))
-workshop_output = Path(os.environ.get('FORECAST_OUTPUT', CONFIG_PATH.parents[1])) / 'results'
+print(summarize(workshop_summary, workshop_table))
+print()
+print(preview(workshop_table))
+workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'companion')) / 'results'
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch27-workshop-results.csv', index=False)
-(workshop_output/'ch27-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
-# %% [markdown]
-# ## Real-data boundary
-#
-# The bundled case is controlled, not a reconstruction of historical records. No
-# verified, appropriately licensed domain dataset is supplied for this particular
-# workflow. Use the input contract to supply your own observations and evidence.
-# Do not substitute an unrelated public dataset simply to call the example real.
-# The wider companion includes observed time-series applications in chapters
-# 3–6, 12, 15–16 and 24; their data do not establish this chapter’s domain assumptions.
-# %% [markdown]
-# ## Read the result as a decision record
-#
-# Start with the summary’s **interpretation**, then examine its numerical evidence.
-# Distinguish what was fitted, what was supplied, and what remains unidentified.
-# The results table is the calculation; it is not permission to act. Explain which
-# assumption would most change the answer and what new evidence would test it.
-# For a live forecast, set an outcome date and keep the original result for scoring.
-#
-# The exercises and worked solutions above test interpretation, calculation, and
-# adaptation. Re-run a changed assumption and compare the actual output; do not
-# reuse numbers from the book when your input or horizon changes.
+_ = (workshop_output/'ch27-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')

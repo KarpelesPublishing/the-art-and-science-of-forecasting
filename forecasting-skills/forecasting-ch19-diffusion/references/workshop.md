@@ -8,13 +8,9 @@ Bass separates external adoption pressure p from imitation pressure q times exis
 
 With m=10,000, existing adopters N=2,000, p=.02/year and q=.3/year, instantaneous adoption rate is (.02+.3×.2)×8,000=640 adopters/year. If q>p, peak time is log(q/p)/(p+q); here log(15)/.32≈8.463 years under a launch at zero adoption.
 
-Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-
 ## Adapt the lesson to reader data
 
 Replace early/observed in the sparse-fit block with elapsed time and cumulative unique adopters. Select ceiling scenarios from external market definitions, not simply from whichever fit pleases the sponsor. Keep repeat-volume arithmetic separate.
-
-Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 
 For this chapter, settle these questions before fitting: Does the series count cumulative unique adopters? What is the market ceiling’s evidence? Are time units consistent? Has the inflection or peak been observed? What repeat behavior lies outside adoption?
 
@@ -28,8 +24,6 @@ The current applied adapter adds a separately inspectable numerical result:
 - `summary.json`: `fits,ceilings,sales_horizon,peak,kernel,timing_comparison,parfitt_collins,bass_table_rows` plus method, interpretation, assumptions, not_done and status.
 
 The tool fits the Bass model for each declared ceiling (with early-fit holdout, Jacobian condition and peak time), optionally refits with `fix_q` held, then converts adoption into sales over `sales_horizon` periods (24 or more) under two timing curves that share the same trial total: Bass incidence and the author's gamma-shaped launch curve with its `peak` month. Each timing is spread with the repeat kernel into unit sales, and the tool compares peak period, twelve-period units and total units between them. With `parfitt_collins` inputs it reports the steady-state share and a plus or minus 20 percent band on repeat. Price, distribution and advertising are not in the curve; the kernel is assumed, not estimated. The tool runs only when asked; the assistant decides, with the reader, whether the method fits before running it.
-
-The [fixture](../../../companion/data/examples/ch19.csv) and [config](../../../companion/configs/ch19.json) match the current interface. Run the `apply` command in the [skill entrypoint](../SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 
 ## Decide what the evidence supports
 
@@ -65,8 +59,8 @@ Use this request with the skill:
 
 > Apply chapter 19 to adoption.csv, defend several market ceilings and show which long-run differences are unsupported by the early history.
 
-Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-
 ## Real-data boundary
 
 The [data registry](../../../companion/data/registry.json) and [data notes](../../../companion/data/README.md) distinguish bundled observations from controlled fixtures. No matching observed-data application is claimed for this chapter. Supply the chapter-specific records and their provenance before treating the exercise as business evidence; an observed outcome table is not automatically a historical forecast journal or identified experiment.
+
+Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../all-chapters-forecasting/references/conventions.md).

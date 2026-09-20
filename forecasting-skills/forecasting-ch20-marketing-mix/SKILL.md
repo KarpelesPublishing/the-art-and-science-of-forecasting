@@ -26,7 +26,7 @@ timestamp,sales,tv,digital,radio,temp
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,sales,<channels...>[,controls...]`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `alpha, as_of, channels, controls, decay_a, decay_b, decay_grid, frequency, half_a, half_b, horizon, initial_a, initial_b, noise_sd, origins, prior_mean, prior_sd, reallocation_total, saturation, season, seed, windows`. Unknown config keys are rejected.
+Exact CLI columns: `timestamp,sales,<channels...>[,controls...]`. Supported method controls: `alpha, as_of, channels, controls, decay_a, decay_b, decay_grid, frequency, half_a, half_b, horizon, initial_a, initial_b, noise_sd, origins, prior_mean, prior_sd, reallocation_total, saturation, season, seed, windows`.
 
 For every channel the tool builds a geometric adstock and a saturation transform (`hill`, `log`, `negexp`, `none`, or `auto` to choose among them), choosing each channel's decay from `decay_grid` and the saturation kind on `origins` earlier blocks by predictive MAE, never on the holdout; the saturation scale is fixed on training data. It fits sales on trend, one seasonal harmonic, the transformed channels and standardised controls by closed-form ridge (`alpha`, penalising channel and control columns only), scores the untouched holdout against seasonal naive, and returns response curves and marginal response at current spend per channel, coefficient refits across `windows` expanding windows (attribution stability), an optional Gaussian posterior on the channel coefficients when `prior_mean` and `prior_sd` are supplied, and a budget reallocation that equalises marginal response under `reallocation_total`, labelled a conditional scenario. No experiment is used; coefficients are a fitted decomposition, not identified causal effects.
 
@@ -46,7 +46,7 @@ An accurate total forecast can hide unstable channel coefficients; a fixed but w
 
 ## Missing evidence and fallback
 
-Without pre-window history, vary initial stocks and disclose transient uncertainty. Without credible confounder or experiment evidence, do not infer incrementality. With missing channels or inconsistent currencies, narrow the scope rather than quietly assigning residual sales to observed media. Never invent observations, provenance, executed methods, validation scores or interval coverage. Label controlled examples, real observations, judgment and scenarios distinctly.
+Without pre-window history, vary initial stocks and disclose transient uncertainty. Without credible confounder or experiment evidence, do not infer incrementality. With missing channels or inconsistent currencies, narrow the scope rather than quietly assigning residual sales to observed media.
 
 ## Chapter-specific invariants
 
@@ -76,36 +76,28 @@ posterior is conditional on fixed transforms/background/noise, not full Bayesian
 
 ## Applied report contract
 
-`results.csv` columns: `timestamp,actual,prediction,baseline`. `summary.json` keys: `channels,controls,selected,alpha,coefficients,condition_number,test_mae,baseline_mae,response_curves,marginal_roas,refits,posterior,reallocation,origins` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`. Report the refit table beside the coefficients; a channel whose coefficient halves when the window moves has not been attributed, whatever the point estimate says. Include units, horizon, evidence cutoff, sources, assumptions and limitations. For a live forecast record creation time and outcome/scoring date.
+`results.csv` columns: `timestamp,actual,prediction,baseline`. `summary.json` keys: `channels,controls,selected,alpha,coefficients,condition_number,test_mae,baseline_mae,response_curves,marginal_roas,refits,posterior,reallocation,origins` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
-## Learn and apply
+Report the refit table beside the coefficients; a channel whose coefficient halves when the window moves has not been attributed, whatever the point estimate says.
 
-Read [workshop.md](references/workshop.md) for worked arithmetic, data replacement guidance, output interpretation and solved exercises. Use [evaluation.md](references/evaluation.md) to assess transfer; its expected answers are not executed agent-test results.
+## Run it
 
-Learning prompt: “Teach me chapter 20 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+The [notebook](../../companion/notebooks/20-marketing-mix.ipynb) is the worked lesson; its editable [source](../../companion/lessons/20-marketing-mix.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
-Applied prompt: “Apply chapter 20 to weekly_media.csv, account for initial carryover, evaluate sales prediction and attribution stability, and label which spending claims remain conditional.”
-
-The [notebook](../../companion/notebooks/20-marketing-mix.ipynb) is a worked lesson; its editable [source](../../companion/lessons/20-marketing-mix.py) defines what is actually executed. Run the controlled example from the project root after installing the companion environment:
-
-```bash
-companion/.venv/bin/python companion/scripts/run.py chapters --chapter 20
-```
-
-A successful lesson run does not mean all applied steps above were executed on user data. The workshop states the adaptation boundary. Use the [Complete Forecasting Skill](../all-chapters-forecasting/SKILL.md) when the decision genuinely needs multiple chapters.
-
-## Apply the supplied input or your own file
-
-The [controlled fixture](../../companion/data/examples/ch20.csv) and [editable config](../../companion/configs/ch20.json) provide a complete runnable example:
+Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 
 ```bash
 companion/.venv/bin/python companion/scripts/run.py apply --chapter 20 \
   --input companion/data/examples/ch20.csv \
   --config companion/configs/ch20.json \
-  --output companion/applied-runs/ch20-reader-example
+  --output companion/applied-runs/ch20-example
 ```
 
-Use a new empty output directory for each run. Copy and edit the input/config for real observations; replace the fixture’s synthetic source label with actual provenance. The command writes `results.csv` with `timestamp,actual,prediction`, `summary.json` containing `coefficients,condition_number,refits,test_mae`, `diagnostic.png`, and a hashed `run.json` execution record. These files cover the numerical adapter; the fuller applied report above also requires evidence and business interpretation. `execution_status=passed` means execution succeeded, not that the forecast is accurate.
+It writes `results.csv` and `summary.json` with exactly the columns and keys listed under Applied report contract, `diagnostic.png`, and a hashed `run.json` execution record. To run the lesson itself: `run.py chapters --chapter 20`.
+
+Learning prompt: “Teach me chapter 20 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+
+Applied prompt: “Apply chapter 20 to weekly_media.csv, account for initial carryover, evaluate sales prediction and attribution stability, and label which spending claims remain conditional.”
 
 ## Desk model skill
 

@@ -26,7 +26,7 @@ item-1,2021-01-01,41.2,0,10
 
 ## Executable interface
 
-Exact CLI columns: `series_id,timestamp,target[,covariates...]`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `ablation, as_of, covariates, frequency, horizon, known_in_advance, lags, origins, rolling, season, seed, shap_rows, strategy`. Unknown config keys are rejected.
+Exact CLI columns: `series_id,timestamp,target[,covariates...]`. Supported method controls: `ablation, as_of, covariates, frequency, horizon, known_in_advance, lags, origins, rolling, season, seed, shap_rows, strategy`.
 
 LightGBM on leakage-safe grouped features: lags (`lags`), shifted rolling means (`rolling`), a calendar term (day of week for daily data, month otherwise), an entity code, and the declared covariates. `strategy: direct` (default) fits one booster per horizon step, each mapping the origin's lag features plus the target date's known covariates and calendar to that step's target; `recursive` fits a one-step model and feeds its own predictions back as lags. Evaluation uses expanding origins (`origins`) against seasonal naive computed from pre-origin history, then scores the untouched final holdout once. `ablation: true` drops each feature group (calendar, lags, rolling, covariates) in turn at every origin and reports the change in MAE. Additive contributions are returned for `shap_rows` rows with an additivity check. No hyperparameter search, no quantile objective.
 
@@ -36,7 +36,7 @@ The tool runs only when asked; the assistant decides, with the reader, whether t
 
 1. Audit series keys, calendar gaps, stockouts and covariate publication times. Define exactly when each target becomes known.
 2. Build grouped lag and rolling features with a shift before rolling. Derive calendar features without target information; fit encodings on training data.
-3. Fit LightGBM on earlier data at chronological origins. Compare seasonal-naive and feature-ablation models on the same daily one-step targets.
+3. Fit LightGBM on earlier data at chronological origins. The lesson updates lags after every observed day (successive one-step forecasts); the tool's default is a direct forecast of the whole horizon issued once at each origin, one booster per step. Use `strategy: recursive` with `horizon: 1` to mirror the lesson. Compare seasonal naive and the feature-group ablations on the same targets.
 4. Update observed lag inputs only as each day passes. For a fixed-origin multi-step request, implement recursive or horizon-safe direct features rather than consuming future actuals.
 5. Inspect errors by series, promotion status and volume. Explain selected predictions with native contributions, retaining their baseline sum and predictive, not causal, meaning.
 
@@ -46,37 +46,29 @@ Removing promotion while retaining discount price may leave the same information
 
 ## Missing evidence and fallback
 
-If LightGBM is unavailable, name the skipped model and run an eligible baseline; do not relabel a substitute. If future prices are unknown, use a known schedule or scenarios. If demand is censored, separate observed sales prediction from latent demand estimation. Never invent observations, provenance, executed methods, validation scores or interval coverage. Label controlled examples, real observations, judgment and scenarios distinctly.
+If LightGBM is unavailable, name the skipped model and run an eligible baseline; do not relabel a substitute. If future prices are unknown, use a known schedule or scenarios. If demand is censored, separate observed sales prediction from latent demand estimation.
 
 ## Applied report contract
 
-`results.csv` columns: `series_id,timestamp,horizon,actual,seasonal_naive,prediction`. `summary.json` keys: `strategy,features,feature_groups,covariates,known_in_advance,validation,ablation,test_mae,baseline_mae,first_explanation,origins` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`. State which covariates were treated as known in advance; a forecast that assumes next month's price is known must say so. Include units, horizon, evidence cutoff, sources, assumptions and limitations. For a live forecast record creation time and outcome/scoring date.
+`results.csv` columns: `series_id,timestamp,horizon,actual,seasonal_naive,prediction`. `summary.json` keys: `strategy,features,feature_groups,covariates,known_in_advance,validation,ablation,test_mae,baseline_mae,first_explanation,origins` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
-## Learn and apply
+State which covariates were treated as known in advance; a forecast that assumes next month's price is known must say so.
 
-Read [workshop.md](references/workshop.md) for worked arithmetic, data replacement guidance, output interpretation and solved exercises. Use [evaluation.md](references/evaluation.md) to assess transfer; its expected answers are not executed agent-test results.
+## Run it
 
-Learning prompt: “Teach me chapter 13 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+The [notebook](../../companion/notebooks/13-retail-ml.ipynb) is the worked lesson; its editable [source](../../companion/lessons/13-retail-ml.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
-Applied prompt: “Use chapter 13 to forecast retail_panel.csv one day ahead, audit every feature’s availability and compare LightGBM with seasonal-naive and a promotion/price ablation.”
-
-The [notebook](../../companion/notebooks/13-retail-ml.ipynb) is a worked lesson; its editable [source](../../companion/lessons/13-retail-ml.py) defines what is actually executed. Run the controlled example from the project root after installing the companion environment:
-
-```bash
-companion/.venv/bin/python companion/scripts/run.py chapters --chapter 13
-```
-
-A successful lesson run does not mean all applied steps above were executed on user data. The workshop states the adaptation boundary. Use the [Complete Forecasting Skill](../all-chapters-forecasting/SKILL.md) when the decision genuinely needs multiple chapters.
-
-## Apply the supplied input or your own file
-
-The [controlled fixture](../../companion/data/examples/ch13.csv) and [editable config](../../companion/configs/ch13.json) provide a complete runnable example:
+Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 
 ```bash
 companion/.venv/bin/python companion/scripts/run.py apply --chapter 13 \
   --input companion/data/examples/ch13.csv \
   --config companion/configs/ch13.json \
-  --output companion/applied-runs/ch13-reader-example
+  --output companion/applied-runs/ch13-example
 ```
 
-Use a new empty output directory for each run. Copy and edit the input/config for real observations; replace the fixture’s synthetic source label with actual provenance. The command writes `results.csv` with `series_id,timestamp,target,baseline,one_step,fixed_origin`, `summary.json` containing `mae,first_explanation`, `diagnostic.png`, and a hashed `run.json` execution record. These files cover the numerical adapter; the fuller applied report above also requires evidence and business interpretation. `execution_status=passed` means execution succeeded, not that the forecast is accurate.
+It writes `results.csv` and `summary.json` with exactly the columns and keys listed under Applied report contract, `diagnostic.png`, and a hashed `run.json` execution record. To run the lesson itself: `run.py chapters --chapter 13`.
+
+Learning prompt: “Teach me chapter 13 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+
+Applied prompt: “Use chapter 13 to forecast retail_panel.csv one day ahead, audit every feature’s availability and compare LightGBM with seasonal-naive and a promotion/price ablation.”

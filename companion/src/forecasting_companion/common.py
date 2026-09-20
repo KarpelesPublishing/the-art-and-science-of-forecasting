@@ -1,13 +1,38 @@
 """Small transparent utilities; chapter-specific calculations live in notebooks."""
 from pathlib import Path
 import json
+import logging
 import os
+import warnings
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def quiet_libraries():
+    """Keep third-party progress bars and fitting chatter out of notebook output.
+
+    Nothing here changes a result: Stan and Prophet still report failures as exceptions,
+    transformers still raises on a missing checkpoint. Only informational streams are muted.
+    """
+    os.environ.setdefault('TQDM_DISABLE', '1')                  # weight-loading bars
+    os.environ.setdefault('TRANSFORMERS_VERBOSITY', 'error')
+    os.environ.setdefault('HF_HUB_DISABLE_PROGRESS_BARS', '1')
+    os.environ.setdefault('TOKENIZERS_PARALLELISM', 'false')
+    warnings.filterwarnings('ignore', module=r'tqdm')             # "IProgress not found" in a plain kernel
+    warnings.filterwarnings('ignore', message='adfuller currently')  # statsmodels return-type notice
+    warnings.filterwarnings('ignore', message='.*torch_dtype.*')
+    for name in ('cmdstanpy', 'prophet', 'fbprophet'):
+        logger = logging.getLogger(name)
+        if not logger.hasHandlers():
+            logger.addHandler(logging.NullHandler())            # cmdstanpy installs its INFO stream handler only when none exists
+        logger.setLevel(logging.CRITICAL)                       # chain start/stop lines and optimizer retries
+
+
+quiet_libraries()
 plt.rcParams.update({'figure.figsize': (4.3, 2.8), 'font.size': 8,
     'axes.spines.top': False, 'axes.spines.right': False,
     'axes.prop_cycle': matplotlib.cycler(color=['#163d59','#ba561a','#477666','#87475b']),

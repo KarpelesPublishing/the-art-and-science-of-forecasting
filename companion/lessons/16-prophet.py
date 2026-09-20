@@ -135,9 +135,19 @@ save(16, 3, 'Validate the event calendar',
 # %% [markdown]
 # <!-- APPLIED-WORKSHOP-START -->
 # ## Guided application workshop
-# The sections below connect the controlled figures to a complete applied input/output workflow.
+# The sections below come from the chapter skill: the mechanism, the arithmetic, how to adapt the lesson to your data, exercises with worked solutions, and the exact contract of the applied tool.
 # %% [markdown]
-# # Chapter 16 workshop: from lesson to decision
+# ## Input contract and format example
+# A regular series with optional numeric regressor columns. Events go in config `events` as a list of `{name, date, lower_window, upper_window}` (future event dates are welcome). Regressors are named in config `regressors`; to forecast the future with regressors, append exactly `horizon` trailing rows with an empty `target` and the known regressor values.
+#
+# Minimal **format illustration**, not sufficient training data:
+#
+# ```csv
+# timestamp,target,temp
+# 2022-01-01,101.3,20.1
+# 2022-01-02,103.7,20.9
+# 2022-01-03,,21.4
+# ```
 #
 # ## Explain the mechanism
 #
@@ -147,13 +157,9 @@ save(16, 3, 'Validate the event calendar',
 #
 # In additive mode, trend 100 plus weekly effect -5 and event effect +20 gives yhat=115. If the event moves but the calendar does not, the model may predict 115 on the wrong day. A perfect component-sum identity checks implementation, not timing accuracy.
 #
-# Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-#
 # ## Adapt the lesson to reader data
 #
 # Replace the data DataFrame with ds,y mapped from reader columns. Replace the synthetic recurring campaign calendar with actual known-at-origin events, not an outcome-selected list of high-sales dates. Keep validation and final-test boundaries intact.
-#
-# Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 #
 # For this chapter, settle these questions before fitting: Which calendar events were known at the origin? Is their effect repeated in history? What trend flexibility is plausible? Which future regressors are actually supplied?
 #
@@ -167,8 +173,6 @@ save(16, 3, 'Validate the event calendar',
 # - `summary.json`: `mode,mode_note,prior,validation,ablation,test_mae,test_coverage,nominal,table_scope,events,regressors` plus method, interpretation, assumptions, not_done and status.
 #
 # Prophet with the event calendar as holidays and the declared regressors. `mode: auto` chooses multiplicative seasonality when a Box-Cox check on training data calls for a log scale, else additive. The changepoint prior is chosen from `priors` on `origins` earlier blocks; the calendar and the regressors are each ablated on the same blocks so their contribution is measured, not assumed. The untouched holdout is scored once with MAE and the coverage of the nominal 80 percent band. The forecast table is the future when no regressors are needed or exactly `horizon` future regressor rows were supplied, otherwise the holdout, and the summary says which under `table_scope`. The tool runs only when asked; the assistant decides, with the reader, whether the method fits before running it.
-#
-# The [fixture](../data/examples/ch16.csv) and [config](../configs/ch16.json) match the current interface. Run the `apply` command in the [skill entrypoint](../../forecasting-skills/forecasting-ch16-prophet/SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 #
 # ## Decide what the evidence supports
 #
@@ -204,8 +208,6 @@ save(16, 3, 'Validate the event calendar',
 #
 # > Use chapter 16 to forecast activity.csv with the actual known event calendar, select trend flexibility on earlier origins and explain components and held-out uncertainty.
 #
-# Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-#
 # ## Observed-data transfer exercise
 #
 # A bundled [observed series](../data/observed/monthly-temperature.csv) and [matching config](../configs/ch16-observed.json) provide a second application after the controlled fixture. Read the [data registry](../data/registry.json) for provenance and transformations. These are historical snapshots, not archived real-time release vintages.
@@ -218,62 +220,51 @@ save(16, 3, 'Validate the event calendar',
 # ```
 #
 # Explain whether fitted seasonality transfers to the last year; this temperature example does not validate business-event effects. Record the actual result of your run. Do not import the controlled example’s winner or interpret a successful numerical execution as evidence of operational accuracy.
+#
+# Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).
 # %% [markdown]
-# ## Configure and run the applied case
+# ## Apply this chapter to your own data
 #
-# The input file and JSON below are the only entry-point changes needed to try another
-# case with the same schema. Keep the original examples for comparison. Supply source
-# and units in the configuration; resolve missing periods rather than silently filling
-# unknown observations with zeros. These calculations call the same tested functions
-# as the `run.py apply` command. A failed validation is a reason to inspect the data,
-# not to replace it with invented observations.
-#
-# The default input here is a **seeded synthetic schema example**, separate from any
-# observed-data application below. Read the summary before interpreting its results.
+# The two paths below are the only things to change: point `INPUT_PATH` at a file with the
+# columns in the input contract above and `CONFIG_PATH` at a copy of the shipped configuration
+# with your `source` and `units`. The call is the same tested function behind `run.py apply`.
+# The printed digest shows what ran, its status, the interpretation, the assumptions and the
+# `not_done` list; the full summary is saved beside the table. A validation error is a reason to
+# inspect the data, not to fill gaps with invented observations. Shared rules for provenance,
+# output folders and reading `status` are in the Complete Forecasting Skill's conventions reference.
 # %%
 from forecasting_companion.applied.methods import analyze as analyze_chapter
-from forecasting_companion.applied.core import clean_json
+from forecasting_companion.applied.core import clean_json, summarize, preview
 import pandas as pd
 import json, os
-INPUT_PATH = project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists()) / 'companion/data/examples/ch16.csv'
-CONFIG_PATH = project_path.parents[2] / 'configs/ch16.json'
-# Input paths are explicit and may be replaced with reader-supplied files.
+project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists())
+INPUT_PATH = project_path / 'companion/data/examples/ch16.csv'      # replace with your file
+CONFIG_PATH = project_path / 'companion/configs/ch16.json'            # replace with your configuration
 workshop_config = json.loads(CONFIG_PATH.read_text())
 workshop_input = pd.read_csv(INPUT_PATH)
 workshop_table, workshop_summary = analyze_chapter(16, workshop_input, workshop_config)
-print(json.dumps(clean_json(workshop_summary), indent=2))
-print(workshop_table.head(12).to_string(index=False))
-workshop_output = Path(os.environ.get('FORECAST_OUTPUT', CONFIG_PATH.parents[1])) / 'results'
+print(summarize(workshop_summary, workshop_table))
+print()
+print(preview(workshop_table))
+workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'companion')) / 'results'
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch16-workshop-results.csv', index=False)
-(workshop_output/'ch16-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
+_ = (workshop_output/'ch16-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
 # %% [markdown]
-# ## Apply the same workflow to observed data
+# ## The same workflow on observed data
 #
-# This second case uses a bundled public-domain historical dataset documented in
-# `data/registry.json`. It is a revised snapshot, not an archived real-time vintage.
-# The earlier time cuts prevent fitting on held-out outcomes; they do not undo
-# revisions that may have occurred before the snapshot was published. Compare the
-# actual output below with the controlled case. A method need not win to be useful.
-# The source, transformation and units are in the configuration and registry.
+# A second run on a bundled public-domain series documented in `data/registry.json` (a revised
+# historical snapshot, not an archived real-time vintage). The earlier time cuts prevent fitting
+# on held-out outcomes; they do not undo revisions made before the snapshot was published.
+# Compare this digest with the controlled case above: a method need not win to be useful, and
+# the winner on synthetic data has no claim on observed data.
 # %%
-observed_input = pd.read_csv(CONFIG_PATH.parents[1]/'data/observed/monthly-temperature.csv')
-observed_config = json.loads((CONFIG_PATH.parent/'ch16-observed.json').read_text())
+observed_input = pd.read_csv(project_path/'companion/data/observed/monthly-temperature.csv')
+observed_config = json.loads((project_path/'companion/configs/ch16-observed.json').read_text())
 observed_table, observed_summary = analyze_chapter(16, observed_input, observed_config)
 print('Observed-data source:', observed_config['source'])
-print(json.dumps(clean_json(observed_summary), indent=2))
-print(observed_table.head(12).to_string(index=False))
+print(summarize(observed_summary, observed_table))
+print()
+print(preview(observed_table))
 observed_table.to_csv(workshop_output/'ch16-observed-results.csv', index=False)
-(workshop_output/'ch16-observed-summary.json').write_text(json.dumps(clean_json(observed_summary), indent=2)+'\n')
-# %% [markdown]
-# ## Read the result as a decision record
-#
-# Start with the summary’s **interpretation**, then examine its numerical evidence.
-# Distinguish what was fitted, what was supplied, and what remains unidentified.
-# The results table is the calculation; it is not permission to act. Explain which
-# assumption would most change the answer and what new evidence would test it.
-# For a live forecast, set an outcome date and keep the original result for scoring.
-#
-# The exercises and worked solutions above test interpretation, calculation, and
-# adaptation. Re-run a changed assumption and compare the actual output; do not
-# reuse numbers from the book when your input or horizon changes.
+_ = (workshop_output/'ch16-observed-summary.json').write_text(json.dumps(clean_json(observed_summary), indent=2)+'\n')

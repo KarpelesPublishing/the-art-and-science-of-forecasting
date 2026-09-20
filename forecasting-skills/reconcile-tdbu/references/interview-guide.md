@@ -82,7 +82,7 @@ brand name?"
 ## Tier 4: the trial detector
 
 All inside `trial_inputs`. These are concept-test diagnostics on an index scale
-where 100 is the category norm. Skip the tier if the user has a trial rate , 
+where 100 is the category norm. Skip the tier if the user already has a trial rate:
 set `calculate_trial` to false and pass `trial_manual` as a fraction.
 
 | Field | Question | Default |
@@ -117,9 +117,9 @@ Inside `overrides`. Each replaces a model-derived value. Leave out or set to
 | `price_per_volume_category` / `price_per_volume_product` | Both default 1 | 0.01–5000 |
 | `range_width_category` / `range_width_product` | Both default 1 | 0.01–5000 |
 
-`share_of_choice` ships set to 0.25 because the original modeller overrode it.
-Mention this when reporting, the model's own derived figure on baseline inputs
-is 0.33, which is a materially different forecast.
+`share_of_choice` ships set to 0.25, an illustrative override; the model's own
+derived figure on the baseline inputs is 0.33, a materially different forecast.
+Say which one you used when reporting.
 
 Overriding both `repeats_per_repeater` and `triers_try_first_year` makes
 `build_speed` inert, because nothing else depends on it. The model warns when

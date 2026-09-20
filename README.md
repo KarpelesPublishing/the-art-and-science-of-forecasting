@@ -58,7 +58,8 @@ git clone https://github.com/KarpelesPublishing/the-art-and-science-of-forecasti
 cd the-art-and-science-of-forecasting/companion
 python3.12 -m venv .venv
 .venv/bin/pip install -r requirements.lock        # pinned; includes the model extras
-.venv/bin/python scripts/run.py chapters --chapter 4   # execute one lesson end to end
+.venv/bin/python scripts/run.py --help                 # chapters | apply | forecast
+.venv/bin/python scripts/run.py chapters --chapter 4   # execute one lesson end to end (rewrites notebooks/04-smoothing.ipynb)
 .venv/bin/python -m pytest tests -q                   # about two minutes
 ```
 
@@ -81,13 +82,15 @@ The `complete` profile includes the LightGBM, Prophet, neural and Chronos chapte
     --input my-hierarchy.csv --config my-config.json --output applied-runs/my-hierarchy
 ```
 
-It writes `results.csv`, `summary.json`, `diagnostic.png` and `run.json` (a provenance record of code, data and environment). The input columns each chapter expects and the configuration keys it accepts are listed in that chapter's skill under *Executable interface*; unknown configuration keys are rejected rather than ignored. Every `summary.json` carries the same five keys: `method`, `interpretation`, `assumptions`, `not_done` (what the chapter discusses that this run did not do) and `status` (`passed`, `provisional` or `needs_evidence`).
+It writes `results.csv`, `summary.json`, `diagnostic.png` (the forecast with its band and any actuals) and `run.json` (a provenance record of code, data and environment). The configuration needs `source` and `units`; the input columns each chapter expects and the other keys it accepts are listed in that chapter's skill under *Executable interface*, and unknown keys are rejected rather than ignored. Every `summary.json` carries the same five keys: `method`, `interpretation`, `assumptions`, `not_done` (what the chapter discusses that this run did not do) and `status` (`passed`, `provisional` or `needs_evidence`); the tests check this for every chapter, and `scripts/sync_contracts.py --check` confirms that each skill's promised columns and keys are the ones its tool returns.
+
+Each tool has a data floor and says so when the data fall short. The one most readers meet first: the series tools (chapters 4, 6, 12 and 27) need 2 seasons + 4 horizons of history, so a 12-month horizon on monthly data needs 72 points, a 6-month horizon 48 and a 3-month horizon 36. Below that they return a provisional persistence baseline and state how many more points are needed rather than fitting a seasonal model they cannot validate. The full table of floors and what to do with each status is in [conventions.md](forecasting-skills/all-chapters-forecasting/references/conventions.md).
 
 **3. Direct an AI assistant.** Point an assistant that supports skills (Claude Code, Codex and others read `SKILL.md` files) at this repository and ask, for example:
 
 > Use $all-chapters-forecasting to forecast my sales data for the next 12 months, compare suitable methods, and report uncertainty and validation results.
 
-The skill frames the target (units, horizon, as-of date, decision costs, what is known in advance), routes to the chapters that fit, runs the chapter tools only when you agree the method fits, and reports assumptions, validation and what was not done. `scripts/install_skills.py` links the 29 skill folders into `.agents/skills/` for runtimes that discover skills there. The skills never run anything on their own; they tell the assistant how.
+The skill frames the target (units, horizon, as-of date, decision costs, what is known in advance), routes to the chapters that fit, runs the chapter tools only when you agree the method fits, and reports assumptions, validation and what was not done. `scripts/install_skills.py` links the 29 skill folders into `.agents/skills/` (Codex) and `.claude/skills/` (Claude Code); any other assistant that reads `SKILL.md` files can be pointed at `forecasting-skills/` directly. The skills never run anything on their own; they tell the assistant how.
 
 ## Chapter by chapter
 
@@ -158,7 +161,9 @@ A skill is a folder with a `SKILL.md` and `references/`. Each chapter skill cont
 - **`references/workshop.md`:** the applied workshop text that also appears in the notebook.
 - **`references/evaluation.md`:** scenarios for judging whether the skill was applied well.
 
-`all-chapters-forecasting` is the integrated entry point. It records target, units, horizon, frequency, as-of date, decision costs and which covariates are known in advance, then routes: ordinary series to the engine; gaps and hidden states to chapter 5; covariates to 13; calendars to 16; intervals with guarantees to 17; hierarchies to 18; launches to 19, 20, 25, 27 and `reconcile-tdbu`; attribution to 20; causal questions to 22; inventory to 21; reporting delays to 23; regime change to 24; judgment and probability work to 2, 8 to 11 and 26. Its safeguards survive deadline pressure: baselines before claims, validation before selection, intervals with measured coverage, and a written record of what was not done.
+The rules shared by every chapter (evidence, provenance, output folders, data floors, how to read `status`, how to combine chapters) are stated once in `all-chapters-forecasting/references/conventions.md`; the chapter skills point to it instead of repeating it. The output contract in every skill is generated from a live run of the chapter's example (`scripts/sync_contracts.py`) and checked by the tests, so the columns and keys a skill promises are the ones the tool returns.
+
+`all-chapters-forecasting` is the integrated entry point. It records target, units, horizon, frequency, as-of date, decision costs and which covariates are known in advance, then routes with a decision table (what the reader has, the chapter, the data floor, the fallback): ordinary series to the engine; gaps and hidden states to chapter 5; covariates to 13; calendars to 16; intervals with guarantees to 17; hierarchies to 18; launches to 19, 20, 25, 27 and `reconcile-tdbu`; attribution to 20; causal questions to 22; inventory to 21; reporting delays to 23; regime change to 24; judgment and probability work to 2, 8 to 11 and 26. Its safeguards survive deadline pressure: baselines before claims, validation before selection, intervals with measured coverage, and a written record of what was not done.
 
 `SKILL-LIBRARY.md` explains the philosophy behind the library: model what has data, estimate what does not, never let an assistant judge a number the data can produce, and always build a second method.
 
@@ -177,11 +182,11 @@ Every coefficient in it is an illustrative starting value chosen by judgment so 
 ## Forecasting many series at once
 
 ```bash
-.venv/bin/python scripts/run.py forecast --input data/sales.csv --horizon 12 --frequency MS \
+.venv/bin/python scripts/run.py forecast --input data/examples/sales.csv --horizon 12 --frequency MS \
     --workers 4 --resume --engine full --output applied-runs/sales
 ```
 
-Input columns: `series_id,timestamp,target`. `--engine baseline` (the default) runs the transparent baselines and is right for thousands of series or a first pass; `--engine full`, `smoothing` or `arima` runs the engine pool on every series. Output: `forecast.csv` (quantile rows per horizon step, plus model intervals with the full engine), `metrics.csv` (selected model, transform, validation and holdout MAE, interval coverage, skipped candidates) and `failures.json`. Failures are per series; resume keys cover data, settings, code and library versions.
+Input columns: `series_id,timestamp,target`; `data/examples/sales.csv` is a runnable six-series example. `--engine baseline` (the default) runs the transparent baselines and is right for thousands of series or a first pass; `--engine full`, `smoothing` or `arima` runs the engine pool on every series. Output: `forecast.csv` (quantile rows per horizon step, plus model intervals with the full engine), `metrics.csv` (selected model, transform, validation and holdout MAE, interval coverage, skipped candidates) and `failures.json`. Failures are per series; resume keys cover data, settings, code and library versions.
 
 ## Data and provenance
 
@@ -205,8 +210,8 @@ companion/
     reconcile_sim.py     the desk model behind chapters 20 and 27
     applied/             core.py (schemas, contract), methods.py (dispatch), tools_*.py (27 chapter tools)
   scripts/               run.py (chapters | apply | forecast), catalog.py, build_workshop_data.py,
-                         expand_workshops.py, install_skills.py, export_public.py
-  data/                  examples/ (synthetic), observed/ (public domain), registry.json
+                         expand_workshops.py, sync_contracts.py, install_skills.py, export_public.py
+  data/                  examples/ (synthetic, plus sales.csv for the batch runner), observed/ (public domain), registry.json
   configs/               one JSON configuration per chapter example
   figures/               92 figures as PNG, PDF and SVG
   results/               execution records and figure journals

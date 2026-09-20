@@ -3,7 +3,7 @@
   "outcome_due": "2028-09-18",
   "horizon_months": 24,
   "denominator": "horizon",
-  "denominator_status": "author-confirmed standard: horizon; eventual is a nonstandard sensitivity option",
+  "denominator_status": "book standard: horizon; eventual is a sensitivity option",
   "input_source": "synthetic educational inputs",
   "inputs": {
     "eligible_buyers": 120000,

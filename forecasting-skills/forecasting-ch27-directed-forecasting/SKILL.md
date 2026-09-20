@@ -13,7 +13,7 @@ Ask only for unresolved material inputs: What decision changes with the answer? 
 
 ## Input contract and additional evidence
 
-Intake record: target,units,population,horizon_months,as_of,decision,history_available,source,outcome_due. Mature-product table: product,eligible_buyers,awareness,availability_given_awareness,interest,units_per_buyer_24m,observed_units_24m,research_date,source,split. Probabilities are conditional fractions in [0,1]; quantities are nonnegative. For the CLI launch route, config new_product supplies eligible_buyers, awareness, availability_given_awareness and interest; horizon defaults to 24. Supply either trial_conversion_assumption to explicitly defend transferring calibrated scale, or a defended declared_trial_total. Supply either repeat_rate or a full-horizon repeat_kernel. The CLI runs fixed peaks 3/4/5; custom timing peaks require notebook adaptation.
+Three routes share one command: `mode: history` runs the chapter 12 engine on an established product's `timestamp,target` series (2 seasons + 4 horizons of history, else provisional; fewer than 36 points returns needs_evidence); `mode: estimate` returns the evidence request; `mode: launch` (default) needs the reference-product table below. A launch with no reference products belongs to [reconcile-tdbu](../reconcile-tdbu/SKILL.md). Intake record: target,units,population,horizon_months,as_of,decision,history_available,source,outcome_due. Mature-product table: product,eligible_buyers,awareness,availability_given_awareness,interest,units_per_buyer_24m,observed_units_24m,research_date,source,split. Probabilities are conditional fractions in [0,1]; quantities are nonnegative. For the CLI launch route, config new_product supplies eligible_buyers, awareness, availability_given_awareness and interest; horizon defaults to 24. Supply either trial_conversion_assumption to explicitly defend transferring calibrated scale, or a defended declared_trial_total. Supply either repeat_rate or a full-horizon repeat_kernel. The CLI runs fixed peaks 3/4/5; custom timing peaks require notebook adaptation.
 
 Minimal **format illustration**, not sufficient training data:
 
@@ -24,7 +24,7 @@ A,100000,0.5,0.6,0.2,4,20400,2025-03-18,Illustrative,calibration
 
 ## Executable interface
 
-Exact CLI columns: `eligible_buyers,awareness,availability_given_awareness,interest,units_per_buyer_24m,observed_units_24m,split`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, declared_trial_total, frequency, horizon, mode, new_product, origins, pool, repeat_kernel, repeat_rate, season, seed, transform, trial_conversion_assumption`. Unknown config keys are rejected. General intake requirements above may call for additional evidence or notebook adaptation; they are not all accepted configuration keys.
+Exact CLI columns: `eligible_buyers,awareness,availability_given_awareness,interest,units_per_buyer_24m,observed_units_24m,split`. Supported method controls: `as_of, declared_trial_total, frequency, horizon, mode, new_product, origins, pool, repeat_kernel, repeat_rate, season, seed, transform, trial_conversion_assumption`.
 
 Launch requires at least three calibration and two validation products and runs peaks 3,4,5. Explicitly defend scale transfer or supply declared_trial_total; trials may not exceed jointly reached eligible buyers. Supply a constant repeat_rate (one unit at trial) or an explicit repeat_kernel with one nonnegative units-per-trier entry per horizon month. No default repeat assumption is invented; custom timing peaks are not accepted. Standard horizon=24; larger horizons are explicitly different scenarios. mode=estimate and insufficient history return needs_evidence, not a fabricated numeric forecast.
 
@@ -43,7 +43,7 @@ Check product-level residuals and scale instability, out-of-population analogues
 
 ## Missing evidence and fallback
 
-If history is sparse, do not fabricate backtests; use explicit analogue/scenario estimates. If repeat data are absent, report trials separately and show repeat assumptions as scenarios. If no distinct cross-check exists, record that absence and the shared-input dependence rather than presenting two formulas as triangulation. Never invent observations, provenance, executed methods, validation scores or interval coverage. Label controlled examples, real observations, judgment and scenarios distinctly.
+If history is sparse, do not fabricate backtests; use explicit analogue/scenario estimates. If repeat data are absent, report trials separately and show repeat assumptions as scenarios. If no distinct cross-check exists, record that absence and the shared-input dependence rather than presenting two formulas as triangulation.
 
 ## Chapter-specific invariants
 
@@ -91,36 +91,28 @@ Do not claim the synthetic calibration establishes an advertising causal effect.
 
 ## Applied report contract
 
-Return an intake/routing record, proxy/source register, reference-product calibration and held-out errors, monthly trial and total-unit tables, Y1/Y2/tail reconciliation, sensitivity table, missing-evidence priorities and dated scoring plan. State which methods were executed and which remain proposed. Include units, horizon, evidence cutoff, sources, assumptions and limitations. For a live forecast record creation time and outcome/scoring date.
+`results.csv` columns: `month,peak,trials,units`. `summary.json` keys: `scale,trial_total,held_out_mae,year_one_units` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
-## Learn and apply
+Return an intake/routing record, proxy/source register, reference-product calibration and held-out errors, monthly trial and total-unit tables, Y1/Y2/tail reconciliation, sensitivity table, missing-evidence priorities and dated scoring plan. State which methods were executed and which remain proposed.
 
-Read [workshop.md](references/workshop.md) for worked arithmetic, data replacement guidance, output interpretation and solved exercises. Use [evaluation.md](references/evaluation.md) to assess transfer; its expected answers are not executed agent-test results.
+## Run it
 
-Learning prompt: “Teach me chapter 27 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+The [notebook](../../companion/notebooks/27-directed-forecasting.ipynb) is the worked lesson; its editable [source](../../companion/lessons/27-directed-forecasting.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
-Applied prompt: “Apply chapter 27 to our new product: first determine whether available history supports a model or only an estimate, defend proxy inputs, calibrate across comparable mature products, separate trials from repeat units, preserve 24-month trial totals, and save a forecast/scoring record.”
-
-The [notebook](../../companion/notebooks/27-directed-forecasting.ipynb) is a worked lesson; its editable [source](../../companion/lessons/27-directed-forecasting.py) defines what is actually executed. Run the controlled example from the project root after installing the companion environment:
-
-```bash
-companion/.venv/bin/python companion/scripts/run.py chapters --chapter 27
-```
-
-A successful lesson run does not mean all applied steps above were executed on user data. The workshop states the adaptation boundary. Use the [Complete Forecasting Skill](../all-chapters-forecasting/SKILL.md) when the decision genuinely needs multiple chapters.
-
-## Apply the supplied input or your own file
-
-The [controlled fixture](../../companion/data/examples/ch27.csv) and [editable config](../../companion/configs/ch27.json) provide a complete runnable example:
+Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 
 ```bash
 companion/.venv/bin/python companion/scripts/run.py apply --chapter 27 \
   --input companion/data/examples/ch27.csv \
   --config companion/configs/ch27.json \
-  --output companion/applied-runs/ch27-reader-example
+  --output companion/applied-runs/ch27-example
 ```
 
-Use a new empty output directory for each run. Copy and edit the input/config for real observations; replace the fixture’s synthetic source label with actual provenance. The command writes `results.csv` with `month,peak,trials,units in launch mode; timestamp,forecast,model in history mode`, `summary.json` containing `scale,trial_total,held_out_mae in launch mode; status/required_evidence in sparse mode`, `diagnostic.png`, and a hashed `run.json` execution record. These files cover the numerical adapter; the fuller applied report above also requires evidence and business interpretation. `execution_status=passed` means execution succeeded, not that the forecast is accurate.
+It writes `results.csv` and `summary.json` with exactly the columns and keys listed under Applied report contract, `diagnostic.png`, and a hashed `run.json` execution record. To run the lesson itself: `run.py chapters --chapter 27`.
+
+Learning prompt: “Teach me chapter 27 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+
+Applied prompt: “Apply chapter 27 to our new product: first determine whether available history supports a model or only an estimate, defend proxy inputs, calibrate across comparable mature products, separate trials from repeat units, preserve 24-month trial totals, and save a forecast/scoring record.”
 
 ## Desk model skill
 

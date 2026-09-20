@@ -1,11 +1,5 @@
 # Evaluation scenarios: chapter 7
 
-Status: specification and documentation comparison, not executed agent testing.
-
-## Before the upgrade
-
-The entrypoint contained 269 words. Its concise method guidance did not provide the complete schema, worked adaptation, three solved exercises and output interpretation now supplied together. Preserve the existing scientific safeguards; expanding the instructions does not establish forecasting accuracy.
-
 ## Acceptance scenarios
 
 1. **Scenario:** Independent simulated mean has SE=.1 at N=1000. Approximate SE at N=4000?
@@ -20,6 +14,4 @@ The entrypoint contained 269 words. Its concise method guidance did not provide 
 4. **Transfer request:** Apply chapter 7 to cost_components.csv, preserve the stated dependence assumptions, calculate budget-exceedance probabilities and distinguish simulation error from model uncertainty.
    **Expected artifacts:** Return input distributions and provenance, dependence assumptions, seed/draw count, outcome quantiles, exceedance probabilities, Monte Carlo precision and separate model-sensitivity results.
 
-## Review procedure
-
-Give a reader or agent the scenario and the skill without the answer key. Check arithmetic, evidence cutoff, unsupported claims and artifact completeness. Record actual outputs and failures separately. Do not turn these expected responses into a claim that a usability or accuracy test has passed.
+How to use these scenarios: [conventions.md](../../all-chapters-forecasting/references/conventions.md), Learning mode. Expected behaviour is a specification, not a recorded test result.

@@ -26,7 +26,7 @@ event_date,report_date,count
 
 ## Executable interface
 
-Exact CLI columns: `event_date,report_date,count`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, delay_prob, frequency, horizon, mature_age, max_delay, origins, population, recovery_rate, season, seed, sigma`. Unknown config keys are rejected.
+Exact CLI columns: `event_date,report_date,count`. Supported method controls: `as_of, delay_prob, frequency, horizon, mature_age, max_delay, origins, population, recovery_rate, season, seed, sigma`.
 
 The tool builds the triangle at `as_of`, estimates the reporting-delay distribution from mature cohorts (truncated at `max_delay`) or takes the supplied `delay_prob`, nowcasts each incomplete cohort as reported count over completeness with negative-binomial 90 percent bounds, and evaluates the nowcast on archived mature cohorts by recomputing what it would have said at each younger age and scoring against the final count (an in-sample check, labelled as such). With `population` it fits an SEIR model (transmission rate, and the latent rate unless `sigma` is fixed) to incidence up to each of `origins` rolling origins and reports RMSE over `horizon` against persistence, with the implied basic reproduction number per origin. It does not model changes in testing, reporting holidays or interventions.
 
@@ -46,37 +46,29 @@ Small completeness makes recent nowcasts unstable. A stable historical delay law
 
 ## Missing evidence and fallback
 
-At zero completeness, report unidentifiable current totals rather than divide by zero. Without vintage reports, retrospective nowcast scoring may be impossible. Without defensible delay probabilities, provide observed reports and sensitivity scenarios. Never invent observations, provenance, executed methods, validation scores or interval coverage. Label controlled examples, real observations, judgment and scenarios distinctly.
+At zero completeness, report unidentifiable current totals rather than divide by zero. Without vintage reports, retrospective nowcast scoring may be impossible. Without defensible delay probabilities, provide observed reports and sensitivity scenarios.
 
 ## Applied report contract
 
-`results.csv` columns: `event_date,age,reported,completeness,nowcast,lower,upper`. `summary.json` keys: `delay_law,archived_evaluation,seir,as_of` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`. Report the archived-evaluation error by age beside the nowcast; the youngest cohorts carry the largest correction and the least evidence. Include units, horizon, evidence cutoff, sources, assumptions and limitations. For a live forecast record creation time and outcome/scoring date.
+`results.csv` columns: `event_date,age,reported,completeness,nowcast,lower,upper`. `summary.json` keys: `delay_law,archived_evaluation,seir,as_of` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
-## Learn and apply
+Report the archived-evaluation error by age beside the nowcast; the youngest cohorts carry the largest correction and the least evidence.
 
-Read [workshop.md](references/workshop.md) for worked arithmetic, data replacement guidance, output interpretation and solved exercises. Use [evaluation.md](references/evaluation.md) to assess transfer; its expected answers are not executed agent-test results.
+## Run it
 
-Learning prompt: “Teach me chapter 23 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+The [notebook](../../companion/notebooks/23-epidemics.ipynb) is the worked lesson; its editable [source](../../companion/lessons/23-epidemics.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
-Applied prompt: “Use chapter 23 to nowcast reporting_triangle.csv at the stated cutoff, audit delay stability and keep retrospective completion estimates separate from future transmission scenarios.”
-
-The [notebook](../../companion/notebooks/23-epidemics.ipynb) is a worked lesson; its editable [source](../../companion/lessons/23-epidemics.py) defines what is actually executed. Run the controlled example from the project root after installing the companion environment:
-
-```bash
-companion/.venv/bin/python companion/scripts/run.py chapters --chapter 23
-```
-
-A successful lesson run does not mean all applied steps above were executed on user data. The workshop states the adaptation boundary. Use the [Complete Forecasting Skill](../all-chapters-forecasting/SKILL.md) when the decision genuinely needs multiple chapters.
-
-## Apply the supplied input or your own file
-
-The [controlled fixture](../../companion/data/examples/ch23.csv) and [editable config](../../companion/configs/ch23.json) provide a complete runnable example:
+Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 
 ```bash
 companion/.venv/bin/python companion/scripts/run.py apply --chapter 23 \
   --input companion/data/examples/ch23.csv \
   --config companion/configs/ch23.json \
-  --output companion/applied-runs/ch23-reader-example
+  --output companion/applied-runs/ch23-example
 ```
 
-Use a new empty output directory for each run. Copy and edit the input/config for real observations; replace the fixture’s synthetic source label with actual provenance. The command writes `results.csv` with `event_date,reported,completeness,nowcast`, `summary.json` containing `interpretation`, `diagnostic.png`, and a hashed `run.json` execution record. These files cover the numerical adapter; the fuller applied report above also requires evidence and business interpretation. `execution_status=passed` means execution succeeded, not that the forecast is accurate.
+It writes `results.csv` and `summary.json` with exactly the columns and keys listed under Applied report contract, `diagnostic.png`, and a hashed `run.json` execution record. To run the lesson itself: `run.py chapters --chapter 23`.
+
+Learning prompt: “Teach me chapter 23 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+
+Applied prompt: “Use chapter 23 to nowcast reporting_triangle.csv at the stated cutoff, audit delay stability and keep retrospective completion estimates separate from future transmission scenarios.”

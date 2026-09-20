@@ -1,11 +1,5 @@
 # Evaluation scenarios: chapter 25
 
-Status: specification and documentation comparison, not executed agent testing.
-
-## Before the upgrade
-
-The entrypoint contained 265 words. Its concise method guidance did not provide the complete schema, worked adaptation, three solved exercises and output interpretation now supplied together. Preserve the existing scientific safeguards; expanding the instructions does not establish forecasting accuracy.
-
 ## Acceptance scenarios
 
 1. **Scenario:** Median overrun ratio 1.4, new plan 10 months: outside-view median?
@@ -20,6 +14,4 @@ The entrypoint contained 265 words. Its concise method guidance did not provide 
 4. **Transfer request:** Apply chapter 25 to projects.csv, retain censored cases, defend the reference class and translate supported quantiles into a commitment aligned with delay costs.
    **Expected artifacts:** Return class definition/inclusions, completion and censoring counts, empirical or survival quantiles, uplift factors, chosen commitment and its decision rationale, plus unidentifiable tail risks.
 
-## Review procedure
-
-Give a reader or agent the scenario and the skill without the answer key. Check arithmetic, evidence cutoff, unsupported claims and artifact completeness. Record actual outputs and failures separately. Do not turn these expected responses into a claim that a usability or accuracy test has passed.
+How to use these scenarios: [conventions.md](../../all-chapters-forecasting/references/conventions.md), Learning mode. Expected behaviour is a specification, not a recorded test result.

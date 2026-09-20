@@ -5,7 +5,7 @@ import hashlib
 import json
 import re
 import nbformat
-from provenance import inputs,digest
+from provenance import inputs,digest,manuscript_for,same_inputs
 
 ROOT=Path(__file__).resolve().parents[1]
 PROJECT=ROOT.parent
@@ -57,6 +57,14 @@ RULES={
 26:('Forecast journal, resolved outcomes, possible actions, asymmetric costs and review cadence.', 'Translate probabilities into cost-sensitive decisions, compare forecast scores and realized costs, retain a baseline and test adjustments on later outcomes.', 'A higher stated confidence level is not inherently a better forecast; evaluate usefulness and calibration together.'),
 27:('Target, units, horizon, as-of cutoff, available history/analogues, defended proxy inputs and scoring date.', 'Complete intake, model supported relationships, estimate unsupported launch parameters explicitly, compute two routes, stop on unexplained disagreement, phase annual volume and log assumptions.', 'Agreement is not calibration. Preserve annual totals; reconstructed gamma phasing is not the original Dynamics model or Bass incidence. Scale/calibration constants are case-specific.')}
 
+def lesson_title(lesson,number):
+    """Chapter title from the lesson's opening heading, used when the manuscript is not present."""
+    first=lesson.read_text().splitlines()
+    heading=next((l for l in first if l.startswith('# # ')),'')
+    text=heading[4:].strip()
+    return text if text.lower().startswith('chapter') else f'Chapter {number}: {text}'
+
+
 def initialize_skill(path, content):
     """Scaffold missing skills only; reviewed instructions are maintained artifacts."""
     if not path.exists():
@@ -65,15 +73,17 @@ def initialize_skill(path, content):
 
 def main():
     manifest={'title':'The Art and Science of Forecasting','chapters':[]}
+    previous={c['number']:c['title'] for c in json.loads((ROOT/'manifest.json').read_text())['chapters']} if (ROOT/'manifest.json').exists() else {}
     links=[]; inventory=['# Figure inventory','', '| Figure | Chapter | Title | Insertion section |','|---|---|---|---|']
-    coverage=['# Executed method coverage','', 'This generated map ties notebook sections to executed code cells. The full-manuscript [method audit](method-audit.md) separately identifies advanced extensions; those are not counted as implemented merely because the book mentions them.','']
+    coverage=['# Executed method coverage','', 'This generated map ties notebook sections to executed code cells. Advanced extensions that the book only names are not counted as implemented.','']
     for lesson in sorted((ROOT/'lessons').glob('*.py')):
-        number=int(lesson.name[:2]); chapter=next((PROJECT/'manuscript').glob(f'{number:02d}-*.md'))
-        title=chapter.read_text().splitlines()[0].removeprefix('# ')
+        number=int(lesson.name[:2]); chapter=manuscript_for(lesson)   # None in the public companion, which ships without the book
+        book=chapter.read_text() if chapter is not None else None
+        title=book.splitlines()[0].removeprefix('# ') if book else previous.get(number) or lesson_title(lesson,number)
         nbpath=ROOT/'notebooks'/f'{lesson.stem}.ipynb'
         execution=json.loads((ROOT/'results'/f'ch{number:02d}-execution.json').read_text())
-        if execution['status']!='passed' or execution.get('inputs')!=inputs(lesson):
-            raise ValueError(f'Chapter {number} needs a current successful execution')
+        if execution['status']!='passed' or not same_inputs(execution.get('inputs'),inputs(lesson)):
+            raise ValueError(f'Chapter {number} needs a current successful execution: run `run.py chapters --chapter {number}` first')
         if execution.get('notebook_sha256')!=digest(nbpath): raise ValueError(f'Notebook changed since execution: {nbpath}')
         for asset,sha in execution.get('artifacts',{}).items():
             if digest(ROOT/asset)!=sha: raise ValueError(f'Artifact changed since execution: {asset}')
@@ -89,12 +99,12 @@ def main():
         figures=json.loads(journal.read_text())
         for f in figures:
             f['anchor']=ANCHORS.get(number,{}).get(int(f['id'][-2:]),f['anchor'])
-            assert f['anchor'] in chapter.read_text(),(number,f['anchor'])
+            if book is not None: assert f['anchor'] in book,(number,f['anchor'])
             f['notebook']=f'notebooks/{lesson.stem}.ipynb'
             f['cell_id']=next(c['id'] for c in nb.cells if c.cell_type=='code' and re.search(rf'save\(\s*{number}\s*,\s*{int(f["id"][-2:])}\s*,',c.source))
             f['status']='executed-exported'
             inventory.append(f'| {f["id"]} | {number} | {f["title"]} | {f["anchor"].lstrip("# ")} |')
-        figures.sort(key=lambda f:(chapter.read_text().index(f['anchor']),f['id']))
+        figures.sort(key=lambda f:(book.index(f['anchor']) if book else 0,f['id']))
         for book_number,f in enumerate(figures,1): f['book_number']=book_number
         input_requirements,workflow,pitfall=RULES[number]
         skill_name=f'forecasting-ch{lesson.stem}'
@@ -151,8 +161,8 @@ Use the [Complete Forecasting Skill](../all-chapters-forecasting/SKILL.md) to co
 across chapters; it does not require every model for every problem.
 '''
         initialize_skill(skill,content)
-        manifest['chapters'].append(dict(number=number,title=title,source=str(chapter.relative_to(PROJECT)),
-            source_sha256=hashlib.sha256(chapter.read_bytes()).hexdigest(),notebook=str(nbpath.relative_to(ROOT)),
+        source={'source':str(chapter.relative_to(PROJECT)),'source_sha256':hashlib.sha256(chapter.read_bytes()).hexdigest()} if chapter is not None else {}
+        manifest['chapters'].append(dict(number=number,title=title,**source,notebook=str(nbpath.relative_to(ROOT)),
             lesson=str(lesson.relative_to(ROOT)),skill=str(skill.relative_to(PROJECT)),figures=figures,execution=execution,
             coverage='Executable core; named advanced extensions are explicitly scoped in lesson and method-audit report'))
         links.append(f'| {number:02d} | [{title}](../../{skill_name}/SKILL.md) | [{lesson.stem}](../../../companion/notebooks/{lesson.stem}.ipynb) |')

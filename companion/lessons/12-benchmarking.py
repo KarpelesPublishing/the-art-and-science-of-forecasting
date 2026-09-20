@@ -69,9 +69,19 @@ assert all(row['RMSE'] >= row['MAE']-1e-12 for row in metrics.values())
 # %% [markdown]
 # <!-- APPLIED-WORKSHOP-START -->
 # ## Guided application workshop
-# The sections below connect the controlled figures to a complete applied input/output workflow.
+# The sections below come from the chapter skill: the mechanism, the arithmetic, how to adapt the lesson to your data, exercises with worked solutions, and the exact contract of the applied tool.
 # %% [markdown]
-# # Chapter 12 workshop: from lesson to decision
+# ## Input contract and format example
+# CSV timestamp,target and optional series_id; unique timestamp per series with regular frequency. Config horizon,season,origins and aggregation weights. Every compared method must face the same eligible targets. The rolling comparison needs 2 seasons + 4 horizons of history (72 monthly points for a 12-month horizon, 48 for six months, 36 for three); with less, the tool returns a provisional persistence baseline and says how many points are missing.
+#
+# Minimal **format illustration**, not sufficient training data:
+#
+# ```csv
+# series_id,timestamp,target
+# A,2025-01-01,100
+# A,2025-02-01,104
+# B,2025-01-01,20
+# ```
 #
 # ## Explain the mechanism
 #
@@ -81,13 +91,9 @@ assert all(row['RMSE'] >= row['MAE']-1e-12 for row in metrics.values())
 #
 # Actuals [10,20] with forecasts [12,16] give errors [2,4], MAE=3 and RMSE=sqrt(10)=3.162. If the training seasonal-naive scale is 2, MASE=1.5. That 1.5 does not compare directly with a held-out naive forecast unless its actual held-out loss is separately calculated.
 #
-# Treat this hand calculation as a mechanism check. Compare its units and assumptions with the business target before using the executable adapter below.
-#
 # ## Adapt the lesson to reader data
 #
 # Replace the generated panel with sorted grouped series. Recompute each scale inside its training window. Keep the lesson’s per-horizon error array structure or an equivalent long table; averaging too early hides cases and makes fair alignment hard to audit.
-#
-# Keep the controlled example as a reproducible teaching case. Work in a copy when replacing its data; retain raw input, a cleaned table and an explanation of exclusions. Real data need a named source, extraction date, usable-as-of date and units. If an actual is revised later, preserve the vintage available when the forecast would have been issued. Never silently label synthetic generator output as an external dataset.
 #
 # For this chapter, settle these questions before fitting: What horizon and loss match the decision? Which series and origins define deployment? Are weights business volume weights or equal-series weights? Is there an untouched final test?
 #
@@ -97,12 +103,10 @@ assert all(row['RMSE'] >= row['MAE']-1e-12 for row in metrics.values())
 #
 # The current applied adapter adds a separately inspectable numerical result:
 #
-# - `results.csv`: `timestamp,forecast,model (plus series_id for a panel)`.
-# - `summary.json`: inspect `selected,validation,validation_predictions,test_mae,intervals; per-series summaries for a panel`.
+# - `results.csv`: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90`.
+# - `summary.json`: `pool,selected,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus method, interpretation, assumptions, not_done and status.
 #
 # Each series independently runs the companion engine with the `full` pool: the chapter 4 smoothing family with an AICc-selected ETS form, Theta, STL+ETS, the chapter 6 ARIMA family with diagnostic differencing, LightGBM on lags when history allows, a median of the top three, an equal ensemble, and the naive, seasonal-naive and drift benchmarks. Validation includes MAE, RMSE and training-scaled MASE at up to five origins plus a final untouched holdout; interval coverage is measured for every model that produces intervals. No pooled business-weight ranking or formal significance test is produced. Short valid histories return a provisional naive baseline and optional seasonal-naive scenario; these are not validated model comparisons.
-#
-# The [fixture](../data/examples/ch12.csv) and [config](../configs/ch12.json) match the current interface. Run the `apply` command in the [skill entrypoint](../../forecasting-skills/forecasting-ch12-benchmarking/SKILL.md), using a new empty output folder. Any broader methodology in this workshop requires separately recorded evidence or an explicit extension; successful command execution does not imply those steps happened.
 #
 # ## Decide what the evidence supports
 #
@@ -110,7 +114,7 @@ assert all(row['RMSE'] >= row['MAE']-1e-12 for row in metrics.values())
 #
 # If histories differ, report the common eligible evaluation subset and separately report deployment coverage. If MASE scale is zero, flag it and use an unscaled metric rather than adding an arbitrary epsilon. With few origins, report descriptive results without broad superiority claims.
 #
-# The applied deliverable must make these items inspectable: Return prediction-level records, per-series/per-origin/per-horizon losses, weighting rules, coverage and failed-fit counts, baseline comparisons and final-selection separation.
+# The applied deliverable must make these items inspectable: `results.csv` columns: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90`; `summary.json` keys: `pool,selected,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus method, interpretation, assumptions, not_done and status. Return prediction-level records, per-series/per-origin/per-horizon losses, weighting rules, coverage and failed-fit counts, baseline comparisons and final-selection separation.
 #
 # ## Three exercises with worked solutions
 #
@@ -138,8 +142,6 @@ assert all(row['RMSE'] >= row['MAE']-1e-12 for row in metrics.values())
 #
 # > Use chapter 12 to build a common rolling-origin benchmark for panel.csv, retain prediction-level records and compare methods under explicit business weights.
 #
-# Read the returned result as a decision record. Check that the forecast answers your unit and horizon, that its comparison uses information available at the time, and that any recommendation follows from the stated loss or business objective. Ask which missing measurement would most change the conclusion.
-#
 # ## Observed-data transfer exercise
 #
 # A bundled [observed series](../data/observed/monthly-temperature.csv) and [matching config](../configs/ch12-observed.json) provide a second application after the controlled fixture. Read the [data registry](../data/registry.json) for provenance and transformations. These are historical snapshots, not archived real-time release vintages.
@@ -152,62 +154,51 @@ assert all(row['RMSE'] >= row['MAE']-1e-12 for row in metrics.values())
 # ```
 #
 # Explain why a ranking on this one observed series does not establish an across-industry ranking. Record the actual result of your run. Do not import the controlled example’s winner or interpret a successful numerical execution as evidence of operational accuracy.
+#
+# Shared rules for data replacement, provenance, output folders and reading `status`: [conventions.md](../../forecasting-skills/all-chapters-forecasting/references/conventions.md).
 # %% [markdown]
-# ## Configure and run the applied case
+# ## Apply this chapter to your own data
 #
-# The input file and JSON below are the only entry-point changes needed to try another
-# case with the same schema. Keep the original examples for comparison. Supply source
-# and units in the configuration; resolve missing periods rather than silently filling
-# unknown observations with zeros. These calculations call the same tested functions
-# as the `run.py apply` command. A failed validation is a reason to inspect the data,
-# not to replace it with invented observations.
-#
-# The default input here is a **seeded synthetic schema example**, separate from any
-# observed-data application below. Read the summary before interpreting its results.
+# The two paths below are the only things to change: point `INPUT_PATH` at a file with the
+# columns in the input contract above and `CONFIG_PATH` at a copy of the shipped configuration
+# with your `source` and `units`. The call is the same tested function behind `run.py apply`.
+# The printed digest shows what ran, its status, the interpretation, the assumptions and the
+# `not_done` list; the full summary is saved beside the table. A validation error is a reason to
+# inspect the data, not to fill gaps with invented observations. Shared rules for provenance,
+# output folders and reading `status` are in the Complete Forecasting Skill's conventions reference.
 # %%
 from forecasting_companion.applied.methods import analyze as analyze_chapter
-from forecasting_companion.applied.core import clean_json
+from forecasting_companion.applied.core import clean_json, summarize, preview
 import pandas as pd
 import json, os
-INPUT_PATH = project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists()) / 'companion/data/examples/ch12.csv'
-CONFIG_PATH = project_path.parents[2] / 'configs/ch12.json'
-# Input paths are explicit and may be replaced with reader-supplied files.
+project_path = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p/'companion/src').exists())
+INPUT_PATH = project_path / 'companion/data/examples/ch12.csv'      # replace with your file
+CONFIG_PATH = project_path / 'companion/configs/ch12.json'            # replace with your configuration
 workshop_config = json.loads(CONFIG_PATH.read_text())
 workshop_input = pd.read_csv(INPUT_PATH)
 workshop_table, workshop_summary = analyze_chapter(12, workshop_input, workshop_config)
-print(json.dumps(clean_json(workshop_summary), indent=2))
-print(workshop_table.head(12).to_string(index=False))
-workshop_output = Path(os.environ.get('FORECAST_OUTPUT', CONFIG_PATH.parents[1])) / 'results'
+print(summarize(workshop_summary, workshop_table))
+print()
+print(preview(workshop_table))
+workshop_output = Path(os.environ.get('FORECAST_OUTPUT', project_path / 'companion')) / 'results'
 workshop_output.mkdir(parents=True, exist_ok=True)
 workshop_table.to_csv(workshop_output/'ch12-workshop-results.csv', index=False)
-(workshop_output/'ch12-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
+_ = (workshop_output/'ch12-workshop-summary.json').write_text(json.dumps(clean_json(workshop_summary), indent=2)+'\n')
 # %% [markdown]
-# ## Apply the same workflow to observed data
+# ## The same workflow on observed data
 #
-# This second case uses a bundled public-domain historical dataset documented in
-# `data/registry.json`. It is a revised snapshot, not an archived real-time vintage.
-# The earlier time cuts prevent fitting on held-out outcomes; they do not undo
-# revisions that may have occurred before the snapshot was published. Compare the
-# actual output below with the controlled case. A method need not win to be useful.
-# The source, transformation and units are in the configuration and registry.
+# A second run on a bundled public-domain series documented in `data/registry.json` (a revised
+# historical snapshot, not an archived real-time vintage). The earlier time cuts prevent fitting
+# on held-out outcomes; they do not undo revisions made before the snapshot was published.
+# Compare this digest with the controlled case above: a method need not win to be useful, and
+# the winner on synthetic data has no claim on observed data.
 # %%
-observed_input = pd.read_csv(CONFIG_PATH.parents[1]/'data/observed/monthly-temperature.csv')
-observed_config = json.loads((CONFIG_PATH.parent/'ch12-observed.json').read_text())
+observed_input = pd.read_csv(project_path/'companion/data/observed/monthly-temperature.csv')
+observed_config = json.loads((project_path/'companion/configs/ch12-observed.json').read_text())
 observed_table, observed_summary = analyze_chapter(12, observed_input, observed_config)
 print('Observed-data source:', observed_config['source'])
-print(json.dumps(clean_json(observed_summary), indent=2))
-print(observed_table.head(12).to_string(index=False))
+print(summarize(observed_summary, observed_table))
+print()
+print(preview(observed_table))
 observed_table.to_csv(workshop_output/'ch12-observed-results.csv', index=False)
-(workshop_output/'ch12-observed-summary.json').write_text(json.dumps(clean_json(observed_summary), indent=2)+'\n')
-# %% [markdown]
-# ## Read the result as a decision record
-#
-# Start with the summary’s **interpretation**, then examine its numerical evidence.
-# Distinguish what was fitted, what was supplied, and what remains unidentified.
-# The results table is the calculation; it is not permission to act. Explain which
-# assumption would most change the answer and what new evidence would test it.
-# For a live forecast, set an outcome date and keep the original result for scoring.
-#
-# The exercises and worked solutions above test interpretation, calculation, and
-# adaptation. Re-run a changed assumption and compare the actual output; do not
-# reuse numbers from the book when your input or horizon changes.
+_ = (workshop_output/'ch12-observed-summary.json').write_text(json.dumps(clean_json(observed_summary), indent=2)+'\n')

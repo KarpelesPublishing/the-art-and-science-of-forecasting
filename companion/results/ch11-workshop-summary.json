@@ -1,10 +1,20 @@
 {
+  "method": "Crowd aggregation rules (mean, median, trimmed mean) scored on identical questions",
+  "interpretation": "Over 8 questions the lowest MAE came from the median (7.538); all rules: mean 8.893, median 7.538, trimmed 8.151. Unweighted rules are evaluated on identical questions. Precision weights require earlier resolved questions, and shared bias can defeat every aggregation rule.",
+  "assumptions": [
+    "Each expert answered every question independently of the others",
+    "One resolved outcome per question"
+  ],
+  "not_done": [
+    "No accuracy-weighted combination (needs earlier resolved questions)",
+    "No test for shared information among experts"
+  ],
+  "status": "passed",
   "mae": {
     "mean": 8.892831943693938,
     "median": 7.53818853921544,
     "trimmed": 8.151197005445951
   },
   "brier": null,
-  "extremize_a": null,
-  "interpretation": "Unweighted rules are evaluated on identical questions. Precision weights require earlier resolved questions, and shared bias can defeat every aggregation rule."
+  "extremize_a": null
 }

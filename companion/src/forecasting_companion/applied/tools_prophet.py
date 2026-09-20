@@ -34,8 +34,7 @@ def _fit(frame_ds_y, holidays, regressors, prior, mode, weekly, yearly, seed, un
                     uncertainty_samples=uncertainty, interval_width=0.8)
         for r in regressors:
             m.add_regressor(r)
-        import logging
-        logging.getLogger('cmdstanpy').setLevel(logging.ERROR)
+        from ..common import quiet_libraries; quiet_libraries()
         m.fit(frame_ds_y, seed=seed)
     return m
 

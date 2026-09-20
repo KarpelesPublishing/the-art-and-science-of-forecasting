@@ -1,10 +1,21 @@
 {
-  "method": "Gaussian autoregressive MLP (not DeepAR)",
+  "method": "Gaussian autoregressive MLP trained on related entities, scored on held-out entities (not DeepAR)",
+  "interpretation": "Trained on 6 entities, tested on 2 never seen in training: median MAE 3.241 vs seasonal naive 6.498; the nominal 80% band covered 100%. 100 recursive sample paths provide marginal bands. This small Gaussian model is not a count model; hyperparameters are predeclared, not tuned on held-out entities.",
+  "assumptions": [
+    "Held-out entities share the dynamics of the training entities",
+    "Errors are Gaussian on the entity's own scale",
+    "Calendars are aligned across entities"
+  ],
+  "not_done": [
+    "No DeepAR-style RNN, likelihood choice or covariates",
+    "No hyperparameter search",
+    "No per-entity recalibration"
+  ],
+  "status": "passed",
   "training_entities": 6,
   "held_out_entities": 2,
-  "coverage": 0.7857142857142857,
-  "interval_score": 28.43477638163555,
-  "mae": 5.588227103675536,
-  "baseline_mae": 5.60756575746192,
-  "interpretation": "Entity holdout tests transfer of related patterns. 100 recursive paths provide marginal 80% bands. This small Gaussian model is not a count model; hyperparameters are predeclared, not tuned on held-out entities."
+  "coverage": 1.0,
+  "interval_score": 15.4404479435512,
+  "mae": 3.241271580287388,
+  "baseline_mae": 6.497857142857143
 }

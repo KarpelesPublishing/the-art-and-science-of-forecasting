@@ -1,11 +1,5 @@
 # Evaluation scenarios: chapter 10
 
-Status: specification and documentation comparison, not executed agent testing.
-
-## Before the upgrade
-
-The entrypoint contained 413 words. Its concise method guidance did not provide the complete schema, worked adaptation, three solved exercises and output interpretation now supplied together. Preserve the existing scientific safeguards; expanding the instructions does not establish forecasting accuracy.
-
 ## Acceptance scenarios
 
 1. **Scenario:** Prior .4, supported LR=3: calculate the posterior.
@@ -20,6 +14,4 @@ The entrypoint contained 413 words. Its concise method guidance did not provide 
 4. **Transfer request:** Use chapter 10 to define and journal whether our launch exceeds 50,000 units within 24 months. Separate business assumptions from measured evidence, give a justified initial probability or state why one is unsupported, and predeclare resolution and scoring rules.
    **Expected artifacts:** Return the event contract, base-rate source, initial and current probability, complete revision journal, update triggers, resolved-event score table and exclusions. Mark editable local JSON as unauthenticated; it is not tamper-proof storage.
 
-## Review procedure
-
-Give a reader or agent the scenario and the skill without the answer key. Check arithmetic, evidence cutoff, unsupported claims and artifact completeness. Record actual outputs and failures separately. Do not turn these expected responses into a claim that a usability or accuracy test has passed.
+How to use these scenarios: [conventions.md](../../all-chapters-forecasting/references/conventions.md), Learning mode. Expected behaviour is a specification, not a recorded test result.

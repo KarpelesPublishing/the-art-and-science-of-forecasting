@@ -23,18 +23,18 @@ def execute(chapters, profile='complete'):
             (ROOT/'results'/f'ch{number:02d}-execution.json').write_text(json.dumps(skipped,indent=2)+'\n')
             reports.append(skipped)
             continue
-        path=build(source); nb=nbformat.read(path,as_version=4)
+        provenance=inputs(source)                      # hash the inputs before anything is written
+        nb=build(source,write=False); path=ROOT/'notebooks'/f'{source.stem}.ipynb'
         km=KernelManager(kernel_name='python3')
         km.kernel_spec.argv=[sys.executable,'-m','ipykernel_launcher','-f','{connection_file}']
         start=time.monotonic()
-        provenance=inputs(source)
         try:
             NotebookClient(nb,km=km,timeout=600,resources={'metadata':{'path':str(ROOT.parent)}}).execute()
-            nbformat.write(nb,path)
+            path.parent.mkdir(exist_ok=True); nbformat.write(nb,path)     # the shipped notebook changes only after a run
             result=dict(chapter=number,status='passed',seconds=round(time.monotonic()-start,2))
         except Exception as exc:
-            nbformat.write(nb,path)
-            result=dict(chapter=number,status='failed',error=str(exc),seconds=round(time.monotonic()-start,2))
+            failed=ROOT/'results'/f'{source.stem}-failed.ipynb'; failed.parent.mkdir(exist_ok=True); nbformat.write(nb,failed)
+            result=dict(chapter=number,status='failed',error=str(exc),failed_notebook=str(failed.relative_to(ROOT)),seconds=round(time.monotonic()-start,2))
         finally:
             if km.has_kernel: km.shutdown_kernel(now=True)
         result['inputs']=provenance
@@ -49,29 +49,39 @@ def execute(chapters, profile='complete'):
         print(json.dumps({k:v for k,v in result.items() if k not in ['inputs','artifacts','notebook_sha256']}),flush=True)
     return reports
 
+USAGE='''Companion command line.
+
+  run.py chapters --all | --chapter N [--profile core|complete]   execute lesson notebooks
+  run.py apply --chapter N --input x.csv --config c.json --output DIR   apply one chapter to your data
+  run.py forecast --input panel.csv --output DIR [--engine full] ...    forecast many series (see forecast --help)
+
+Applied outputs go in a new, empty directory outside companion/ or under companion/applied-runs/.
+'''
+
 if __name__=='__main__':
-    if len(sys.argv)>1 and sys.argv[1]=='apply':
+    parser=argparse.ArgumentParser(description=USAGE,formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub=parser.add_subparsers(dest='command',required=True,metavar='{chapters,apply,forecast}')
+    ch=sub.add_parser('chapters',help='execute chapter notebooks from their lesson sources')
+    ch.add_argument('--all',action='store_true'); ch.add_argument('--chapter',type=int,action='append'); ch.add_argument('--profile',choices=['core','complete'],default='complete')
+    ap=sub.add_parser('apply',help='apply a chapter tool to supplied data without changing book artifacts')
+    ap.add_argument('--chapter',type=int,required=True); ap.add_argument('--input',required=True); ap.add_argument('--config',required=True); ap.add_argument('--output',required=True)
+    fc=sub.add_parser('forecast',help='forecast a panel of series with the batch runner (run.py forecast --help for its options)',add_help=False)
+    args,rest=parser.parse_known_args()
+    if args.command!='forecast' and rest: parser.error('unrecognized arguments: '+' '.join(rest))
+    if args.command=='apply':
         sys.path.insert(0,str(ROOT/'src'))
         from forecasting_companion.applied import run
-        parser=argparse.ArgumentParser(description='Apply a chapter to supplied data without changing book artifacts')
-        parser.add_argument('command'); parser.add_argument('--chapter',type=int,required=True)
-        parser.add_argument('--input',required=True); parser.add_argument('--config',required=True); parser.add_argument('--output',required=True)
-        args=parser.parse_args()
         try:
             summary=run(args.chapter,args.input,args.config,args.output)
             print(json.dumps(summary,default=str,indent=2))
         except (ValueError,KeyError,FileNotFoundError) as exc:
             parser.exit(2,f'Application stopped: {exc}\n')
         raise SystemExit(0)
-    if len(sys.argv)>1 and sys.argv[1]=='forecast':
+    if args.command=='forecast':
         import subprocess
         import os
         env=os.environ.copy(); env['PYTHONPATH']=str(ROOT/'src')+os.pathsep+env.get('PYTHONPATH','')
-        raise SystemExit(subprocess.call([sys.executable,'-m','forecasting_companion.batch',*sys.argv[2:]],env=env))
-    parser=argparse.ArgumentParser(description=__doc__)
-    sub=parser.add_subparsers(dest='command',required=True)
-    ch=sub.add_parser('chapters'); ch.add_argument('--all',action='store_true'); ch.add_argument('--chapter',type=int,action='append'); ch.add_argument('--profile',choices=['core','complete'],default='complete')
-    args=parser.parse_args()
+        raise SystemExit(subprocess.call([sys.executable,'-m','forecasting_companion.batch',*rest],env=env))
     if not args.all and not args.chapter: parser.error('Choose --all or --chapter N')
     reports=execute(set(args.chapter or []),args.profile)
     if not reports or any(r['status']=='failed' for r in reports): sys.exit(1)

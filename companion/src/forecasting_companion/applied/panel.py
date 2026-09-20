@@ -1,7 +1,7 @@
 """Panel applications with explicit feature availability and held-out entities."""
 import numpy as np
 import pandas as pd
-from .core import require,numeric,time_frame,integer,result
+from .core import require,numeric,time_frame,integer,finish
 
 
 def panel_analysis(chapter,d,c):
@@ -161,4 +161,9 @@ def neural(groups,c):
             lo,med,hi=np.quantile(paths,[.1,.5,.9],axis=0);base=np.resize(y[:cutoff][-season:],h)
             for j in range(h):rows.append(dict(series_id=g.series_id.iloc[0],timestamp=g.timestamp.iloc[cutoff+j],actual=y[cutoff+j],baseline=base[j],lower=lo[j],median=med[j],upper=hi[j]))
     table=pd.DataFrame(rows);alpha=.2;score=table.upper-table.lower+2/alpha*np.maximum(table.lower-table.actual,0)+2/alpha*np.maximum(table.actual-table.upper,0)
-    return table,dict(method='Gaussian autoregressive MLP (not DeepAR)',training_entities=len(training),held_out_entities=held,coverage=float(((table.actual>=table.lower)&(table.actual<=table.upper)).mean()),interval_score=float(score.mean()),mae=float(abs(table.actual-table['median']).mean()),baseline_mae=float(abs(table.actual-table.baseline).mean()),interpretation='Entity holdout tests transfer of related patterns. 100 recursive paths provide marginal 80% bands. This small Gaussian model is not a count model; hyperparameters are predeclared, not tuned on held-out entities.')
+    coverage=float(((table.actual>=table.lower)&(table.actual<=table.upper)).mean());mae=float(abs(table.actual-table['median']).mean());base=float(abs(table.actual-table.baseline).mean())
+    return finish(table,method='Gaussian autoregressive MLP trained on related entities, scored on held-out entities (not DeepAR)',
+                  interpretation=f'Trained on {len(training)} entities, tested on {held} never seen in training: median MAE {mae:.4g} vs seasonal naive {base:.4g}; the nominal 80% band covered {coverage:.0%}. 100 recursive sample paths provide marginal bands. This small Gaussian model is not a count model; hyperparameters are predeclared, not tuned on held-out entities.',
+                  assumptions=['Held-out entities share the dynamics of the training entities','Errors are Gaussian on the entity\'s own scale','Calendars are aligned across entities'],
+                  not_done=['No DeepAR-style RNN, likelihood choice or covariates','No hyperparameter search','No per-entity recalibration'],
+                  training_entities=len(training),held_out_entities=held,coverage=coverage,interval_score=float(score.mean()),mae=mae,baseline_mae=base)

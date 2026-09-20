@@ -13,7 +13,7 @@ Ask only for unresolved material inputs: What treatment, alternative and populat
 
 ## Input contract and additional evidence
 
-A regular series with the treated outcome and at least one control series; name every control column in config `controls` (default `['control']`). Synthetic control and placebo-in-space need at least two, better three or more, controls. Declare `intervention` (the first treated timestamp) and write down the `identification` argument before running.
+A regular series with the treated outcome and at least one control series; name every control column in config `controls`; without that key the tool looks for one column literally named `control`. Synthetic control and placebo-in-space need at least two, better three or more, controls. Declare `intervention` (the first treated timestamp) and write down the `identification` argument before running.
 
 Minimal **format illustration**, not sufficient training data:
 
@@ -26,7 +26,7 @@ timestamp,control,control_2,control_3,treated
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,control,treated[,controls...]`. All configs require `source` and `units`; `outcome_due` is recorded for future scoring. Supported method controls: `as_of, controls, event_window, frequency, horizon, identification, intervention, placebos, season, seed`. Unknown config keys are rejected.
+Exact CLI columns: `timestamp,control,treated[,controls...]`. Supported method controls: `as_of, controls, event_window, frequency, horizon, identification, intervention, placebos, season, seed`.
 
 The tool computes difference-in-differences, a pre-period OLS counterfactual on all declared controls, and, with two or more controls, a synthetic control with nonnegative weights summing to one fitted on the pre-period only. It then runs placebo-in-space (each control treated in turn against the remaining donors; the p-value is the treated unit's rank on post-effect over pre-RMSE), placebo-in-time (`placebos` pseudo interventions inside the pre period; p is the share at least as large as the estimate), and an event-study table of per-period effects over `event_window` pre periods and all post periods with a pre-trend slope test. Every estimate is conditional on the declared identification; the tool does not decide whether the comparison is defensible.
 
@@ -46,7 +46,7 @@ Estimation necessarily uses post outcomes; model/design selection must not chase
 
 ## Missing evidence and fallback
 
-With no credible unaffected comparator or assignment argument, report observed changes and bounded scenarios rather than causal lift. If prehistory is short, disclose weak trend diagnostics. An experiment is useful only if ethical, feasible, adequately powered and uncontaminated. Never invent observations, provenance, executed methods, validation scores or interval coverage. Label controlled examples, real observations, judgment and scenarios distinctly.
+With no credible unaffected comparator or assignment argument, report observed changes and bounded scenarios rather than causal lift. If prehistory is short, disclose weak trend diagnostics. An experiment is useful only if ethical, feasible, adequately powered and uncontaminated.
 
 ## Chapter-specific invariants
 
@@ -77,33 +77,25 @@ Pretrend nonsignificance does not prove identification; plain OLS is not BSTS/Ca
 
 ## Applied report contract
 
-`results.csv` columns: `timestamp,observed,ols_counterfactual,ols_effect,post,relative_period[,sc_counterfactual,sc_effect]`. `summary.json` keys: `did,post_mean_effect,pre_rmse,sc_weights,sc_post_mean_effect,sc_pre_rmse,placebo_space,placebo_time,event_study,pretrend,identification,controls` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`. Quote the placebo p-values and the pre-trend flag with the effect; an effect without them is a difference, not evidence. Include units, horizon, evidence cutoff, sources, assumptions and limitations. For a live forecast record creation time and outcome/scoring date.
+`results.csv` columns: `timestamp,observed,ols_counterfactual,ols_effect,post,relative_period,sc_counterfactual,sc_effect`. `summary.json` keys: `did,post_mean_effect,pre_rmse,sc_weights,sc_post_mean_effect,sc_pre_rmse,placebo_space,placebo_time,event_study,pretrend,identification,controls` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
-## Learn and apply
+Quote the placebo p-values and the pre-trend flag with the effect; an effect without them is a difference, not evidence.
 
-Read [workshop.md](references/workshop.md) for worked arithmetic, data replacement guidance, output interpretation and solved exercises. Use [evaluation.md](references/evaluation.md) to assess transfer; its expected answers are not executed agent-test results.
+## Run it
 
-Learning prompt: “Teach me chapter 22 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+The [notebook](../../companion/notebooks/22-causal.ipynb) is the worked lesson; its editable [source](../../companion/lessons/22-causal.py) defines what is executed. [workshop.md](references/workshop.md) holds the mechanism, the hand arithmetic, exercises with worked solutions and the reading of the lesson's actual outputs; [evaluation.md](references/evaluation.md) holds acceptance scenarios. The rules every chapter shares (evidence, provenance, output folders, what `status` means and what to do about it, data floors, how to combine chapters) are in [conventions.md](../all-chapters-forecasting/references/conventions.md); read it once.
 
-Applied prompt: “Apply chapter 22 to intervention.csv, state the identifying assumptions before computing effects, and show how a plausible concurrent shock changes the interpretation.”
-
-The [notebook](../../companion/notebooks/22-causal.ipynb) is a worked lesson; its editable [source](../../companion/lessons/22-causal.py) defines what is actually executed. Run the controlled example from the project root after installing the companion environment:
-
-```bash
-companion/.venv/bin/python companion/scripts/run.py chapters --chapter 22
-```
-
-A successful lesson run does not mean all applied steps above were executed on user data. The workshop states the adaptation boundary. Use the [Complete Forecasting Skill](../all-chapters-forecasting/SKILL.md) when the decision genuinely needs multiple chapters.
-
-## Apply the supplied input or your own file
-
-The [controlled fixture](../../companion/data/examples/ch22.csv) and [editable config](../../companion/configs/ch22.json) provide a complete runnable example:
+Apply the tool to the shipped example or to your own file, always into a new empty output directory:
 
 ```bash
 companion/.venv/bin/python companion/scripts/run.py apply --chapter 22 \
   --input companion/data/examples/ch22.csv \
   --config companion/configs/ch22.json \
-  --output companion/applied-runs/ch22-reader-example
+  --output companion/applied-runs/ch22-example
 ```
 
-Use a new empty output directory for each run. Copy and edit the input/config for real observations; replace the fixture’s synthetic source label with actual provenance. The command writes `results.csv` with `timestamp,observed,counterfactual,effect,post`, `summary.json` containing `did,post_mean_effect,pre_rmse,identification`, `diagnostic.png`, and a hashed `run.json` execution record. These files cover the numerical adapter; the fuller applied report above also requires evidence and business interpretation. `execution_status=passed` means execution succeeded, not that the forecast is accurate.
+It writes `results.csv` and `summary.json` with exactly the columns and keys listed under Applied report contract, `diagnostic.png`, and a hashed `run.json` execution record. To run the lesson itself: `run.py chapters --chapter 22`.
+
+Learning prompt: “Teach me chapter 22 using the workshop’s numerical example. Ask me to explain the failure case before showing its worked solution.”
+
+Applied prompt: “Apply chapter 22 to intervention.csv, state the identifying assumptions before computing effects, and show how a plausible concurrent shock changes the interpretation.”

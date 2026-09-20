@@ -1,8 +1,18 @@
 {
-  "method": "Beta-binomial posterior",
+  "method": "Beta-binomial posterior with prior-strength sensitivity",
+  "interpretation": "With 21 successes in 32 trials and a Beta(2,2) prior, the posterior mean is 0.639 (95% credible 0.478 to 0.785). The other rows vary the prior strength while keeping its mean; if they disagree materially, the data are not yet decisive.",
+  "assumptions": [
+    "Trials are exchangeable Bernoulli draws with one common success probability",
+    "The recorded trials are all the trials (no selection of favourable results)",
+    "The prior expresses belief before these trials"
+  ],
+  "not_done": [
+    "No pooling across groups or time (a hierarchical model)",
+    "Prior parameters were supplied, not elicited or checked against outside evidence"
+  ],
+  "status": "passed",
   "successes": 21.0,
   "failures": 11.0,
   "posterior_alpha": 23.0,
-  "posterior_beta": 13.0,
-  "interpretation": "The middle row uses the declared prior; other rows vary its strength while preserving its mean. Credible intervals assume exchangeable Bernoulli trials and no selection bias."
+  "posterior_beta": 13.0
 }

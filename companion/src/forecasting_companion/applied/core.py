@@ -81,6 +81,62 @@ def finish(table,*,method,interpretation,assumptions,not_done=(),status='passed'
 
 def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
+def diagnostic_chart(table,summary,config,chapter,path):
+    """One honest picture of the returned table: the forecast (with its band and any actuals) when the
+    table has one, otherwise the last numeric columns. Nothing is drawn that the table does not contain."""
+    from ..common import plt
+    fig,ax=plt.subplots(figsize=(7,4))
+    cols=set(table.columns);nums=table.select_dtypes(include='number')
+    x=pd.to_datetime(table['timestamp'],errors='coerce',utc=True) if 'timestamp' in cols else None
+    if x is None or x.isna().any():x=np.arange(len(table));xlabel='Result row (see results.csv)'
+    else:xlabel='Date'
+    point=next((c for c in ('forecast','prediction','median','nowcast','filtered_state','estimate') if c in cols),None)
+    if point is not None and 'series_id' not in cols and 'node' not in cols and 'ceiling' not in cols:
+        if 'actual' in cols:ax.plot(x,table['actual'],color='.35',lw=1,label='actual')
+        if 'observed' in cols:ax.plot(x,table['observed'],color='.35',lw=1,label='observed')
+        ax.plot(x,table[point],color='#163d59',lw=1.6,label=point)
+        lo,hi=next(((a,b) for a,b in (('lower','upper'),('split_lower','split_upper'),('empirical_q10','empirical_q90'),('q10','q90')) if a in cols and b in cols),(None,None))
+        if lo:ax.fill_between(x,table[lo],table[hi],color='#163d59',alpha=.15,label=f'{lo} to {hi}')
+        ax.legend(fontsize=8,frameon=False)
+    elif len(nums.columns):
+        chosen=[c for c in nums.columns if c not in ('interval_level','alpha_t','horizon','post','relative_period')][-3:] or list(nums.columns[-3:])
+        for c in chosen:ax.plot(x,table[c],lw=1.2,label=c)
+        ax.legend(fontsize=8,frameon=False)
+    else:ax.text(.05,.5,summary.get('interpretation','See summary.json'),wrap=True);ax.set_axis_off()
+    ax.set(xlabel=xlabel,ylabel=config.get('units',''),title=f'Chapter {chapter}: {summary.get("method","applied result")}'[:90])
+    fig.autofmt_xdate() if xlabel=='Date' else None
+    fig.tight_layout();fig.savefig(path,dpi=150);plt.close(fig)
+
+def preview(table,rows=12,digits=3):
+    """The first rows of a result table with numbers rounded and timestamps shown as dates, for printing."""
+    t=table.head(rows).copy()
+    for c in t.columns:
+        if pd.api.types.is_numeric_dtype(t[c]) and not pd.api.types.is_bool_dtype(t[c]):t[c]=t[c].round(digits)
+        elif pd.api.types.is_datetime64_any_dtype(t[c]):t[c]=pd.to_datetime(t[c]).dt.strftime('%Y-%m-%d')
+    return t.to_string(index=False)
+
+def summarize(summary,table=None,max_list=6):
+    """A short reading of a tool summary for notebooks and the CLI: the five standard keys, then the
+    scalar evidence. Long nested structures (per-origin tables, predictions) are counted, not printed."""
+    def fmt(v):
+        if isinstance(v,(float,np.floating)):return f'{v:.4g}'
+        if isinstance(v,(int,np.integer,str,bool)) or v is None:return str(v)
+        if isinstance(v,dict):
+            if len(v)<=max_list and all(not isinstance(x,(dict,list)) for x in v.values()):return ', '.join(f'{k}={fmt(x)}' for k,x in v.items())
+            return f'<{len(v)} entries>'
+        if isinstance(v,(list,tuple,np.ndarray)):
+            v=list(v)
+            if len(v)<=max_list and all(not isinstance(x,(dict,list)) for x in v):return '['+', '.join(fmt(x) for x in v)+']'
+            return f'<{len(v)} rows>'
+        return str(v)
+    lines=[f'Method: {summary.get("method")}',f'Status: {summary.get("status")}','',f'Interpretation: {summary.get("interpretation")}','']
+    if summary.get('assumptions'):lines+=['Assumptions:']+[f'  - {a}' for a in summary['assumptions']]
+    if summary.get('not_done'):lines+=['Not done:']+[f'  - {a}' for a in summary['not_done']]
+    rest={k:v for k,v in summary.items() if k not in ('method','status','interpretation','assumptions','not_done','chapter','source','units')}
+    if rest:lines+=['','Evidence:']+[f'  {k}: {fmt(v)}' for k,v in rest.items()]
+    if table is not None:lines+=['',f'Table: {len(table)} rows, columns {list(table.columns)}']
+    return '\n'.join(lines)
+
 def clean_json(value):
     if isinstance(value,dict): return {str(k):clean_json(v) for k,v in value.items()}
     if isinstance(value,(list,tuple,np.ndarray)): return [clean_json(v) for v in value]
@@ -114,19 +170,13 @@ def run(chapter,input_path,config_path,output):
     table.to_csv(output/'results.csv',index=False)
     summary={'chapter':chapter,'source':config['source'],'units':config['units'],**summary}
     (output/'summary.json').write_text(json.dumps(clean_json(summary),indent=2,allow_nan=False)+'\n')
-    fig,ax=plt.subplots(figsize=(7,4))
-    nums=table.select_dtypes(include='number')
-    # Plot the actual returned values; no made-up confidence limits.
-    if len(nums.columns):
-        chosen=list(nums.columns[-min(3,len(nums.columns)):]);nums[chosen].plot(ax=ax)
-        ax.set(xlabel='Result row (see results.csv for dates/IDs)',ylabel=config['units'],title=f'Chapter {chapter}: applied result')
-    else:ax.text(.05,.5,summary.get('interpretation','See summary.json'),wrap=True);ax.set_axis_off()
-    fig.tight_layout();fig.savefig(output/'diagnostic.png',dpi=150);plt.close(fig)
+    diagnostic_chart(table,summary,config,chapter,output/'diagnostic.png')
     versions={}
     for name in ['numpy','pandas','scipy','statsmodels','lightgbm','torch','prophet','chronos-forecasting']:
         try:versions[name]=version(name)
         except PackageNotFoundError:versions[name]=None
     files={str(p.relative_to(root)):sha(p) for p in sorted((root/'src').rglob('*.py'))}
-    record={'created_at':datetime.now(timezone.utc).isoformat(),'chapter':chapter,'config':config,'input_path':str(source),'input_sha256':sha(source),'config_sha256':sha(cfgpath),'code':files,'versions':versions,'outputs':{p.name:sha(p) for p in output.iterdir() if p.is_file()},'status':summary.get('status','passed'),'execution_status':'passed','outcome_due':config.get('outcome_due'),'actual_outcome':None}
+    if summary.get('status') not in STANDARD_STATUS:raise AssertionError('Every tool must return status through core.finish')
+    record={'created_at':datetime.now(timezone.utc).isoformat(),'chapter':chapter,'config':config,'input_path':str(source),'input_sha256':sha(source),'config_sha256':sha(cfgpath),'code':files,'versions':versions,'outputs':{p.name:sha(p) for p in output.iterdir() if p.is_file()},'status':summary['status'],'execution_status':'passed','outcome_due':config.get('outcome_due'),'actual_outcome':None}
     (output/'run.json').write_text(json.dumps(clean_json(record),indent=2,allow_nan=False)+'\n')
     return summary

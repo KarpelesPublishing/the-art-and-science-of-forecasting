@@ -1,6 +1,6 @@
 # Executed method coverage
 
-This generated map ties notebook sections to executed code cells. The full-manuscript [method audit](method-audit.md) separately identifies advanced extensions; those are not counted as implemented merely because the book mentions them.
+This generated map ties notebook sections to executed code cells. Advanced extensions that the book only names are not counted as implemented.
 
 ## Chapter 1: The Market Discovers the Future
 
@@ -16,6 +16,7 @@ Notebook: [01-markets](../notebooks/01-markets.ipynb). Execution: passed.
 - Extension and exercise
   - Executed cell `01-markets-cell-10` (execution 5).
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -24,10 +25,8 @@ Notebook: [01-markets](../notebooks/01-markets.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `01-markets-cell-14` (execution 6).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 2: The Mathematics of Belief
 
@@ -44,6 +43,7 @@ Notebook: [02-belief](../notebooks/02-belief.ipynb). Execution: passed.
 - Keep score, then change assumptions
   - Executed cell `02-belief-cell-12` (execution 6).
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -52,10 +52,8 @@ Notebook: [02-belief](../notebooks/02-belief.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `02-belief-cell-16` (execution 7).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 3: The Weather That Could Be Computed
 
@@ -69,6 +67,7 @@ Notebook: [03-weather](../notebooks/03-weather.ipynb). Execution: passed.
   - Executed cell `03-weather-cell-07` (execution 4).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -77,11 +76,10 @@ Notebook: [03-weather](../notebooks/03-weather.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Observed-data transfer exercise
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `03-weather-cell-12` (execution 5).
-- Apply the same workflow to observed data
+- The same workflow on observed data
   - Executed cell `03-weather-cell-14` (execution 6).
-- Read the result as a decision record
 
 ## Chapter 4: The Smoother
 
@@ -96,6 +94,7 @@ Notebook: [04-smoothing](../notebooks/04-smoothing.ipynb). Execution: passed.
   - Executed cell `04-smoothing-cell-08` (execution 4).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -104,11 +103,10 @@ Notebook: [04-smoothing](../notebooks/04-smoothing.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Observed-data transfer exercise
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `04-smoothing-cell-13` (execution 5).
-- Apply the same workflow to observed data
+- The same workflow on observed data
   - Executed cell `04-smoothing-cell-15` (execution 6).
-- Read the result as a decision record
 
 ## Chapter 5: The Filter
 
@@ -123,6 +121,7 @@ Notebook: [05-state-space](../notebooks/05-state-space.ipynb). Execution: passed
   - Executed cell `05-state-space-cell-08` (execution 5).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -131,11 +130,10 @@ Notebook: [05-state-space](../notebooks/05-state-space.ipynb). Execution: passed
 - Three exercises with worked solutions
 - Business-reader application
 - Observed-data transfer exercise
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `05-state-space-cell-13` (execution 6).
-- Apply the same workflow to observed data
+- The same workflow on observed data
   - Executed cell `05-state-space-cell-15` (execution 7).
-- Read the result as a decision record
 
 ## Chapter 6: The Unexpected Route
 
@@ -150,6 +148,7 @@ Notebook: [06-arima](../notebooks/06-arima.ipynb). Execution: passed.
   - Executed cell `06-arima-cell-08` (execution 5).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -158,11 +157,10 @@ Notebook: [06-arima](../notebooks/06-arima.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Observed-data transfer exercise
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `06-arima-cell-13` (execution 6).
-- Apply the same workflow to observed data
+- The same workflow on observed data
   - Executed cell `06-arima-cell-15` (execution 7).
-- Read the result as a decision record
 
 ## Chapter 7: The Casino at Los Alamos
 
@@ -178,6 +176,7 @@ Notebook: [07-monte-carlo](../notebooks/07-monte-carlo.ipynb). Execution: passed
 - Diagnose Monte Carlo precision rather than trusting one attractive trace
   - Executed cell `07-monte-carlo-cell-10` (execution 5).
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -186,10 +185,8 @@ Notebook: [07-monte-carlo](../notebooks/07-monte-carlo.ipynb). Execution: passed
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `07-monte-carlo-cell-14` (execution 6).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 8: The Delphi Room
 
@@ -202,6 +199,7 @@ Notebook: [08-delphi](../notebooks/08-delphi.ipynb). Execution: passed.
   - Executed cell `08-delphi-cell-06` (execution 4).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -210,10 +208,8 @@ Notebook: [08-delphi](../notebooks/08-delphi.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `08-delphi-cell-11` (execution 5).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 9: The Oracle Problem
 
@@ -225,6 +221,7 @@ Notebook: [09-expert-scoring](../notebooks/09-expert-scoring.ipynb). Execution: 
   - Executed cell `09-expert-scoring-cell-05` (execution 4).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -233,10 +230,8 @@ Notebook: [09-expert-scoring](../notebooks/09-expert-scoring.ipynb). Execution: 
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `09-expert-scoring-cell-10` (execution 5).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 10: The Superforecaster
 
@@ -254,6 +249,7 @@ Notebook: [10-superforecasting](../notebooks/10-superforecasting.ipynb). Executi
   - Executed cell `10-superforecasting-cell-11` (execution 6).
 - Link the launch model to a probability question
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -262,10 +258,8 @@ Notebook: [10-superforecasting](../notebooks/10-superforecasting.ipynb). Executi
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `10-superforecasting-cell-16` (execution 7).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 11: The Crowd and the Ox
 
@@ -279,6 +273,7 @@ Notebook: [11-crowds](../notebooks/11-crowds.ipynb). Execution: passed.
 - Can estimated weights beat equal weights on later questions?
   - Executed cell `11-crowds-cell-08` (execution 5).
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -287,10 +282,8 @@ Notebook: [11-crowds](../notebooks/11-crowds.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `11-crowds-cell-12` (execution 6).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 12: The Competition
 
@@ -305,6 +298,7 @@ Notebook: [12-benchmarking](../notebooks/12-benchmarking.ipynb). Execution: pass
   - Executed cell `12-benchmarking-cell-08` (execution 5).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -313,11 +307,10 @@ Notebook: [12-benchmarking](../notebooks/12-benchmarking.ipynb). Execution: pass
 - Three exercises with worked solutions
 - Business-reader application
 - Observed-data transfer exercise
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `12-benchmarking-cell-13` (execution 6).
-- Apply the same workflow to observed data
+- The same workflow on observed data
   - Executed cell `12-benchmarking-cell-15` (execution 7).
-- Read the result as a decision record
 
 ## Chapter 13: The Walmart War Room
 
@@ -332,6 +325,7 @@ Notebook: [13-retail-ml](../notebooks/13-retail-ml.ipynb). Execution: passed.
   - Executed cell `13-retail-ml-cell-08` (execution 4).
 - Limitations and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -340,10 +334,8 @@ Notebook: [13-retail-ml](../notebooks/13-retail-ml.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `13-retail-ml-cell-13` (execution 5).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 14: The Globalizer
 
@@ -359,6 +351,7 @@ Notebook: [14-global-neural](../notebooks/14-global-neural.ipynb). Execution: pa
   - Executed cell `14-global-neural-cell-09` (execution 5).
 - Limitations and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -367,10 +360,8 @@ Notebook: [14-global-neural](../notebooks/14-global-neural.ipynb). Execution: pa
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `14-global-neural-cell-14` (execution 6).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 15: The Foundation
 
@@ -386,6 +377,7 @@ Notebook: [15-foundation-models](../notebooks/15-foundation-models.ipynb). Execu
   - Executed cell `15-foundation-models-cell-09` (execution 5).
 - Limitations and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -394,11 +386,10 @@ Notebook: [15-foundation-models](../notebooks/15-foundation-models.ipynb). Execu
 - Three exercises with worked solutions
 - Business-reader application
 - Observed-data transfer exercise
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `15-foundation-models-cell-14` (execution 6).
-- Apply the same workflow to observed data
+- The same workflow on observed data
   - Executed cell `15-foundation-models-cell-16` (execution 7).
-- Read the result as a decision record
 
 ## Chapter 16: The Prophet
 
@@ -415,6 +406,7 @@ Notebook: [16-prophet](../notebooks/16-prophet.ipynb). Execution: passed.
   - Executed cell `16-prophet-cell-10` (execution 5).
 - Limitations and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -423,11 +415,10 @@ Notebook: [16-prophet](../notebooks/16-prophet.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Observed-data transfer exercise
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `16-prophet-cell-15` (execution 6).
-- Apply the same workflow to observed data
+- The same workflow on observed data
   - Executed cell `16-prophet-cell-17` (execution 7).
-- Read the result as a decision record
 
 ## Chapter 17: Living with Probability
 
@@ -442,6 +433,7 @@ Notebook: [17-probabilistic](../notebooks/17-probabilistic.ipynb). Execution: pa
   - Executed cell `17-probabilistic-cell-08` (execution 5).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -450,10 +442,8 @@ Notebook: [17-probabilistic](../notebooks/17-probabilistic.ipynb). Execution: pa
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `17-probabilistic-cell-13` (execution 6).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 18: The Hierarchy
 
@@ -468,6 +458,7 @@ Notebook: [18-hierarchy](../notebooks/18-hierarchy.ipynb). Execution: passed.
   - Executed cell `18-hierarchy-cell-08` (execution 4).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -476,23 +467,25 @@ Notebook: [18-hierarchy](../notebooks/18-hierarchy.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `18-hierarchy-cell-13` (execution 5).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 19: Frank Bass and the Television
 
 Notebook: [19-diffusion](../notebooks/19-diffusion.ipynb). Execution: passed.
 
   - Executed cell `19-diffusion-cell-02` (execution 1).
-  - Executed cell `19-diffusion-cell-03` (execution 2).
-  - Executed cell `19-diffusion-cell-04` (execution 3).
+- Cumulative adoption bends toward a ceiling
+  - Executed cell `19-diffusion-cell-04` (execution 2).
+- New adopters per year peak before the market saturates
+  - Executed cell `19-diffusion-cell-06` (execution 3).
 - A sparse early history allows very different futures
-  - Executed cell `19-diffusion-cell-06` (execution 4).
-  - Executed cell `19-diffusion-cell-07` (execution 5).
+  - Executed cell `19-diffusion-cell-08` (execution 4).
+- Adoption is not sales: trial and repeat
+  - Executed cell `19-diffusion-cell-10` (execution 5).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -501,10 +494,8 @@ Notebook: [19-diffusion](../notebooks/19-diffusion.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
-  - Executed cell `19-diffusion-cell-12` (execution 6).
-- Real-data boundary
-- Read the result as a decision record
+- Apply this chapter to your own data
+  - Executed cell `19-diffusion-cell-15` (execution 6).
 
 ## Chapter 20: The Marketing Mix
 
@@ -528,6 +519,7 @@ Notebook: [20-marketing-mix](../notebooks/20-marketing-mix.ipynb). Execution: pa
   - Executed cell `20-marketing-mix-cell-17` (execution 9).
 - Decision checks
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -536,10 +528,8 @@ Notebook: [20-marketing-mix](../notebooks/20-marketing-mix.ipynb). Execution: pa
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `20-marketing-mix-cell-22` (execution 10).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 21: The Bullwhip
 
@@ -556,6 +546,7 @@ Notebook: [21-supply-chain](../notebooks/21-supply-chain.ipynb). Execution: pass
 - Test information sharing on the same customer demand
   - Executed cell `21-supply-chain-cell-11` (execution 6).
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -564,10 +555,8 @@ Notebook: [21-supply-chain](../notebooks/21-supply-chain.ipynb). Execution: pass
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `21-supply-chain-cell-15` (execution 7).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 22: The Causal Forecaster
 
@@ -583,6 +572,7 @@ Notebook: [22-causal](../notebooks/22-causal.ipynb). Execution: passed.
   - Executed cell `22-causal-cell-09` (execution 5).
 - Identification worksheet: choose evidence before choosing a model
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -591,10 +581,8 @@ Notebook: [22-causal](../notebooks/22-causal.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `22-causal-cell-14` (execution 6).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 23: The Epidemiologist's Dilemma
 
@@ -611,6 +599,7 @@ Notebook: [23-epidemics](../notebooks/23-epidemics.ipynb). Execution: passed.
   - Executed cell `23-epidemics-cell-10` (execution 6).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -619,10 +608,8 @@ Notebook: [23-epidemics](../notebooks/23-epidemics.ipynb). Execution: passed.
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `23-epidemics-cell-15` (execution 7).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 24: The Anomaly
 
@@ -634,6 +621,7 @@ Notebook: [24-structural-breaks](../notebooks/24-structural-breaks.ipynb). Execu
   - Executed cell `24-structural-breaks-cell-05` (execution 4).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -642,11 +630,10 @@ Notebook: [24-structural-breaks](../notebooks/24-structural-breaks.ipynb). Execu
 - Three exercises with worked solutions
 - Business-reader application
 - Observed-data transfer exercise
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `24-structural-breaks-cell-10` (execution 5).
-- Apply the same workflow to observed data
+- The same workflow on observed data
   - Executed cell `24-structural-breaks-cell-12` (execution 6).
-- Read the result as a decision record
 
 ## Chapter 25: Forecasting Your Own Life
 
@@ -658,6 +645,7 @@ Notebook: [25-reference-classes](../notebooks/25-reference-classes.ipynb). Execu
   - Executed cell `25-reference-classes-cell-05` (execution 4).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -666,10 +654,8 @@ Notebook: [25-reference-classes](../notebooks/25-reference-classes.ipynb). Execu
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `25-reference-classes-cell-10` (execution 5).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 26: How to Be Ready Without Being Certain
 
@@ -681,6 +667,7 @@ Notebook: [26-decision-readiness](../notebooks/26-decision-readiness.ipynb). Exe
   - Executed cell `26-decision-readiness-cell-05` (execution 4).
 - Limits and exercise
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -689,10 +676,8 @@ Notebook: [26-decision-readiness](../notebooks/26-decision-readiness.ipynb). Exe
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `26-decision-readiness-cell-10` (execution 5).
-- Real-data boundary
-- Read the result as a decision record
 
 ## Chapter 27: Giving the Oracle Direction
 
@@ -720,6 +705,7 @@ Notebook: [27-directed-forecasting](../notebooks/27-directed-forecasting.ipynb).
 - A separately supplied capacity check is a bound, not another forecast vote
   - Executed cell `27-directed-forecasting-cell-21` (execution 10).
 - Guided application workshop
+- Input contract and format example
 - Explain the mechanism
 - Work through the arithmetic
 - Adapt the lesson to reader data
@@ -728,8 +714,6 @@ Notebook: [27-directed-forecasting](../notebooks/27-directed-forecasting.ipynb).
 - Three exercises with worked solutions
 - Business-reader application
 - Real-data boundary
-- Configure and run the applied case
+- Apply this chapter to your own data
   - Executed cell `27-directed-forecasting-cell-25` (execution 11).
-- Real-data boundary
-- Read the result as a decision record
 

@@ -1,4 +1,16 @@
 {
+  "method": "Delphi round comparison: median, spread and forecast value added",
+  "interpretation": "Across 8 questions the final-round median beat the first-round median on 8. Positive forecast value added means the panel moved toward the outcome; convergence alone is not accuracy. Check whether panel membership changed between rounds.",
+  "assumptions": [
+    "Each question has one resolved outcome",
+    "Round numbers are comparable across questions",
+    "Estimates in a round were made before that round's feedback"
+  ],
+  "not_done": [
+    "No test of whether shared information drove the convergence",
+    "No weighting of experts by past accuracy"
+  ],
+  "status": "passed",
   "forecast_value_added": {
     "0": 3.3586119631066396,
     "1": 3.6763852109407367,
@@ -9,5 +21,6 @@
     "6": 3.0652968960312705,
     "7": 6.4914362560037375
   },
-  "interpretation": "Positive FVA means the final median improved on the initial median for this question. Convergence alone is not accuracy; check whether panel membership changed."
+  "questions": 8,
+  "rounds": 3
 }

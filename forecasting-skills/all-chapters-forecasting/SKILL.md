@@ -28,8 +28,8 @@ to every target. The map is the full library, not a mandatory 27-model ensemble.
 ## Three modes
 
 1. **Learn:** select a chapter and run its notebook, explaining the worked example.
-2. **Reproduce:** run every chapter from a clean kernel, export charts, assemble the
-   catalog, validate, and build the revised edition using `companion/README.md`.
+2. **Reproduce:** run every chapter from a clean kernel, export charts and assemble the
+   catalog with `run.py chapters --all` and `catalog.py` (see `companion/README.md`).
 3. **Apply:** frame the target, gather inputs, choose supported methods, evaluate,
    produce forecasts/estimates, quantify uncertainty, and save a scoring record.
 
@@ -37,7 +37,32 @@ to every target. The map is the full library, not a mandatory 27-model ensemble.
 
 Record target, units, horizon, frequency, forecast date/as-of cutoff, available
 history, decision costs, and which covariates are known in advance. Do not infer
-missing business definitions from column names alone.
+missing business definitions from column names alone. Then find the row that
+matches the question:
+
+| The reader has | Chapter and tool | Needs at least | If the floor is not met |
+|---|---|---|---|
+| One regular series, no drivers | 12 (`run.py apply --chapter 12`; 4 for smoothing only, 6 for ARIMA only) | 2 seasons + 4 horizons (monthly, horizon 12: 72 points) | provisional persistence baseline; shorten the horizon or gather history |
+| Many such series at once | `run.py forecast --engine full` | same per series | that series fails in `failures.json`; the rest continue |
+| A series and a guaranteed interval | 12 then 17 (conformal) | 2 seasons + 36 calibration + 24 test points | error naming the total; reduce `calibration_size`/`test_size` |
+| Series with promotions, prices or other drivers | 13 (four or more series) or 16 (one series, event table, future regressor rows) | 13: 4 series × 35 rows; 16: max(4 horizons, 60) | one series with drivers: 16; no future driver values: 12 and say so |
+| Related series that must add up | 18 (long form + child-parent edges) | per node, the chapter 12 floor | reconciles anyway, `status: provisional`, no holdout leaderboard |
+| Hidden states, sensors, gaps in the record | 5 | 30 observed values | error |
+| A pretrained model as one more candidate | 15 (Chronos, tiny checkpoint cached) | max(3 seasons, horizon + 30) | error; larger checkpoints download, ask first |
+| A new product with no sales history | `reconcile-tdbu` (interview, desk model, reconciliation) | the interview's four inputs | it runs on defaults and reports which inputs drive the gap |
+| A new product with comparable launched products | 27 `mode: launch`; 19 to turn an adoption curve into sales with repeat | 27: 3 calibration + 2 validation products; 19: 6 adoption points | 27 refuses; fall back to `reconcile-tdbu` |
+| A yes/no event to forecast | the assistant estimates it with chapter 10's decomposition and journal; 2 updates a rate; 9 and 26 only score probabilities already made | 9/26: resolved outcomes | nothing to score yet: keep the journal, `status: needs_evidence` |
+| A marketing budget question | 20 (named channel columns) | 60 periods, nonnegative spend | error; attribution stays conditional, never causal |
+| A reorder or stocking question | 21 | 30 periods | error |
+| Did an action change the outcome? | 22 (two or more controls) | 15 pre + 5 post periods | error; one control: no synthetic control, DiD only |
+| Reporting delays, an epidemic curve | 23 | 10 complete cohorts | error |
+| A break in the series, when to refit | 24 | 80 periods | error |
+| A plan to check against similar past cases | 25 | the reference class | unidentified quantiles stay null |
+| Price rules on a market series | 1 | 30 sessions | error |
+| Decomposition or sensitivity to starting conditions | 3, 7 | 3: 3 seasons | error |
+
+The full floors and the meaning of each `status` are in
+[conventions.md](references/conventions.md). Detail per route:
 
 - Ordinary series: run the engine (below) through chapter 12's adapter or `run.py forecast --engine full`.
   It fits the chapter 4 smoothing family, the chapter 6 ARIMA family with diagnostic differencing
@@ -49,20 +74,29 @@ missing business definitions from column names alone.
   and distributions: 7; intervals with a coverage guarantee: 17, whose tool wraps
   the engine's selection in split and adaptive conformal bands and scores them.
 - Covariates and known future regressors: 13 (LightGBM direct or recursive with
-  declared known-in-advance covariates, ablation and SHAP); calendars, events
-  and holidays: 16 (Prophet with an event table, future regressor rows, ablation).
+  declared known-in-advance covariates, ablation and SHAP) when there are four or
+  more related series with 35 or more rows each; a single series with drivers goes
+  to 16 (Prophet with an event table, future regressor rows, ablation), and a single
+  series whose future driver values are unknown goes to 12 with the limitation stated.
 - A pretrained model as one more candidate: 15, at the engine's own origins beside
   the baselines. The tiny checkpoint is cached; larger ones download, so state
   the size and ask before choosing one.
-- Expert/event probabilities: 2 and 8–11; chapter 10 supplies the event journal.
+- Expert/event probabilities: 2 and 8–11. No tool produces the probability; the
+  assistant does, with chapter 10's base rate, decomposition and likelihood-ratio
+  updating, and records it in the chapter 10 journal. Chapter 2 updates a rate from
+  successes and trials, 8 compares Delphi rounds, 11 aggregates a crowd, 9 scores
+  resolved probabilities and 26 turns them into a cost-weighted action rule.
   Define resolution source, timezone, cutoff and baseline in advance. Preserve
   timestamped revisions; score one eligible pre-resolution forecast per resolved
   event, exclude unresolved/hindsight entries, and show calibration-bin counts.
 - Hierarchies: 18. Give the tool the node histories in long form and the
   child-parent edges; it builds the summing matrix, forecasts every node with the
   engine, and compares bottom-up, OLS and MinT on a holdout.
-- New products/simulated-test-market logic: 19, 20, 25 and 27. Start with chapter
-  27's notebook for the working launch model; chapter 19's tool turns Bass adoption
+- New products/simulated-test-market logic: 19, 20, 25 and 27, with one rule. No
+  sales history and no comparable launched products: `reconcile-tdbu`. Comparable
+  products with observed 24-month units and defended reach inputs: chapter 27
+  `mode: launch`. An established product: chapter 27 `mode: history` (the chapter 12
+  engine). Chapter 27's notebook shows the launch model worked through; chapter 19's tool turns Bass adoption
   into unit sales under two timing curves with a repeat kernel and a
   Parfitt-Collins share; chapter 20 supplies the marketing context and chapter 25
   the reference-class checks. Calibrate shared assumptions across current
@@ -97,9 +131,20 @@ missing business definitions from column names alone.
 - Market signals: 1 (predeclared rules with hit rates and a binomial test, price
   error only); dynamical sensitivity/decomposition: 3; decisions and monitoring: 26.
 
-Every tool records under `not_done` what the chapter discusses that this run did
-not do, and returns `status` as `passed`, `provisional` or `needs_evidence`. The
-tools run only when asked; decide with the reader whether the method fits first.
+Every tool returns through the same contract: `method`, `interpretation`,
+`assumptions`, `not_done` (what the chapter discusses that this run did not do) and
+`status` (`passed`, `provisional` or `needs_evidence`). The tools run only when
+asked; decide with the reader whether the method fits first.
+
+## Reading the result
+
+Start with `interpretation`, then `status`, then `not_done`; repeat the last to the
+reader in the report. `passed` means the chapter's own validation ran; `provisional`
+means something ran but a required check could not (the list says which); `needs_evidence`
+means no number was produced and the summary names the evidence that would unlock it.
+[conventions.md](references/conventions.md) shows a real `summary.json` from chapter 4
+in both the `passed` and the `provisional` case and says what to do with each.
+`results.csv` is the calculation, not permission to act.
 
 For a new-product launch with no sales history, use [reconcile-tdbu](../reconcile-tdbu/SKILL.md),
 the author's desk model from chapters 20 and 27: it interviews for the inputs, runs the
@@ -140,10 +185,10 @@ for the chapter adapters: `horizon, season, frequency, as_of, pool, transform
 From the project root:
 
 ```bash
-companion/.venv/bin/python companion/scripts/run.py forecast --input data/sales.csv --horizon 12 --frequency MS --workers 4 --resume --engine full --output companion/applied-runs/sales
+companion/.venv/bin/python companion/scripts/run.py forecast --input companion/data/examples/sales.csv --horizon 12 --frequency MS --workers 4 --resume --engine full --output companion/applied-runs/sales
 ```
 
-CSV columns: `series_id,timestamp,target`. `--engine full` runs the engine above on
+CSV columns: `series_id,timestamp,target` (the shipped `sales.csv` has six monthly series of seven years). `--engine full` runs the engine above on
 every series (a few seconds each); `--engine baseline` (the default) runs only the
 transparent baselines and is the right choice for thousands of series or a first
 pass. Both write `forecast.csv` (quantile rows per horizon step; with the full
@@ -171,8 +216,8 @@ Fine-tuning a foundation model (chapter 15 runs Chronos zero-shot only), global
 count-data models for many intermittent series (chapter 21 handles one series at
 a time), and causal identification without a defensible comparison (chapter 22
 computes the estimators; the reader supplies the argument). A short series
-returns `status: provisional` with a persistence baseline and no validation
-claims rather than a fitted seasonal model.
+(fewer than 2 seasons + 4 horizons) returns `status: provisional` with a persistence
+baseline and no validation claims rather than a fitted seasonal model.
 
 ## Safeguards that survive deadline pressure
 
