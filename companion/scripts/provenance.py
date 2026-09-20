@@ -20,7 +20,7 @@ def inputs(lesson, root=None):
     # Conservative dependency closure: shared modules and declared teaching inputs.
     # A change may invalidate extra chapters, but never silently leaves a stale run.
     paths += sorted((root/'src').rglob('*.py'))
-    paths += sorted(p for p in (root/'data').rglob('*') if p.is_file() and p.suffix in {'.csv','.json','.md'})
+    paths += sorted(p for p in (root/'data').rglob('*') if p.is_file() and p.suffix in {'.csv','.json','.md'} and 'benchmarks' not in p.parts)   # fetched benchmark data is not a teaching input
     paths += sorted((root/'configs').glob('*.json'))
     if n == 2: paths.append(root/'assets/returning-aircraft-schematic.png')
     versions={}
@@ -33,5 +33,7 @@ def same_inputs(recorded, current):
     """Compare an execution record with the current tree, ignoring the manuscript entry when the
     tree has no manuscript: the public companion must accept executions made beside the book."""
     if not recorded: return False
-    rec_files={k:v for k,v in recorded.get('files',{}).items() if not k.startswith('manuscript/')} if not any(k.startswith('manuscript/') for k in current['files']) else recorded.get('files',{})
-    return rec_files==current['files'] and recorded.get('versions')==current.get('versions')
+    def strip(files, manuscript):
+        return {k:v for k,v in files.items() if not k.startswith('companion/data/benchmarks/') and (manuscript or not k.startswith('manuscript/'))}
+    has_manuscript=any(k.startswith('manuscript/') for k in current['files'])
+    return strip(recorded.get('files',{}),has_manuscript)==strip(current['files'],True) and recorded.get('versions')==current.get('versions')

@@ -54,6 +54,9 @@ def time_frame(frame,config,columns=('target',),minimum=24,allow_missing=False):
         if len(f)<minimum: raise ValueError(f'At least {minimum} observations are required; do not infer seasonality from sparse history')
         numeric(f,list(columns))
     freq=config.get('frequency') or (pd.infer_freq(f.timestamp) if len(f)>=3 else None)
+    inferred=pd.infer_freq(f.timestamp) if len(f)>=3 else None
+    if freq and inferred and inferred!=freq and inferred.split('-')[0].rstrip('S').upper()==str(freq).split('-')[0].rstrip('S').upper():
+        freq=inferred                                   # 'W' from a brief matches Monday-dated weekly data ('W-MON')
     if freq is None: raise ValueError('Irregular timestamps: supply a justified regular frequency and resolve missing periods explicitly')
     if not pd.DatetimeIndex(f.timestamp).equals(pd.date_range(f.timestamp.iloc[0],periods=len(f),freq=freq)):
         raise ValueError('Missing periods or timestamps inconsistent with frequency')
@@ -146,7 +149,7 @@ def clean_json(value):
     if isinstance(value,(pd.Timestamp,Path)):return str(value)
     return value
 
-def run(chapter,input_path,config_path,output):
+def run(chapter,input_path,config_path,output,brief_path=None):
     from .methods import analyze
     from datetime import datetime,timezone
     from importlib.metadata import version,PackageNotFoundError
@@ -157,10 +160,18 @@ def run(chapter,input_path,config_path,output):
     protected=[root/'figures',root/'results',root/'notebooks',root/'lessons',root/'src',root/'scripts',root/'data',root/'revision',root/'reports',root/'configs',root/'tests',root.parent/'forecasting-skills',root.parent/'manuscript',root.parent/'build',root.parent/'front-matter']
     if output==root or output==root.parent or any(output==p.resolve() or p.resolve() in output.parents for p in protected):
         raise ValueError('Use a separate applied-runs directory, outside publication/source/data folders')
-    if root in output.parents and not (root/'applied-runs'==output or root/'applied-runs' in output.parents):
-        raise ValueError('Inside companion, applied outputs must be under applied-runs so private results are excluded from bundles')
+    allowed=[root/'applied-runs',root/'harness/runs']
+    if root in output.parents and not any(a==output or a in output.parents for a in allowed):
+        raise ValueError('Inside companion, applied outputs must be under applied-runs (or harness/runs) so private results are excluded from bundles')
     if output.exists() and any(output.iterdir()):raise ValueError('Output directory must be empty; choose a new run name')
     config=json.loads(cfgpath.read_text())
+    brief=None
+    if brief_path:
+        from ..brief import Brief
+        brief=Brief.load(brief_path); problems=brief.validate()
+        if problems:raise ValueError('Brief is not usable: '+'; '.join(problems))
+        config={**config,**brief.config_overrides()}          # the brief settles horizon, frequency, cutoff, units and scoring date
+        if not config.get('source'):config['source']=brief.source or brief.target
     if not config.get('source') or not config.get('units'):raise ValueError('Config must declare source and units')
     if not isinstance(chapter,int) or chapter not in SCHEMAS:raise ValueError('Chapter must be 1–27')
     data=json.loads(source.read_text()) if chapter==10 else pd.read_csv(source)
@@ -169,6 +180,16 @@ def run(chapter,input_path,config_path,output):
     output.mkdir(parents=True,exist_ok=True)
     table.to_csv(output/'results.csv',index=False)
     summary={'chapter':chapter,'source':config['source'],'units':config['units'],**summary}
+    if brief is not None:
+        from dataclasses import asdict
+        summary['brief']=asdict(brief);(output/'brief.json').write_text(json.dumps(asdict(brief),indent=2)+'\n')
+    if not summary.get('profile') and chapter in (3,4,5,6,12,15,16,17,21,24,27) and 'timestamp' in getattr(data,'columns',[]) and 'target' in data.columns:
+        try:
+            from ..profile import profile_series
+            summary['profile']=profile_series(data,config)
+        except Exception as exc:
+            summary['profile']={'error':str(exc)}
+    if summary.get('profile'):(output/'profile.json').write_text(json.dumps(clean_json(summary['profile']),indent=2,allow_nan=False)+'\n')
     (output/'summary.json').write_text(json.dumps(clean_json(summary),indent=2,allow_nan=False)+'\n')
     diagnostic_chart(table,summary,config,chapter,output/'diagnostic.png')
     versions={}
@@ -177,6 +198,6 @@ def run(chapter,input_path,config_path,output):
         except PackageNotFoundError:versions[name]=None
     files={str(p.relative_to(root)):sha(p) for p in sorted((root/'src').rglob('*.py'))}
     if summary.get('status') not in STANDARD_STATUS:raise AssertionError('Every tool must return status through core.finish')
-    record={'created_at':datetime.now(timezone.utc).isoformat(),'chapter':chapter,'config':config,'input_path':str(source),'input_sha256':sha(source),'config_sha256':sha(cfgpath),'code':files,'versions':versions,'outputs':{p.name:sha(p) for p in output.iterdir() if p.is_file()},'status':summary['status'],'execution_status':'passed','outcome_due':config.get('outcome_due'),'actual_outcome':None}
+    record={'created_at':datetime.now(timezone.utc).isoformat(),'chapter':chapter,'config':config,'brief':str(Path(brief_path).resolve()) if brief_path else None,'input_path':str(source),'input_sha256':sha(source),'config_sha256':sha(cfgpath),'code':files,'versions':versions,'outputs':{p.name:sha(p) for p in output.iterdir() if p.is_file()},'status':summary['status'],'execution_status':'passed','outcome_due':config.get('outcome_due'),'actual_outcome':None}
     (output/'run.json').write_text(json.dumps(clean_json(record),indent=2,allow_nan=False)+'\n')
     return summary

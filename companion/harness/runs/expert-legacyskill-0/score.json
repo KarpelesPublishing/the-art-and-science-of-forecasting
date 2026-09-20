@@ -1,0 +1,84 @@
+{
+  "A-hierarchy": {
+    "delivered": true,
+    "matched": 48,
+    "mae": 7.060416666666666,
+    "bias": -0.6979166666666686,
+    "baseline_mae": 9.699999999999998,
+    "coherence_max_gap": 5.684341886080802e-14,
+    "mae_vs_baseline": 0.7278780068728523,
+    "total_error_pct": -0.004221642533993788,
+    "band_coverage": 0.8125,
+    "band_mean_width": 32.31250000000001,
+    "process": {
+      "brief_with_decision_and_scoring_date": false,
+      "data_profiled_before_modelling": false,
+      "baseline_stated": true,
+      "not_done_reported": false,
+      "uncertainty_labelled": true,
+      "scoring_date_stated": true,
+      "journal_entry_made": false,
+      "report_numbers_sourced": false,
+      "status_honest": true
+    },
+    "process_score": 0.4444444444444444
+  },
+  "B-launch": {
+    "delivered": true,
+    "process": {
+      "brief_with_decision_and_scoring_date": false,
+      "data_profiled_before_modelling": true,
+      "baseline_stated": false,
+      "not_done_reported": true,
+      "uncertainty_labelled": true,
+      "scoring_date_stated": true,
+      "journal_entry_made": false,
+      "report_numbers_sourced": false,
+      "status_honest": true
+    },
+    "process_score": 0.5555555555555556
+  },
+  "C-intermittent": {
+    "delivered": true,
+    "matched": 12,
+    "mae": 2.895,
+    "bias": 1.6200000000000003,
+    "baseline_mae": 4.25,
+    "mae_vs_baseline": 0.6811764705882353,
+    "total_error_pct": 0.7199999999999996,
+    "order_up_to": 21,
+    "three_week_windows_covered": 1.0,
+    "process": {
+      "brief_with_decision_and_scoring_date": false,
+      "data_profiled_before_modelling": false,
+      "baseline_stated": true,
+      "not_done_reported": false,
+      "uncertainty_labelled": true,
+      "scoring_date_stated": true,
+      "journal_entry_made": false,
+      "report_numbers_sourced": false,
+      "status_honest": true
+    },
+    "process_score": 0.4444444444444444
+  },
+  "D-daily-multiseasonal": {
+    "delivered": false,
+    "attempted": false,
+    "process": {}
+  },
+  "E-event-probability": {
+    "delivered": false,
+    "attempted": false,
+    "process": {}
+  },
+  "F-short-history": {
+    "delivered": false,
+    "attempted": false,
+    "process": {}
+  },
+  "G-level-shift": {
+    "delivered": false,
+    "attempted": false,
+    "process": {}
+  }
+}

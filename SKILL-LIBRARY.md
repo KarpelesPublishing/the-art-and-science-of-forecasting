@@ -161,7 +161,7 @@ be installed per skill.
 
 ## Installing as Claude skills
 
-Run `companion/.venv/bin/python companion/scripts/install_skills.py` to expose the 29 skill
+Run `companion/.venv/bin/python companion/scripts/install_skills.py` to expose the 30 skill
 folders to an agent runtime, or point the assistant at
 `forecasting-skills/all-chapters-forecasting/SKILL.md` directly. Keep the supplied folders in
 their relative layout: the integrated skill links to the chapter skills, `reconcile-tdbu`

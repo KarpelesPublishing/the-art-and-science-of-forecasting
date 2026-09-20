@@ -5,9 +5,12 @@ description: Use when applying the forecasting book across multiple methods, rep
 
 # Complete Forecasting Skill
 
-This is the 28th skill: one integrated entry point coordinating 27 individual
-chapter skills. They remain useful for learning or a specific method; this skill
-selects relevant workflows rather than running every method on every task.
+This is the integrated entry point coordinating the 27 chapter skills: the map and the
+router. For a reader who wants a forecast rather than a chapter, start with
+[forecast-workflow](../forecast-workflow/SKILL.md): seven gates (brief, profile, baseline,
+method, validation, uncertainty, report and journal), each producing a file the next
+command requires, so the same honest path is followed whatever the reader knows. This
+skill and the chapter skills are what the workflow routes into.
 
 For the human reader: a **skill is instructions for an AI assistant**, while a
 **notebook is an executable lesson with code and results**. Start with
@@ -36,19 +39,30 @@ to every target. The map is the full library, not a mandatory 27-model ensemble.
 ## Applied routing
 
 Record target, units, horizon, frequency, forecast date/as-of cutoff, available
-history, decision costs, and which covariates are known in advance. Do not infer
-missing business definitions from column names alone. Then find the row that
-matches the question:
+history, decision costs, and which covariates are known in advance (`run.py brief`
+asks exactly these). Do not infer missing business definitions from column names
+alone. Then look at the data before choosing anything:
+
+```bash
+companion/.venv/bin/python companion/scripts/run.py profile --input data.csv --brief brief.json
+```
+
+The profile reports frequency, length, gaps and what to do about them, zero share and
+demand class, the seasonal periods found in the data, trend, outliers, a possible level
+shift, the floor for the brief's horizon, and a `route`. Find the row that matches:
 
 | The reader has | Chapter and tool | Needs at least | If the floor is not met |
 |---|---|---|---|
-| One regular series, no drivers | 12 (`run.py apply --chapter 12`; 4 for smoothing only, 6 for ARIMA only) | 2 seasons + 4 horizons (monthly, horizon 12: 72 points) | provisional persistence baseline; shorten the horizon or gather history |
-| Many such series at once | `run.py forecast --engine full` | same per series | that series fails in `failures.json`; the rest continue |
+| One regular series, no drivers (route `engine`) | 12 (`run.py apply --chapter 12`; 4 for smoothing only, 6 for ARIMA only) | 2 seasons + 4 horizons (monthly, horizon 12: 72 points) | provisional persistence baseline; shorten the horizon or gather history |
+| Mostly zeros (route `intermittent`) | 12 with `pool: intermittent` (Croston, SBA, TSB, ADIDA, IMAPA on RMSSE), then 21 for the stocking policy | 2 seasons + 4 horizons | provisional; consider aggregating to a coarser period |
+| Two cycles, daily or hourly data (route `multiseasonal`) | 12 with `pool: multiseasonal` (MSTL, Fourier ARIMA, Prophet, TBATS when installed) | 2 cycles of the longest period + 4 horizons | 12 `full` on the shorter cycle, and say the longer one is unmodelled |
+| Gaps in the record | the profile fills few short gaps for fitting only (interpolate, or zero for intermittent) and refuses many; 5 handles missing observations natively | as the route | fix the source; do not pad |
+| Many such series at once | `run.py forecast --engine full` (per series) or `--engine global` (one LightGBM across all series, compared with seasonal naive per series) | same per series | that series fails in `failures.json`; the rest continue |
 | A series and a guaranteed interval | 12 then 17 (conformal) | 2 seasons + 36 calibration + 24 test points | error naming the total; reduce `calibration_size`/`test_size` |
-| Series with promotions, prices or other drivers | 13 (four or more series) or 16 (one series, event table, future regressor rows) | 13: 4 series × 35 rows; 16: max(4 horizons, 60) | one series with drivers: 16; no future driver values: 12 and say so |
+| Series with promotions, prices or other drivers (route `regressors`) | 12 with `regressors` and `future_regressors` (ARIMAX, LightGBM with drivers, Prophet with regressors); 13 for four or more series; 16 for an event table | 12: 2 seasons + 4 horizons; 13: 4 series × 35 rows; 16: max(4 horizons, 60) | no future driver values: 12 `full` and say the drivers are unmodelled |
 | Related series that must add up | 18 (long form + child-parent edges) | per node, the chapter 12 floor | reconciles anyway, `status: provisional`, no holdout leaderboard |
 | Hidden states, sensors, gaps in the record | 5 | 30 observed values | error |
-| A pretrained model as one more candidate | 15 (Chronos, tiny checkpoint cached) | max(3 seasons, horizon + 30) | error; larger checkpoints download, ask first |
+| A pretrained model as one more candidate | 15 (Chronos, tiny checkpoint cached), or 12 with `pool: foundation` (Chronos-Bolt small downloads about 190 MB only with FORECAST_ALLOW_DOWNLOADS=1) | max(3 seasons, horizon + 30) | error; larger checkpoints download, ask first |
 | A new product with no sales history | `reconcile-tdbu` (interview, desk model, reconciliation) | the interview's four inputs | it runs on defaults and reports which inputs drive the gap |
 | A new product with comparable launched products | 27 `mode: launch`; 19 to turn an adoption curve into sales with repeat | 27: 3 calibration + 2 validation products; 19: 6 adoption points | 27 refuses; fall back to `reconcile-tdbu` |
 | A yes/no event to forecast | the assistant estimates it with chapter 10's decomposition and journal; 2 updates a rate; 9 and 26 only score probabilities already made | 9/26: resolved outcomes | nothing to score yet: keep the journal, `status: needs_evidence` |

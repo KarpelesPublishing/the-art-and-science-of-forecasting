@@ -14,7 +14,7 @@ from .series import compare,decomposition
 
 def analyze(chapter,d,c):
     common={'source','units','as_of','horizon','season','seed','outcome_due','frequency'}
-    engine_keys={'pool','transform','origins'}
+    engine_keys={'pool','transform','origins','criterion','periods','regressors','future_regressors','country','conformal'}
     options={1:{'rules','k','train_fraction','benford_column'},15:{'checkpoint','quantiles','origins','samples'},4:engine_keys,6:engine_keys,12:engine_keys,5:{'Q','R','model','seasonal','cycle','stochastic_cycle','origins'},2:{'prior_alpha','prior_beta'},7:{'samples','correlation'},10:set(),11:{'extremize_a'},13:{'covariates','known_in_advance','strategy','lags','rolling','origins','ablation','shap_rows'},14:{'context','epochs'},16:{'weekly','yearly','events','regressors','mode','priors','origins'},17:{'alpha','gamma','pool','transform','origins','calibration_size','test_size'},18:{'nodes','S','past_errors','edges','pool','transform','origins','shrinkage','coherent_quantiles','history_tolerance'},19:{'ceilings','future_times','units_at_trial','repeat_kernel','peak','sales_horizon','time_unit','fix_q','parfitt_collins'},20:{'decay_a','decay_b','half_a','half_b','initial_a','initial_b','channels','controls','decay_grid','saturation','alpha','origins','windows','prior_mean','prior_sd','noise_sd','reallocation_total'},21:{'underage_cost','overage_cost','lead_time','review_period','service_level','bootstrap_window','samples','echelons','holding_cost','backorder_cost'},22:{'intervention','identification','controls','placebos','event_window'},23:{'delay_prob','mature_age','max_delay','origins','population','recovery_rate','sigma'},24:{'calibration_size','min_segment','max_breaks','rolling_window','drift_window'},26:{'false_alarm_cost','miss_cost'},27:{'mode','new_product','repeat_rate','repeat_kernel','declared_trial_total','trial_conversion_assumption','pool','transform','origins'}}
     unknown=set(c)-common-options.get(chapter,set())
     if unknown:raise ValueError('Unsupported config keys for this adapter: '+', '.join(sorted(unknown)))
@@ -146,7 +146,9 @@ def journal(d,c):
     from ..practitioner import score_journal
     if not isinstance(d,dict) or not {'events','revisions'}<=set(d):raise ValueError('JSON requires events and revisions arrays')
     if not c.get('as_of'):raise ValueError('Timezone-aware as_of is required for scoring')
-    rows=score_journal(d['events'],d['revisions'],as_of=c['as_of'])
+    as_of=str(c['as_of'])
+    if len(as_of)==10:as_of+='T00:00:00+00:00'          # a brief's date-only cutoff is read as UTC midnight
+    rows=score_journal(d['events'],d['revisions'],as_of=as_of)
     eligible_ids={r['event_id'] for r in rows}
     excluded=[e['event_id'] for e in d['events'] if e['event_id'] not in eligible_ids]
     if not rows:

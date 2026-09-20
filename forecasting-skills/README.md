@@ -3,10 +3,13 @@
 **New reader? Open [Start Here](../companion/START-HERE.md).** It explains what
 a skill is, what a notebook is, and which one to use for your task.
 
-There are **27 individual chapter skills plus the 28th, integrated
-[Complete Forecasting Skill](all-chapters-forecasting/SKILL.md)**. Use individual
-skills to learn or apply a method; use the complete skill to coordinate an applied
-question. It selects relevant methods rather than running all 27 indiscriminately.
+There are **27 individual chapter skills, the integrated
+[Complete Forecasting Skill](all-chapters-forecasting/SKILL.md)** (the map and router),
+and the **[Forecast Workflow](forecast-workflow/SKILL.md)**, the front door for any
+forecast: seven gates (brief, profile, baseline, method, validation, uncertainty, report
+and journal), each leaving a file the next command requires, so a reader with no
+forecasting training and an expert follow the same auditable path. Use individual skills
+to learn or apply a method; use the workflow for a forecast.
 
 Use the [chapter map](all-chapters-forecasting/references/chapter-map.md) to find a
 specific lesson. The [technical guide](../companion/README.md) covers setup. The only

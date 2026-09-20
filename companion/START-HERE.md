@@ -1,6 +1,6 @@
 # Start here: the book, notebooks and skills
 
-You do not need to learn 29 folder names. There are two ways to use this companion:
+You do not need to learn 30 folder names. There are two ways to use this companion:
 **learn one chapter** or **apply the book to your own forecasting problem**.
 
 | Resource | What it is | Who uses it? |
@@ -8,7 +8,8 @@ You do not need to learn 29 folder names. There are two ways to use this compani
 | Book chapter | Explanation, examples and limitations | You read it |
 | Chapter notebook | A runnable worked lesson, with editable inputs, code, charts and results | You or your AI run it |
 | Chapter skill | Written instructions that help an AI apply that chapter and check its assumptions | Your AI reads it |
-| Complete Forecasting Skill | The 28th skill: coordinates whichever chapter methods fit your problem | Your AI uses it as the starting point |
+| Forecast Workflow | The front door: seven gates from question to scored forecast, each leaving a file | Your AI follows it for any forecast |
+| Complete Forecasting Skill | The map and router: coordinates whichever chapter methods fit your problem | Your AI uses it inside the workflow |
 
 A skill is **not an app or a notebook**. Opening `SKILL.md` shows its instructions;
 it does not run a forecast. The notebook does the demonstrated computations.
@@ -31,16 +32,32 @@ forecasts for your business until you supply appropriate data and adapt the mode
 
 ## 2. I have a forecasting problem
 
-Start with the [Complete Forecasting Skill](../forecasting-skills/all-chapters-forecasting/SKILL.md).
-You do **not** have to work through all 27 chapter skills first.
+Start with the [Forecast Workflow](../forecasting-skills/forecast-workflow/SKILL.md).
+You do **not** have to work through the chapter skills first. The workflow has seven
+gates, and each one leaves a file the next command needs, so it cannot be skipped
+whatever you or your assistant know about forecasting:
+
+1. **Brief**: what number, for what decision, by when (`run.py brief`).
+2. **Profile**: what the data are, and the route they recommend (`run.py profile`).
+3. **Baseline**: the number a method must beat, stated before modelling.
+4. **Method**: chosen from the profile, run with the brief attached (`run.py apply --brief`).
+5. **Validation**: did it beat the baseline; what was not done.
+6. **Uncertainty**: a range with measured coverage, or an honest scenario.
+7. **Report and journal**: rendered from the run's own files, every number sourced
+   (`run.py report`); recorded for scoring when the actuals arrive (`run.py journal`).
 
 In a runtime that has discovered the skills, an example request is:
 
 ```text
-Use $all-chapters-forecasting to help forecast my product's next 24 months.
-First identify the data and assumptions you need; then choose suitable methods,
-show uncertainty, and explain how we will check the forecast later.
+Use $forecast-workflow to forecast my product's next 24 months from sales.csv.
+Take me through the gates; ask me the brief's questions one at a time.
 ```
+
+### Your first forecast in thirty minutes
+
+[first-forecast.md](../forecasting-skills/forecast-workflow/references/first-forecast.md)
+walks one complete pass on the shipped file `data/examples/first-forecast.csv`, with the
+commands and the numbers they print. Do it once on that file, then once on your own.
 
 For the author's established-product-to-new-launch method, the main working
 example is [chapter 27's notebook](notebooks/27-directed-forecasting.ipynb).
@@ -50,11 +67,12 @@ For 100 or more historical sales series, the integrated skill can use the local
 batch runner described in [the technical guide](README.md#forecast-many-series).
 With `--engine full` that runner fits the smoothing and ARIMA families, Theta, STL+ETS, LightGBM and combinations per series, selected by rolling-origin validation with measured interval coverage; it does not use regressors, hierarchies or causal designs.
 
-## Why do I see 29 skill folders?
+## Why do I see 30 skill folders?
 
 ```text
-Reader-facing book skills: 28
-  Complete Forecasting Skill: one integrated starting point
+Reader-facing book skills: 29
+  Forecast Workflow: the front door, seven gates from question to scored forecast
+  Complete Forecasting Skill: the map and router across the chapters
   Chapter skills 01 to 27: one per chapter
 
 Desk model: 1
@@ -62,9 +80,9 @@ Desk model: 1
   usable on its own when there is no sales history yet
 ```
 
-The book's entry point is `all-chapters-forecasting`, displayed as **Complete
-Forecasting Skill**. The technical folder name is different from its
-reader-facing name.
+The front door is `forecast-workflow`; `all-chapters-forecasting`, displayed as
+**Complete Forecasting Skill**, is the map it routes through. The technical folder
+names differ from the reader-facing names.
 
 ## Keep the package together
 
@@ -84,7 +102,7 @@ book-project/
 ```
 
 For local setup and skill discovery, follow [the technical guide](README.md#set-up).
-The supplied installer links all 29 skills for Codex (`.agents/skills`) and Claude Code
+The supplied installer links all 30 skills for Codex (`.agents/skills`) and Claude Code
 (`.claude/skills`); that does not mean you must invoke
 all of them. If your AI cannot discover installed skills, explicitly provide the
 relevant `SKILL.md` and its linked resources. An assistant without code execution

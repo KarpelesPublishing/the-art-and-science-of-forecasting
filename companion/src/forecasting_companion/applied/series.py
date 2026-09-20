@@ -16,31 +16,129 @@ def compare(frame,c,chapter):
     when a full cycle exists, a seasonal-naive scenario, and no validation claims.
     """
     from ..engine import forecast_series,POOLS
-    h=integer(c,'horizon',12);season=integer(c,'season',12)
-    pool=c.get('pool',CHAPTER_POOL.get(chapter,'full'))
+    h=integer(c,'horizon',12)
+    from ..profile import profile_series
+    auto=c.get('season')=='auto' or 'season' not in c
+    profile=profile_series(frame,{k:v for k,v in c.items() if k!='season' or not auto})   # always look first; warnings survive into the summary
+    season=int(profile['season']) if auto else integer(c,'season',12)
+    regressor_columns=list(c.get('regressors') or [])
+    route_pool={'intermittent':'intermittent','multiseasonal':'multiseasonal','regressors':'regressors'}.get(profile['route'])
+    if regressor_columns:route_pool='regressors'
+    pool=c.get('pool') or (route_pool if chapter==12 and route_pool else CHAPTER_POOL.get(chapter,'full'))
     if pool not in POOLS:raise ValueError(f'pool must be one of {sorted(POOLS)}')
     transform=c.get('transform','auto');origins=integer(c,'origins',5,2)
+    criterion=c.get('criterion');conformal=bool(c.get('conformal',True))
+    frame,observed=fill_gaps(frame,profile,c)
     f,freq=time_frame(frame,c,minimum=2)
     y=f.target.to_numpy(float)
+    regressors=None
+    if pool=='regressors':
+        from ..engine_regressors import validate_regressors
+        if not regressor_columns:regressor_columns=[col for col in profile.get('extra_columns',[]) if col in frame.columns]
+        if not regressor_columns:raise ValueError('the regressors pool needs `regressors`: the driver columns present in the history and in future_regressors')
+        future=c.get('future_regressors')
+        if isinstance(future,str):future=pd.read_csv(future)
+        elif isinstance(future,list):future=pd.DataFrame(future)
+        Xh,Xf=validate_regressors(f,future,regressor_columns,h)
+        regressors={'X':Xh,'future':Xf,'columns':regressor_columns}
+    periods=c.get('periods') or (profile['seasonality']['periods'] if pool=='multiseasonal' else None)
     minimum=minimum_history(h,season)
     if len(y)<minimum:
-        dates=pd.date_range(f.timestamp.iloc[-1],periods=h+1,freq=freq)[1:]
-        table=pd.DataFrame({'timestamp':dates,'forecast':np.repeat(y[-1],h),'model':'Provisional naive'})
-        if season>1 and len(y)>=season:table['seasonal_naive_scenario']=np.resize(y[-season:],h)
-        return finish(table,method='Provisional persistence baseline (history too short for the rolling comparison)',status='provisional',
-                      interpretation=f'Only {len(y)} observations; the rolling comparison needs {minimum} (a training slice of 2 seasons + 1 horizon, then 3 more horizons for two selection origins and a holdout). The forecast repeats the last value ({y[-1]:.4g})'+(' with a seasonal-naive scenario column' if 'seasonal_naive_scenario' in table else '')+'. Nothing was validated: no calibrated interval or fitted seasonal parameters are asserted. Shorten the horizon, supply more history, or treat this as a placeholder.',
-                      assumptions=['The last observation is the best available guess for the next periods'],
-                      not_done=[f'No model comparison: {minimum-len(y)} more observations are needed at horizon {h} and season {season}','No intervals','No seasonal model'],
-                      selected='Naive',validation=[],minimum_required=minimum,observations=int(len(y)))
-    table,summary=forecast_series(y,f.timestamp,h,season,pool=pool,freq=freq,transform=transform,max_origins=origins)
+        return provisional(y,f,h,season,freq,minimum,profile)
+    table,summary=forecast_series(y,f.timestamp,h,season,pool=pool,freq=freq,transform=transform,max_origins=origins,criterion=criterion,periods=periods,regressors=regressors,country=c.get('country'),observed=observed,conformal=conformal)
     skipped=summary.get('skipped') or {}
-    not_done=['No regressors, promotions or calendar effects (chapter 13 or 16 add them)','No hierarchy or coherence constraints (chapter 18)','Intervals are the selected model\'s own plus empirical residual quantiles; no distribution-free guarantee (chapter 17)']
+    not_done=([] if pool=='regressors' else ['No regressors, promotions or calendar effects (pool regressors, chapter 13 or 16 add them)'])+['No hierarchy or coherence constraints (chapter 18)',('Conformal bands come from few origin residuals; chapter 17 gives a calibrated split with more' if conformal else 'No conformal bands (set conformal: true)')]
     if skipped:not_done.append('Skipped candidates: '+'; '.join(f'{k} ({v})' for k,v in skipped.items()))
     method=summary.pop('method','Rolling-origin model comparison with final holdout');interpretation=summary.pop('interpretation')
     summary.pop('status',None)
+    scenario=break_scenario(y,f,h,season,freq,profile)
+    if scenario:
+        table['break_scenario']=scenario['forecast'];summary['break_scenario']=scenario
+        if 'conformal_lower' in table:
+            radius=(table['conformal_upper']-table['conformal_lower'])/2
+            table['break_scenario_low']=table['break_scenario']-radius;table['break_scenario_high']=table['break_scenario']+radius
+            scenario['band_note']='break_scenario_low/high re-centre the conformal radius on the re-levelled scenario; the radius comes from before the shift'
+        interpretation+=' Profile warning: '+scenario['note']
+        not_done.append('The validated selection does not act on the recent level shift; break_scenario is a judgment re-levelling, not a validated forecast')
     return finish(table,method=method,interpretation=interpretation,status='passed',
                   assumptions=['Regular series with the declared season and no missing periods','The training history\'s pattern continues over the horizon (no regime change)','Specifications are frozen on the first training slice, so later actuals cannot steer selection'],
-                  not_done=not_done,**summary)
+                  not_done=not_done,profile=profile,gaps_filled=int((~observed).sum()) if observed is not None else 0,**summary)
+
+
+def provisional(y,f,h,season,freq,minimum,profile):
+    """History too short for the rolling comparison: the best placeholder a careful forecaster would write
+    down, labelled as such. With at least one full season: last season's pattern re-levelled by the recent
+    growth (the last quarter-season against the same periods a year earlier), with a scenario range from
+    the in-sample errors of that rule. Without a season: the last value with a range from the observed
+    period-to-period changes. Nothing is validated and the status says so."""
+    dates=pd.date_range(f.timestamp.iloc[-1],periods=h+1,freq=freq)[1:]
+    n=len(y)
+    if season>1 and n>=season+1:
+        k=max(1,min(3,season//4))
+        recent=y[-k:].mean();same=y[-season-k:-season].mean() if n>=season+k else y[:k].mean()
+        growth=float(recent/same) if same>0 and recent>0 else 1.0
+        growth=float(np.clip(growth,0.5,2.0))
+        base=np.resize(y[-season:],h)
+        forecast=base*growth
+        insample=[]
+        for t in range(season,n):
+            g=(y[max(season,t-k):t].mean()/y[max(0,t-season-k):t-season].mean()) if t-season-k>=0 and y[t-season-k:t-season].mean()>0 else 1.0
+            insample.append(y[t]-y[t-season]*float(np.clip(g,0.5,2.0)))
+        spread=float(np.quantile(np.abs(insample),0.8)) if insample else float(np.std(np.diff(y)))
+        method='Provisional placeholder: last season re-levelled by recent growth (not validated)';model='Provisional seasonal naive with growth'
+        note=f'the last full season repeated and re-levelled by the recent growth of {growth:.3f} (last {k} periods against the same periods a season earlier); the range is the 80th percentile of that rule\'s in-sample errors ({len(insample)} points), a scenario band, not a measured interval'
+        assumptions=[f'The seasonal pattern of the last {season} periods repeats',f'The recent growth ratio {growth:.3f} persists over the horizon']
+    else:
+        forecast=np.repeat(y[-1],h);diffs=np.diff(y) if n>1 else np.array([0.0])
+        spread=float(np.quantile(np.abs(diffs),0.8))*np.sqrt(np.arange(1,h+1)) if len(diffs) else np.zeros(h)
+        method='Provisional persistence placeholder (not validated)';model='Provisional naive'
+        note=f'the last value ({y[-1]:.4g}) repeated; the range grows with the square root of the horizon from the observed period-to-period changes, a scenario band, not a measured interval'
+        assumptions=['The last observation is the best available guess for the next periods']
+    table=pd.DataFrame({'timestamp':dates,'forecast':forecast,'model':model,'scenario_low':forecast-spread,'scenario_high':forecast+spread})
+    if season>1 and n>=season:table['seasonal_naive_scenario']=np.resize(y[-season:],h)
+    return finish(table,method=method,status='provisional',profile=profile,
+                  interpretation=f'Only {n} observations; the rolling comparison needs {minimum} (a training slice of 2 seasons + 1 horizon, then 3 more horizons for two selection origins and a holdout). The placeholder is {note}. Nothing was validated against held-out data. Shorten the horizon, supply more history, or carry this as a labelled scenario and score it when the actuals arrive.',
+                  assumptions=assumptions,
+                  not_done=[f'No model comparison: {minimum-n} more observations are needed at horizon {h} and season {season}','No measured interval coverage: scenario_low/high are in-sample scenario bounds','No fitted seasonal or trend model'],
+                  selected=model,validation=[],minimum_required=minimum,observations=int(n),scenario_spread=float(np.mean(spread)) if np.ndim(spread) else float(spread))
+
+
+def break_scenario(y,f,h,season,freq,profile):
+    """When the profile finds a recent level shift, the validated selection was trained mostly before it and its
+    holdout straddles it; a re-levelled scenario (last season's shape at the post-break level) is the number a
+    careful forecaster puts beside the model's, and chapter 24's policies decide between them."""
+    b=profile.get('break') or {}
+    if not b.get('found') or b.get('periods_since',10**9)>2*max(season,1) or len(y)<2*season+b['periods_since']:return None
+    k=int(b['periods_since']);pos=len(y)-k
+    if season>1:
+        post=y[pos:];same=y[pos-season:pos-season+k] if pos-season>=0 else None
+        shift=float(post.mean()-same.mean()) if same is not None and len(same)==len(post) else float(b['level_after']-b['level_before'])
+        base=np.resize(y[-season:],h)
+        forecast=np.array([base[j]+shift if (len(y)-season+j)<pos else base[j] for j in range(h)])
+    else:
+        forecast=np.repeat(float(y[pos:].mean()),h);shift=float(b['level_after']-b['level_before'])
+    return dict(position=int(pos),periods_since=k,shift=shift,forecast=[float(v) for v in forecast],
+                note=f'a level shift {k} periods before the end ({shift:+.4g}); the validated selection was chosen at origins that mostly predate it. The break_scenario column re-levels last season\'s pattern by the shift; use it, or chapter 24\'s adaptive policy, when the shift is believed to persist.')
+
+
+def fill_gaps(frame,profile,c):
+    """Apply the profile's gap rule: missing periods and empty targets are filled (interpolated, or zero for
+    intermittent demand) so the engine sees a regular series, and an `observed` mask marks the fills so they
+    are used for fitting but never scored. Refused gaps raise with the profile's reason."""
+    action=profile['gaps']['action']
+    if action=='none':return frame,None
+    if action=='refuse':raise ValueError('gaps: '+profile['gaps']['reason'])
+    f=frame.copy();f['timestamp']=pd.to_datetime(f['timestamp'],utc=True,errors='raise');f=f.sort_values('timestamp')
+    if c.get('as_of'):f=f[f.timestamp<=pd.to_datetime(c['as_of'],utc=True)]
+    freq=c.get('frequency') or profile['frequency']['frequency']
+    grid=pd.date_range(f.timestamp.iloc[0],f.timestamp.iloc[-1],freq=freq)
+    f=f.set_index('timestamp').reindex(grid);f.index.name='timestamp'
+    observed=f['target'].notna().to_numpy()
+    f['target']=pd.to_numeric(f['target'],errors='coerce')
+    f['target']=f['target'].fillna(0.0) if action=='zero' else f['target'].interpolate(limit_direction='both')
+    for col in f.columns:
+        if col!='target':f[col]=f[col].interpolate(limit_direction='both') if pd.api.types.is_numeric_dtype(f[col]) else f[col].ffill().bfill()
+    return f.reset_index(),observed
 
 
 def minimum_history(h,season):

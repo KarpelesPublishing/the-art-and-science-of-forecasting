@@ -1,19 +1,153 @@
 {
   "method": "Rolling-origin model comparison with final holdout",
-  "interpretation": "Seasonal naive had the lowest mean validation MAE (1.1); the runner-up was ETS(auto) (1.44). Final-holdout MAE for the selection: 1.21. Compare against Seasonal naive before trusting the gain.",
+  "interpretation": "Seasonal naive had the lowest mean validation MAE (1.1); the runner-up was none. Final-holdout MAE for the selection: 1.21 against 1.21 for Seasonal naive.",
   "assumptions": [
     "Regular series with the declared season and no missing periods",
     "The training history's pattern continues over the horizon (no regime change)",
     "Specifications are frozen on the first training slice, so later actuals cannot steer selection"
   ],
   "not_done": [
-    "No regressors, promotions or calendar effects (chapter 13 or 16 add them)",
+    "No regressors, promotions or calendar effects (pool regressors, chapter 13 or 16 add them)",
     "No hierarchy or coherence constraints (chapter 18)",
-    "Intervals are the selected model's own plus empirical residual quantiles; no distribution-free guarantee (chapter 17)"
+    "Conformal bands come from few origin residuals; chapter 17 gives a calibrated split with more"
   ],
   "status": "passed",
+  "profile": {
+    "observations": 732,
+    "missing_values": 0,
+    "start": "1950-01-01",
+    "end": "2010-12-01",
+    "frequency": {
+      "frequency": "MS",
+      "regular": true,
+      "gaps": 0,
+      "off_grid": 0,
+      "gap_positions": [],
+      "longest_gap": 0
+    },
+    "season": 12,
+    "declared_season": 12,
+    "horizon": 12,
+    "minimum_for_engine": 72,
+    "gaps": {
+      "count": 0,
+      "action": "none"
+    },
+    "intermittency": {
+      "zero_share": 0.0,
+      "adi": 1.0,
+      "cv2": 0.00945878547897989,
+      "quadrant": "smooth",
+      "meaning": "regular demand every period"
+    },
+    "seasonality": {
+      "periods": [
+        12
+      ],
+      "evidence": [
+        {
+          "period": 12,
+          "acf": 0.755,
+          "acf_band": 0.074,
+          "periodogram_share": 0.755,
+          "strength": 0.905,
+          "testable": true,
+          "seasonal": true
+        }
+      ],
+      "multiple": false
+    },
+    "trend": {
+      "direction": "up",
+      "mann_kendall_p": 0.013,
+      "slope_per_period": 0.001002355714296738
+    },
+    "outliers": {
+      "count": 1,
+      "positions": [
+        401
+      ],
+      "share": 0.0014,
+      "method": "STL residuals (period 12), two passes",
+      "threshold": 4.0
+    },
+    "break": {
+      "found": true,
+      "position": 586,
+      "periods_since": 146,
+      "level_before": 23.08546075085324,
+      "level_after": 23.1213698630137
+    },
+    "positive": true,
+    "nonnegative": true,
+    "recommended_transform": "log",
+    "transform_note": {
+      "boxcox_lambda": -0.5646143277938968
+    },
+    "summary_stats": {
+      "mean": 23.09262295081967,
+      "median": 22.855,
+      "min": 18.95,
+      "max": 29.24,
+      "last": 22.07
+    },
+    "route": "engine",
+    "route_reasons": [
+      "a regular series with enough history: the chapter 12 engine (smoothing, ARIMA, Theta, STL, LightGBM, combinations) at rolling origins"
+    ],
+    "extra_columns": [],
+    "warnings": [
+      "1 outlying observations by STL residuals (period 12), two passes; check them, do not delete them",
+      "possible level shift 146 periods before the end (from 23.09 to 23.12)"
+    ]
+  },
+  "gaps_filled": 0,
   "pool": "smoothing",
   "selected": "Seasonal naive",
+  "criterion": "mae",
+  "baseline": "Seasonal naive",
+  "forced_baseline": false,
+  "robustness": {
+    "Damped Holt": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "Drift": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "ETS(auto)": {
+      "lost_to_baseline_at": 4,
+      "of": 5
+    },
+    "Holt": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "Naive": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "SES": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "STL+ETS": {
+      "lost_to_baseline_at": 3,
+      "of": 5
+    },
+    "Seasonal naive": {
+      "lost_to_baseline_at": 0,
+      "of": 5
+    },
+    "Theta": {
+      "lost_to_baseline_at": 4,
+      "of": 5
+    }
+  },
+  "unavailable": {},
+  "conformal": "conformal_lower/upper are split-conformal bands at 80% from Seasonal naive's absolute residuals at the selection origins, pooled across horizon steps (60 residuals, scaled per step); the guarantee assumes future errors resemble those at the origins, which a level shift breaks.",
+  "conformal_test_coverage": 0.8333333333333334,
   "transform": "log",
   "specification": {
     "ets": {
@@ -23,6 +157,10 @@
       "seasonal": "add"
     },
     "arima": null,
+    "periods": [
+      12
+    ],
+    "regressors": null,
     "notes": {
       "transform": {
         "boxcox_lambda": -0.7041897213407325
@@ -44,63 +182,99 @@
       "mae": 1.1049999999999998,
       "rmse": 1.3016371768605026,
       "mase": 0.9435238560630342,
-      "interval_coverage": null
+      "rmsse": 1.1482327736263804,
+      "cumulative_error": 9.500000000000004,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 0
     },
     {
       "model": "ETS(auto)",
       "mae": 1.4415901122692258,
       "rmse": 1.5477674396528407,
       "mase": 1.230462682416762,
-      "interval_coverage": 0.5166666666666667
+      "rmsse": 1.3652036944369228,
+      "cumulative_error": 16.556510489677965,
+      "pinball": 1.3613976861735768,
+      "interval_coverage": 0.5166666666666667,
+      "lost_to_baseline_at": 4
     },
     {
       "model": "Theta",
       "mae": 1.448949838500285,
       "rmse": 1.5522740677117892,
       "mase": 1.2367389694415656,
-      "interval_coverage": 0.9
+      "rmsse": 1.3691713896893964,
+      "cumulative_error": 16.64470231722201,
+      "pinball": 1.2752779206442397,
+      "interval_coverage": 0.9,
+      "lost_to_baseline_at": 4
     },
     {
       "model": "STL+ETS",
       "mae": 1.5183402854928476,
       "rmse": 1.753400584722879,
       "mase": 1.2955451664695516,
-      "interval_coverage": 0.48333333333333334
+      "rmsse": 1.5462703615416171,
+      "cumulative_error": 16.511968155726038,
+      "pinball": 1.513830248832997,
+      "interval_coverage": 0.48333333333333334,
+      "lost_to_baseline_at": 3
     },
     {
       "model": "Naive",
       "mae": 2.084833333333334,
       "rmse": 2.462978791483941,
       "mase": 1.7789922998533823,
-      "interval_coverage": null
+      "rmsse": 2.1721201220164987,
+      "cumulative_error": 17.31400000000001,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "SES",
       "mae": 2.084878626649457,
       "rmse": 2.463015559344261,
       "mase": 1.779030905846001,
-      "interval_coverage": 0.7166666666666667
+      "rmsse": 2.17215255537509,
+      "cumulative_error": 17.314513312903472,
+      "pinball": 2.0332266633044966,
+      "interval_coverage": 0.7166666666666667,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "Drift",
       "mae": 2.0911768890915803,
       "rmse": 2.468003964065864,
       "mase": 1.7844064846567478,
-      "interval_coverage": null
+      "rmsse": 2.1765540822845666,
+      "cumulative_error": 17.416050897438037,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "Damped Holt",
       "mae": 3.9885150474364166,
       "rmse": 4.663558310428936,
       "mase": 3.4054652692558185,
-      "interval_coverage": 0.8666666666666667
+      "rmsse": 4.11299486097804,
+      "cumulative_error": 40.55369695358525,
+      "pinball": 3.7263317590585237,
+      "interval_coverage": 0.8666666666666667,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "Holt",
       "mae": 7.071954685083048,
       "rmse": 8.645888007137781,
       "mase": 6.050285912417784,
-      "interval_coverage": 0.7666666666666667
+      "rmsse": 7.631371000008089,
+      "cumulative_error": 79.70783140257313,
+      "pinball": 6.322084454783773,
+      "interval_coverage": 0.7666666666666667,
+      "lost_to_baseline_at": 5
     }
   ],
   "validation": [
@@ -109,315 +283,450 @@
       "model": "Naive",
       "mae": 1.9875000000000007,
       "rmse": 2.1819009296177208,
-      "mase": 1.6947836614380467
+      "mase": 1.6947836614380467,
+      "rmsse": 1.9230036908113621,
+      "cumulative_error": 8.850000000000051,
+      "pinball": null
     },
     {
       "origin": 660,
       "model": "Seasonal naive",
       "mae": 0.8641666666666664,
       "rmse": 1.0786836113213798,
-      "mase": 0.7368933571954941
+      "mase": 0.7368933571954941,
+      "rmsse": 0.9506905366927779,
+      "cumulative_error": 7.810000000000002,
+      "pinball": null
     },
     {
       "origin": 660,
       "model": "Drift",
       "mae": 1.9892099750200558,
       "rmse": 2.1840069159048894,
-      "mase": 1.6962417936269558
+      "mase": 1.6962417936269558,
+      "rmsse": 1.9248597876432805,
+      "cumulative_error": 8.883343624248454,
+      "pinball": null
     },
     {
       "origin": 660,
       "model": "SES",
       "mae": 1.9874914036555638,
       "rmse": 2.181883496357838,
-      "mase": 1.6947763311517072
+      "mase": 1.6947763311517072,
+      "rmsse": 1.9229883261251646,
+      "cumulative_error": 8.849381063200596,
+      "pinball": 1.706401905990461
     },
     {
       "origin": 660,
       "model": "Holt",
       "mae": 1.9891885874666897,
       "rmse": 2.1839736764814313,
-      "mase": 1.6962235560038095
+      "mase": 1.6962235560038095,
+      "rmsse": 1.924830492301259,
+      "cumulative_error": 8.882475598270055,
+      "pinball": 1.7076203776501735
     },
     {
       "origin": 660,
       "model": "Damped Holt",
       "mae": 2.731022705812279,
       "rmse": 3.317496442579039,
-      "mase": 2.3288013387808677
+      "mase": 2.3288013387808677,
+      "rmsse": 2.9238531487544597,
+      "cumulative_error": 26.513634976387134,
+      "pinball": 2.893847370820991
     },
     {
       "origin": 660,
       "model": "ETS(auto)",
       "mae": 1.148948180253562,
       "rmse": 1.221988339610449,
-      "mase": 0.9797326308089117
+      "mase": 0.9797326308089117,
+      "rmsse": 1.0769911939177976,
+      "cumulative_error": 13.787378163042742,
+      "pinball": 0.9700816482386485
     },
     {
       "origin": 660,
       "model": "Theta",
       "mae": 1.1616771387012899,
       "rmse": 1.2340193715776118,
-      "mase": 0.9905868853016578
+      "mase": 0.9905868853016578,
+      "rmsse": 1.087594662921854,
+      "cumulative_error": 13.94012566441548,
+      "pinball": 1.1150552821755064
     },
     {
       "origin": 660,
       "model": "STL+ETS",
       "mae": 0.8497520635381454,
       "rmse": 1.013100827229412,
-      "mase": 0.7246017175133148
+      "mase": 0.7246017175133148,
+      "rmsse": 0.8928895915854147,
+      "cumulative_error": 4.256014858434128,
+      "pinball": 0.7232047670820823
     },
     {
       "origin": 672,
       "model": "Naive",
       "mae": 1.5374999999999985,
       "rmse": 2.1020961760426955,
-      "mase": 1.3173609939113828
+      "mase": 1.3173609939113828,
+      "rmsse": 1.8574226415336987,
+      "cumulative_error": 17.289999999999964,
+      "pinball": null
     },
     {
       "origin": 672,
       "model": "Seasonal naive",
       "mae": 1.2199999999999998,
       "rmse": 1.4335271186831455,
-      "mase": 1.0453205935426915
+      "mase": 1.0453205935426915,
+      "rmsse": 1.2666716955392812,
+      "cumulative_error": 11.86000000000001,
+      "pinball": null
     },
     {
       "origin": 672,
       "model": "Drift",
       "mae": 1.5423722689339516,
       "rmse": 2.105758018584549,
-      "mase": 1.3215356521523167
+      "mase": 1.3215356521523167,
+      "rmsse": 1.8606582638256217,
+      "cumulative_error": 17.393645977773282,
+      "pinball": null
     },
     {
       "origin": 672,
       "model": "SES",
       "mae": 1.5376099923770508,
       "rmse": 2.1022092670817436,
-      "mase": 1.317455237597338
+      "mase": 1.317455237597338,
+      "rmsse": 1.8575225693385617,
+      "cumulative_error": 17.291979862786917,
+      "pinball": 1.8539823149205579
     },
     {
       "origin": 672,
       "model": "Holt",
       "mae": 13.80882170383382,
       "rmse": 17.129367780750506,
-      "mase": 11.83167680293178
+      "mase": 11.83167680293178,
+      "rmsse": 15.13559460967195,
+      "cumulative_error": 162.48516174305772,
+      "pinball": 12.096930480954317
     },
     {
       "origin": 672,
       "model": "Damped Holt",
       "mae": 4.264297313819044,
       "rmse": 4.813000763104545,
-      "mase": 3.653735900921171
+      "mase": 3.653735900921171,
+      "rmsse": 4.252791424576464,
+      "cumulative_error": 44.036045320093564,
+      "pinball": 3.861231306081977
     },
     {
       "origin": 672,
       "model": "ETS(auto)",
       "mae": 1.152018401311593,
       "rmse": 1.299458916042564,
-      "mase": 0.9870725893697847
+      "mase": 0.9870725893697847,
+      "rmsse": 1.1482083645402497,
+      "cumulative_error": 12.713697799382366,
+      "pinball": 0.9658254101821105
     },
     {
       "origin": 672,
       "model": "Theta",
       "mae": 1.1479268665137077,
       "rmse": 1.2909402563225754,
-      "mase": 0.9835668798751731
+      "mase": 0.9835668798751731,
+      "rmsse": 1.1406812344213912,
+      "cumulative_error": 12.685308285847235,
+      "pinball": 1.0800361088508468
     },
     {
       "origin": 672,
       "model": "STL+ETS",
       "mae": 1.828649702249831,
       "rmse": 1.91370366795635,
-      "mase": 1.5668239279815244
+      "mase": 1.5668239279815244,
+      "rmsse": 1.6909580839159548,
+      "cumulative_error": 21.94379642699797,
+      "pinball": 1.7319725964663357
     },
     {
       "origin": 684,
       "model": "Naive",
       "mae": 2.9008333333333343,
       "rmse": 3.1649684042656743,
-      "mase": 2.4834826035442656
+      "mase": 2.4834826035442656,
+      "rmsse": 2.7926000099748483,
+      "cumulative_error": 20.010000000000026,
+      "pinball": null
     },
     {
       "origin": 684,
       "model": "Seasonal naive",
       "mae": 1.526666666666667,
       "rmse": 1.8234582528810468,
-      "mase": 1.3070210082427736
+      "mase": 1.3070210082427736,
+      "rmsse": 1.6089227078289914,
+      "cumulative_error": 13.899999999999995,
+      "pinball": null
     },
     {
       "origin": 684,
       "model": "Drift",
       "mae": 2.9083586587613652,
       "rmse": 3.174393985934769,
-      "mase": 2.4899252400693532
+      "mase": 2.4899252400693532,
+      "rmsse": 2.800916642591988,
+      "cumulative_error": 20.131435985968544,
+      "pinball": null
     },
     {
       "origin": 684,
       "model": "SES",
       "mae": 2.9007802898365522,
       "rmse": 3.1648845674269412,
-      "mase": 2.4834371915586906
+      "mase": 2.4834371915586906,
+      "rmsse": 2.792526036801414,
+      "cumulative_error": 20.00809043411588,
+      "pinball": 2.318547596622675
     },
     {
       "origin": 684,
       "model": "Holt",
       "mae": 15.545620706220332,
       "rmse": 19.040052551794503,
-      "mase": 13.309030250570194
+      "mase": 13.309030250570194,
+      "rmsse": 16.799931043355734,
+      "cumulative_error": 186.49622629030054,
+      "pinball": 13.506083553041751
     },
     {
       "origin": 684,
       "model": "Damped Holt",
       "mae": 6.633588822316727,
       "rmse": 7.814436858354301,
-      "mase": 5.679196474331266
+      "mase": 5.679196474331266,
+      "rmsse": 6.895044013449244,
+      "cumulative_error": 78.36263677066188,
+      "pinball": 5.302786435074557
     },
     {
       "origin": 684,
       "model": "ETS(auto)",
       "mae": 2.083027384433095,
       "rmse": 2.2601702604994425,
-      "mase": 1.7833366062439195
+      "mase": 1.7833366062439195,
+      "rmsse": 1.9942541870271941,
+      "cumulative_error": 24.996328613197143,
+      "pinball": 2.089336750307731
     },
     {
       "origin": 684,
       "model": "Theta",
       "mae": 2.0981933281508756,
       "rmse": 2.2645076743679464,
-      "mase": 1.7963205846602732
+      "mase": 1.7963205846602732,
+      "rmsse": 1.9980812906393894,
+      "cumulative_error": 25.178319937810507,
+      "pinball": 1.6129186466420458
     },
     {
       "origin": 684,
       "model": "STL+ETS",
       "mae": 1.4996083218427898,
       "rmse": 1.885227803568123,
-      "mase": 1.283855620601015
+      "mase": 1.283855620601015,
+      "rmsse": 1.6634248784138168,
+      "cumulative_error": 16.769175504458296,
+      "pinball": 1.42966300884805
     },
     {
       "origin": 696,
       "model": "Naive",
       "mae": 2.455000000000005,
       "rmse": 3.0687918361031525,
-      "mase": 2.090532212885158
+      "mase": 2.090532212885158,
+      "rmsse": 2.707444962269409,
+      "cumulative_error": 29.46000000000006,
+      "pinball": null
     },
     {
       "origin": 696,
       "model": "Seasonal naive",
       "mae": 1.4558333333333333,
       "rmse": 1.5642543484570108,
-      "mase": 1.2397012138188608
+      "mase": 1.2397012138188608,
+      "rmsse": 1.3800651140990565,
+      "cumulative_error": 13.470000000000006,
+      "pinball": null
     },
     {
       "origin": 696,
       "model": "Drift",
       "mae": 2.4725213268775246,
       "rmse": 3.078235600692071,
-      "mase": 2.1054523343718974
+      "mase": 2.1054523343718974,
+      "rmsse": 2.7157767339328767,
+      "cumulative_error": 29.670255922530295,
+      "pinball": null
     },
     {
       "origin": 696,
       "model": "SES",
       "mae": 2.455137370883264,
       "rmse": 3.0689017324184427,
-      "mase": 2.0906491897717427
+      "mase": 2.0906491897717427,
+      "rmsse": 2.7075419184140728,
+      "cumulative_error": 29.461648450599167,
+      "pinball": 2.725260944002378
     },
     {
       "origin": 696,
       "model": "Holt",
       "mae": 2.4726792285187096,
       "rmse": 3.0783571417449975,
-      "mase": 2.1055867940327384
+      "mase": 2.1055867940327384,
+      "rmsse": 2.7158839636600884,
+      "cumulative_error": 29.672150742224513,
+      "pinball": 2.737277786885366
     },
     {
       "origin": 696,
       "model": "Damped Holt",
       "mae": 3.246185082222887,
       "rmse": 3.5677795953367313,
-      "mase": 2.7642584453662677
+      "mase": 2.7642584453662677,
+      "rmsse": 3.147677459983093,
+      "cumulative_error": 20.844753291324206,
+      "pinball": 3.3842823005662517
     },
     {
       "origin": 696,
       "model": "ETS(auto)",
       "mae": 2.0986103649482826,
       "rmse": 2.1427861523517064,
-      "mase": 1.7870519634293498
+      "mase": 1.7870519634293498,
+      "rmsse": 1.890475432433427,
+      "cumulative_error": 25.183324379379393,
+      "pinball": 2.1478199307052943
     },
     {
       "origin": 696,
       "model": "Theta",
       "mae": 2.106731316045963,
       "rmse": 2.15101833945929,
-      "mase": 1.7939672831315763
+      "mase": 1.7939672831315763,
+      "rmsse": 1.8977382885355172,
+      "cumulative_error": 25.280775792551555,
+      "pinball": 1.6816774901493052
     },
     {
       "origin": 696,
       "model": "STL+ETS",
       "mae": 2.143339129001744,
       "rmse": 2.2239469567219214,
-      "mase": 1.8251403227353786
+      "mase": 1.8251403227353786,
+      "rmsse": 1.962079641080209,
+      "cumulative_error": 25.720069548020927,
+      "pinball": 2.181139458491427
     },
     {
       "origin": 708,
       "model": "Naive",
       "mae": 1.5433333333333321,
       "rmse": 1.797136611390462,
-      "mase": 1.308802027488058
+      "mase": 1.308802027488058,
+      "rmsse": 1.5801293054931758,
+      "cumulative_error": 10.959999999999955,
+      "pinball": null
     },
     {
       "origin": 708,
       "model": "Seasonal naive",
       "mae": 0.4583333333333324,
       "rmse": 0.6082625529599305,
-      "mase": 0.38868310751535157
+      "mase": 0.38868310751535157,
+      "rmsse": 0.5348138139717952,
+      "cumulative_error": 0.4599999999999973,
+      "pinball": null
     },
     {
       "origin": 708,
       "model": "Drift",
       "mae": 1.543422215865003,
       "rmse": 1.797625299213041,
-      "mase": 1.3088774030632153
+      "mase": 1.3088774030632153,
+      "rmsse": 1.5805589834290659,
+      "cumulative_error": 11.001572976669607,
+      "pinball": null
     },
     {
       "origin": 708,
       "model": "SES",
       "mae": 1.5433740764948558,
       "rmse": 1.7971987334363413,
-      "mase": 1.3088365791505259
+      "mase": 1.3088365791505259,
+      "rmsse": 1.580183926196237,
+      "cumulative_error": 10.961466753814808,
+      "pinball": 1.5619405549864116
     },
     {
       "origin": 708,
       "model": "Holt",
       "mae": 1.543463199375691,
       "rmse": 1.7976888849174648,
-      "mase": 1.308912158550396
+      "mase": 1.308912158550396,
+      "rmsse": 1.58061489105141,
+      "cumulative_error": 11.003142639012896,
+      "pinball": 1.5625100753872565
     },
     {
       "origin": 708,
       "model": "Damped Holt",
       "mae": 3.067481313011148,
       "rmse": 3.8050778927700635,
-      "mase": 2.601334186879519
+      "mase": 2.601334186879519,
+      "rmsse": 3.345608258126941,
+      "cumulative_error": 33.01141440945946,
+      "pinball": 3.189511382748842
     },
     {
       "origin": 708,
       "model": "ETS(auto)",
       "mae": 0.725346230399596,
       "rmse": 0.8144335297600416,
-      "mase": 0.6151196222318437
+      "mase": 0.6151196222318437,
+      "rmsse": 0.7160892942659464,
+      "cumulative_error": 6.101823493388178,
+      "pinball": 0.6339246914340992
     },
     {
       "origin": 708,
       "model": "Theta",
       "mae": 0.7302205430895885,
       "rmse": 0.820884696831522,
-      "mase": 0.619253214239148
+      "mase": 0.619253214239148,
+      "rmsse": 0.7217614719288297,
+      "cumulative_error": 6.138981905485274,
+      "pinball": 0.8867020754034948
     },
     {
       "origin": 708,
       "model": "STL+ETS",
       "mae": 1.2703522108317278,
       "rmse": 1.7310236681385902,
-      "mase": 1.077304243516525
+      "mase": 1.077304243516525,
+      "rmsse": 1.5219996127126905,
+      "cumulative_error": 13.870784440718875,
+      "pinball": 1.5031714132770908
     }
   ],
   "validation_predictions": [
@@ -5313,6 +5622,6 @@
     "Seasonal naive",
     "Theta"
   ],
-  "evaluation": "5 expanding origins spaced 12 steps apart select the model on mean MAE; the final 12 observations are scored once and never used for selection; the selection is refitted on all history.",
+  "evaluation": "5 expanding origins spaced 12 steps apart select the model on mean MAE; the final 12 observations are scored once and never used for selection; the selection is refitted on all history. A model that loses to Seasonal naive at more than half the origins cannot be selected.",
   "intervals": "Seasonal naive produces no model intervals; empirical_q* columns are signed residual quantiles by horizon step from the 5 selection origins (5 residuals per step) and are descriptive."
 }

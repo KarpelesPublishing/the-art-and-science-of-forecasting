@@ -27,7 +27,7 @@ timestamp,target
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,target`. Supported method controls: `as_of, backorder_cost, bootstrap_window, echelons, frequency, holding_cost, horizon, lead_time, overage_cost, review_period, samples, season, seed, service_level, underage_cost`.
+Exact CLI columns: `timestamp,target`. For the demand forecast itself the chapter 12 engine's `intermittent` pool (Croston, SBA, TSB, ADIDA, IMAPA scored on RMSSE) is the validated route; this chapter's tool takes the forecast into a stocking policy. Supported method controls: `as_of, backorder_cost, bootstrap_window, echelons, frequency, holding_cost, horizon, lead_time, overage_cost, review_period, samples, season, seed, service_level, underage_cost`.
 
 The tool produces pre-update Croston, SBA and TSB one-step forecasts and their MAE over the test period, then simulates an order-up-to policy: at each review it bootstraps `samples` sums of `lead_time + review_period` draws from the trailing `bootstrap_window` demands, sets the order-up-to level at the `service_level` quantile (the cost-optimal quantile is reported beside it), receives pipeline arrivals, serves backlog then demand, and records on-hand, backlog and orders, yielding achieved cycle service, fill rate, mean on-hand, mean backlog and mean cost. It also runs an `echelons`-deep bullwhip simulation on the same demand, reporting variance amplification per echelon with local ordering and with a shared end-consumer signal. Lead time is fixed; demand is treated as uncensored.
 

@@ -173,7 +173,25 @@ limitations; the shared rules and the meaning of each status are in
 The series chapters (4, 6, 12, 27) need 2 seasons + 4 horizons of history (72 monthly
 points for a 12-month horizon, 48 for six months); below that they return a provisional
 persistence baseline and say how many points are missing. `run.py --help` lists the
-three commands (`chapters`, `apply`, `forecast`).
+commands: `brief`, `profile`, `apply`, `report`, `journal`, `forecast`, `chapters`.
+
+The workflow around `apply` is the [Forecast Workflow](../forecasting-skills/forecast-workflow/SKILL.md):
+`run.py brief` records what number, for what decision, by when (and prints the questions still
+open); `run.py profile` reads the data before any model (frequency, gaps, demand class, seasonal
+periods, outliers, level shift, floor, recommended route) and every series summary carries the
+profile; `run.py apply --brief brief.json` binds the run to the brief; `run.py report --run DIR`
+renders `report.md` from the run's own files with every number in `claims.json` and
+`--check interpretation.md` flags unsupported numbers; `run.py journal add|score|calibration`
+keeps score. The engine's pools now cover intermittent demand (Croston, SBA, TSB, ADIDA, IMAPA on
+RMSSE), two seasonal cycles (MSTL, Fourier ARIMA, Prophet, TBATS when installed), drivers known
+in advance (`regressors` and `future_regressors`), pretrained candidates, gap filling by the
+profile's rule (fitted on, never scored), a robustness rule (a candidate that loses to the
+baseline at more than half the origins is never selected) and conformal bands by default;
+`pip install -e "companion[best]"` adds statsforecast, mlforecast, hierarchicalforecast and
+neuralforecast, used when present and named under `unavailable` when absent.
+`scripts/benchmark.py` proves each route on checksummed public data (`reports/benchmarks/`), and
+`harness/` measures whether the workflow makes assistants of any experience forecast the same
+honest way (`harness/protocol.md`, `reports/harness/latest.md`).
 
 Synthetic examples are `companion/data/examples/chNN.csv` (JSON for chapter 10);
 matching settings are `companion/configs/chNN.json`. Keep source and units explicit.

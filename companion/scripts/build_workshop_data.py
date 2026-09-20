@@ -46,6 +46,7 @@ def main():
         level=200+60*k;amp=.12*level;trend=rng.uniform(.2,1.2)
         sales.append(pd.DataFrame({'series_id':f'sku-{k+1:02d}','timestamp':pd.date_range('2019-01-01',periods=84,freq='MS'),'target':np.round(np.maximum(0,level+trend*np.arange(84)+amp*np.sin(2*np.pi*(np.arange(84)+2*k)/12)+rng.normal(0,.04*level,84)),0)}))
     pd.concat(sales,ignore_index=True).to_csv(examples/'sales.csv',index=False)
+    sales[0][['timestamp','target']].to_csv(examples/'first-forecast.csv',index=False)   # one series for the workflow walkthrough
     fixtures[17]=series.copy()   # plain series: the chapter tool builds and checks its own intervals
     leaf_a=60+.06*t+5*np.sin(2*np.pi*t/12)+rng.normal(0,1.5,n);leaf_b=40+.04*t+3*np.cos(2*np.pi*t/12)+rng.normal(0,1,n)
     fixtures[18]=pd.concat([pd.DataFrame({'node':k,'timestamp':dates,'target':v}) for k,v in (('Total',leaf_a+leaf_b),('A',leaf_a),('B',leaf_b))],ignore_index=True)

@@ -27,28 +27,28 @@
       "holdout": false,
       "median_mae": 2.5161913186134934,
       "coverage": 0.75,
-      "latency_s": 0.12899945816025138
+      "latency_s": 0.13161041704006493
     },
     {
       "origin": "2018-12-01 00:00:00+00:00",
       "holdout": false,
       "median_mae": 3.498368439377734,
       "coverage": 0.6666666666666666,
-      "latency_s": 0.12757458304986358
+      "latency_s": 0.13041395787149668
     },
     {
       "origin": "2019-12-01 00:00:00+00:00",
       "holdout": false,
       "median_mae": 1.4282437712108322,
       "coverage": 1.0,
-      "latency_s": 0.1318368329666555
+      "latency_s": 0.13256375002674758
     },
     {
       "origin": "2020-12-01 00:00:00+00:00",
       "holdout": true,
       "median_mae": 2.7634547482869394,
       "coverage": 0.6666666666666666,
-      "latency_s": 0.130032709101215
+      "latency_s": 0.1354327911976725
     }
   ],
   "engine_baselines": {
@@ -59,7 +59,7 @@
   },
   "test_mae": 2.7634547482869394,
   "test_coverage": 0.6666666666666666,
-  "mean_latency_s": 0.13010657504200934,
+  "mean_latency_s": 0.13392956643365322,
   "quantiles": [
     0.1,
     0.5,

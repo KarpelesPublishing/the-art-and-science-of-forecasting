@@ -116,8 +116,9 @@ def test_short_history_yields_honest_provisional_baseline():
     frame=pd.read_csv(ROOT/'data/examples/ch04.csv').iloc[:18]
     table,summary=analyze(4,frame,{'horizon':6,'season':12})
     assert len(table)==6 and summary['status']=='provisional'
-    assert np.allclose(table.forecast,frame.target.iloc[-1])
-    assert not summary['validation']
+    assert summary['selected'].startswith('Provisional') and {'scenario_low','scenario_high'}<=set(table.columns)
+    assert (table.scenario_low<=table.forecast).all() and (table.forecast<=table.scenario_high).all()
+    assert not summary['validation'] and any('No measured interval' in n for n in summary['not_done'])
 
 def test_panel_provisional_readiness_is_preserved():
     a=pd.read_csv(ROOT/'data/examples/ch04.csv').iloc[:18].copy();a['series_id']='a'

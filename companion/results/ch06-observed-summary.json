@@ -1,19 +1,145 @@
 {
   "method": "Rolling-origin model comparison with final holdout",
-  "interpretation": "ARIMA(auto) had the lowest mean validation MAE (0.939); the runner-up was Seasonal naive (1.1). Final-holdout MAE for the selection: 0.648. Compare against Seasonal naive before trusting the gain.",
+  "interpretation": "ARIMA(auto) had the lowest mean validation MAE (0.939); the runner-up was Seasonal naive (1.1). Final-holdout MAE for the selection: 0.648 against 1.21 for Seasonal naive. Validation MAE of Seasonal naive: 1.1.",
   "assumptions": [
     "Regular series with the declared season and no missing periods",
     "The training history's pattern continues over the horizon (no regime change)",
     "Specifications are frozen on the first training slice, so later actuals cannot steer selection"
   ],
   "not_done": [
-    "No regressors, promotions or calendar effects (chapter 13 or 16 add them)",
+    "No regressors, promotions or calendar effects (pool regressors, chapter 13 or 16 add them)",
     "No hierarchy or coherence constraints (chapter 18)",
-    "Intervals are the selected model's own plus empirical residual quantiles; no distribution-free guarantee (chapter 17)"
+    "Conformal bands come from few origin residuals; chapter 17 gives a calibrated split with more"
   ],
   "status": "passed",
+  "profile": {
+    "observations": 732,
+    "missing_values": 0,
+    "start": "1950-01-01",
+    "end": "2010-12-01",
+    "frequency": {
+      "frequency": "MS",
+      "regular": true,
+      "gaps": 0,
+      "off_grid": 0,
+      "gap_positions": [],
+      "longest_gap": 0
+    },
+    "season": 12,
+    "declared_season": 12,
+    "horizon": 12,
+    "minimum_for_engine": 72,
+    "gaps": {
+      "count": 0,
+      "action": "none"
+    },
+    "intermittency": {
+      "zero_share": 0.0,
+      "adi": 1.0,
+      "cv2": 0.00945878547897989,
+      "quadrant": "smooth",
+      "meaning": "regular demand every period"
+    },
+    "seasonality": {
+      "periods": [
+        12
+      ],
+      "evidence": [
+        {
+          "period": 12,
+          "acf": 0.755,
+          "acf_band": 0.074,
+          "periodogram_share": 0.755,
+          "strength": 0.905,
+          "testable": true,
+          "seasonal": true
+        }
+      ],
+      "multiple": false
+    },
+    "trend": {
+      "direction": "up",
+      "mann_kendall_p": 0.013,
+      "slope_per_period": 0.001002355714296738
+    },
+    "outliers": {
+      "count": 1,
+      "positions": [
+        401
+      ],
+      "share": 0.0014,
+      "method": "STL residuals (period 12), two passes",
+      "threshold": 4.0
+    },
+    "break": {
+      "found": true,
+      "position": 586,
+      "periods_since": 146,
+      "level_before": 23.08546075085324,
+      "level_after": 23.1213698630137
+    },
+    "positive": true,
+    "nonnegative": true,
+    "recommended_transform": "log",
+    "transform_note": {
+      "boxcox_lambda": -0.5646143277938968
+    },
+    "summary_stats": {
+      "mean": 23.09262295081967,
+      "median": 22.855,
+      "min": 18.95,
+      "max": 29.24,
+      "last": 22.07
+    },
+    "route": "engine",
+    "route_reasons": [
+      "a regular series with enough history: the chapter 12 engine (smoothing, ARIMA, Theta, STL, LightGBM, combinations) at rolling origins"
+    ],
+    "extra_columns": [],
+    "warnings": [
+      "1 outlying observations by STL residuals (period 12), two passes; check them, do not delete them",
+      "possible level shift 146 periods before the end (from 23.09 to 23.12)"
+    ]
+  },
+  "gaps_filled": 0,
   "pool": "arima",
   "selected": "ARIMA(auto)",
+  "criterion": "mae",
+  "baseline": "Seasonal naive",
+  "forced_baseline": false,
+  "robustness": {
+    "ARIMA(0,1,1)": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "ARIMA(1,1,0)": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "ARIMA(auto)": {
+      "lost_to_baseline_at": 1,
+      "of": 5
+    },
+    "Airline ARIMA": {
+      "lost_to_baseline_at": 4,
+      "of": 5
+    },
+    "Drift": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "Naive": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "Seasonal naive": {
+      "lost_to_baseline_at": 0,
+      "of": 5
+    }
+  },
+  "unavailable": {},
+  "conformal": "conformal_lower/upper are split-conformal bands at 80% from ARIMA(auto)'s absolute residuals at the selection origins, pooled across horizon steps (60 residuals, scaled per step); the guarantee assumes future errors resemble those at the origins, which a level shift breaks.",
+  "conformal_test_coverage": 1.0,
   "transform": "log",
   "specification": {
     "ets": null,
@@ -30,6 +156,10 @@
         12
       ]
     ],
+    "periods": [
+      12
+    ],
+    "regressors": null,
     "notes": {
       "transform": {
         "boxcox_lambda": -0.7041897213407325
@@ -56,49 +186,77 @@
       "mae": 0.9385622504627633,
       "rmse": 1.061697599793869,
       "mase": 0.800854340982975,
-      "interval_coverage": 0.65
+      "rmsse": 0.9362833797415681,
+      "cumulative_error": 10.37300427647322,
+      "pinball": 0.8376823738720904,
+      "interval_coverage": 0.65,
+      "lost_to_baseline_at": 1
     },
     {
       "model": "Seasonal naive",
       "mae": 1.1049999999999998,
       "rmse": 1.3016371768605026,
       "mase": 0.9435238560630342,
-      "interval_coverage": null
+      "rmsse": 1.1482327736263804,
+      "cumulative_error": 9.500000000000004,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 0
     },
     {
       "model": "Airline ARIMA",
       "mae": 1.4218169779054135,
       "rmse": 1.5290693701226945,
       "mase": 1.2136332813284554,
-      "interval_coverage": 0.5666666666666667
+      "rmsse": 1.348717970397192,
+      "cumulative_error": 16.27399292883154,
+      "pinball": 1.3160418531973201,
+      "interval_coverage": 0.5666666666666667,
+      "lost_to_baseline_at": 4
     },
     {
       "model": "ARIMA(0,1,1)",
       "mae": 2.0141441825596886,
       "rmse": 2.4055710187499786,
       "mase": 1.7190242638664508,
-      "interval_coverage": 0.8166666666666667
+      "rmsse": 2.121512089163363,
+      "cumulative_error": 15.668324283436636,
+      "pinball": 2.027939430144558,
+      "interval_coverage": 0.8166666666666667,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "Naive",
       "mae": 2.084833333333334,
       "rmse": 2.462978791483941,
       "mase": 1.7789922998533823,
-      "interval_coverage": null
+      "rmsse": 2.1721201220164987,
+      "cumulative_error": 17.31400000000001,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "Drift",
       "mae": 2.0911768890915803,
       "rmse": 2.468003964065864,
       "mase": 1.7844064846567478,
-      "interval_coverage": null
+      "rmsse": 2.1765540822845666,
+      "cumulative_error": 17.416050897438037,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "ARIMA(1,1,0)",
       "mae": 3.2057604530230037,
       "rmse": 3.703377210263118,
       "mase": 2.737167749611968,
-      "interval_coverage": 0.85
+      "rmsse": 3.2661179225387826,
+      "cumulative_error": 29.318867678120533,
+      "pinball": 3.049742460143224,
+      "interval_coverage": 0.85,
+      "lost_to_baseline_at": 5
     }
   ],
   "validation": [
@@ -107,245 +265,350 @@
       "model": "Naive",
       "mae": 1.9875000000000007,
       "rmse": 2.1819009296177208,
-      "mase": 1.6947836614380467
+      "mase": 1.6947836614380467,
+      "rmsse": 1.9230036908113621,
+      "cumulative_error": 8.850000000000051,
+      "pinball": null
     },
     {
       "origin": 660,
       "model": "Seasonal naive",
       "mae": 0.8641666666666664,
       "rmse": 1.0786836113213798,
-      "mase": 0.7368933571954941
+      "mase": 0.7368933571954941,
+      "rmsse": 0.9506905366927779,
+      "cumulative_error": 7.810000000000002,
+      "pinball": null
     },
     {
       "origin": 660,
       "model": "Drift",
       "mae": 1.9892099750200558,
       "rmse": 2.1840069159048894,
-      "mase": 1.6962417936269558
+      "mase": 1.6962417936269558,
+      "rmsse": 1.9248597876432805,
+      "cumulative_error": 8.883343624248454,
+      "pinball": null
     },
     {
       "origin": 660,
       "model": "ARIMA(0,1,1)",
       "mae": 1.9882603094524207,
       "rmse": 2.183447094815277,
-      "mase": 1.6954319935324358
+      "mase": 1.6954319935324358,
+      "rmsse": 1.9243663930959363,
+      "cumulative_error": 8.904742280574297,
+      "pinball": 1.8210555833394868
     },
     {
       "origin": 660,
       "model": "ARIMA(1,1,0)",
       "mae": 2.474848658727716,
       "rmse": 2.976536433523607,
-      "mase": 2.1103562623112433
+      "mase": 2.1103562623112433,
+      "rmsse": 2.6233503408897842,
+      "cumulative_error": 22.453213390041924,
+      "pinball": 2.534342937947404
     },
     {
       "origin": 660,
       "model": "Airline ARIMA",
       "mae": 1.0657961092944335,
       "rmse": 1.146201768754287,
-      "mase": 0.9088270855126762
+      "mase": 0.9088270855126762,
+      "rmsse": 1.0101972100608538,
+      "cumulative_error": 12.7895533115332,
+      "pinball": 0.9232637169919528
     },
     {
       "origin": 660,
       "model": "ARIMA(auto)",
       "mae": 0.6604774969888743,
       "rmse": 0.7798950709847795,
-      "mase": 0.563203255670058
+      "mase": 0.563203255670058,
+      "rmsse": 0.6873552687894412,
+      "cumulative_error": 7.925729963866491,
+      "pinball": 0.6340057591269319
     },
     {
       "origin": 672,
       "model": "Naive",
       "mae": 1.5374999999999985,
       "rmse": 2.1020961760426955,
-      "mase": 1.3173609939113828
+      "mase": 1.3173609939113828,
+      "rmsse": 1.8574226415336987,
+      "cumulative_error": 17.289999999999964,
+      "pinball": null
     },
     {
       "origin": 672,
       "model": "Seasonal naive",
       "mae": 1.2199999999999998,
       "rmse": 1.4335271186831455,
-      "mase": 1.0453205935426915
+      "mase": 1.0453205935426915,
+      "rmsse": 1.2666716955392812,
+      "cumulative_error": 11.86000000000001,
+      "pinball": null
     },
     {
       "origin": 672,
       "model": "Drift",
       "mae": 1.5423722689339516,
       "rmse": 2.105758018584549,
-      "mase": 1.3215356521523167
+      "mase": 1.3215356521523167,
+      "rmsse": 1.8606582638256217,
+      "cumulative_error": 17.393645977773282,
+      "pinball": null
     },
     {
       "origin": 672,
       "model": "ARIMA(0,1,1)",
       "mae": 1.3224999999999998,
       "rmse": 1.7083544683957879,
-      "mase": 1.1331446598034505
+      "mase": 1.1331446598034505,
+      "rmsse": 1.5095105093322585,
+      "cumulative_error": 9.10472945864133,
+      "pinball": 1.6920765770430455
     },
     {
       "origin": 672,
       "model": "ARIMA(1,1,0)",
       "mae": 3.187522254182411,
       "rmse": 3.4985918553451323,
-      "mase": 2.7311333235020463
+      "mase": 2.7311333235020463,
+      "rmsse": 3.091373172961546,
+      "cumulative_error": 29.248297534928177,
+      "pinball": 3.018560215620921
     },
     {
       "origin": 672,
       "model": "Airline ARIMA",
       "mae": 1.1011479013914054,
       "rmse": 1.249552984303083,
-      "mase": 0.9434857195579944
+      "mase": 0.9434857195579944,
+      "rmsse": 1.1041112349149758,
+      "cumulative_error": 11.97724483476431,
+      "pinball": 0.9003743529252828
     },
     {
       "origin": 672,
       "model": "ARIMA(auto)",
       "mae": 0.86170057542782,
       "rmse": 0.9841639553999255,
-      "mase": 0.7383224237395801
+      "mase": 0.7383224237395801,
+      "rmsse": 0.8696121683559233,
+      "cumulative_error": 8.324495263312734,
+      "pinball": 0.7299673540870786
     },
     {
       "origin": 684,
       "model": "Naive",
       "mae": 2.9008333333333343,
       "rmse": 3.1649684042656743,
-      "mase": 2.4834826035442656
+      "mase": 2.4834826035442656,
+      "rmsse": 2.7926000099748483,
+      "cumulative_error": 20.010000000000026,
+      "pinball": null
     },
     {
       "origin": 684,
       "model": "Seasonal naive",
       "mae": 1.526666666666667,
       "rmse": 1.8234582528810468,
-      "mase": 1.3070210082427736
+      "mase": 1.3070210082427736,
+      "rmsse": 1.6089227078289914,
+      "cumulative_error": 13.899999999999995,
+      "pinball": null
     },
     {
       "origin": 684,
       "model": "Drift",
       "mae": 2.9083586587613652,
       "rmse": 3.174393985934769,
-      "mase": 2.4899252400693532
+      "mase": 2.4899252400693532,
+      "rmsse": 2.800916642591988,
+      "cumulative_error": 20.131435985968544,
+      "pinball": null
     },
     {
       "origin": 684,
       "model": "ARIMA(0,1,1)",
       "mae": 3.2882102621430955,
       "rmse": 3.820051012509125,
-      "mase": 2.815126566904259
+      "mase": 2.815126566904259,
+      "rmsse": 3.370610108227143,
+      "cumulative_error": 32.54704629143429,
+      "pinball": 2.653685818667393
     },
     {
       "origin": 684,
       "model": "ARIMA(1,1,0)",
       "mae": 5.509601544759072,
       "rmse": 6.483805907618916,
-      "mase": 4.7169202834368615
+      "mase": 4.7169202834368615,
+      "rmsse": 5.720965940098419,
+      "cumulative_error": 64.06795234460556,
+      "pinball": 4.385164199056717
     },
     {
       "origin": 684,
       "model": "Airline ARIMA",
       "mae": 2.1614955374160574,
       "rmse": 2.3362155667696904,
-      "mase": 1.8505153340343603
+      "mase": 1.8505153340343603,
+      "rmsse": 2.061352526069889,
+      "cumulative_error": 25.937946448992687,
+      "pinball": 2.078260424573174
     },
     {
       "origin": 684,
       "model": "ARIMA(auto)",
       "mae": 1.2350750881585946,
       "rmse": 1.353860171793079,
-      "mase": 1.057381498022213
+      "mase": 1.057381498022213,
+      "rmsse": 1.1945743041725905,
+      "cumulative_error": 14.820901057903136,
+      "pinball": 1.0723487103692757
     },
     {
       "origin": 696,
       "model": "Naive",
       "mae": 2.455000000000005,
       "rmse": 3.0687918361031525,
-      "mase": 2.090532212885158
+      "mase": 2.090532212885158,
+      "rmsse": 2.707444962269409,
+      "cumulative_error": 29.46000000000006,
+      "pinball": null
     },
     {
       "origin": 696,
       "model": "Seasonal naive",
       "mae": 1.4558333333333333,
       "rmse": 1.5642543484570108,
-      "mase": 1.2397012138188608
+      "mase": 1.2397012138188608,
+      "rmsse": 1.3800651140990565,
+      "cumulative_error": 13.470000000000006,
+      "pinball": null
     },
     {
       "origin": 696,
       "model": "Drift",
       "mae": 2.4725213268775246,
       "rmse": 3.078235600692071,
-      "mase": 2.1054523343718974
+      "mase": 2.1054523343718974,
+      "rmsse": 2.7157767339328767,
+      "cumulative_error": 29.670255922530295,
+      "pinball": null
     },
     {
       "origin": 696,
       "model": "ARIMA(0,1,1)",
       "mae": 2.0684170078695936,
       "rmse": 2.74263100043943,
-      "mase": 1.7613410935360123
+      "mase": 1.7613410935360123,
+      "rmsse": 2.419689207376413,
+      "cumulative_error": 24.39150614165268,
+      "pinball": 2.45122353045936
     },
     {
       "origin": 696,
       "model": "ARIMA(1,1,0)",
       "mae": 2.47178675802406,
       "rmse": 2.6909738439485476,
-      "mase": 2.1048268191577426
+      "mase": 2.1048268191577426,
+      "rmsse": 2.3741146244213174,
+      "cumulative_error": 8.522177179978502,
+      "pinball": 2.7545216781493154
     },
     {
       "origin": 696,
       "model": "Airline ARIMA",
       "mae": 2.0689873330340194,
       "rmse": 2.113869929987598,
-      "mase": 1.7618267485779884
+      "mase": 1.7618267485779884,
+      "rmsse": 1.8649640635466465,
+      "cumulative_error": 24.827847996408234,
+      "pinball": 2.0191745601444895
     },
     {
       "origin": 696,
       "model": "ARIMA(auto)",
       "mae": 1.1247137962265341,
       "rmse": 1.2725690236289255,
-      "mase": 0.9577394791396816
+      "mase": 0.9577394791396816,
+      "rmsse": 1.1227254164424931,
+      "cumulative_error": 13.061826130083219,
+      "pinball": 1.0789906076692095
     },
     {
       "origin": 708,
       "model": "Naive",
       "mae": 1.5433333333333321,
       "rmse": 1.797136611390462,
-      "mase": 1.308802027488058
+      "mase": 1.308802027488058,
+      "rmsse": 1.5801293054931758,
+      "cumulative_error": 10.959999999999955,
+      "pinball": null
     },
     {
       "origin": 708,
       "model": "Seasonal naive",
       "mae": 0.4583333333333324,
       "rmse": 0.6082625529599305,
-      "mase": 0.38868310751535157
+      "mase": 0.38868310751535157,
+      "rmsse": 0.5348138139717952,
+      "cumulative_error": 0.4599999999999973,
+      "pinball": null
     },
     {
       "origin": 708,
       "model": "Drift",
       "mae": 1.543422215865003,
       "rmse": 1.797625299213041,
-      "mase": 1.3088774030632153
+      "mase": 1.3088774030632153,
+      "rmsse": 1.5805589834290659,
+      "cumulative_error": 11.001572976669607,
+      "pinball": null
     },
     {
       "origin": 708,
       "model": "ARIMA(0,1,1)",
       "mae": 1.4033333333333333,
       "rmse": 1.573371517590271,
-      "mase": 1.190077005556097
+      "mase": 1.190077005556097,
+      "rmsse": 1.3833842277850628,
+      "cumulative_error": 3.3935972448805707,
+      "pinball": 1.5216556412135056
     },
     {
       "origin": 708,
       "model": "ARIMA(1,1,0)",
       "mae": 2.38504304942176,
       "rmse": 2.866978010879389,
-      "mase": 2.0226020596519456
+      "mase": 2.0226020596519456,
+      "rmsse": 2.5207855343228465,
+      "cumulative_error": 22.30269794104851,
+      "pinball": 2.5561232699417618
     },
     {
       "origin": 708,
       "model": "Airline ARIMA",
       "mae": 0.711658008391152,
       "rmse": 0.7995066007988152,
-      "mase": 0.6035115189592575
+      "mase": 0.6035115189592575,
+      "rmsse": 0.7029648173935957,
+      "cumulative_error": 5.8373720524592585,
+      "pinball": 0.6591362113517016
     },
     {
       "origin": 708,
       "model": "ARIMA(auto)",
       "mae": 0.8108442955119939,
       "rmse": 0.9179997771626355,
-      "mase": 0.687625048343342
+      "mase": 0.687625048343342,
+      "rmsse": 0.807149740947392,
+      "cumulative_error": 7.732068967200515,
+      "pinball": 0.6730994381079571
     }
   ],
   "validation_predictions": [
@@ -4155,6 +4418,6 @@
     "Naive",
     "Seasonal naive"
   ],
-  "evaluation": "5 expanding origins spaced 12 steps apart select the model on mean MAE; the final 12 observations are scored once and never used for selection; the selection is refitted on all history.",
+  "evaluation": "5 expanding origins spaced 12 steps apart select the model on mean MAE; the final 12 observations are scored once and never used for selection; the selection is refitted on all history. A model that loses to Seasonal naive at more than half the origins cannot be selected.",
   "intervals": "lower/upper are the ARIMA(auto) model's nominal 80% intervals; their coverage at the 5 selection origins was 65%. empirical_q* columns add signed residual quantiles by horizon step from those origins (5 residuals per step)."
 }

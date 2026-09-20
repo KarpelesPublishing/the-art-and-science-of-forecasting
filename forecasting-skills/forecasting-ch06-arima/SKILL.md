@@ -26,7 +26,7 @@ timestamp,target
 
 ## Executable interface
 
-Exact CLI columns: `timestamp,target`. Supported method controls: `as_of, frequency, horizon, origins, pool, season, seed, transform`.
+Exact CLI columns: `timestamp,target`. Supported method controls: `as_of, conformal, country, criterion, frequency, future_regressors, horizon, origins, periods, pool, regressors, season, seed, transform`. `season` may be `"auto"` or omitted: the data profile then supplies it, and the profile (frequency, gaps, demand class, seasonal periods, outliers, break hint, route) is returned under `profile` in every summary.
 
 The adapter runs the companion engine with the `arima` pool: naive, seasonal naive, drift, ARIMA(0,1,1), ARIMA(1,1,0), the airline model ARIMA(0,1,1)(0,1,1)s, and an AICc-selected seasonal ARIMA whose regular differencing comes from repeated KPSS tests and whose seasonal differencing comes from STL seasonal strength, searched over p,q in 0–2 and P,Q in 0–1 on the first training slice. A log transform is chosen on training data when the series asks for it. Up to five expanding origins select the model; a final untouched holdout scores it once; model intervals are produced and their validation coverage is measured. Short valid histories return a provisional naive baseline and optional seasonal-naive scenario, with no claimed validation.
 
@@ -47,7 +47,7 @@ With a short series use naive or low-order candidates and mark seasonal fitting 
 
 ## Applied report contract
 
-`results.csv` columns: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90,lower,upper,interval_level`. `summary.json` keys: `pool,selected,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
+`results.csv` columns: `timestamp,forecast,model,empirical_q10,empirical_q50,empirical_q90,lower,upper,interval_level,conformal_lower,conformal_upper`. `summary.json` keys: `profile,gaps_filled,pool,selected,criterion,baseline,forced_baseline,robustness,unavailable,conformal,conformal_test_coverage,transform,specification,origins,horizon,season,leaderboard,validation,validation_predictions,test_mae,test_interval_coverage,skipped,executed,evaluation,intervals` plus the standard `method`, `interpretation`, `assumptions`, `not_done` and `status`.
 
 Return the chosen orders with the KPSS and seasonal-strength evidence behind d and D (in `summary.json` under `specification`), skipped candidates with reasons, origin-by-horizon losses, dated forecasts with model intervals and their measured coverage.
 

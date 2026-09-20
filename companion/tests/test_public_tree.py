@@ -73,3 +73,12 @@ def test_notebook_is_written_only_after_execution(tmp_path, monkeypatch):
     lesson = ROOT / 'lessons/09-expert-scoring.py'
     nb = author.build(lesson, write=False)
     assert nb.cells and not (tmp_path / 'notebooks').exists()
+
+
+def test_workflow_commands_exist_and_walkthrough_file_ships():
+    out = subprocess.run([sys.executable, str(ROOT / 'scripts/run.py'), '--help'], capture_output=True, text=True)
+    for word in ('brief', 'profile', 'report', 'journal'):
+        assert word in out.stdout
+    assert (ROOT / 'data/examples/first-forecast.csv').exists()
+    assert (ROOT.parent / 'forecasting-skills/forecast-workflow/SKILL.md').exists()
+    assert (ROOT / 'harness/score.py').exists() and (ROOT / 'harness/tasks/A-hierarchy/task.md').exists()

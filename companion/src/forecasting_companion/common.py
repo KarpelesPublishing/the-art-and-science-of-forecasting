@@ -25,7 +25,7 @@ def quiet_libraries():
     warnings.filterwarnings('ignore', module=r'tqdm')             # "IProgress not found" in a plain kernel
     warnings.filterwarnings('ignore', message='adfuller currently')  # statsmodels return-type notice
     warnings.filterwarnings('ignore', message='.*torch_dtype.*')
-    for name in ('cmdstanpy', 'prophet', 'fbprophet'):
+    for name in ('cmdstanpy', 'prophet', 'prophet.plot', 'fbprophet'):
         logger = logging.getLogger(name)
         if not logger.hasHandlers():
             logger.addHandler(logging.NullHandler())            # cmdstanpy installs its INFO stream handler only when none exists

@@ -3,6 +3,7 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 companion/applied-runs/
+companion/data/benchmarks/
 .agents/
 .claude/
 *.pyc

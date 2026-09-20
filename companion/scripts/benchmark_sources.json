@@ -1,0 +1,73 @@
+{
+  "note": "Public datasets fetched on demand; SHA-256 recorded on first verified download (2026-09-20). Nothing is bundled.",
+  "m4-hourly": {
+    "train": "https://raw.githubusercontent.com/Mcompetitions/M4-methods/master/Dataset/Train/Hourly-train.csv",
+    "test": "https://raw.githubusercontent.com/Mcompetitions/M4-methods/master/Dataset/Test/Hourly-test.csv",
+    "freq": "h",
+    "season": 24,
+    "periods": [
+      24,
+      168
+    ],
+    "horizon": 48,
+    "route": "multiseasonal",
+    "sha256": {
+      "train": "ea59b7783573c49077a835ab6465c7d66f1474783360f310988a9a737fbca62f",
+      "test": "71a57fccb15e534d973626ada4fb87febf789e9317715b7cc6dd3b5f90db6f42"
+    }
+  },
+  "m4-weekly": {
+    "train": "https://raw.githubusercontent.com/Mcompetitions/M4-methods/master/Dataset/Train/Weekly-train.csv",
+    "test": "https://raw.githubusercontent.com/Mcompetitions/M4-methods/master/Dataset/Test/Weekly-test.csv",
+    "freq": "W",
+    "season": 52,
+    "horizon": 13,
+    "route": "engine",
+    "sha256": {
+      "train": "d478d3f6ed673e6ed3c2cb0fbed5425f72eedd51318ebebeb0b5ecfcefc37714",
+      "test": "3b2bc4be8e636e802260dcd843ca3c5da40536a1fbe1ecb3229a97dae4f44688"
+    }
+  },
+  "m4-quarterly": {
+    "train": "https://raw.githubusercontent.com/Mcompetitions/M4-methods/master/Dataset/Train/Quarterly-train.csv",
+    "test": "https://raw.githubusercontent.com/Mcompetitions/M4-methods/master/Dataset/Test/Quarterly-test.csv",
+    "freq": "QS",
+    "season": 4,
+    "horizon": 8,
+    "route": "engine",
+    "sha256": {
+      "train": "4450678cd493aa965c14bde984a5b62a66d8c3b2f7af1e53779bc91ff008ccdc",
+      "test": "bf1cab3b969a744c220cdc148e3829803eaa5da2754270fc4f376e775cd7d0ae"
+    }
+  },
+  "m4-monthly": {
+    "train": "https://raw.githubusercontent.com/Mcompetitions/M4-methods/master/Dataset/Train/Monthly-train.csv",
+    "test": "https://raw.githubusercontent.com/Mcompetitions/M4-methods/master/Dataset/Test/Monthly-test.csv",
+    "freq": "MS",
+    "season": 12,
+    "horizon": 18,
+    "route": "engine",
+    "sha256": {
+      "train": "63aaa56198b4a22279a2fec541f56921f3bed6d8e0f84e550206df9276f2e9b9",
+      "test": "5e3538bf23b4a09f4078180c3e2b34859f0382e1c4f22564affc1797e8f3f48f"
+    }
+  },
+  "m4-daily": {
+    "train": "https://raw.githubusercontent.com/Mcompetitions/M4-methods/master/Dataset/Train/Daily-train.csv",
+    "test": "https://raw.githubusercontent.com/Mcompetitions/M4-methods/master/Dataset/Test/Daily-test.csv",
+    "freq": "D",
+    "season": 7,
+    "horizon": 14,
+    "route": "engine",
+    "sha256": {}
+  },
+  "tourism": {
+    "zip": "https://robjhyndman.com/data/27-3-Athanasopoulos1.zip",
+    "freq": "MS",
+    "season": 12,
+    "horizon": 24,
+    "route": "engine",
+    "sha256": {},
+    "note": "Tourism competition (Athanasopoulos et al. 2011): monthly, quarterly and yearly series in one zip"
+  }
+}

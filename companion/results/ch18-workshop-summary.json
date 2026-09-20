@@ -8,6 +8,7 @@
     "Historical values coherent within tolerance"
   ],
   "not_done": [
+    "ERM and trace-minimisation variants from hierarchicalforecast not tried: pip install hierarchicalforecast   (or: pip install -e \"companion[best]\")",
     "Coherent quantiles not requested (set coherent_quantiles: true)"
   ],
   "status": "passed",

@@ -88,9 +88,9 @@ Each tool has a data floor and says so when the data fall short. The one most re
 
 **3. Direct an AI assistant.** Point an assistant that supports skills (Claude Code, Codex and others read `SKILL.md` files) at this repository and ask, for example:
 
-> Use $all-chapters-forecasting to forecast my sales data for the next 12 months, compare suitable methods, and report uncertainty and validation results.
+> Use $forecast-workflow to forecast my sales data for the next 12 months. Take me through the gates.
 
-The skill frames the target (units, horizon, as-of date, decision costs, what is known in advance), routes to the chapters that fit, runs the chapter tools only when you agree the method fits, and reports assumptions, validation and what was not done. `scripts/install_skills.py` links the 29 skill folders into `.agents/skills/` (Codex) and `.claude/skills/` (Claude Code); any other assistant that reads `SKILL.md` files can be pointed at `forecasting-skills/` directly. The skills never run anything on their own; they tell the assistant how.
+The workflow (`forecasting-skills/forecast-workflow/`) has seven gates, and each leaves a file the next command requires: the brief (`run.py brief`: what number, for what decision, by when, with the costs of being high or low), the data profile (`run.py profile`: frequency, gaps, demand class, the seasonal periods found in the data, outliers, a level-shift hint, the data floor and a recommended route), the baseline, the method (`run.py apply --brief`, so the run cannot contradict the brief), validation, uncertainty, and the report and journal (`run.py report` renders `report.md` from the run's own files with every number listed in `claims.json`; `run.py report --check` flags any number in the assistant's interpretation that the run does not support; `run.py journal add|score|calibration` records the forecast, scores it when actuals arrive, and reads the reader's own track record back). Because the files gate the commands, a reader with no forecasting training and an expert follow the same auditable path. The chapter skills and the Complete Forecasting Skill (the map and router) are what the workflow routes into. `scripts/install_skills.py` links the 30 skill folders into `.agents/skills/` (Codex) and `.claude/skills/` (Claude Code); any other assistant that reads `SKILL.md` files can be pointed at `forecasting-skills/` directly. The skills never run anything on their own; they tell the assistant how.
 
 ## Chapter by chapter
 
@@ -204,13 +204,20 @@ companion/
   notebooks/             27 executed notebooks (generated from lessons/)
   lessons/               editable notebook sources, one .py per chapter (# %% cells)
   src/forecasting_companion/
-    engine.py            the forecasting engine
+    engine.py            the forecasting engine (pools: full, smoothing, arima, baseline, intermittent, multiseasonal, regressors, foundation)
+    engine_*.py          the intermittent, multiseasonal, regressor and foundation candidates
+    profile.py           the data profiler behind gate 2
+    brief.py, report.py, journal.py   the brief, the rendered report with its claims ledger, the forecast journal
+    global_model.py      one LightGBM across many series for the batch runner
+    optional.py          optional heavy libraries: used when present, named when absent
     batch.py             many-series runner
     practitioner.py      launch workflows: calibrate_scale, launch_trials, cohort_units, adstock, ...
     reconcile_sim.py     the desk model behind chapters 20 and 27
     applied/             core.py (schemas, contract), methods.py (dispatch), tools_*.py (27 chapter tools)
-  scripts/               run.py (chapters | apply | forecast), catalog.py, build_workshop_data.py,
-                         expand_workshops.py, sync_contracts.py, install_skills.py, export_public.py
+  scripts/               run.py (brief | profile | apply | report | journal | forecast | chapters), catalog.py,
+                         build_workshop_data.py, expand_workshops.py, sync_contracts.py, install_skills.py,
+                         benchmark.py (public datasets, checksummed, per route), export_public.py
+  harness/               the uplift and repeatability harness: seven tasks with hidden truth, score.py, aggregate.py, protocol.md
   data/                  examples/ (synthetic, plus sales.csv for the batch runner), observed/ (public domain), registry.json
   configs/               one JSON configuration per chapter example
   figures/               92 figures as PNG, PDF and SVG
@@ -241,6 +248,8 @@ reconcile-tdbu.skill     the desk model packaged as a single skill file
 The suite covers the engine (selection is frozen before the holdout; pools are distinct; the airline series selects a seasonal model with a log transform and beats seasonal naive), every chapter tool on a synthetic case with a known answer, the batch runner (resume, schema, bands), the practitioner workflows, and every chapter's bundled example through the same `analyze` path the CLI uses. A separate guard asserts that unknown configuration keys are rejected by every chapter.
 
 What the checks establish: that the notebooks ran, that the figures came from that code, and that each tool does what its skill says on data whose truth is known. What they do not establish: that any method fits your data. That judgment is the subject of the book.
+
+Two further checks live beside the tests. `scripts/benchmark.py` fetches public datasets (M4 subsets, Tourism) with SHA-256 verification and proves each engine route on the kind of data it claims: never worse than seasonal naive on MASE, band coverage near nominal; results land in `reports/benchmarks/`. `harness/` holds seven forecasting tasks with hidden truth and a scorer for accuracy, calibration, coherence and, above all, process (brief present, data profiled, baseline stated, not-done reported, journal entry made, report numbers sourced); `harness/protocol.md` says how to run assistants of different experience with and without the skill and read the uplift in `reports/harness/latest.md`. That harness is the claim behind the workflow: the same honest path whatever the reader knows.
 
 ## Design principles
 

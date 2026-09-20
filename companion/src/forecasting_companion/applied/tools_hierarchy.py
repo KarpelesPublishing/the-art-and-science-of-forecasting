@@ -9,6 +9,7 @@ holdout so the reader sees whether reconciliation helped this hierarchy.
 import numpy as np
 import pandas as pd
 from .core import require, numeric, integer, time_frame, finish
+from ..optional import have, hint
 
 
 def build_S(edges):
@@ -95,7 +96,13 @@ def reconcile_hierarchy(d, c):
     scale = max(np.abs(Y).max(), 1e-12)
     if resid / scale > tol:
         raise ValueError(f'Historical values are not coherent: max |S*leaves - node| = {resid:.4g} exceeds tolerance {tol} of max |value|')
-    h = integer(c, 'horizon', 12); season = integer(c, 'season', 12)
+    h = integer(c, 'horizon', 12)
+    if c.get('season') == 'auto' or 'season' not in c:
+        from ..profile import profile_series
+        first = d[d.node == d.node.iloc[0]] if 'node' in d.columns else d
+        season = int(profile_series(first.drop(columns=['node'], errors='ignore'), {k: v for k, v in c.items() if k != 'season'})['season'])
+    else:
+        season = integer(c, 'season', 12)
     pool = c.get('pool', 'smoothing')
     if pool not in POOLS:
         raise ValueError(f'pool must be one of {sorted(POOLS)}')
@@ -141,6 +148,9 @@ def reconcile_hierarchy(d, c):
     else:
         not_done.append(f'MinT skipped: need at least {n_nodes + 2} matched validation errors per node, have {sorted(lengths)}')
     error_rows = int(next(iter(lengths))) if len(lengths) == 1 else None
+    E = E if (len(lengths) == 1 and next(iter(lengths)) >= n_nodes + 2) else None
+    if not have('hierarchicalforecast'):
+        not_done.append('ERM and trace-minimisation variants from hierarchicalforecast not tried: ' + hint('hierarchicalforecast'))
 
     def all_methods(base_matrix):
         # base_matrix: h x n_nodes
@@ -150,6 +160,14 @@ def reconcile_hierarchy(d, c):
         out['OLS'] = ols
         if W is not None:
             out['MinT'] = np.vstack([reconcile(S, row, W)[0] for row in base_matrix])
+            if have('hierarchicalforecast') and E is not None:
+                try:                                         # ERM (empirical risk minimisation) from the optional extra
+                    from hierarchicalforecast.methods import ERM
+                    erm = ERM(method='closed', lambda_reg=1e-2)
+                    fit = erm.fit(S=S, y_hat=base_matrix.T, y_insample=None, y_hat_insample=None, idx_bottom=list(range(S.shape[0] - m, S.shape[0])))
+                    out['ERM'] = np.asarray(fit['mean']).T
+                except Exception as exc:
+                    not_done.append(f'ERM (hierarchicalforecast) failed: {str(exc)[:80]}')
         for k, v in out.items():
             if k != 'base' and not np.allclose(v, (S @ v[:, -m:].T).T, atol=1e-8):
                 raise AssertionError(f'{k} lost coherence')

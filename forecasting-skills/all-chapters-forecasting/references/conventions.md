@@ -2,6 +2,10 @@
 
 Every chapter skill follows these rules. They are stated once here so that each `SKILL.md` can be about its own method.
 
+## The workflow's artifacts
+
+The front door, [forecast-workflow](../../forecast-workflow/SKILL.md), passes seven gates and each leaves a file: `brief.json` (`run.py brief`), `profile.json` (`run.py profile`), the run folder with `summary.json`, `results.csv`, `diagnostic.png` and `run.json` (`run.py apply --brief`), `report.md` with `claims.json` (`run.py report`), and the journal entry (`run.py journal add`, scored later with `journal score`, read back with `journal calibration`). A run made with a brief carries it in `summary.json` and `run.json`; the brief's horizon, frequency, cutoff, units and scoring date override the config so a run cannot contradict the brief. A report is rendered from the run, never written; the assistant's interpretation is checked against `claims.json` with `run.py report --check`.
+
 ## Before running a tool
 
 - A tool runs only when the reader asks for it. Decide with the reader whether the method fits before running it; the skill describes the method, it does not launch it.
@@ -23,7 +27,7 @@ Each tool checks its own minimum and stops with a message when the data are too 
 
 | Chapter | Minimum | Below it |
 |---|---|---|
-| 4, 6, 12, 27 (history) | 2 seasons + 4 horizons (monthly, horizon 12: 72 points; horizon 6: 48; horizon 3: 36) | `status: provisional`, last value repeated, no validation |
+| 4, 6, 12, 27 (history) | 2 seasons + 4 horizons (monthly, horizon 12: 72 points; horizon 6: 48; horizon 3: 36); the same for the `intermittent`, `multiseasonal` (longest period) and `regressors` pools | `status: provisional`, last value repeated, no validation |
 | 3 | 3 seasons | error |
 | 5 | 30 observed values (gaps allowed); rolling check needs 2 seasons + 3 horizons | error / check skipped under `not_done` |
 | 13 | 4 series with 35 rows each; dates spanning 2 seasons + 3 horizons | error |

@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]; PROJECT = ROOT.parent
-SKIP_PARTS = {'.venv', '__pycache__', '.pytest_cache', 'legacy-run-journals', 'checkpoints', 'batch-benchmark', 'layout-pages', 'chart-sheets', 'applied-runs', '.ipynb_checkpoints', '.DS_Store'}
+SKIP_PARTS = {'.venv', '__pycache__', '.pytest_cache', 'legacy-run-journals', 'checkpoints', 'batch-benchmark', 'layout-pages', 'chart-sheets', 'applied-runs', '.ipynb_checkpoints', '.DS_Store', 'benchmarks'}   # benchmark data is fetched, never bundled
 SKIP_COMPANION = {'revision', 'reports/quality-loop', 'reports/triage-report.md', 'reports/applied-corrections.json', 'reports/index-review.json', 'reports/black-and-white-review.md',
                   'reports/chart-and-navigation-review.md', 'reports/current-quality-audit.md', 'reports/practitioner-revision.md', 'reports/validation.md', 'reports/package.json',
                   'reports/method-audit.md', 'reports/visual-audit.md', 'reports/upgrade/summary.md', 'reports/upgrade/skill-evaluation.md', 'reports/upgrade/content-inventory.json', 'reports/upgrade/portability.json', 'reports/original-pdf-audit.json', 'reports/current-quality-audit-evidence.json', 'reports/layout-inspection.json', 'reports/skill-review.md', 'reports/prophet-page.png', 'reports/build.json', 'reports/validation.json',
@@ -26,6 +26,8 @@ def wanted(rel):
         return False
     if rel.parts[0] == 'companion':
         inner = rel.relative_to('companion').as_posix()
+        if inner.startswith('harness/runs/') and rel.name not in ('score.json', 'SUMMARY.md'):
+            return False                                  # the harness evidence (scores and summaries), not every working file
         return not any(inner == s or inner.startswith(s + '/') for s in SKIP_COMPANION)
     return True
 
@@ -52,7 +54,7 @@ def main(target):
     strip_manuscript_records(target / 'companion')
     shutil.copy2(ROOT / 'public-README.md', target / 'README.md')
     shutil.copy2(ROOT / 'public-LICENSE', target / 'LICENSE')
-    (target / '.gitignore').write_text('.venv/\n__pycache__/\n.pytest_cache/\n.ipynb_checkpoints/\ncompanion/applied-runs/\n.agents/\n.claude/\n*.pyc\n.DS_Store\n')
+    (target / '.gitignore').write_text('.venv/\n__pycache__/\n.pytest_cache/\n.ipynb_checkpoints/\ncompanion/applied-runs/\ncompanion/data/benchmarks/\n.agents/\n.claude/\n*.pyc\n.DS_Store\n')
     print(f'exported {n + 4} files to {target}')
 
 

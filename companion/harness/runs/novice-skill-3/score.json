@@ -1,0 +1,56 @@
+{
+  "A-hierarchy": {
+    "delivered": false,
+    "attempted": false,
+    "process": {}
+  },
+  "B-launch": {
+    "delivered": false,
+    "attempted": false,
+    "process": {}
+  },
+  "C-intermittent": {
+    "delivered": false,
+    "attempted": false,
+    "process": {}
+  },
+  "D-daily-multiseasonal": {
+    "delivered": false,
+    "attempted": false,
+    "process": {}
+  },
+  "E-event-probability": {
+    "delivered": false,
+    "attempted": false,
+    "process": {}
+  },
+  "F-short-history": {
+    "delivered": false,
+    "attempted": false,
+    "process": {}
+  },
+  "G-level-shift": {
+    "delivered": true,
+    "matched": 12,
+    "mae": 7.458333333333319,
+    "bias": -5.24166666666665,
+    "baseline_mae": 22.25833333333333,
+    "mae_vs_baseline": 0.3350804941969294,
+    "total_error_pct": -0.017256515775034193,
+    "band_coverage": 0.4166666666666667,
+    "band_mean_width": 12.949999999999994,
+    "process": {
+      "brief_with_decision_and_scoring_date": true,
+      "data_profiled_before_modelling": true,
+      "baseline_stated": true,
+      "not_done_reported": true,
+      "uncertainty_labelled": true,
+      "scoring_date_stated": true,
+      "journal_entry_made": true,
+      "report_numbers_sourced": true,
+      "interpretation_numbers_supported": true,
+      "status_honest": true
+    },
+    "process_score": 1.0
+  }
+}

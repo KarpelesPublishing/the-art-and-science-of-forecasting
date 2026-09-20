@@ -1,19 +1,168 @@
 {
   "method": "Rolling-origin model comparison with final holdout",
-  "interpretation": "Combination(top3) had the lowest mean validation MAE (1.67); the runner-up was Airline ARIMA (1.68). Final-holdout MAE for the selection: 1.62. Compare against Seasonal naive before trusting the gain.",
+  "interpretation": "Combination(top3) had the lowest mean validation MAE (1.67); the runner-up was Airline ARIMA (1.68). Final-holdout MAE for the selection: 1.62 against 2.8 for Seasonal naive. Validation MAE of Seasonal naive: 2.43.",
   "assumptions": [
     "Regular series with the declared season and no missing periods",
     "The training history's pattern continues over the horizon (no regime change)",
     "Specifications are frozen on the first training slice, so later actuals cannot steer selection"
   ],
   "not_done": [
-    "No regressors, promotions or calendar effects (chapter 13 or 16 add them)",
+    "No regressors, promotions or calendar effects (pool regressors, chapter 13 or 16 add them)",
     "No hierarchy or coherence constraints (chapter 18)",
-    "Intervals are the selected model's own plus empirical residual quantiles; no distribution-free guarantee (chapter 17)"
+    "Conformal bands come from few origin residuals; chapter 17 gives a calibrated split with more"
   ],
   "status": "passed",
+  "profile": {
+    "observations": 144,
+    "missing_values": 0,
+    "start": "2010-01-01",
+    "end": "2021-12-01",
+    "frequency": {
+      "frequency": "MS",
+      "regular": true,
+      "gaps": 0,
+      "off_grid": 0,
+      "gap_positions": [],
+      "longest_gap": 0
+    },
+    "season": 12,
+    "declared_season": 12,
+    "horizon": 12,
+    "minimum_for_engine": 72,
+    "gaps": {
+      "count": 0,
+      "action": "none"
+    },
+    "intermittency": {
+      "zero_share": 0.0,
+      "adi": 1.0,
+      "cv2": 0.023581797542199075,
+      "quadrant": "smooth",
+      "meaning": "regular demand every period"
+    },
+    "seasonality": {
+      "periods": [
+        12
+      ],
+      "evidence": [
+        {
+          "period": 12,
+          "acf": 0.857,
+          "acf_band": 0.167,
+          "periodogram_share": 0.61,
+          "strength": 0.899,
+          "testable": true,
+          "seasonal": true
+        }
+      ],
+      "multiple": false
+    },
+    "trend": {
+      "direction": "up",
+      "mann_kendall_p": 0.0,
+      "slope_per_period": 0.08797496909245132
+    },
+    "outliers": {
+      "count": 0,
+      "positions": [],
+      "share": 0.0,
+      "method": "STL residuals (period 12), two passes",
+      "threshold": 4.0
+    },
+    "break": {
+      "found": false
+    },
+    "positive": true,
+    "nonnegative": true,
+    "recommended_transform": "none",
+    "transform_note": {
+      "boxcox_lambda": 1.0459907679953906
+    },
+    "summary_stats": {
+      "mean": 47.10968963288706,
+      "median": 47.32726543707906,
+      "min": 31.966956900460666,
+      "max": 62.005439165646614,
+      "last": 47.95026628377904
+    },
+    "route": "engine",
+    "route_reasons": [
+      "a regular series with enough history: the chapter 12 engine (smoothing, ARIMA, Theta, STL, LightGBM, combinations) at rolling origins"
+    ],
+    "extra_columns": [],
+    "warnings": []
+  },
+  "gaps_filled": 0,
   "pool": "full",
   "selected": "Combination(top3)",
+  "criterion": "mae",
+  "baseline": "Seasonal naive",
+  "forced_baseline": false,
+  "robustness": {
+    "ARIMA(auto)": {
+      "lost_to_baseline_at": 1,
+      "of": 5
+    },
+    "Airline ARIMA": {
+      "lost_to_baseline_at": 1,
+      "of": 5
+    },
+    "Combination(top3)": {
+      "lost_to_baseline_at": 1,
+      "of": 5
+    },
+    "Damped Holt": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "Drift": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "ETS(auto)": {
+      "lost_to_baseline_at": 1,
+      "of": 5
+    },
+    "Equal ensemble": {
+      "lost_to_baseline_at": 4,
+      "of": 5
+    },
+    "Holt": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "LightGBM": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "Naive": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "SES": {
+      "lost_to_baseline_at": 5,
+      "of": 5
+    },
+    "STL+ETS": {
+      "lost_to_baseline_at": 2,
+      "of": 5
+    },
+    "Seasonal naive": {
+      "lost_to_baseline_at": 0,
+      "of": 5
+    },
+    "Theta": {
+      "lost_to_baseline_at": 1,
+      "of": 5
+    },
+    "Weighted ensemble": {
+      "lost_to_baseline_at": 1,
+      "of": 5
+    }
+  },
+  "unavailable": {},
+  "conformal": "conformal_lower/upper are split-conformal bands at 80% from Combination(top3)'s absolute residuals at the selection origins, pooled across horizon steps (60 residuals, scaled per step); the guarantee assumes future errors resemble those at the origins, which a level shift breaks.",
+  "conformal_test_coverage": 0.75,
   "transform": "none",
   "specification": {
     "ets": {
@@ -35,6 +184,10 @@
         12
       ]
     ],
+    "periods": [
+      12
+    ],
+    "regressors": null,
     "notes": {
       "transform": {
         "boxcox_lambda": 0.5388623113671784
@@ -61,98 +214,165 @@
       "mae": 1.666520128306486,
       "rmse": 2.1071375345625567,
       "mase": 0.6521555255904866,
-      "interval_coverage": null
+      "rmsse": 0.49993838716176286,
+      "cumulative_error": 9.349474510118542,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 1
     },
     {
       "model": "Airline ARIMA",
       "mae": 1.6766570420191953,
       "rmse": 2.1189433503354573,
       "mase": 0.6562029954041775,
-      "interval_coverage": 0.8333333333333334
+      "rmsse": 0.502751209216438,
+      "cumulative_error": 9.595112394695365,
+      "pinball": 1.6365151213350646,
+      "interval_coverage": 0.8333333333333334,
+      "lost_to_baseline_at": 1
     },
     {
       "model": "ARIMA(auto)",
       "mae": 1.6898984943242301,
       "rmse": 2.0818651654955014,
       "mase": 0.6608641663760402,
-      "interval_coverage": 0.85
+      "rmsse": 0.49393311375659277,
+      "cumulative_error": 9.627252519182486,
+      "pinball": 1.6126953797047539,
+      "interval_coverage": 0.85,
+      "lost_to_baseline_at": 1
+    },
+    {
+      "model": "Weighted ensemble",
+      "mae": 1.7890605734271225,
+      "rmse": 2.1761341616341197,
+      "mase": 0.7011379769078045,
+      "rmsse": 0.5165642722382991,
+      "cumulative_error": 9.236384353926372,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 1
     },
     {
       "model": "ETS(auto)",
       "mae": 1.8604751517064915,
       "rmse": 2.281468442225006,
       "mase": 0.7284937674797952,
-      "interval_coverage": 0.8
+      "rmsse": 0.5409135345189433,
+      "cumulative_error": 9.706045322760557,
+      "pinball": 1.7731653445686741,
+      "interval_coverage": 0.8,
+      "lost_to_baseline_at": 1
     },
     {
       "model": "Theta",
       "mae": 1.9741900055333734,
       "rmse": 2.429430216730478,
       "mase": 0.77231237459695,
-      "interval_coverage": 1.0
+      "rmsse": 0.576229157637863,
+      "cumulative_error": 12.286427240380473,
+      "pinball": 4.144127350144208,
+      "interval_coverage": 1.0,
+      "lost_to_baseline_at": 1
     },
     {
       "model": "STL+ETS",
       "mae": 2.2859480719290244,
       "rmse": 2.681365638547671,
       "mase": 0.8988426393371153,
-      "interval_coverage": 0.6666666666666666
+      "rmsse": 0.6370234017204472,
+      "cumulative_error": 9.994103068600154,
+      "pinball": 2.1778013608191045,
+      "interval_coverage": 0.6666666666666666,
+      "lost_to_baseline_at": 2
     },
     {
       "model": "Seasonal naive",
       "mae": 2.429688166985568,
       "rmse": 2.9103205247868473,
       "mase": 0.9578429017843734,
-      "interval_coverage": null
+      "rmsse": 0.691308339908375,
+      "cumulative_error": 11.550504013611695,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 0
     },
     {
       "model": "Equal ensemble",
       "mae": 3.269077340278541,
       "rmse": 4.058116258672955,
       "mase": 1.2752390524351362,
-      "interval_coverage": null
+      "rmsse": 0.9618718257006907,
+      "cumulative_error": 29.07430680269597,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 4
     },
     {
       "model": "LightGBM",
       "mae": 4.040870000878032,
       "rmse": 4.946534739885277,
       "mase": 1.581404184053323,
-      "interval_coverage": null
+      "rmsse": 1.1738695335161442,
+      "cumulative_error": 41.17011816805215,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "Naive",
       "mae": 6.56803687866955,
       "rmse": 7.99279727206856,
       "mase": 2.5588060787909015,
-      "interval_coverage": null
+      "rmsse": 1.8941380814253335,
+      "cumulative_error": 59.38146280704734,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "SES",
       "mae": 6.568098754896807,
       "rmse": 7.992843630931302,
       "mase": 2.558829669195873,
-      "interval_coverage": 0.75
+      "rmsse": 1.8941490089914759,
+      "cumulative_error": 59.380824486553635,
+      "pinball": 6.629464327994744,
+      "interval_coverage": 0.75,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "Drift",
       "mae": 6.585404526802877,
       "rmse": 8.02169226821326,
       "mase": 2.5654220686503,
-      "interval_coverage": null
+      "rmsse": 1.9006786978833792,
+      "cumulative_error": 59.31053368367045,
+      "pinball": null,
+      "interval_coverage": null,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "Holt",
       "mae": 6.585470492385774,
       "rmse": 8.021750416107974,
       "mase": 2.565447838338602,
-      "interval_coverage": 0.75
+      "rmsse": 1.9006926394280743,
+      "cumulative_error": 59.310658349625626,
+      "pinball": 6.619672318658902,
+      "interval_coverage": 0.75,
+      "lost_to_baseline_at": 5
     },
     {
       "model": "Damped Holt",
       "mae": 7.1684207222323435,
       "rmse": 8.807488766930867,
       "mase": 2.7908886436748,
-      "interval_coverage": 0.8666666666666667
+      "rmsse": 2.0819159335525113,
+      "cumulative_error": 59.10072904408255,
+      "pinball": 7.988812776108139,
+      "interval_coverage": 0.8666666666666667,
+      "lost_to_baseline_at": 5
     }
   ],
   "validation": [
@@ -161,490 +381,750 @@
       "model": "Naive",
       "mae": 6.907938788139156,
       "rmse": 8.468536300320885,
-      "mase": 2.45528009636192
+      "mase": 2.45528009636192,
+      "rmsse": 1.9643277002933788,
+      "cumulative_error": 62.48253391920481,
+      "pinball": null
     },
     {
       "origin": 72,
       "model": "Seasonal naive",
       "mae": 1.1848434815210382,
       "rmse": 1.5460310852042487,
-      "mase": 0.4211274457842178
+      "mase": 0.4211274457842178,
+      "rmsse": 0.35861116708754803,
+      "cumulative_error": 3.5230980877486857,
+      "pinball": null
     },
     {
       "origin": 72,
       "model": "Drift",
       "mae": 6.8873339761627035,
       "rmse": 8.440023762641683,
-      "mase": 2.447956553654517
+      "mase": 2.447956553654517,
+      "rmsse": 1.9577140464596232,
+      "cumulative_error": 61.411083696429124,
+      "pinball": null
     },
     {
       "origin": 72,
       "model": "SES",
       "mae": 6.908050872893505,
       "rmse": 8.468674132743152,
-      "mase": 2.455319934506828
+      "mase": 2.455319934506828,
+      "rmsse": 1.9643596713489964,
+      "cumulative_error": 62.48522395330919,
+      "pinball": 6.872572920791148
     },
     {
       "origin": 72,
       "model": "Holt",
       "mae": 6.8873972792863425,
       "rmse": 8.440093601774317,
-      "mase": 2.447979053405061
+      "mase": 2.447979053405061,
+      "rmsse": 1.9577302460646,
+      "cumulative_error": 61.41125605178985,
+      "pinball": 6.852560561626563
     },
     {
       "origin": 72,
       "model": "Damped Holt",
       "mae": 6.908306718761291,
       "rmse": 8.469022752773231,
-      "mase": 2.4554108694855787
+      "mase": 2.4554108694855787,
+      "rmsse": 1.9644405358523387,
+      "cumulative_error": 62.49389481527772,
+      "pinball": 6.872905966156264
     },
     {
       "origin": 72,
       "model": "ETS(auto)",
       "mae": 1.465674634448762,
       "rmse": 1.9470619926278436,
-      "mase": 0.520942913374305
+      "mase": 0.520942913374305,
+      "rmsse": 0.45163268724045896,
+      "cumulative_error": 15.80950555817305,
+      "pinball": 1.4484206703543006
     },
     {
       "origin": 72,
       "model": "Theta",
       "mae": 1.6034310629114212,
       "rmse": 1.929260000498816,
-      "mase": 0.5699055095008094
+      "mase": 0.5699055095008094,
+      "rmsse": 0.44750340857654997,
+      "cumulative_error": 16.612714913193315,
+      "pinball": 4.061816185935826
     },
     {
       "origin": 72,
       "model": "STL+ETS",
       "mae": 1.5160936131682679,
       "rmse": 1.8474202482859967,
-      "mase": 0.5388632683058583
+      "mase": 0.5388632683058583,
+      "rmsse": 0.42852018803456615,
+      "cumulative_error": 13.497393443638195,
+      "pinball": 1.4141493525331044
     },
     {
       "origin": 72,
       "model": "ARIMA(auto)",
       "mae": 1.5191834683336947,
       "rmse": 1.9423478386562165,
-      "mase": 0.5399614916863752
+      "mase": 0.5399614916863752,
+      "rmsse": 0.4505392110007026,
+      "cumulative_error": 13.931527594575599,
+      "pinball": 1.4621732326673946
     },
     {
       "origin": 72,
       "model": "Airline ARIMA",
       "mae": 1.465559979051563,
       "rmse": 1.9467847023076215,
-      "mase": 0.5209021615490042
+      "mase": 0.5209021615490042,
+      "rmsse": 0.45156836809040524,
+      "cumulative_error": 15.810732347964638,
+      "pinball": 1.4603230472848097
     },
     {
       "origin": 72,
       "model": "LightGBM",
       "mae": 3.6645485451382744,
       "rmse": 4.7280939050689375,
-      "mase": 1.3024859340790076
+      "mase": 1.3024859340790076,
+      "rmsse": 1.0967096907836704,
+      "cumulative_error": 31.073182467452675,
+      "pinball": null
     },
     {
       "origin": 72,
       "model": "Equal ensemble",
       "mae": 3.2160156329248895,
       "rmse": 3.9123647052260675,
-      "mase": 1.1430644386523767
+      "mase": 1.1430644386523767,
+      "rmsse": 0.9074964186945154,
+      "cumulative_error": 21.847683579847477,
+      "pinball": null
     },
     {
       "origin": 72,
       "model": "Combination(top3)",
       "mae": 1.465753237469227,
       "rmse": 1.9470706736874892,
-      "mase": 0.5209708511481592
+      "mase": 0.5209708511481592,
+      "rmsse": 0.45163470086422164,
+      "cumulative_error": 15.810448794418633,
+      "pinball": null
+    },
+    {
+      "origin": 72,
+      "model": "Weighted ensemble",
+      "mae": 1.4260024302368777,
+      "rmse": 1.8437352723027065,
+      "mase": 0.5068422711469173,
+      "rmsse": 0.4276654357914166,
+      "cumulative_error": 15.191934893724564,
+      "pinball": null
     },
     {
       "origin": 84,
       "model": "Naive",
       "mae": 6.230091039638832,
       "rmse": 7.898307488807032,
-      "mase": 2.4508040468062204
+      "mase": 2.4508040468062204,
+      "rmsse": 1.8651219324407111,
+      "cumulative_error": 67.35614161060087,
+      "pinball": null
     },
     {
       "origin": 84,
       "model": "Seasonal naive",
       "mae": 2.238519687542339,
       "rmse": 2.5565528799957042,
-      "mase": 0.8805927672932052
+      "mase": 0.8805927672932052,
+      "rmsse": 0.6037094472052087,
+      "cumulative_error": 12.818731823365148,
+      "pinball": null
     },
     {
       "origin": 84,
       "model": "Drift",
       "mae": 6.226803111704659,
       "rmse": 7.845160962836025,
-      "mase": 2.4495106359980303
+      "mase": 2.4495106359980303,
+      "rmsse": 1.852571806814173,
+      "cumulative_error": 65.81739133740965,
+      "pinball": null
     },
     {
       "origin": 84,
       "model": "SES",
       "mae": 6.230191374427903,
       "rmse": 7.898521403432384,
-      "mase": 2.4508435166800195
+      "mase": 2.4508435166800195,
+      "rmsse": 1.865172446662901,
+      "cumulative_error": 67.35975366300747,
+      "pinball": 6.4155493138934405
     },
     {
       "origin": 84,
       "model": "Holt",
       "mae": 6.226907276513046,
       "rmse": 7.8454408366163895,
-      "mase": 2.449551612531488
+      "mase": 2.449551612531488,
+      "rmsse": 1.852637896761521,
+      "cumulative_error": 65.8230752505506,
+      "pinball": 6.398100447818931
     },
     {
       "origin": 84,
       "model": "Damped Holt",
       "mae": 6.230248312353434,
       "rmse": 7.898730530868334,
-      "mase": 2.4508659150201755
+      "mase": 2.4508659150201755,
+      "rmsse": 1.865221830428729,
+      "cumulative_error": 67.36422106481314,
+      "pinball": 6.4159975254003765
     },
     {
       "origin": 84,
       "model": "ETS(auto)",
       "mae": 1.5349509016282894,
       "rmse": 1.9169731160974766,
-      "mase": 0.6038216548401434
+      "mase": 0.6038216548401434,
+      "rmsse": 0.4526778183553154,
+      "cumulative_error": 11.270944670649648,
+      "pinball": 1.4716409988676333
     },
     {
       "origin": 84,
       "model": "Theta",
       "mae": 1.7776648083882194,
       "rmse": 1.946074106947784,
-      "mase": 0.6993008735415555
+      "mase": 0.6993008735415555,
+      "rmsse": 0.4595497838197624,
+      "cumulative_error": 3.5428576088391353,
+      "pinball": 4.070727289014194
     },
     {
       "origin": 84,
       "model": "STL+ETS",
       "mae": 2.096629539375572,
       "rmse": 2.326441580395556,
-      "mase": 0.8247757740716734
+      "mase": 0.8247757740716734,
+      "rmsse": 0.5493705103640074,
+      "cumulative_error": 8.14712359411508,
+      "pinball": 1.757340225606155
     },
     {
       "origin": 84,
       "model": "ARIMA(auto)",
       "mae": 1.6840491892416949,
       "rmse": 1.981436494647992,
-      "mase": 0.6624741984915753
+      "mase": 0.6624741984915753,
+      "rmsse": 0.46790032790488406,
+      "cumulative_error": 12.50713173448144,
+      "pinball": 1.5037177795882681
     },
     {
       "origin": 84,
       "model": "Airline ARIMA",
       "mae": 1.5355016531213792,
       "rmse": 1.9176880869482595,
-      "mase": 0.6040383104202081
+      "mase": 0.6040383104202081,
+      "rmsse": 0.4528466529843471,
+      "cumulative_error": 11.274098109327156,
+      "pinball": 1.4874656370195538
     },
     {
       "origin": 84,
       "model": "LightGBM",
       "mae": 3.065086319329293,
       "rmse": 3.662702312868571,
-      "mase": 1.2057489862392272
+      "mase": 1.2057489862392272,
+      "rmsse": 0.864917759331792,
+      "cumulative_error": 34.40065271623779,
+      "pinball": null
     },
     {
       "origin": 84,
       "model": "Equal ensemble",
       "mae": 2.9043632299693414,
       "rmse": 3.6107407894303356,
-      "mase": 1.1425234578621328
+      "mase": 1.1425234578621328,
+      "rmsse": 0.8526474625441541,
+      "cumulative_error": 31.882669801953625,
+      "pinball": null
     },
     {
       "origin": 84,
       "model": "Combination(top3)",
       "mae": 1.5353116557936144,
       "rmse": 1.9171608557609805,
-      "mase": 0.6039635689410218
+      "mase": 0.6039635689410218,
+      "rmsse": 0.45272215157030943,
+      "cumulative_error": 11.262221195790588,
+      "pinball": null
+    },
+    {
+      "origin": 84,
+      "model": "Weighted ensemble",
+      "mae": 1.7281809602682678,
+      "rmse": 1.8767715458419454,
+      "mase": 0.6798348313196505,
+      "rmsse": 0.4431845401424318,
+      "cumulative_error": 2.564298904181719,
+      "pinball": null
     },
     {
       "origin": 96,
       "model": "Naive",
       "mae": 6.765015340468126,
       "rmse": 8.25641300073943,
-      "mase": 2.7074170960606683
+      "mase": 2.7074170960606683,
+      "rmsse": 1.9750697132806954,
+      "cumulative_error": 67.05240278188354,
+      "pinball": null
     },
     {
       "origin": 96,
       "model": "Seasonal naive",
       "mae": 2.2092676797929918,
       "rmse": 2.9547299191034995,
-      "mase": 0.8841678525494564
+      "mase": 0.8841678525494564,
+      "rmsse": 0.7068199681414915,
+      "cumulative_error": 20.381945467523565,
+      "pinball": null
     },
     {
       "origin": 96,
       "model": "Drift",
       "mae": 6.68285120601977,
       "rmse": 8.170338362773787,
-      "mase": 2.674534305543136
+      "mase": 2.674534305543136,
+      "rmsse": 1.954479244936595,
+      "cumulative_error": 64.29268467029996,
+      "pinball": null
     },
     {
       "origin": 96,
       "model": "SES",
       "mae": 6.765139659298131,
       "rmse": 8.25653920493441,
-      "mase": 2.707466849521493
+      "mase": 2.707466849521493,
+      "rmsse": 1.9750999033987493,
+      "cumulative_error": 67.0546405208236,
+      "pinball": 6.867427579853555
     },
     {
       "origin": 96,
       "model": "Holt",
       "mae": 6.682992375896052,
       "rmse": 8.170545119045052,
-      "mase": 2.6745908029370455
+      "mase": 2.6745908029370455,
+      "rmsse": 1.954528704435456,
+      "cumulative_error": 64.29778701674562,
+      "pinball": 6.800458510959233
     },
     {
       "origin": 96,
       "model": "Damped Holt",
       "mae": 6.560587195696321,
       "rmse": 7.261543533130892,
-      "mase": 2.6256032011593082
+      "mase": 2.6256032011593082,
+      "rmsse": 1.7370805824117166,
+      "cumulative_error": 5.344862628283259,
+      "pinball": 8.688939565640663
     },
     {
       "origin": 96,
       "model": "ETS(auto)",
       "mae": 1.256479338086006,
       "rmse": 1.4394402228494723,
-      "mase": 0.5028537955311786
+      "mase": 0.5028537955311786,
+      "rmsse": 0.3443377636236697,
+      "cumulative_error": 0.893626092817783,
+      "pinball": 1.1210463795108623
     },
     {
       "origin": 96,
       "model": "Theta",
       "mae": 1.2361010191240893,
       "rmse": 1.5882141641117282,
-      "mase": 0.4946982176987929
+      "mase": 0.4946982176987929,
+      "rmsse": 0.3799269360023004,
+      "cumulative_error": 4.10687058115473,
+      "pinball": 3.741278524264458
     },
     {
       "origin": 96,
       "model": "STL+ETS",
       "mae": 1.7426457690450217,
       "rmse": 2.160094533529993,
-      "mase": 0.6974217662548274
+      "mase": 0.6974217662548274,
+      "rmsse": 0.5167301212543746,
+      "cumulative_error": 9.257745807967524,
+      "pinball": 1.5959864609114587
     },
     {
       "origin": 96,
       "model": "ARIMA(auto)",
       "mae": 1.1547238307019931,
       "rmse": 1.330265121113939,
-      "mase": 0.4621303697228432
+      "mase": 0.4621303697228432,
+      "rmsse": 0.31822128460755467,
+      "cumulative_error": 1.334264472720605,
+      "pinball": 1.1315016485186138
     },
     {
       "origin": 96,
       "model": "Airline ARIMA",
       "mae": 1.2555615010574914,
       "rmse": 1.4405185606484614,
-      "mase": 0.5024864692891325
+      "mase": 0.5024864692891325,
+      "rmsse": 0.3445957197515037,
+      "cumulative_error": 1.2772678140098321,
+      "pinball": 1.1970372976463564
     },
     {
       "origin": 96,
       "model": "LightGBM",
       "mae": 4.8164456081369655,
       "rmse": 5.87098319389922,
-      "mase": 1.9275827955201639
+      "mase": 1.9275827955201639,
+      "rmsse": 1.4044356904641073,
+      "cumulative_error": 53.18017862154201,
+      "pinball": null
     },
     {
       "origin": 96,
       "model": "Equal ensemble",
       "mae": 3.462873056822335,
       "rmse": 4.012404250124524,
-      "mase": 1.3858714642441436
+      "mase": 1.3858714642441436,
+      "rmsse": 0.9598330547599735,
+      "cumulative_error": 29.72391869084472,
+      "pinball": null
     },
     {
       "origin": 96,
       "model": "Combination(top3)",
       "mae": 1.2105644010378345,
       "rmse": 1.393175552210602,
-      "mase": 0.4844782443649979
+      "mase": 0.4844782443649979,
+      "rmsse": 0.33327049388249325,
+      "cumulative_error": 0.3764669330819288,
+      "pinball": null
+    },
+    {
+      "origin": 96,
+      "model": "Weighted ensemble",
+      "mae": 1.3231549302492411,
+      "rmse": 1.5608205049194195,
+      "mase": 0.52953793873376,
+      "rmsse": 0.37337392241131157,
+      "cumulative_error": 4.923450202943066,
+      "pinball": null
     },
     {
       "origin": 108,
       "model": "Naive",
       "mae": 7.230018275669022,
       "rmse": 8.845693314674548,
-      "mase": 2.936026029466855
+      "mase": 2.936026029466855,
+      "rmsse": 2.140814149405754,
+      "cumulative_error": 82.16975428490301,
+      "pinball": null
     },
     {
       "origin": 108,
       "model": "Seasonal naive",
       "mae": 3.1842440122570186,
       "rmse": 3.8183552994576284,
-      "mase": 1.2930843253360214
+      "mase": 1.2930843253360214,
+      "rmsse": 0.9241094803701195,
+      "cumulative_error": 17.636593045967665,
+      "pinball": null
     },
     {
       "origin": 108,
       "model": "Drift",
       "mae": 7.129893081337751,
       "rmse": 8.725051422353276,
-      "mase": 2.895366356758789
+      "mase": 2.895366356758789,
+      "rmsse": 2.111616678850902,
+      "cumulative_error": 79.56649923228994,
+      "pinball": null
     },
     {
       "origin": 108,
       "model": "SES",
       "mae": 7.229990918431888,
       "rmse": 8.845661548725376,
-      "mase": 2.936014920012182
+      "mase": 2.936014920012182,
+      "rmsse": 2.140806461484521,
+      "cumulative_error": 82.16926185463458,
+      "pinball": 7.489314803228139
     },
     {
       "origin": 108,
       "model": "Holt",
       "mae": 7.12993533064697,
       "rmse": 8.725102370534891,
-      "mase": 2.8953835137101085
+      "mase": 2.8953835137101085,
+      "rmsse": 2.111629009211475,
+      "cumulative_error": 79.56783438491223,
+      "pinball": 7.397983122572596
     },
     {
       "origin": 108,
       "model": "Damped Holt",
       "mae": 5.765575686000351,
       "rmse": 6.974122461757491,
-      "mase": 2.3413329874870676
+      "mase": 2.3413329874870676,
+      "rmsse": 1.6878609188327085,
+      "cumulative_error": 36.28394975573443,
+      "pinball": 8.253597681903178
     },
     {
       "origin": 108,
       "model": "ETS(auto)",
       "mae": 2.392449222109073,
       "rmse": 3.1289556930934723,
-      "mase": 0.9715457032700214
+      "mase": 0.9715457032700214,
+      "rmsse": 0.7572625889624398,
+      "cumulative_error": 2.392299953774142,
+      "pinball": 2.5112695904825664
     },
     {
       "origin": 108,
       "model": "Theta",
       "mae": 2.456058673459694,
       "rmse": 3.4212926259892296,
-      "mase": 0.9973767589831202
+      "mase": 0.9973767589831202,
+      "rmsse": 0.8280132944270847,
+      "cumulative_error": 4.7231196892213205,
+      "pinball": 4.286198955758437
     },
     {
       "origin": 108,
       "model": "STL+ETS",
       "mae": 3.4524849212205226,
       "rmse": 4.106395045890743,
-      "mase": 1.402013827428023
+      "mase": 1.402013827428023,
+      "rmsse": 0.9938201907485004,
+      "cumulative_error": 15.66865284665053,
+      "pinball": 3.648385359120261
     },
     {
       "origin": 108,
       "model": "ARIMA(auto)",
       "mae": 2.391688933880364,
       "rmse": 3.1096308408969024,
-      "mase": 0.9712369590947959
+      "mase": 0.9712369590947959,
+      "rmsse": 0.7525856331212329,
+      "cumulative_error": 4.508529358914821,
+      "pinball": 2.442253636133116
     },
     {
       "origin": 108,
       "model": "Airline ARIMA",
       "mae": 2.3931594468805932,
       "rmse": 3.1326851641944646,
-      "mase": 0.9718341172596476
+      "mase": 0.9718341172596476,
+      "rmsse": 0.7581651868955559,
+      "cumulative_error": 3.0754638954291806,
+      "pinball": 2.435273588585156
     },
     {
       "origin": 108,
       "model": "LightGBM",
       "mae": 5.158746677270728,
       "rmse": 6.166092824922066,
-      "mase": 2.0949068102446766
+      "mase": 2.0949068102446766,
+      "rmsse": 1.4923034630019987,
+      "cumulative_error": 61.014994188339436,
+      "pinball": null
     },
     {
       "origin": 108,
       "model": "Equal ensemble",
       "mae": 3.5383079650768514,
       "rmse": 4.639596514507205,
-      "mase": 1.4368655637698566
+      "mase": 1.4368655637698566,
+      "rmsse": 1.12286437167261,
+      "cumulative_error": 39.064746040897646,
+      "pinball": null
     },
     {
       "origin": 108,
       "model": "Combination(top3)",
       "mae": 2.394329452729094,
       "rmse": 3.1336748160594765,
-      "mase": 0.9723092429778477
+      "mase": 0.9723092429778477,
+      "rmsse": 0.7584047001411812,
+      "cumulative_error": 2.8425646463430283,
+      "pinball": null
+    },
+    {
+      "origin": 108,
+      "model": "Weighted ensemble",
+      "mae": 2.5226945113964665,
+      "rmse": 3.291510026548942,
+      "mase": 1.0244367949634021,
+      "rmsse": 0.7966036111671526,
+      "cumulative_error": 5.684487224399923,
+      "pinball": null
     },
     {
       "origin": 120,
       "model": "Naive",
       "mae": 5.707120949432611,
       "rmse": 6.495036255800901,
-      "mase": 2.244503125258844
+      "mase": 2.244503125258844,
+      "rmsse": 1.5253569117061292,
+      "cumulative_error": 17.846481438644467,
+      "pinball": null
     },
     {
       "origin": 120,
       "model": "Seasonal naive",
       "mae": 3.3315659738144543,
       "rmse": 3.6759334401731563,
-      "mase": 1.3102421179589656
+      "mase": 1.3102421179589656,
+      "rmsse": 0.8632916367375075,
+      "cumulative_error": 3.39215164345341,
+      "pinball": null
     },
     {
       "origin": 120,
       "model": "Drift",
       "mae": 6.0001412587895,
       "rmse": 6.92788683046152,
-      "mase": 2.3597424912970277
+      "mase": 2.3597424912970277,
+      "rmsse": 1.627011712355603,
+      "cumulative_error": 25.46500948192358,
+      "pinball": null
     },
     {
       "origin": 120,
       "model": "SES",
       "mae": 5.707120949432611,
       "rmse": 6.494821864821187,
-      "mase": 2.244503125258844
+      "mase": 2.244503125258844,
+      "rmsse": 1.525306562062211,
+      "cumulative_error": 17.835242440993333,
+      "pinball": 5.502457022207436
     },
     {
       "origin": 120,
       "model": "Holt",
       "mae": 6.000120199586459,
       "rmse": 6.927570152569219,
-      "mase": 2.3597342091093085
+      "mase": 2.3597342091093085,
+      "rmsse": 1.6269373406673193,
+      "cumulative_error": 25.453339044129827,
+      "pinball": 5.649258950317189
     },
     {
       "origin": 120,
       "model": "Damped Holt",
       "mae": 10.377385698350318,
       "rmse": 13.434024556124387,
-      "mase": 4.081230245221869
+      "mase": 4.081230245221869,
+      "rmsse": 3.1549758002370645,
+      "cumulative_error": 124.01671695630422,
+      "pinball": 9.712623141440215
     },
     {
       "origin": 120,
       "model": "ETS(auto)",
       "mae": 2.652821662260328,
       "rmse": 2.9749111864567657,
-      "mase": 1.0433047703833274
+      "mase": 1.0433047703833274,
+      "rmsse": 0.6986568144128324,
+      "cumulative_error": 18.163850338388166,
+      "pinball": 2.313449083628009
     },
     {
       "origin": 120,
       "model": "Theta",
       "mae": 2.797694463783443,
       "rmse": 3.262310186104831,
-      "mase": 1.1002805132604718
+      "mase": 1.1002805132604718,
+      "rmsse": 0.7661523653636172,
+      "cumulative_error": 32.44657340949386,
+      "pinball": 4.560615795748129
     },
     {
       "origin": 120,
       "model": "STL+ETS",
       "mae": 2.621886516835738,
       "rmse": 2.9664767846360665,
-      "mase": 1.031138560625195
+      "mase": 1.031138560625195,
+      "rmsse": 0.6966759982007875,
+      "cumulative_error": 3.3995996506294404,
+      "pinball": 2.4731454059245443
     },
     {
       "origin": 120,
       "model": "ARIMA(auto)",
       "mae": 1.6998470494634041,
       "rmse": 2.045645532162458,
-      "mase": 0.6685178128846113
+      "mase": 0.6685178128846113,
+      "rmsse": 0.4804191121485895,
+      "cumulative_error": 15.854809435219963,
+      "pinball": 1.5238306016163758
     },
     {
       "origin": 120,
       "model": "Airline ARIMA",
       "mae": 1.7335026299849499,
       "rmse": 2.157040237578481,
-      "mase": 0.6817539185028951
+      "mase": 0.6817539185028951,
+      "rmsse": 0.5065801183603781,
+      "cumulative_error": 16.537999806746015,
+      "pinball": 1.6024760361394477
     },
     {
       "origin": 120,
       "model": "LightGBM",
       "mae": 3.4995228545149,
       "rmse": 4.304801462667592,
-      "mase": 1.37629639418354
+      "mase": 1.37629639418354,
+      "rmsse": 1.0109810639991523,
+      "cumulative_error": 26.18158284668882,
+      "pinball": null
     },
     {
       "origin": 120,
       "model": "Equal ensemble",
       "mae": 3.223826816599287,
       "rmse": 4.115475034076641,
-      "mase": 1.2678703376471716
+      "mase": 1.2678703376471716,
+      "rmsse": 0.9665178208322005,
+      "cumulative_error": 22.852515899936392,
+      "pinball": null
     },
     {
       "origin": 120,
       "model": "Combination(top3)",
       "mae": 1.7266418945026594,
       "rmse": 2.144605775094237,
-      "mase": 0.6790557205204069
+      "mase": 0.6790557205204069,
+      "rmsse": 0.5036598893506089,
+      "cumulative_error": 16.45567098095853,
+      "pinball": null
+    },
+    {
+      "origin": 120,
+      "model": "Weighted ensemble",
+      "mae": 1.945270034984759,
+      "rmse": 2.307833458557584,
+      "mase": 0.7650380483752928,
+      "rmsse": 0.5419938516791832,
+      "cumulative_error": 17.81775054438259,
+      "pinball": null
     }
   ],
   "validation_predictions": [
@@ -2161,6 +2641,114 @@
       "absolute_error": 0.4787601960717893
     },
     {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2016-01-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 45.562606595998375,
+      "forecast": 48.11645098212777,
+      "absolute_error": 2.5538443861293985
+    },
+    {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2016-02-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 50.571134275165214,
+      "forecast": 52.01411490540382,
+      "absolute_error": 1.4429806302386083
+    },
+    {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2016-03-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 55.96062439482621,
+      "forecast": 56.202214539438685,
+      "absolute_error": 0.24159014461247352
+    },
+    {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2016-04-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 57.42246071294167,
+      "forecast": 57.86983506904566,
+      "absolute_error": 0.44737435610399245
+    },
+    {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2016-05-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 54.16883633204813,
+      "forecast": 55.73981461971494,
+      "absolute_error": 1.5709782876668115
+    },
+    {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2016-06-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 53.95248804345565,
+      "forecast": 53.40681482414937,
+      "absolute_error": 0.5456732193062805
+    },
+    {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2016-07-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 49.012521995133675,
+      "forecast": 48.59814807988097,
+      "absolute_error": 0.4143739152527033
+    },
+    {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2016-08-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 43.48702777533992,
+      "forecast": 44.5259576280303,
+      "absolute_error": 1.03892985269038
+    },
+    {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2016-09-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 39.07416198960381,
+      "forecast": 41.801998884174466,
+      "absolute_error": 2.7278368945706575
+    },
+    {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2016-10-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 37.59491365596641,
+      "forecast": 41.74634386665886,
+      "absolute_error": 4.151430210692453
+    },
+    {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2016-11-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 39.916143877998095,
+      "forecast": 41.705562810647876,
+      "absolute_error": 1.789418932649781
+    },
+    {
+      "origin": "2015-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2016-12-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 42.92595544193104,
+      "forecast": 43.11355377486003,
+      "absolute_error": 0.1875983329289923
+    },
+    {
       "origin": "2016-12-01 00:00:00+00:00",
       "horizon": 1,
       "timestamp": "2017-01-01 00:00:00+00:00",
@@ -3671,6 +4259,114 @@
       "actual": 44.64976246661778,
       "forecast": 44.21303749258698,
       "absolute_error": 0.43672497403080257
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2017-01-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 50.07812946460556,
+      "forecast": 47.14919430108229,
+      "absolute_error": 2.9289351635232705
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2017-02-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 53.51759580160859,
+      "forecast": 51.38621048421858,
+      "absolute_error": 2.131385317390013
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2017-03-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 52.9941907182268,
+      "forecast": 56.160348539905584,
+      "absolute_error": 3.1661578216787873
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2017-04-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 56.3182358502016,
+      "forecast": 57.57221429306672,
+      "absolute_error": 1.2539784428651188
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2017-05-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 54.26170207476835,
+      "forecast": 55.09936331260741,
+      "absolute_error": 0.8376612378390575
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2017-06-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 55.044898823440406,
+      "forecast": 53.80905443694371,
+      "absolute_error": 1.2358443864966944
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2017-07-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 47.60174537911264,
+      "forecast": 48.997773622516995,
+      "absolute_error": 1.396028243404352
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2017-08-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 41.94671071712897,
+      "forecast": 44.379821280860405,
+      "absolute_error": 2.4331105637314323
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2017-09-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 41.74565018896614,
+      "forecast": 40.837833692207894,
+      "absolute_error": 0.9078164967582438
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2017-10-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 41.523879292098734,
+      "forecast": 40.12686019407029,
+      "absolute_error": 1.3970190980284443
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2017-11-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 42.78510613699777,
+      "forecast": 41.152502406982535,
+      "absolute_error": 1.6326037300152336
+    },
+    {
+      "origin": "2016-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2017-12-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 44.64976246661778,
+      "forecast": 43.23213144512921,
+      "absolute_error": 1.4176310214885675
     },
     {
       "origin": "2017-12-01 00:00:00+00:00",
@@ -5185,6 +5881,114 @@
       "absolute_error": 0.17939081774701293
     },
     {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2018-01-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 49.49532046341574,
+      "forecast": 49.67160506974432,
+      "absolute_error": 0.17628460632857923
+    },
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2018-02-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 53.79956615001321,
+      "forecast": 53.54611792814757,
+      "absolute_error": 0.2534482218656464
+    },
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2018-03-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 58.368528083733096,
+      "forecast": 56.7484305872077,
+      "absolute_error": 1.6200974965253963
+    },
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2018-04-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 59.85018557770903,
+      "forecast": 58.637794677058224,
+      "absolute_error": 1.212390900650803
+    },
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2018-05-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 55.78420293090273,
+      "forecast": 56.52169829192775,
+      "absolute_error": 0.7374953610250188
+    },
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2018-06-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 53.59696967933036,
+      "forecast": 55.21080633462269,
+      "absolute_error": 1.6138366552923316
+    },
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2018-07-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 51.88102050278096,
+      "forecast": 49.654976438419645,
+      "absolute_error": 2.226044064361318
+    },
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2018-08-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 47.70790166316415,
+      "forecast": 45.02774574535433,
+      "absolute_error": 2.68015591780982
+    },
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2018-09-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 41.62489305718045,
+      "forecast": 42.72362856114444,
+      "absolute_error": 1.0987355039639866
+    },
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2018-10-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 40.610741224188125,
+      "forecast": 42.46159357760212,
+      "absolute_error": 1.8508523534139982
+    },
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2018-11-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 45.2705237870156,
+      "forecast": 43.01180326498483,
+      "absolute_error": 2.258720522030771
+    },
+    {
+      "origin": "2017-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2018-12-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 44.85969926186346,
+      "forecast": 44.709901702140236,
+      "absolute_error": 0.1497975597232255
+    },
+    {
       "origin": "2018-12-01 00:00:00+00:00",
       "horizon": 1,
       "timestamp": "2019-01-01 00:00:00+00:00",
@@ -6697,6 +7501,114 @@
       "absolute_error": 6.584505476094897
     },
     {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2019-01-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 50.8091792736892,
+      "forecast": 50.65356772337441,
+      "absolute_error": 0.155611550314795
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2019-02-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 57.46513752937299,
+      "forecast": 54.797577419439854,
+      "absolute_error": 2.6675601099331345
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2019-03-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 54.24738752126494,
+      "forecast": 58.76131024334122,
+      "absolute_error": 4.5139227220762805
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2019-04-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 61.180293691695894,
+      "forecast": 60.31992942203438,
+      "absolute_error": 0.8603642696615168
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2019-05-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 60.43694853410844,
+      "forecast": 57.77353417649096,
+      "absolute_error": 2.6634143576174765
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2019-06-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 51.226801890218454,
+      "forecast": 56.644217815052905,
+      "absolute_error": 5.417415924834451
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2019-07-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 50.034732312488934,
+      "forecast": 51.47732098037518,
+      "absolute_error": 1.4425886678862483
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2019-08-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 47.4830128310894,
+      "forecast": 46.95323297598938,
+      "absolute_error": 0.529779855100017
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2019-09-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 47.266779562634056,
+      "forecast": 43.72215933242056,
+      "absolute_error": 3.5446202302134964
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2019-10-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 43.87832440176014,
+      "forecast": 43.338886429335666,
+      "absolute_error": 0.5394379724244729
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2019-11-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 43.54584161040416,
+      "forecast": 44.46583775178602,
+      "absolute_error": 0.9199961413818585
+    },
+    {
+      "origin": "2018-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2019-12-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 52.91170626853797,
+      "forecast": 45.89408393322412,
+      "absolute_error": 7.0176223353138525
+    },
+    {
       "origin": "2019-12-01 00:00:00+00:00",
       "horizon": 1,
       "timestamp": "2020-01-01 00:00:00+00:00",
@@ -8207,6 +9119,114 @@
       "actual": 47.311170633556685,
       "forecast": 48.31185001358996,
       "absolute_error": 1.0006793800332758
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 1,
+      "timestamp": "2020-01-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 54.40273201660274,
+      "forecast": 52.43143304076932,
+      "absolute_error": 1.9712989758334203
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 2,
+      "timestamp": "2020-02-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 55.83439719867764,
+      "forecast": 57.27508178980095,
+      "absolute_error": 1.4406845911233077
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 3,
+      "timestamp": "2020-03-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 59.428613794395325,
+      "forecast": 58.950710909571654,
+      "absolute_error": 0.4779028848236706
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 4,
+      "timestamp": "2020-04-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 59.30277513968703,
+      "forecast": 62.34972993593857,
+      "absolute_error": 3.0469547962515406
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 5,
+      "timestamp": "2020-05-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 57.04995104068563,
+      "forecast": 60.162844266097814,
+      "absolute_error": 3.1128932254121864
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 6,
+      "timestamp": "2020-06-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 56.77125339845289,
+      "forecast": 56.457710321392724,
+      "absolute_error": 0.31354307706016726
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 7,
+      "timestamp": "2020-07-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 51.69472342180643,
+      "forecast": 52.70124261068818,
+      "absolute_error": 1.0065191888817537
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 8,
+      "timestamp": "2020-08-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 45.865556759769056,
+      "forecast": 48.59583078063673,
+      "absolute_error": 2.7302740208676752
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 9,
+      "timestamp": "2020-09-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 42.20945614053218,
+      "forecast": 46.0130524546517,
+      "absolute_error": 3.803596314119517
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 10,
+      "timestamp": "2020-10-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 41.36342424167723,
+      "forecast": 44.77391988992902,
+      "absolute_error": 3.410495648251789
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 11,
+      "timestamp": "2020-11-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 45.859939997968326,
+      "forecast": 45.868016579621745,
+      "absolute_error": 0.008076581653419623
+    },
+    {
+      "origin": "2019-12-01 00:00:00+00:00",
+      "horizon": 12,
+      "timestamp": "2020-12-01 00:00:00+00:00",
+      "model": "Weighted ensemble",
+      "actual": 47.311170633556685,
+      "forecast": 49.332171749095345,
+      "absolute_error": 2.0210011155386596
     }
   ],
   "test_mae": {
@@ -8223,7 +9243,8 @@
     "Seasonal naive": 2.7972141055772983,
     "Theta": 2.28160430708879,
     "Equal ensemble": 2.9922017849335667,
-    "Combination(top3)": 1.6161552831639423
+    "Combination(top3)": 1.6161552831639423,
+    "Weighted ensemble": 1.743830526317667
   },
   "test_interval_coverage": {
     "ARIMA(auto)": 0.8333333333333334,
@@ -8250,8 +9271,9 @@
     "SES",
     "STL+ETS",
     "Seasonal naive",
-    "Theta"
+    "Theta",
+    "Weighted ensemble"
   ],
-  "evaluation": "5 expanding origins spaced 12 steps apart select the model on mean MAE; the final 12 observations are scored once and never used for selection; the selection is refitted on all history.",
+  "evaluation": "5 expanding origins spaced 12 steps apart select the model on mean MAE; the final 12 observations are scored once and never used for selection; the selection is refitted on all history. A model that loses to Seasonal naive at more than half the origins cannot be selected.",
   "intervals": "Combination(top3) produces no model intervals; empirical_q* columns are signed residual quantiles by horizon step from the 5 selection origins (5 residuals per step) and are descriptive."
 }
