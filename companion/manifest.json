@@ -3737,7 +3737,7 @@
       "number": 19,
       "title": "Chapter 19: Frank Bass and the Television",
       "source": "manuscript/19-frank-bass-and-the-television.md",
-      "source_sha256": "cf568965f90b32b6161acde50846d609175a13e2e7508986e207af2f192e7db8",
+      "source_sha256": "505ba4faac8ce0381fe4e12d79e6ac76c42d711faa56b12276809f15bb7fdda0",
       "notebook": "notebooks/19-diffusion.ipynb",
       "lesson": "lessons/19-diffusion.py",
       "skill": "forecasting-skills/forecasting-ch19-diffusion/SKILL.md",
@@ -3803,11 +3803,11 @@
       "execution": {
         "chapter": 19,
         "status": "passed",
-        "seconds": 1.48,
+        "seconds": 1.47,
         "inputs": {
           "files": {
             "companion/lessons/19-diffusion.py": "db1a9a8fd9b074d8f7997b76b831f5d43cb74e71cf4e644d4c0f55a9b7dffe8b",
-            "manuscript/19-frank-bass-and-the-television.md": "cf568965f90b32b6161acde50846d609175a13e2e7508986e207af2f192e7db8",
+            "manuscript/19-frank-bass-and-the-television.md": "505ba4faac8ce0381fe4e12d79e6ac76c42d711faa56b12276809f15bb7fdda0",
             "companion/src/forecasting_companion/__init__.py": "f6413a47267f13be48f7420bdaf8f16d0d5960bf136360c1b10f02d6040cb075",
             "companion/src/forecasting_companion/applied/__init__.py": "b9bee3b91f9fd3d953c33d18ee21d18a9f8e4a5d895ef2b7d250f16d6e10ffe9",
             "companion/src/forecasting_companion/applied/_chronos_worker.py": "0bff7beb841aef93b59b770039283117b768761ef5b24ef97e659577d976ee0f",
@@ -3919,17 +3919,17 @@
             "transformers": "5.17.0"
           }
         },
-        "notebook_sha256": "4d6be39d97b4f3ba9b5965eb492870b634b03549f4d4c58b75c9f7b1cfa4b079",
+        "notebook_sha256": "9da7072502de4d3bbd4f3c633d2b536459382dc921e46a9fd182ad19326e5f63",
         "artifacts": {
           "figures/ch19/fig-19-01.png": "ec2e637950b6b3e181482e7a6451415f2a15958241de3035b0ecac0bcaefe835",
-          "figures/ch19/fig-19-01.pdf": "230aac107650a1d4b020eba628daadae211982dae8851e6b4d51fa595f3e1a5f",
-          "figures/ch19/fig-19-01.svg": "89d2427c556d05ccfba37733c0e85e61809ec6354e60fcc49dc3546feaa66ed6",
+          "figures/ch19/fig-19-01.pdf": "b096368d16e81023f002e6f7f7f1dbe7f2b4e681eb8348d44e0ea66c13c46d63",
+          "figures/ch19/fig-19-01.svg": "f64b5695a82bd46ac068d1a9bfca9603123c9d5210af009dc8676e4c33bd9c1c",
           "figures/ch19/fig-19-02.png": "c3398176475ee7397b6dc8f5cfba3bdd265acb18cf0d0a3cc71af151f0bb6f46",
-          "figures/ch19/fig-19-02.pdf": "8150946b76e50d6a87d627b462bc893db31213535d01c25d2e929587757da4a2",
-          "figures/ch19/fig-19-02.svg": "06ac790c9d1c62091ec8ab7db1ca862ba1f626b8bd498921823671553ad27564",
+          "figures/ch19/fig-19-02.pdf": "fe95e70be7f8eb2c34e6d3c77e3e82172025ad7a8eceec7d6fd6c997149468f6",
+          "figures/ch19/fig-19-02.svg": "3617b52d40e444d8ace17007060c7e8e9a8031b8e569a9e77f694c0568033e00",
           "figures/ch19/fig-19-03.png": "3c6d0012ae8738a9932d2f9b09cedaca02ec1dda49bc61da3778c0bcf47a4a3b",
-          "figures/ch19/fig-19-03.pdf": "8cd762cd52cdbe60a193fbbdd29ae223c915262df0258841896299a04244dfef",
-          "figures/ch19/fig-19-03.svg": "2ea6d3d2c4bd483c4895a5bc113d26f16d855d6c716ec8c6bf2c432b471545d3",
+          "figures/ch19/fig-19-03.pdf": "5229dff7b27734d1d288785ea77f4e4c02a416748a69a9324fd8cf50b66f250d",
+          "figures/ch19/fig-19-03.svg": "86142275e78b1d6475d2f619377feb912ea152bf48e3c1a1e230f615b7457796",
           "results/ch19-figures.json": "e5404f75fe08e32c5ada625a1b24cb18a3d58d52157bc46a0efb20bf25d44dfe",
           "results/ch19-workshop-summary.json": "2f37cc25b64ac591446cfafa2d9f364b0fcf6b7140dd22d365d54495f6f8a9bf",
           "results/ch19-workshop-results.csv": "705394da02650aafc3bf2721188085fc8f2fd70366212dfef72e51d21af23cbd"
